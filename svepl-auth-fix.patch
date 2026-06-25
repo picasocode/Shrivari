@@ -1,0 +1,85 @@
+From 6893b775853e3719c9dc4538e4b57ca6b05ca679 Mon Sep 17 00:00:00 2001
+From: Z User <z@container>
+Date: Thu, 25 Jun 2026 04:13:49 +0000
+Subject: [PATCH] fix(auth): auto-generate CUID on create/upsert so login works
+ via Supabase REST
+
+PostgREST does not apply Prisma's @default(cuid()), so INSERTing into any
+table (e.g. Session on login) sent id=NULL and Postgres rejected it with a
+not-null violation (23502). This caused every /api/auth/login to 500.
+
+Fix: generate a CUID client-side in withDefaultId() and apply it to every
+create() and upsert()-insert path when the caller doesn't pass an explicit id.
+Works for all 15 models since they all use String @id @default(cuid()).
+
+Verified: admin@shrivaari.com / admin123 now logs in (HTTP 200) and the
+Session row is correctly persisted to Supabase.
+---
+ src/lib/supabase-db.ts | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
+
+diff --git a/src/lib/supabase-db.ts b/src/lib/supabase-db.ts
+index 20923a7..fc5381d 100755
+--- a/src/lib/supabase-db.ts
++++ b/src/lib/supabase-db.ts
+@@ -112,6 +112,39 @@ function buildSelectParam(
+   return `*,${joins}`;
+ }
+ 
++/**
++ * Generate a CUID-style ID (compatible with Prisma's @default(cuid())).
++ *
++ * PostgREST does NOT apply Prisma's `@default(cuid())` — when we INSERT via
++ * REST, the `id` column comes through as NULL and Postgres rejects it with a
++ * not-null violation.  So we generate the ID client-side for any create/upsert
++ * that doesn't explicitly pass one.
++ */
++function generateCuid(): string {
++  // Based on the classic cuid() algorithm: timestamp + counter + random
++  const c = 'abcdefghijklmnopqrstuvwxyz';
++  const base = 36;
++  const now = Date.now();
++  const counter = (generateCuid as any).__c__ ?? ((generateCuid as any).__c__ = 0);
++  (generateCuid as any).__c__ = counter + 1;
++  const stamp = now.toString(base);
++  const rand =
++    c[Math.floor(Math.random() * c.length)] +
++    Math.floor(Math.random() * base * base).toString(base) +
++    Math.floor(Math.random() * base * base).toString(base);
++  return `c${stamp}${counter.toString(base)}${rand}`;
++}
++
++/** Ensure a payload bound for INSERT has a primary-key `id` if it doesn't
++ *  already specify one.  All 15 models use `String @id @default(cuid())`, so
++ *  every table needs this. */
++function withDefaultId(data: Record<string, unknown>): Record<string, unknown> {
++  if (data && data.id === undefined) {
++    return { ...data, id: generateCuid() };
++  }
++  return data;
++}
++
+ // ---------------------------------------------------------------------------
+ // Model delegate — implements the Prisma-compatible interface for one table
+ // ---------------------------------------------------------------------------
+@@ -233,7 +266,7 @@ class ModelDelegate {
+     const res = await fetch(url, {
+       method: 'POST',
+       headers: authHeaders('return=representation'),
+-      body: JSON.stringify(args.data),
++      body: JSON.stringify(withDefaultId(args.data)),
+     });
+ 
+     if (!res.ok) {
+@@ -376,7 +409,7 @@ class ModelDelegate {
+     }
+ 
+     // No rows updated → insert
+-    const insertData = { ...args.create, ...args.where, ...args.update };
++    const insertData = withDefaultId({ ...args.create, ...args.where, ...args.update });
+     const insertUrl = baseUrl(this.table);
+     const insertRes = await fetch(insertUrl, {
+       method: 'POST',
+-- 
+2.47.3
+

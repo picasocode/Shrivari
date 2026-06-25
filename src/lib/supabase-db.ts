@@ -112,6 +112,39 @@ function buildSelectParam(
   return `*,${joins}`;
 }
 
+/**
+ * Generate a CUID-style ID (compatible with Prisma's @default(cuid())).
+ *
+ * PostgREST does NOT apply Prisma's `@default(cuid())` — when we INSERT via
+ * REST, the `id` column comes through as NULL and Postgres rejects it with a
+ * not-null violation.  So we generate the ID client-side for any create/upsert
+ * that doesn't explicitly pass one.
+ */
+function generateCuid(): string {
+  // Based on the classic cuid() algorithm: timestamp + counter + random
+  const c = 'abcdefghijklmnopqrstuvwxyz';
+  const base = 36;
+  const now = Date.now();
+  const counter = (generateCuid as any).__c__ ?? ((generateCuid as any).__c__ = 0);
+  (generateCuid as any).__c__ = counter + 1;
+  const stamp = now.toString(base);
+  const rand =
+    c[Math.floor(Math.random() * c.length)] +
+    Math.floor(Math.random() * base * base).toString(base) +
+    Math.floor(Math.random() * base * base).toString(base);
+  return `c${stamp}${counter.toString(base)}${rand}`;
+}
+
+/** Ensure a payload bound for INSERT has a primary-key `id` if it doesn't
+ *  already specify one.  All 15 models use `String @id @default(cuid())`, so
+ *  every table needs this. */
+function withDefaultId(data: Record<string, unknown>): Record<string, unknown> {
+  if (data && data.id === undefined) {
+    return { ...data, id: generateCuid() };
+  }
+  return data;
+}
+
 // ---------------------------------------------------------------------------
 // Model delegate — implements the Prisma-compatible interface for one table
 // ---------------------------------------------------------------------------
@@ -233,7 +266,7 @@ class ModelDelegate {
     const res = await fetch(url, {
       method: 'POST',
       headers: authHeaders('return=representation'),
-      body: JSON.stringify(args.data),
+      body: JSON.stringify(withDefaultId(args.data)),
     });
 
     if (!res.ok) {
@@ -376,7 +409,7 @@ class ModelDelegate {
     }
 
     // No rows updated → insert
-    const insertData = { ...args.create, ...args.where, ...args.update };
+    const insertData = withDefaultId({ ...args.create, ...args.where, ...args.update });
     const insertUrl = baseUrl(this.table);
     const insertRes = await fetch(insertUrl, {
       method: 'POST',
