@@ -51,7 +51,7 @@ const TAG_COLORS: Record<string, string> = {
   Safety: 'bg-rose-100 text-rose-800',
   Industry: 'bg-slate-100 text-slate-700',
   Technology: 'bg-cyan-100 text-cyan-800',
-  Guide: 'bg-[#2D2D2D]/10 text-[#1a1a1a]',
+  Guide: 'bg-[#efefef]/10 text-[#d4d4d4]',
   Insights: 'bg-violet-100 text-violet-800',
 }
 
@@ -85,7 +85,7 @@ export default function BlogPage() {
       {/* ════════════════════════════════════════════
           HERO — Editorial Masthead
       ════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #2D2D2D 0%, #2D2D2D 40%, #1a1a1a 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #efefef 0%, #efefef 40%, #d4d4d4 100%)' }}>
         {/* Decorative grid lines */}
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 120px)' }} />
 
@@ -150,7 +150,7 @@ export default function BlogPage() {
                         style={{ backgroundImage: `url(${featured.coverImageUrl})` }}
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#2D2D2D] to-[#1a1a1a] flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#efefef] to-[#d4d4d4] flex items-center justify-center">
                         <BookOpen className="w-16 h-16 text-white/20" />
                       </div>
                     )}
@@ -175,7 +175,7 @@ export default function BlogPage() {
                     <div className="flex items-center justify-between">
                       {featured.author && (
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-[#2D2D2D] flex items-center justify-center text-white text-sm font-bold">
+                          <div className="w-8 h-8 rounded-full bg-[#efefef] flex items-center justify-center text-white text-sm font-bold">
                             {featured.author.charAt(0).toUpperCase()}
                           </div>
                           <span className="text-sm font-medium text-[#1A1A2E]">{featured.author}</span>
@@ -227,7 +227,7 @@ export default function BlogPage() {
                             />
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-[#F0F4F8] to-[#E2E8F0] flex items-center justify-center">
-                              <span className="text-4xl font-bold text-[#2D2D2D]/10">{b.title.charAt(0)}</span>
+                              <span className="text-4xl font-bold text-[#efefef]/10">{b.title.charAt(0)}</span>
                             </div>
                           )}
                         </div>
@@ -240,7 +240,7 @@ export default function BlogPage() {
                               </span>
                               <span className="flex items-center gap-1 text-[11px] text-[#9CA3AF]"><Clock className="w-3 h-3" />{readingTime(b.content)}</span>
                             </div>
-                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#2D2D2D] transition-colors">
+                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#efefef] transition-colors">
                               {b.title}
                             </h3>
                             <p className="text-[#4B5563] text-sm leading-relaxed line-clamp-2">{b.excerpt}</p>
@@ -271,7 +271,7 @@ export default function BlogPage() {
       <section className="bg-white py-16 md:py-20">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
-            <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 60%, #3A6090 100%)' }}>
+            <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 60%, #3A6090 100%)' }}>
               {/* Decorative circles */}
               <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full border-[24px] border-white/[0.04]" />
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full border-[20px] border-white/[0.04]" />
@@ -336,7 +336,7 @@ export default function BlogPage() {
           <Dialog open={!!selectedBlog} onOpenChange={(open) => { if (!open) setSelectedBlog(null) }}>
             <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl p-0">
               {/* Dialog header with gradient */}
-              <div className="sticky top-0 z-10 bg-gradient-to-r from-[#2D2D2D] to-[#1a1a1a] px-6 pt-6 pb-4 -mx-1 -mt-1 rounded-t-2xl">
+              <div className="sticky top-0 z-10 bg-gradient-to-r from-[#efefef] to-[#d4d4d4] px-6 pt-6 pb-4 -mx-1 -mt-1 rounded-t-2xl">
                 <DialogHeader>
                   <DialogTitle className="text-xl md:text-2xl font-bold text-white pr-8 leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif' }}>
                     {selectedBlog.title}

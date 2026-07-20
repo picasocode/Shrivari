@@ -71,7 +71,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
       >
         <Card className="bg-white rounded-xl shadow-2xl border-0 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#2D2D2D] to-[#1a1a1a] p-6 text-center">
+          <div className="bg-gradient-to-r from-[#efefef] to-[#d4d4d4] p-6 text-center">
             <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-4">
               <KeyRound className="w-7 h-7 text-[#E8751A]" />
             </div>
@@ -102,7 +102,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={name}
                       onChange={e => setName(e.target.value)}
                       placeholder="Admin name"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
                     />
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
                     />
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Min. 6 characters"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
                     />
                     <button
                       type="button"
@@ -162,7 +162,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
                       autoFocus
                     />
                   </div>
@@ -176,7 +176,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
                     />
                     <button
                       type="button"

@@ -50,7 +50,7 @@ const whyJoinData = [
     title: 'In-House Design',
     desc: 'We don\'t outsource engineering. Our design team handles everything from concept to commissioning — giving you real, hands-on experience.',
     icon: Lightbulb,
-    accent: '#2D2D2D',
+    accent: '#efefef',
     bgAccent: '#EFF6FF',
     stat: '100%',
     statLabel: 'In-House',
@@ -98,7 +98,7 @@ const lifePillars = [
     title: 'Professional Growth',
     desc: 'Structured training programs, industry certifications, and skill development workshops. We invest in your expertise.',
     icon: Rocket,
-    color: '#2D2D2D',
+    color: '#efefef',
     bgColor: '#EFF6FF',
     items: ['Technical Training Programs', 'Industry Certifications', 'Leadership Development', 'Cross-Department Exposure'],
   },
@@ -208,7 +208,7 @@ const departments: { label: string; value: Department }[] = [
 
 const careerPath = [
   { title: 'Graduate Trainee', years: '0-2 yrs', icon: GraduationCap, color: '#4B5563' },
-  { title: 'Engineer', years: '2-5 yrs', icon: Briefcase, color: '#2D2D2D' },
+  { title: 'Engineer', years: '2-5 yrs', icon: Briefcase, color: '#efefef' },
   { title: 'Senior Engineer', years: '5-8 yrs', icon: Zap, color: '#0D9488' },
   { title: 'Lead Engineer', years: '8-12 yrs', icon: Star, color: '#E8751A' },
   { title: 'Manager', years: '12-18 yrs', icon: Crown, color: '#7C3AED' },
@@ -216,7 +216,7 @@ const careerPath = [
 ]
 
 const departmentColorMap: Record<string, string> = {
-  Engineering: '#2D2D2D',
+  Engineering: '#efefef',
   Operations: '#E8751A',
   Design: '#7C3AED',
   Service: '#0D9488',
@@ -238,7 +238,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Full-width with animated graph/arrow
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 40%, #1a1a1a 100%)' }}>
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #efefef 40%, #d4d4d4 100%)' }}>
         {/* Animated rising graph SVG in background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Grid pattern */}
@@ -414,7 +414,7 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#E8751A]/[0.03] rounded-full -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2D2D2D]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -479,14 +479,14 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
           backgroundSize: '28px 28px',
         }} />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#2D2D2D]/20 text-[#2D2D2D] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Culture
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Life at SVEPL</h2>
@@ -501,11 +501,11 @@ export default function CareersPage() {
           <div className="relative">
             {/* Connecting lines between pillars (desktop only) */}
             <div className="hidden lg:block absolute top-[50%] left-[16.67%] right-[16.67%] h-px">
-              <div className="w-full h-full border-t-2 border-dashed border-[#2D2D2D]/15" />
+              <div className="w-full h-full border-t-2 border-dashed border-[#efefef]/15" />
               {/* Center dot */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E8751A] border-2 border-white shadow-md" />
               {/* Side dots */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#2D2D2D]/20 border-2 border-white" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#efefef]/20 border-2 border-white" />
               <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#0D9488]/20 border-2 border-white" />
             </div>
 
@@ -557,9 +557,9 @@ export default function CareersPage() {
       <section id="current-openings" className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative corner shapes */}
         <svg className="absolute top-0 right-0 w-40 h-40 opacity-[0.03]" viewBox="0 0 160 160">
-          <rect x="0" y="0" width="160" height="160" fill="#2D2D2D" />
+          <rect x="0" y="0" width="160" height="160" fill="#efefef" />
           <rect x="20" y="20" width="120" height="120" fill="white" />
-          <rect x="40" y="40" width="80" height="80" fill="#2D2D2D" />
+          <rect x="40" y="40" width="80" height="80" fill="#efefef" />
         </svg>
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
@@ -586,7 +586,7 @@ export default function CareersPage() {
                   onClick={() => setActiveDepartment(dept.value)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
-                      ? 'bg-[#2D2D2D] text-white shadow-md'
+                      ? 'bg-[#efefef] text-white shadow-md'
                       : 'bg-[#F0F4F8] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
                   }`}
                 >
@@ -674,7 +674,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 5: GROWTH PATH — Career progression ladder
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 50%, #1a1a1a 100%)' }}>
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #efefef 50%, #d4d4d4 100%)' }}>
         {/* Background texture */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
@@ -764,12 +764,12 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-[10%] left-[5%] w-48 h-48 bg-[#E8751A]/[0.04] rounded-full blur-2xl" />
-        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#2D2D2D]/[0.04] rounded-full blur-2xl" />
+        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#efefef]/[0.04] rounded-full blur-2xl" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <div className="relative bg-white rounded-2xl shadow-xl border border-[#E5E7EB] overflow-hidden">
             {/* Top accent bar */}
-            <div className="h-2 bg-gradient-to-r from-[#2D2D2D] via-[#E8751A] to-[#0D9488]" />
+            <div className="h-2 bg-gradient-to-r from-[#efefef] via-[#E8751A] to-[#0D9488]" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
               {/* Left: CTA content */}
@@ -800,12 +800,12 @@ export default function CareersPage() {
                       </div>
                     </a>
                     <a href="tel:+919941905833" className="flex items-center gap-3 group">
-                      <div className="w-10 h-10 rounded-lg bg-[#2D2D2D]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#2D2D2D]/20 transition-colors">
-                        <Phone className="w-5 h-5 text-[#2D2D2D]" />
+                      <div className="w-10 h-10 rounded-lg bg-[#efefef]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#efefef]/20 transition-colors">
+                        <Phone className="w-5 h-5 text-[#efefef]" />
                       </div>
                       <div>
                         <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wider font-medium">Phone</p>
-                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#2D2D2D] transition-colors">+91 9941905833</p>
+                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#efefef] transition-colors">+91 9941905833</p>
                       </div>
                     </a>
                   </div>
@@ -822,7 +822,7 @@ export default function CareersPage() {
               </div>
 
               {/* Right: Decorative + Stats */}
-              <div className="relative bg-gradient-to-br from-[#2D2D2D] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center">
+              <div className="relative bg-gradient-to-br from-[#efefef] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center">
                 {/* Background pattern */}
                 <div className="absolute inset-0 opacity-[0.04]" style={{
                   backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',

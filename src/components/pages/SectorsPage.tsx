@@ -168,9 +168,9 @@ const sectors = [
     description: 'EHV substations, switchyards, and transmission lines up to 400KV. Trusted by state electricity boards across South India.',
     stat: '65+ Switchyards',
     statLabel: 'Delivered',
-    gradient: 'from-[#2D2D2D] to-[#2A5F9E]',
-    accent: '#2D2D2D',
-    lightAccent: '#2D2D2D',
+    gradient: 'from-[#efefef] to-[#2A5F9E]',
+    accent: '#efefef',
+    lightAccent: '#efefef',
     details: ['EHV Substations up to 400KV', 'Transmission Lines 100+ KMs', 'Switchyard EPC', 'UG Cable Works 45+ KMs'],
   },
   {
@@ -303,7 +303,7 @@ const showcaseProjects = [
     value: '₹25 Cr+',
     description: '230KV/110KV substation with complete switchyard, protection systems, and SCADA integration for state utility.',
     icon: Zap,
-    color: '#2D2D2D',
+    color: '#efefef',
   },
   {
     sector: 'Industrial',
@@ -439,7 +439,7 @@ export default function SectorsPage() {
         <motion.div style={{ y: heroY }} className="absolute inset-0 bg-[#0C2340]">
           {/* Gradient */}
           <div className="absolute inset-0" style={{
-            background: 'radial-gradient(ellipse at 30% 40%, rgba(232,117,26,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(13,148,136,0.08) 0%, transparent 50%), linear-gradient(160deg, #0C2340 0%, #2D2D2D 40%, #0C2340 100%)',
+            background: 'radial-gradient(ellipse at 30% 40%, rgba(232,117,26,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(13,148,136,0.08) 0%, transparent 50%), linear-gradient(160deg, #0C2340 0%, #efefef 40%, #0C2340 100%)',
           }} />
           {/* Constellation SVG */}
           <ConstellationSVG />
@@ -535,7 +535,7 @@ export default function SectorsPage() {
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
           backgroundSize: '32px 32px',
         }} />
 
@@ -578,7 +578,7 @@ export default function SectorsPage() {
                         </div>
 
                         {/* Sector name */}
-                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 group-hover:text-[#2D2D2D] transition-colors">
+                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 group-hover:text-[#efefef] transition-colors">
                           {sector.name}
                         </h3>
 
@@ -633,7 +633,7 @@ export default function SectorsPage() {
           3. POWER UTILITY MAP — Connected Nodes
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 relative overflow-hidden" style={{
-        background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 50%, #1E3A5F 100%)',
+        background: 'linear-gradient(160deg, #0C2340 0%, #efefef 50%, #1E3A5F 100%)',
       }}>
         {/* Dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -745,7 +745,7 @@ export default function SectorsPage() {
       <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
         {/* Decorative dots */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
           backgroundSize: '28px 28px',
         }} />
 
@@ -753,7 +753,7 @@ export default function SectorsPage() {
           <FadeIn>
             <div className="flex items-end justify-between mb-10">
               <div>
-                <Badge variant="outline" className="border-[#2D2D2D]/20 text-[#2D2D2D] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+                <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                   Notable Projects
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-2">Project Showcase by Sector</h2>
@@ -765,14 +765,14 @@ export default function SectorsPage() {
                 <button
                   onClick={() => scrollProjects('left')}
                   disabled={!canScrollLeft}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollLeft ? 'border-[#2D2D2D] text-[#2D2D2D] hover:bg-[#2D2D2D] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollLeft ? 'border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
                 >
                   <ChevronRight className="w-5 h-5 rotate-180" />
                 </button>
                 <button
                   onClick={() => scrollProjects('right')}
                   disabled={!canScrollRight}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollRight ? 'border-[#2D2D2D] text-[#2D2D2D] hover:bg-[#2D2D2D] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollRight ? 'border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -847,12 +847,12 @@ export default function SectorsPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-20 bg-white relative overflow-hidden">
         {/* Decorative gradient */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#2D2D2D]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
-              <Badge variant="outline" className="border-[#2D2D2D]/20 text-[#2D2D2D] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Trusted Partnerships
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Consultant Partners</h2>
@@ -869,8 +869,8 @@ export default function SectorsPage() {
                 <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center group h-full">
                   <CardContent className="p-5">
                     {/* Consultant monogram */}
-                    <div className="w-16 h-16 rounded-full bg-[#2D2D2D]/5 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#2D2D2D] transition-colors duration-300">
-                      <span className="text-lg font-bold text-[#2D2D2D] group-hover:text-white transition-colors duration-300">
+                    <div className="w-16 h-16 rounded-full bg-[#efefef]/5 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#efefef] transition-colors duration-300">
+                      <span className="text-lg font-bold text-[#efefef] group-hover:text-white transition-colors duration-300">
                         {consultant.name.slice(0, 2)}
                       </span>
                     </div>
@@ -901,7 +901,7 @@ export default function SectorsPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
           backgroundSize: '28px 28px',
         }} />
 
@@ -962,13 +962,13 @@ export default function SectorsPage() {
                         </>
                       ) : (
                         <>
-                          <circle cx={branch.x} cy={branch.y} r={2} fill="#2D2D2D" />
+                          <circle cx={branch.x} cy={branch.y} r={2} fill="#efefef" />
                           <circle cx={branch.x} cy={branch.y} r={0.8} fill="white" />
                         </>
                       )}
                       {/* Label */}
                       <text x={branch.x} y={branch.y - 5} textAnchor="middle"
-                        fill={branch.isHQ ? '#E8751A' : '#2D2D2D'}
+                        fill={branch.isHQ ? '#E8751A' : '#efefef'}
                         fontSize={branch.isHQ ? '3' : '2.2'}
                         fontWeight={branch.isHQ ? '700' : '600'}
                         fontFamily="Inter, sans-serif">
@@ -985,7 +985,7 @@ export default function SectorsPage() {
                     <span className="text-sm text-[#4B5563]">Headquarters</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#2D2D2D]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#efefef]" />
                     <span className="text-sm text-[#4B5563]">Branch Office</span>
                   </div>
                 </div>
@@ -1007,17 +1007,17 @@ export default function SectorsPage() {
                       className={`rounded-lg p-3 border transition-colors ${
                         branch.isHQ
                           ? 'bg-[#E8751A]/5 border-[#E8751A]/20'
-                          : 'bg-white border-[#E5E7EB] hover:border-[#2D2D2D]/20'
+                          : 'bg-white border-[#E5E7EB] hover:border-[#efefef]/20'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 ${
-                          branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#2D2D2D]/8'
+                          branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#efefef]/8'
                         }`}>
                           {branch.isHQ ? (
                             <Building2 className="w-4 h-4 text-white" />
                           ) : (
-                            <MapPin className="w-4 h-4 text-[#2D2D2D]" />
+                            <MapPin className="w-4 h-4 text-[#efefef]" />
                           )}
                         </div>
                         <div>
@@ -1032,7 +1032,7 @@ export default function SectorsPage() {
                 </div>
 
                 {/* International presence */}
-                <div className="mt-6 bg-[#2D2D2D] rounded-xl p-5 border border-[#2D2D2D]">
+                <div className="mt-6 bg-[#efefef] rounded-xl p-5 border border-[#efefef]">
                   <div className="flex items-center gap-2 mb-4">
                     <Globe className="w-5 h-5 text-[#E8751A]" />
                     <h3 className="text-white font-bold text-sm">International Presence</h3>

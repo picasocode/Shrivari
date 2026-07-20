@@ -136,7 +136,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     <ToastProvider>
     <div className="fixed inset-0 z-[100] bg-white flex">
       {/* Sidebar */}
-      <div className="w-56 bg-[#2D2D2D] flex flex-col shrink-0">
+      <div className="w-56 bg-[#efefef] flex flex-col shrink-0">
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
             <Shield className="w-5 h-5 text-[#E8751A]" />
@@ -220,7 +220,7 @@ function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
         </div>
       </div>
       {loading ? (
-        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#2D2D2D] animate-spin" /></div>
+        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#efefef] animate-spin" /></div>
       ) : error ? (
         <div className="flex flex-col items-center py-20 text-[#4B5563]">
           <AlertCircle className="w-10 h-10 mb-3" />
@@ -1044,7 +1044,7 @@ function SettingsSection() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#2D2D2D] animate-spin" /></div>
+    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#efefef] animate-spin" /></div>
   }
 
   if (error) {

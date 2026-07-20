@@ -85,7 +85,7 @@ function FloatingField({
 
 /* ─── Contact Info ─── */
 const contactInfo = [
-  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#2D2D2D]/10 text-[#2D2D2D]' },
+  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#efefef]/10 text-[#efefef]' },
   { icon: Mail, label: 'Email', value: 'srivaari@gmail.com', href: 'mailto:srivaari@gmail.com', color: 'bg-sky-100 text-sky-600' },
   { icon: MapPin, label: 'Address', value: 'Chennai, Tamil Nadu, India', href: null, color: 'bg-rose-100 text-rose-600' },
   { icon: Clock, label: 'Business Hours', value: 'Mon–Sat: 9:30 AM – 6:30 PM', href: null, color: 'bg-amber-100 text-amber-600' },
@@ -99,7 +99,7 @@ const offices = [
     phone: '+91 9941905833',
     email: 'srivaari@gmail.com',
     hours: 'Mon–Sat: 9:30 AM – 6:30 PM',
-    accent: 'from-[#2D2D2D] to-[#1a1a1a]',
+    accent: 'from-[#efefef] to-[#d4d4d4]',
   },
   {
     title: 'Regional Office',
@@ -152,7 +152,7 @@ export default function ContactPage() {
       <section className="relative overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[340px] md:min-h-[400px]">
           {/* Left: Navy side */}
-          <div className="relative flex items-center" style={{ background: 'linear-gradient(160deg, #2D2D2D 0%, #2D2D2D 100%)' }}>
+          <div className="relative flex items-center" style={{ background: 'linear-gradient(160deg, #efefef 0%, #efefef 100%)' }}>
             <div className="relative z-10 px-6 md:px-12 py-16 md:py-20 pt-[100px] md:pt-20">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
                 <div className="flex items-center gap-2 text-sm mb-6">
@@ -178,7 +178,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right: Abstract connection pattern */}
-          <div className="hidden md:flex items-center justify-center relative" style={{ background: 'linear-gradient(160deg, #1a1a1a 0%, #3A6090 100%)' }}>
+          <div className="hidden md:flex items-center justify-center relative" style={{ background: 'linear-gradient(160deg, #d4d4d4 0%, #3A6090 100%)' }}>
             <svg width="340" height="340" viewBox="0 0 340 340" fill="none" className="opacity-20">
               {/* Connection nodes and lines */}
               <circle cx="170" cy="170" r="8" fill="#E8751A" />
@@ -226,7 +226,7 @@ export default function ContactPage() {
                 <Card className="bg-white rounded-2xl border-0 shadow-lg overflow-hidden">
                   <CardContent className="p-0">
                     {/* Form header accent */}
-                    <div className="h-1.5 w-full bg-gradient-to-r from-[#2D2D2D] via-[#E8751A] to-[#2D2D2D]" />
+                    <div className="h-1.5 w-full bg-gradient-to-r from-[#efefef] via-[#E8751A] to-[#efefef]" />
 
                     <div className="p-6 md:p-10">
                       <div className="flex items-center gap-2 mb-1">
@@ -243,7 +243,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, scale: 0.9, y: -10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                            className="flex items-center gap-3 bg-[#2D2D2D]/5 border border-[#5A7EA8] text-[#2D2D2D] px-5 py-4 rounded-xl mb-8"
+                            className="flex items-center gap-3 bg-[#efefef]/5 border border-[#5A7EA8] text-[#efefef] px-5 py-4 rounded-xl mb-8"
                           >
                             <motion.div
                               initial={{ scale: 0 }}
@@ -254,7 +254,7 @@ export default function ContactPage() {
                             </motion.div>
                             <div>
                               <p className="font-semibold text-sm">Message sent successfully!</p>
-                              <p className="text-sm text-[#2D2D2D]">We&apos;ll get back to you soon.</p>
+                              <p className="text-sm text-[#efefef]">We&apos;ll get back to you soon.</p>
                             </div>
                           </motion.div>
                         )}
@@ -333,7 +333,7 @@ export default function ContactPage() {
                 <Card className="rounded-xl border border-[#E5E7EB] overflow-hidden shadow-sm">
                   <div className="relative h-52 bg-gradient-to-br from-[#F0F4F8] to-[#E2E8F0]">
                     {/* Decorative grid pattern */}
-                    <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle, #2D2D2D 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+                    <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle, #efefef 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
                     {/* Center pin */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
@@ -341,7 +341,7 @@ export default function ContactPage() {
                           animate={{ y: [0, -8, 0] }}
                           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                         >
-                          <div className="w-12 h-12 rounded-full bg-[#2D2D2D] flex items-center justify-center mx-auto shadow-lg shadow-[#2D2D2D]/30">
+                          <div className="w-12 h-12 rounded-full bg-[#efefef] flex items-center justify-center mx-auto shadow-lg shadow-[#efefef]/30">
                             <MapPin className="w-5 h-5 text-white" />
                           </div>
                           <div className="w-3 h-3 bg-[#E8751A] rounded-full mx-auto mt-1" />
@@ -407,7 +407,7 @@ export default function ContactPage() {
       {/* ════════════════════════════════════════════
           QUICK CONTACT BAR
       ════════════════════════════════════════════ */}
-      <section className="bg-gradient-to-r from-[#2D2D2D] to-[#1a1a1a] py-8">
+      <section className="bg-gradient-to-r from-[#efefef] to-[#d4d4d4] py-8">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10">

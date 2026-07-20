@@ -31,8 +31,8 @@ import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
 
 /* ─── Brand Tokens ─── */
-const NAVY = '#2D2D2D'
-const NAVY_DARK = '#2D2D2D'
+const NAVY = '#efefef'
+const NAVY_DARK = '#efefef'
 const ORANGE = '#E8751A'
 const LIGHT_BG = '#F0F4F8'
 
@@ -56,11 +56,11 @@ const INDUSTRY_META: Record<string, { gradient: string; icon: React.ElementType 
   'Real Estate': { gradient: 'from-amber-400 to-orange-500', icon: Building2 },
   Cranes: { gradient: 'from-orange-500 to-amber-500', icon: Factory },
   Granites: { gradient: 'from-stone-400 to-stone-600', icon: Landmark },
-  Government: { gradient: 'from-[#2D2D2D] to-teal-600', icon: Landmark },
+  Government: { gradient: 'from-[#efefef] to-teal-600', icon: Landmark },
   Airport: { gradient: 'from-sky-500 to-blue-500', icon: Ship },
   Carbon: { gradient: 'from-gray-500 to-gray-700', icon: Flame },
   Media: { gradient: 'from-pink-400 to-rose-500', icon: Landmark },
-  default: { gradient: `from-[#2D2D2D] to-[#1a1a1a]`, icon: Building2 },
+  default: { gradient: `from-[#efefef] to-[#d4d4d4]`, icon: Building2 },
 }
 
 function getIndustryMeta(industry: string) {

@@ -137,7 +137,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
       }`}
     >
       {/* Top bar */}
-      <div className="bg-[#1a1a1a] text-white">
+      <div className="bg-[#d4d4d4] text-white">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 flex items-center justify-between h-9 text-sm">
           <div className="flex items-center gap-4">
             <a href="tel:+919941905833" className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors">
@@ -179,7 +179,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                     className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
                       isServicesActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
-                        : 'text-[#374151] hover:text-[#2D2D2D] hover:bg-gray-50'
+                        : 'text-[#374151] hover:text-[#efefef] hover:bg-gray-50'
                     }`}
                   >
                     {link.label}
@@ -207,11 +207,11 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                   onClick={() => handleServiceClick(item.slug)}
                                   className="flex items-start gap-3 p-3 rounded-lg text-left transition-all duration-150 hover:bg-[#F0F4F8] group"
                                 >
-                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#2D2D2D]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
-                                    <IconComponent className="w-4 h-4 text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors" />
+                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#efefef]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
+                                    <IconComponent className="w-4 h-4 text-[#efefef] group-hover:text-[#E8751A] transition-colors" />
                                   </div>
                                   <div className="min-w-0">
-                                    <div className="text-[13px] font-semibold text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors leading-tight">
+                                    <div className="text-[13px] font-semibold text-[#efefef] group-hover:text-[#E8751A] transition-colors leading-tight">
                                       {item.label}
                                     </div>
                                     <div className="text-[13px] text-[#4B5563] mt-0.5 leading-snug line-clamp-2">
@@ -249,7 +249,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                     className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
                       isCompanyActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
-                        : 'text-[#374151] hover:text-[#2D2D2D] hover:bg-gray-50'
+                        : 'text-[#374151] hover:text-[#efefef] hover:bg-gray-50'
                     }`}
                   >
                     {link.label}
@@ -277,11 +277,11 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                   onClick={() => handleNavigate(item.slug as PageName)}
                                   className="w-full flex items-start gap-3 p-3 rounded-lg text-left transition-all duration-150 hover:bg-[#F0F4F8] group"
                                 >
-                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#2D2D2D]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
-                                    <IconComponent className="w-4 h-4 text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors" />
+                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#efefef]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
+                                    <IconComponent className="w-4 h-4 text-[#efefef] group-hover:text-[#E8751A] transition-colors" />
                                   </div>
                                   <div className="min-w-0">
-                                    <div className="text-[13px] font-semibold text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors leading-tight">
+                                    <div className="text-[13px] font-semibold text-[#efefef] group-hover:text-[#E8751A] transition-colors leading-tight">
                                       {item.label}
                                     </div>
                                     <div className="text-[13px] text-[#4B5563] mt-0.5 leading-snug line-clamp-2">
@@ -310,7 +310,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                     className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
                       isClientsActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
-                        : 'text-[#374151] hover:text-[#2D2D2D] hover:bg-gray-50'
+                        : 'text-[#374151] hover:text-[#efefef] hover:bg-gray-50'
                     }`}
                   >
                     {link.label}
@@ -338,11 +338,11 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                   onClick={() => handleNavigate(item.slug as PageName)}
                                   className="w-full flex items-start gap-3 p-3 rounded-lg text-left transition-all duration-150 hover:bg-[#F0F4F8] group"
                                 >
-                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#2D2D2D]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
-                                    <IconComponent className="w-4 h-4 text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors" />
+                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#efefef]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
+                                    <IconComponent className="w-4 h-4 text-[#efefef] group-hover:text-[#E8751A] transition-colors" />
                                   </div>
                                   <div className="min-w-0">
-                                    <div className="text-[13px] font-semibold text-[#2D2D2D] group-hover:text-[#E8751A] transition-colors leading-tight">
+                                    <div className="text-[13px] font-semibold text-[#efefef] group-hover:text-[#E8751A] transition-colors leading-tight">
                                       {item.label}
                                     </div>
                                     <div className="text-[13px] text-[#4B5563] mt-0.5 leading-snug line-clamp-2">
@@ -365,7 +365,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                   className={`px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
                     router.page === link.page
                       ? 'text-[#E8751A] bg-[#E8751A]/5'
-                      : 'text-[#374151] hover:text-[#2D2D2D] hover:bg-gray-50'
+                      : 'text-[#374151] hover:text-[#efefef] hover:bg-gray-50'
                   }`}
                 >
                   {link.label}
@@ -380,7 +380,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
               <>
                 <Button
                   onClick={onAdminClick}
-                  className="hidden md:inline-flex bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
+                  className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
                 >
                   <Shield className="w-3.5 h-3.5 mr-1.5" />
                   Dashboard
@@ -397,7 +397,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
             ) : (
               <Button
                 onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
+                className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
               >
                 <Shield className="w-3.5 h-3.5 mr-1.5" />
                 Admin
@@ -462,7 +462,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
                                       >
-                                        <IconComponent className="w-4 h-4 text-[#2D2D2D] flex-shrink-0" />
+                                        <IconComponent className="w-4 h-4 text-[#efefef] flex-shrink-0" />
                                         <span className="font-medium">{item.label}</span>
                                       </button>
                                     </SheetClose>
@@ -519,7 +519,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
                                       >
-                                        <IconComponent className="w-4 h-4 text-[#2D2D2D] flex-shrink-0" />
+                                        <IconComponent className="w-4 h-4 text-[#efefef] flex-shrink-0" />
                                         <span className="font-medium">{item.label}</span>
                                       </button>
                                     </SheetClose>
@@ -564,7 +564,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
                                       >
-                                        <IconComponent className="w-4 h-4 text-[#2D2D2D] flex-shrink-0" />
+                                        <IconComponent className="w-4 h-4 text-[#efefef] flex-shrink-0" />
                                         <span className="font-medium">{item.label}</span>
                                       </button>
                                     </SheetClose>
@@ -594,7 +594,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                 <div className="p-4 border-t border-gray-100 space-y-2">
                   {isLoggedIn ? (
                     <>
-                      <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded-md text-sm">
+                      <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-white rounded-md text-sm">
                         <Shield className="w-3.5 h-3.5 mr-1.5" />
                         Dashboard
                       </Button>
@@ -604,7 +604,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded-md text-sm">
+                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-white rounded-md text-sm">
                       <Shield className="w-3.5 h-3.5 mr-1.5" />
                       Admin Login
                     </Button>

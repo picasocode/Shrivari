@@ -58,14 +58,14 @@ const INDUSTRY_ICONS: Record<string, { icon: React.ElementType; color: string; b
   'Paper & Printing Industries': { icon: BookOpen, color: 'text-stone-600', bg: 'bg-stone-50' },
   'Infrastructure & Urban Development': { icon: Landmark, color: 'text-gray-600', bg: 'bg-gray-50' },
   'Warehousing & Logistics': { icon: Package, color: 'text-brown-600', bg: 'bg-amber-50' },
-  'Government & Public Sector': { icon: Shield, color: 'text-[#2D2D2D]', bg: 'bg-[#2D2D2D]/5' },
+  'Government & Public Sector': { icon: Shield, color: 'text-[#efefef]', bg: 'bg-[#efefef]/5' },
   'Hospitality & Entertainment': { icon: Hotel, color: 'text-pink-600', bg: 'bg-pink-50' },
   'Process Industries': { icon: Factory, color: 'text-amber-700', bg: 'bg-amber-50' },
   'Ports & Marine Infrastructure': { icon: Anchor, color: 'text-blue-700', bg: 'bg-blue-50' },
   'Glass & Ceramics Industries': { icon: Box, color: 'text-cyan-700', bg: 'bg-cyan-50' },
   'Utilities & Power Sector': { icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50' },
   'Rubber, Plastics & Polymer Industries': { icon: Box, color: 'text-purple-700', bg: 'bg-purple-50' },
-  default: { icon: Building2, color: 'text-[#2D2D2D]', bg: 'bg-[#2D2D2D]/5' },
+  default: { icon: Building2, color: 'text-[#efefef]', bg: 'bg-[#efefef]/5' },
 }
 
 function getIndustryMeta(industry: string) {
@@ -175,9 +175,9 @@ export default function ProjectsPage() {
 
   /* ─── Stats ─── */
   const stats = [
-    { label: 'Total Projects', value: meta?.total ?? 0, icon: FolderKanban, color: 'text-[#2D2D2D]', bg: 'bg-[#2D2D2D]/10' },
+    { label: 'Total Projects', value: meta?.total ?? 0, icon: FolderKanban, color: 'text-[#efefef]', bg: 'bg-[#efefef]/10' },
     { label: 'Industries Served', value: meta?.industries.length ?? 0, icon: LayoutGrid, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
-    { label: 'States Covered', value: meta?.states.length ?? 0, icon: MapPin, color: 'text-[#2D2D2D]', bg: 'bg-[#2D2D2D]/10' },
+    { label: 'States Covered', value: meta?.states.length ?? 0, icon: MapPin, color: 'text-[#efefef]', bg: 'bg-[#efefef]/10' },
     { label: 'Years of Projects', value: meta?.years.length ?? 0, icon: Calendar, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
   ]
 
@@ -186,7 +186,7 @@ export default function ProjectsPage() {
       {/* ══════════════════════════════════════════════
           HERO SECTION
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 50%, #1a1a1a 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 50%, #d4d4d4 100%)' }}>
         {/* Background pattern */}
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(232,117,26,0.08) 0%, transparent 40%)',
@@ -316,7 +316,7 @@ export default function ProjectsPage() {
                       placeholder="Search by customer, location, scope, voltage..."
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
-                      className="pl-10 h-10 border-gray-200 focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
+                      className="pl-10 h-10 border-gray-200 focus:border-[#efefef] focus:ring-[#efefef]/20"
                     />
                     {searchInput && (
                       <button
@@ -333,7 +333,7 @@ export default function ProjectsPage() {
                     <button
                       onClick={() => setViewMode('table')}
                       className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                        viewMode === 'table' ? 'bg-white text-[#2D2D2D] shadow-sm' : 'text-gray-500'
+                        viewMode === 'table' ? 'bg-white text-[#efefef] shadow-sm' : 'text-gray-500'
                       }`}
                     >
                       <LayoutGrid className="w-3.5 h-3.5 inline mr-1" />
@@ -342,7 +342,7 @@ export default function ProjectsPage() {
                     <button
                       onClick={() => setViewMode('cards')}
                       className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                        viewMode === 'cards' ? 'bg-white text-[#2D2D2D] shadow-sm' : 'text-gray-500'
+                        viewMode === 'cards' ? 'bg-white text-[#efefef] shadow-sm' : 'text-gray-500'
                       }`}
                     >
                       <Building2 className="w-3.5 h-3.5 inline mr-1" />
@@ -362,7 +362,7 @@ export default function ProjectsPage() {
                   <select
                     value={industryFilter}
                     onChange={(e) => setIndustryFilter(e.target.value)}
-                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#2D2D2D] focus:outline-none cursor-pointer max-w-[240px]"
+                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#efefef] focus:outline-none cursor-pointer max-w-[240px]"
                   >
                     <option value="All">All Industries</option>
                     {meta?.industries.map(ind => (
@@ -374,7 +374,7 @@ export default function ProjectsPage() {
                   <select
                     value={stateFilter}
                     onChange={(e) => setStateFilter(e.target.value)}
-                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#2D2D2D] focus:outline-none cursor-pointer"
+                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#efefef] focus:outline-none cursor-pointer"
                   >
                     <option value="All">All States</option>
                     {meta?.states.map(s => (
@@ -386,7 +386,7 @@ export default function ProjectsPage() {
                   <select
                     value={yearFilter}
                     onChange={(e) => setYearFilter(e.target.value)}
-                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#2D2D2D] focus:outline-none cursor-pointer"
+                    className="text-sm h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#efefef] focus:outline-none cursor-pointer"
                   >
                     <option value="All">All Years</option>
                     {meta?.years.map(y => (
@@ -404,7 +404,7 @@ export default function ProjectsPage() {
                   )}
 
                   <div className="ml-auto text-sm text-gray-500">
-                    Showing <span className="font-semibold text-[#2D2D2D]">{records.length}</span> of {meta?.total ?? 0} projects
+                    Showing <span className="font-semibold text-[#efefef]">{records.length}</span> of {meta?.total ?? 0} projects
                   </div>
                 </div>
               </CardContent>
@@ -419,7 +419,7 @@ export default function ProjectsPage() {
               </div>
               <p className="text-gray-700 text-lg font-medium mb-2">Failed to load projects</p>
               <p className="text-gray-500 text-sm mb-4">{error}</p>
-              <Button onClick={() => window.location.reload()} className="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white">
+              <Button onClick={() => window.location.reload()} className="bg-[#efefef] hover:bg-[#d4d4d4] text-white">
                 Retry
               </Button>
             </div>
@@ -443,7 +443,7 @@ export default function ProjectsPage() {
               <p className="text-gray-700 text-lg font-medium mb-2">No projects found</p>
               <p className="text-gray-500 text-sm mb-4">Try adjusting your filters or search query</p>
               {hasActiveFilters && (
-                <Button onClick={clearAllFilters} variant="outline" className="border-[#2D2D2D] text-[#2D2D2D]">
+                <Button onClick={clearAllFilters} variant="outline" className="border-[#efefef] text-[#efefef]">
                   Clear Filters
                 </Button>
               )}
@@ -456,7 +456,7 @@ export default function ProjectsPage() {
               <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
                 <div className="overflow-x-auto max-h-[70vh] overflow-y-auto">
                   <table className="w-full text-sm">
-                    <thead className="bg-[#2D2D2D] text-white sticky top-0 z-10">
+                    <thead className="bg-[#efefef] text-white sticky top-0 z-10">
                       <tr>
                         <th className="text-left px-4 py-3 font-semibold text-sm uppercase tracking-wide w-12">#</th>
                         <th className="text-left px-4 py-3 font-semibold text-sm uppercase tracking-wide">Customer</th>
@@ -482,14 +482,14 @@ export default function ProjectsPage() {
                                 <div className={`w-8 h-8 rounded-md ${meta.bg} flex items-center justify-center shrink-0`}>
                                   <Icon className={`w-4 h-4 ${meta.color}`} />
                                 </div>
-                                <span className="font-semibold text-[#1A1A2E] text-sm group-hover:text-[#2D2D2D] transition-colors">
+                                <span className="font-semibold text-[#1A1A2E] text-sm group-hover:text-[#efefef] transition-colors">
                                   {p.customer}
                                 </span>
                               </div>
                             </td>
                             <td className="px-4 py-3">
                               {p.voltage ? (
-                                <Badge className="bg-[#2D2D2D]/10 text-[#2D2D2D] border-0 text-sm font-semibold">
+                                <Badge className="bg-[#efefef]/10 text-[#efefef] border-0 text-sm font-semibold">
                                   <Zap className="w-3 h-3 mr-1" />
                                   {p.voltage} KV
                                 </Badge>
@@ -553,7 +553,7 @@ export default function ProjectsPage() {
                           </div>
                           <div className="flex items-center gap-1.5">
                             {p.voltage && (
-                              <Badge className="bg-[#2D2D2D]/10 text-[#2D2D2D] border-0 text-sm font-semibold">
+                              <Badge className="bg-[#efefef]/10 text-[#efefef] border-0 text-sm font-semibold">
                                 {p.voltage} KV
                               </Badge>
                             )}
@@ -562,7 +562,7 @@ export default function ProjectsPage() {
                             </Badge>
                           </div>
                         </div>
-                        <h3 className="font-bold text-[#1A1A2E] text-base mb-1 group-hover:text-[#2D2D2D] transition-colors">
+                        <h3 className="font-bold text-[#1A1A2E] text-base mb-1 group-hover:text-[#efefef] transition-colors">
                           {p.customer}
                         </h3>
                         <p className="text-sm text-gray-500 mb-3 line-clamp-1">{p.industry}</p>
@@ -590,7 +590,7 @@ export default function ProjectsPage() {
           {!loading && !error && records.length > pageSize && (
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-sm text-gray-500">
-                Page <span className="font-semibold text-[#2D2D2D]">{page}</span> of {totalPages} • Showing {pagedRecords.length} of {records.length} records
+                Page <span className="font-semibold text-[#efefef]">{page}</span> of {totalPages} • Showing {pagedRecords.length} of {records.length} records
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -620,7 +620,7 @@ export default function ProjectsPage() {
                         onClick={() => setPage(pageNum)}
                         className={`w-8 h-8 rounded-md text-sm font-medium transition-colors ${
                           page === pageNum
-                            ? 'bg-[#2D2D2D] text-white'
+                            ? 'bg-[#efefef] text-white'
                             : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                         }`}
                       >
@@ -647,7 +647,7 @@ export default function ProjectsPage() {
       {/* ══════════════════════════════════════════════
           CTA BANNER
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 50%, #1a1a1a 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 50%, #d4d4d4 100%)' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-white/5" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-white/5" />

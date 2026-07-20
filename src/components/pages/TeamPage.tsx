@@ -61,14 +61,14 @@ const leaders = [
     responsibility: 'Design / Marketing / Liaisoning',
     experience: 38,
     initials: 'R',
-    gradient: 'from-[#2D2D2D] to-[#2A5F8F]',
-    accent: '#2D2D2D',
+    gradient: 'from-[#efefef] to-[#2A5F8F]',
+    accent: '#efefef',
     accentLight: 'rgba(27,58,92,0.10)',
     accentMid: 'rgba(27,58,92,0.20)',
-    borderColor: 'border-[#2D2D2D]',
-    badgeBg: 'bg-[#2D2D2D]/10',
-    badgeText: 'text-[#2D2D2D]',
-    barGradient: 'from-[#2D2D2D] to-[#3B6FA0]',
+    borderColor: 'border-[#efefef]',
+    badgeBg: 'bg-[#efefef]/10',
+    badgeText: 'text-[#efefef]',
+    barGradient: 'from-[#efefef] to-[#3B6FA0]',
   },
   {
     name: 'Mr. Sivagami Nathan',
@@ -153,7 +153,7 @@ const philosophyItems = [
     icon: Cpu,
     title: 'In-House Expertise',
     description: 'Design and Engineering completely in-house — from concept to detailed engineering, every drawing and calculation is handled by our own team of specialists.',
-    accent: '#2D2D2D',
+    accent: '#efefef',
   },
   {
     icon: Award,
@@ -179,13 +179,13 @@ const teamStats = [
 
 /* ─── Capabilities data ─── */
 const capabilities = [
-  { icon: PenTool, label: 'Design Engineering', sub: 'In-House', accent: '#2D2D2D' },
+  { icon: PenTool, label: 'Design Engineering', sub: 'In-House', accent: '#efefef' },
   { icon: Factory, label: 'Manufacturing', sub: '20,000 sq ft Guindy', accent: '#E8751A' },
   { icon: Hammer, label: 'Project Execution', sub: 'Up to 400KV', accent: '#0D9488' },
   { icon: FlaskConical, label: 'Testing & Commissioning', sub: 'All Voltages', accent: '#2A5A8A' },
   { icon: Shield, label: 'AMC Services', sub: 'Industrial & Commercial', accent: '#7C3AED' },
   { icon: Sun, label: 'Solar EPC', sub: 'Rooftop & Ground Mount', accent: '#D97706' },
-  { icon: FileCheck, label: 'CEIG/CEA Liaison', sub: '2000+ Approvals', accent: '#2D2D2D' },
+  { icon: FileCheck, label: 'CEIG/CEA Liaison', sub: '2000+ Approvals', accent: '#efefef' },
   { icon: Network, label: 'Utility Liaison', sub: '10+ State Boards', accent: '#E8751A' },
 ]
 
@@ -218,7 +218,7 @@ export default function TeamPage() {
           }} />
           {/* Radial gradient overlay */}
           <div className="absolute inset-0" style={{
-            background: 'radial-gradient(ellipse at 30% 40%, rgba(232,117,26,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 65%, rgba(13,148,136,0.08) 0%, transparent 45%), linear-gradient(160deg, #0C2340 0%, #2D2D2D 45%, #1a1a1a 100%)',
+            background: 'radial-gradient(ellipse at 30% 40%, rgba(232,117,26,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 65%, rgba(13,148,136,0.08) 0%, transparent 45%), linear-gradient(160deg, #0C2340 0%, #efefef 45%, #d4d4d4 100%)',
           }} />
           {/* Floating accent orbs */}
           <motion.div
@@ -365,20 +365,20 @@ export default function TeamPage() {
       <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
         {/* Decorative background pattern — hexagonal dots */}
         <div className="absolute inset-0 opacity-[0.025]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1.5px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1.5px, transparent 0)',
           backgroundSize: '32px 32px',
         }} />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#2D2D2D]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#E8751A]/[0.02] rounded-full translate-y-1/2 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#2D2D2D]/20 text-[#2D2D2D] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Directors
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
-                Meet the <span className="text-[#2D2D2D]">Leadership</span>
+                Meet the <span className="text-[#efefef]">Leadership</span>
               </h2>
               <div className="section-bar mx-auto mb-4" />
               <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
@@ -446,7 +446,7 @@ export default function TeamPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="flex-1 text-[#4B5563] hover:text-[#2D2D2D] text-sm h-8 rounded-lg"
+                          className="flex-1 text-[#4B5563] hover:text-[#efefef] text-sm h-8 rounded-lg"
                           onClick={() => window.open('https://linkedin.com', '_blank')}
                         >
                           <Linkedin className="w-3.5 h-3.5 mr-1.5" />
@@ -456,7 +456,7 @@ export default function TeamPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="flex-1 text-[#4B5563] hover:text-[#2D2D2D] text-sm h-8 rounded-lg"
+                          className="flex-1 text-[#4B5563] hover:text-[#efefef] text-sm h-8 rounded-lg"
                           onClick={() => navigate('contact')}
                         >
                           <Mail className="w-3.5 h-3.5 mr-1.5" />
@@ -475,7 +475,7 @@ export default function TeamPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 3: LEADERSHIP PHILOSOPHY — Horizontal banner
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 60%, #2D2D2D 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 60%, #efefef 100%)' }}>
         {/* Decorative pattern — overlapping circles */}
         <div className="absolute inset-0 opacity-[0.04]" style={{
           backgroundImage: `radial-gradient(circle at 50% 50%, #fff 1px, transparent 1px)`,
@@ -538,7 +538,7 @@ export default function TeamPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 4: TEAM STATS — Dark background with animated counters
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 50%, #0C2340 100%)' }}>
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #efefef 50%, #0C2340 100%)' }}>
         {/* Background texture — subtle grid */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
@@ -612,14 +612,14 @@ export default function TeamPage() {
         {/* Decorative pattern — circuit-board lines */}
         <div className="absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: `
-            linear-gradient(90deg, #2D2D2D 1px, transparent 1px),
-            linear-gradient(#2D2D2D 1px, transparent 1px)
+            linear-gradient(90deg, #efefef 1px, transparent 1px),
+            linear-gradient(#efefef 1px, transparent 1px)
           `,
           backgroundSize: '80px 80px',
         }} />
         {/* Decorative hexagon shapes */}
         <svg className="absolute top-[5%] right-[3%] w-32 h-32 opacity-[0.04]" viewBox="0 0 120 120">
-          <polygon points="60,10 110,35 110,85 60,110 10,85 10,35" stroke="#2D2D2D" strokeWidth="1" fill="none" />
+          <polygon points="60,10 110,35 110,85 60,110 10,85 10,35" stroke="#efefef" strokeWidth="1" fill="none" />
         </svg>
         <svg className="absolute bottom-[8%] left-[5%] w-24 h-24 opacity-[0.04]" viewBox="0 0 120 120">
           <polygon points="60,10 110,35 110,85 60,110 10,85 10,35" stroke="#E8751A" strokeWidth="1" fill="none" />
@@ -633,7 +633,7 @@ export default function TeamPage() {
                 Capabilities
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
-                End-to-End <span className="text-[#2D2D2D]">Under One Roof</span>
+                End-to-End <span className="text-[#efefef]">Under One Roof</span>
               </h2>
               <div className="section-bar mx-auto mb-4" />
               <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
@@ -668,7 +668,7 @@ export default function TeamPage() {
                         <cap.icon className="w-6 h-6 transition-colors duration-300" style={{ color: cap.accent }} />
                       </div>
                     </div>
-                    <h3 className="text-sm font-bold text-[#1A1A2E] mb-1 group-hover:text-[#2D2D2D] transition-colors">{cap.label}</h3>
+                    <h3 className="text-sm font-bold text-[#1A1A2E] mb-1 group-hover:text-[#efefef] transition-colors">{cap.label}</h3>
                     <p className="text-[11px] text-[#9CA3AF] font-medium">{cap.sub}</p>
                     {/* Hover accent dot */}
                     <motion.div
@@ -684,9 +684,9 @@ export default function TeamPage() {
           {/* Central connecting message */}
           <FadeIn delay={0.4}>
             <div className="mt-10 text-center">
-              <div className="inline-flex items-center gap-3 bg-[#2D2D2D]/[0.04] rounded-full px-6 py-3 border border-[#2D2D2D]/[0.08]">
+              <div className="inline-flex items-center gap-3 bg-[#efefef]/[0.04] rounded-full px-6 py-3 border border-[#efefef]/[0.08]">
                 <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                <span className="text-sm text-[#374151] font-medium">All capabilities are <strong className="text-[#2D2D2D]">in-house</strong> — ensuring quality, speed, and accountability</span>
+                <span className="text-sm text-[#374151] font-medium">All capabilities are <strong className="text-[#efefef]">in-house</strong> — ensuring quality, speed, and accountability</span>
               </div>
             </div>
           </FadeIn>
