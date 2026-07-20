@@ -63,7 +63,7 @@ function FloatingField({
           placeholder={placeholder}
           required={required}
           rows={4}
-          className={`${shared} !pl-12 resize-none rounded-xl border-2 ${focused ? 'border-[#E8751A]/40' : 'border-[#E5E7EB]'} focus:border-[#E8751A]/60 focus:ring-0 transition-colors`}
+          className={`${shared} !pl-12 resize-none rounded-xl border-2 ${focused ? 'border-[#E8751A]/40' : 'border-[#cfd8dc]'} focus:border-[#E8751A]/60 focus:ring-0 transition-colors`}
         />
       ) : (
         <Input
@@ -75,7 +75,7 @@ function FloatingField({
           onBlur={() => setFocused(false)}
           placeholder={placeholder}
           required={required}
-          className={`${shared} h-14 rounded-xl border-2 ${focused ? 'border-[#E8751A]/40' : 'border-[#E5E7EB]'} focus:border-[#E8751A]/60 focus:ring-0 transition-colors`}
+          className={`${shared} h-14 rounded-xl border-2 ${focused ? 'border-[#E8751A]/40' : 'border-[#cfd8dc]'} focus:border-[#E8751A]/60 focus:ring-0 transition-colors`}
         />
       )}
       <div className={`absolute bottom-0 left-0 h-0.5 bg-[#E8751A] transition-all duration-300 rounded-full ${focused ? 'w-full' : 'w-0'}`} />
@@ -85,7 +85,7 @@ function FloatingField({
 
 /* ─── Contact Info ─── */
 const contactInfo = [
-  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#334155]/10 text-[#334155]' },
+  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#455a64]/10 text-[#37474f]' },
   { icon: Mail, label: 'Email', value: 'srivaari@gmail.com', href: 'mailto:srivaari@gmail.com', color: 'bg-sky-100 text-sky-600' },
   { icon: MapPin, label: 'Address', value: 'Chennai, Tamil Nadu, India', href: null, color: 'bg-rose-100 text-rose-600' },
   { icon: Clock, label: 'Business Hours', value: 'Mon–Sat: 9:30 AM – 6:30 PM', href: null, color: 'bg-amber-100 text-amber-600' },
@@ -152,7 +152,7 @@ export default function ContactPage() {
       <section className="relative overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[340px] md:min-h-[400px]">
           {/* Left: Navy side */}
-          <div className="relative flex items-center" style={{ background: 'linear-gradient(160deg, #efefef 0%, #efefef 100%)' }}>
+          <div className="relative flex items-center" style={{ background: '#37474f' }}>
             <div className="relative z-10 px-6 md:px-12 py-16 md:py-20 pt-[100px] md:pt-20">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
                 <div className="flex items-center gap-2 text-sm mb-6">
@@ -178,7 +178,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right: Abstract connection pattern */}
-          <div className="hidden md:flex items-center justify-center relative" style={{ background: 'linear-gradient(160deg, #d4d4d4 0%, #3A6090 100%)' }}>
+          <div className="hidden md:flex items-center justify-center relative" style={{ background: '#37474f' }}>
             <svg width="340" height="340" viewBox="0 0 340 340" fill="none" className="opacity-20">
               {/* Connection nodes and lines */}
               <circle cx="170" cy="170" r="8" fill="#E8751A" />
@@ -234,7 +234,7 @@ export default function ContactPage() {
                         <span className="text-[#E8751A] text-sm font-semibold uppercase tracking-wider">Get in Touch</span>
                       </div>
                       <h2 className="text-2xl md:text-[28px] font-bold text-[#1A1A2E] mb-2">Send Us a Message</h2>
-                      <p className="text-[#4B5563] text-sm mb-8">Fill out the form below and our team will get back to you within 24 hours.</p>
+                      <p className="text-[#546e7a] text-sm mb-8">Fill out the form below and our team will get back to you within 24 hours.</p>
 
                       {/* Success animation */}
                       <AnimatePresence>
@@ -243,7 +243,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, scale: 0.9, y: -10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                            className="flex items-center gap-3 bg-[#334155]/5 border border-[#5A7EA8] text-[#334155] px-5 py-4 rounded-xl mb-8"
+                            className="flex items-center gap-3 bg-[#455a64]/5 border border-[#5A7EA8] text-[#37474f] px-5 py-4 rounded-xl mb-8"
                           >
                             <motion.div
                               initial={{ scale: 0 }}
@@ -254,7 +254,7 @@ export default function ContactPage() {
                             </motion.div>
                             <div>
                               <p className="font-semibold text-sm">Message sent successfully!</p>
-                              <p className="text-sm text-[#334155]">We&apos;ll get back to you soon.</p>
+                              <p className="text-sm text-[#37474f]">We&apos;ll get back to you soon.</p>
                             </div>
                           </motion.div>
                         )}
@@ -305,7 +305,7 @@ export default function ContactPage() {
             <div className="lg:col-span-2 space-y-4">
               {contactInfo.map((item, i) => (
                 <FadeIn key={item.label} delay={i * 0.08}>
-                  <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-default">
+                  <Card className="group bg-white rounded-xl border border-[#cfd8dc] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-default">
                     <CardContent className="p-5 flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${item.color} group-hover:scale-110 transition-transform duration-300`}>
                         <item.icon className="w-5 h-5" />
@@ -330,7 +330,7 @@ export default function ContactPage() {
 
               {/* Map Section */}
               <FadeIn delay={0.32}>
-                <Card className="rounded-xl border border-[#E5E7EB] overflow-hidden shadow-sm">
+                <Card className="rounded-xl border border-[#cfd8dc] overflow-hidden shadow-sm">
                   <div className="relative h-52 bg-gradient-to-br from-[#F0F4F8] to-[#E2E8F0]">
                     {/* Decorative grid pattern */}
                     <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle, #efefef 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
@@ -341,13 +341,13 @@ export default function ContactPage() {
                           animate={{ y: [0, -8, 0] }}
                           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                         >
-                          <div className="w-12 h-12 rounded-full bg-[#334155] flex items-center justify-center mx-auto shadow-lg shadow-[#efefef]/30">
+                          <div className="w-12 h-12 rounded-full bg-[#455a64] flex items-center justify-center mx-auto shadow-lg shadow-[#efefef]/30">
                             <MapPin className="w-5 h-5 text-white" />
                           </div>
                           <div className="w-3 h-3 bg-[#E8751A] rounded-full mx-auto mt-1" />
                         </motion.div>
                         <p className="text-sm font-bold text-[#1A1A2E] mt-3">Visit Us</p>
-                        <p className="text-sm text-[#4B5563]">Chennai, Tamil Nadu, India</p>
+                        <p className="text-sm text-[#546e7a]">Chennai, Tamil Nadu, India</p>
                       </div>
                     </div>
                   </div>
@@ -381,19 +381,19 @@ export default function ContactPage() {
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
                         <MapPin className="w-4 h-4 text-[#9CA3AF] mt-0.5 shrink-0" />
-                        <span className="text-sm text-[#4B5563]">{office.address}</span>
+                        <span className="text-sm text-[#546e7a]">{office.address}</span>
                       </div>
                       <div className="flex items-start gap-3">
                         <Phone className="w-4 h-4 text-[#9CA3AF] mt-0.5 shrink-0" />
-                        <a href={`tel:${office.phone.replace(/\s/g, '')}`} className="text-sm text-[#4B5563] hover:text-[#E8751A] transition-colors">{office.phone}</a>
+                        <a href={`tel:${office.phone.replace(/\s/g, '')}`} className="text-sm text-[#546e7a] hover:text-[#E8751A] transition-colors">{office.phone}</a>
                       </div>
                       <div className="flex items-start gap-3">
                         <Mail className="w-4 h-4 text-[#9CA3AF] mt-0.5 shrink-0" />
-                        <a href={`mailto:${office.email}`} className="text-sm text-[#4B5563] hover:text-[#E8751A] transition-colors">{office.email}</a>
+                        <a href={`mailto:${office.email}`} className="text-sm text-[#546e7a] hover:text-[#E8751A] transition-colors">{office.email}</a>
                       </div>
                       <div className="flex items-start gap-3">
                         <Clock className="w-4 h-4 text-[#9CA3AF] mt-0.5 shrink-0" />
-                        <span className="text-sm text-[#4B5563]">{office.hours}</span>
+                        <span className="text-sm text-[#546e7a]">{office.hours}</span>
                       </div>
                     </div>
                   </CardContent>

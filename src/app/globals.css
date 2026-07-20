@@ -45,61 +45,60 @@
 
 :root {
   /* ═══════════════════════════════════════════
-     PROFESSIONAL LIGHT THEME - OPTIMIZED PALETTE
-     Background: #efefef (Light Gray)
+     CLEAN LIGHT GRAY THEME - NO GRADIENTS
      ═══════════════════════════════════════════ */
   
   --radius: 0.5rem;
   
-  /* Base Colors */
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  /* Base - Clean Light Gray Background */
+  --background: #f5f5f5;
+  --foreground: #2c3e50;
   
-  /* Card & Popover */
+  /* Cards & Popover - White for contrast on gray bg */
   --card: #ffffff;
-  --card-foreground: #1e293b;
+  --card-foreground: #34495e;
   --popover: #ffffff;
-  --popover-foreground: #1e293b;
+  --popover-foreground: #34495e;
   
-  /* Primary - Deep Slate for buttons/nav */
-  --primary: #334155;
+  /* Primary - Dark Gray for buttons/elements */
+  --primary: #455a64;
   --primary-foreground: #ffffff;
   
-  /* Secondary - Soft gray */
-  --secondary: #f1f5f9;
-  --secondary-foreground: #334155;
+  /* Secondary - Light Gray */
+  --secondary: #eceff1;
+  --secondary-foreground: #37474f;
   
-  /* Muted - Subtle backgrounds */
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  /* Muted - Subtle gray */
+  --muted: #eceff1;
+  --muted-foreground: #607d8b;
   
-  /* Accent - Orange (brand color) */
+  /* Accent - Orange Brand Color */
   --accent: #E8751A;
   --accent-foreground: #ffffff;
   
   /* Destructive */
-  --destructive: #dc2626;
+  --destructive: #e74c3c;
   
   /* Borders & Inputs */
-  --border: #cbd5e1;
-  --input: #cbd5e1;
+  --border: #cfd8dc;
+  --input: #cfd8dc;
   --ring: #E8751A;
   
-  /* Chart colors */
-  --chart-1: #334155;
+  /* Chart Colors */
+  --chart-1: #455a64;
   --chart-2: #E8751A;
-  --chart-3: #0ea5e9;
-  --chart-4: #8b5cf6;
-  --chart-5: #10b981;
+  --chart-3: #26a69a;
+  --chart-4: #7e57c2;
+  --chart-5: #ef5350;
   
   /* Sidebar */
-  --sidebar: #334155;
-  --sidebar-foreground: #f1f5f9;
+  --sidebar: #37474f;
+  --sidebar-foreground: #eceff1;
   --sidebar-primary: #E8751A;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #475569;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: #475569;
+  --sidebar-accent: #455a64;
+  --sidebar-accent-foreground: #f5f5f5;
+  --sidebar-border: #455a64;
   --sidebar-ring: #E8751A;
 }
 
@@ -111,13 +110,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3, h4, h5, h6 { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #2c3e50; }
 }
 
-::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #64748b; }
+::-webkit-scrollbar-thumb { background: #b0bec5; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #90a4ae; }
 html { scroll-behavior: smooth; }
 
 /* ── Smooth card hover ── */
@@ -126,7 +125,7 @@ html { scroll-behavior: smooth; }
 }
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.10);
 }
 
 /* ── Section accent bar ── */
@@ -137,14 +136,14 @@ html { scroll-behavior: smooth; }
   border-radius: 2px;
 }
 
-/* ── Hero overlay - Professional dark gradient ── */
+/* ── Hero overlay - Solid dark overlay (no gradient) ── */
 .hero-overlay {
-  background: linear-gradient(to right, rgba(51,65,85,0.92) 0%, rgba(51,65,85,0.70) 55%, rgba(51,65,85,0.35) 100%);
+  background: rgba(69,90,100,0.85);
 }
 
-/* ── Page header - Deep slate gradient ── */
+/* ── Page header - Solid dark (no gradient) ── */
 .page-header {
-  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  background: #37474f;
 }
 
 /* ── Marquee ── */

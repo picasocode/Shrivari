@@ -238,12 +238,12 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Full-width with animated graph/arrow
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #efefef 40%, #d4d4d4 100%)' }}>
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: '#37474f' }}>
         {/* Animated rising graph SVG in background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Grid pattern */}
           <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            backgroundImage: '#37474f, #37474f',
             backgroundSize: '80px 80px',
           }} />
 
@@ -414,7 +414,7 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#E8751A]/[0.03] rounded-full -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#334155]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#455a64]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -424,7 +424,7 @@ export default function CareersPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Why Join Shri Vaari Electricals?</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
+              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
                 Six compelling reasons why engineers and professionals choose to build their careers with us.
               </p>
             </div>
@@ -433,7 +433,7 @@ export default function CareersPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyJoinData.map((item, i) => (
               <FadeIn key={item.title} delay={i * 0.08}>
-                <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full card-hover">
+                <Card className="group bg-white rounded-xl border border-[#cfd8dc] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full card-hover">
                   <CardContent className="p-6">
                     {/* Top: Icon + Stat */}
                     <div className="flex items-start justify-between mb-5">
@@ -458,7 +458,7 @@ export default function CareersPage() {
                     <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 group-hover:translate-x-1 transition-transform duration-300">
                       {item.title}
                     </h3>
-                    <p className="text-[#4B5563] text-sm leading-relaxed">{item.desc}</p>
+                    <p className="text-[#546e7a] text-sm leading-relaxed">{item.desc}</p>
 
                     {/* Bottom decorative element */}
                     <div className="mt-5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -476,7 +476,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 3: LIFE AT SVEPL — Three pillars with connectors
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#f1f5f9] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-[#eceff1] relative overflow-hidden">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
@@ -486,12 +486,12 @@ export default function CareersPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#37474f] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Culture
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Life at SVEPL</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
+              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
                 Three pillars define the SVEPL experience — where professional growth, collaboration, and impact converge.
               </p>
             </div>
@@ -505,14 +505,14 @@ export default function CareersPage() {
               {/* Center dot */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E8751A] border-2 border-white shadow-md" />
               {/* Side dots */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#334155]/20 border-2 border-white" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#455a64]/20 border-2 border-white" />
               <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#0D9488]/20 border-2 border-white" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {lifePillars.map((pillar, i) => (
                 <FadeIn key={pillar.title} delay={i * 0.12}>
-                  <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
+                  <Card className="group bg-white rounded-xl border border-[#cfd8dc] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
                     {/* Colored top bar */}
                     <div className="h-2" style={{ backgroundColor: pillar.color }} />
 
@@ -529,7 +529,7 @@ export default function CareersPage() {
 
                       {/* Title */}
                       <h3 className="text-xl font-bold text-[#1A1A2E] mb-2">{pillar.title}</h3>
-                      <p className="text-[#4B5563] text-sm leading-relaxed mb-5">{pillar.desc}</p>
+                      <p className="text-[#546e7a] text-sm leading-relaxed mb-5">{pillar.desc}</p>
 
                       {/* Items list */}
                       <div className="space-y-2.5">
@@ -571,7 +571,7 @@ export default function CareersPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Current Openings</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
+              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
                 Find your next role in electrical engineering, project management, design, or service operations.
               </p>
             </div>
@@ -586,8 +586,8 @@ export default function CareersPage() {
                   onClick={() => setActiveDepartment(dept.value)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
-                      ? 'bg-[#334155] text-[#1A1A2E] shadow-md'
-                      : 'bg-[#f1f5f9] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
+                      ? 'bg-[#455a64] text-[#1A1A2E] shadow-md'
+                      : 'bg-[#eceff1] text-[#546e7a] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
                   }`}
                 >
                   {dept.label}
@@ -610,7 +610,7 @@ export default function CareersPage() {
                     exit={{ opacity: 0, y: -10, scale: 0.97 }}
                     transition={{ duration: 0.35, delay: i * 0.06 }}
                   >
-                    <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
+                    <Card className="group bg-white rounded-xl border border-[#cfd8dc] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
                       <CardContent className="p-6">
                         <div className="flex items-start gap-4">
                           {/* Department icon */}
@@ -626,11 +626,11 @@ export default function CareersPage() {
 
                             {/* Badges row */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
+                              <Badge variant="outline" className="border-[#cfd8dc] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
                                 <MapPin className="w-3 h-3 text-[#E8751A]" />
                                 {job.location}
                               </Badge>
-                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
+                              <Badge variant="outline" className="border-[#cfd8dc] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
                                 <Clock className="w-3 h-3 text-[#0D9488]" />
                                 {job.experience}
                               </Badge>
@@ -674,7 +674,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 5: GROWTH PATH — Career progression ladder
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #efefef 50%, #d4d4d4 100%)' }}>
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: '#37474f' }}>
         {/* Background texture */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
@@ -761,13 +761,13 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 6: APPLICATION CTA — Contact and apply
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#f1f5f9] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-[#eceff1] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-[10%] left-[5%] w-48 h-48 bg-[#E8751A]/[0.04] rounded-full blur-2xl" />
-        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#334155]/[0.04] rounded-full blur-2xl" />
+        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#455a64]/[0.04] rounded-full blur-2xl" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <div className="relative bg-white rounded-2xl shadow-xl border border-[#E5E7EB] overflow-hidden">
+          <div className="relative bg-white rounded-2xl shadow-xl border border-[#cfd8dc] overflow-hidden">
             {/* Top accent bar */}
             <div className="h-2 bg-gradient-to-r from-[#efefef] via-[#E8751A] to-[#0D9488]" />
 
@@ -784,7 +784,7 @@ export default function CareersPage() {
                     <span className="text-[#E8751A]">Your Future?</span>
                   </h2>
                   <div className="section-bar mb-4" />
-                  <p className="text-[#4B5563] text-sm leading-relaxed mb-8 max-w-md">
+                  <p className="text-[#546e7a] text-sm leading-relaxed mb-8 max-w-md">
                     Take the next step in your career. Send your resume to our HR team and we&apos;ll connect with you about opportunities that match your skills and aspirations.
                   </p>
 
@@ -800,12 +800,12 @@ export default function CareersPage() {
                       </div>
                     </a>
                     <a href="tel:+919941905833" className="flex items-center gap-3 group">
-                      <div className="w-10 h-10 rounded-lg bg-[#334155]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#334155]/20 transition-colors">
-                        <Phone className="w-5 h-5 text-[#334155]" />
+                      <div className="w-10 h-10 rounded-lg bg-[#455a64]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#455a64]/20 transition-colors">
+                        <Phone className="w-5 h-5 text-[#37474f]" />
                       </div>
                       <div>
                         <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wider font-medium">Phone</p>
-                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#334155] transition-colors">+91 9941905833</p>
+                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#37474f] transition-colors">+91 9941905833</p>
                       </div>
                     </a>
                   </div>

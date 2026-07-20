@@ -101,7 +101,7 @@ export default function HomePage() {
       <Hero />
 
       {/* ─── About Preview ─── */}
-      <section className="py-14 md:py-20 bg-[#f1f5f9]">
+      <section className="py-14 md:py-20 bg-[#eceff1]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <FadeIn>
@@ -111,7 +111,7 @@ export default function HomePage() {
               <Button
                 onClick={() => navigate('about')}
                 variant="outline"
-                className="border-[#334155] text-[#334155] hover:bg-[#334155] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
+                className="border-[#334155] text-[#37474f] hover:bg-[#455a64] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
               >
                 Read More <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -128,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Stats Counter ─── */}
-      <section className="py-14 md:py-20 bg-[#334155]">
+      <section className="py-14 md:py-20 bg-[#455a64]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Our Achievements</h2>
@@ -167,7 +167,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('services')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
+                className="hidden md:inline-flex border-[#cfd8dc] text-[#37474f] hover:bg-[#455a64] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -178,17 +178,17 @@ export default function HomePage() {
               {[0, 1, 2].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
             </div>
           ) : projects.length === 0 ? (
-            <p className="text-[#4B5563]">No ongoing projects at the moment.</p>
+            <p className="text-[#546e7a]">No ongoing projects at the moment.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.slice(0, 3).map((p, i) => (
                 <FadeIn key={p.id} delay={i * 0.08}>
-                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full">
+                  <Card className="bg-white rounded-lg border border-[#cfd8dc] shadow-sm card-hover h-full">
                     <CardContent className="p-6">
-                      <Badge className="bg-[#f1f5f9] text-[#334155] hover:bg-[#E5E7EB] mb-3 rounded text-sm font-semibold">{p.category || 'Ongoing'}</Badge>
+                      <Badge className="bg-[#eceff1] text-[#37474f] hover:bg-[#E5E7EB] mb-3 rounded text-sm font-semibold">{p.category || 'Ongoing'}</Badge>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
-                      <p className="text-[#4B5563] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-[#4B5563]">
+                      <p className="text-[#546e7a] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-[#546e7a]">
                         {p.client && <span>Client: {p.client}</span>}
                         {p.location && (
                           <span className="flex items-center gap-1">
@@ -207,7 +207,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('services')}
-              className="border-[#E5E7EB] text-[#334155] rounded-md"
+              className="border-[#cfd8dc] text-[#37474f] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -216,7 +216,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Testimonials Preview ─── */}
-      <section className="py-14 md:py-20 bg-[#f1f5f9]">
+      <section className="py-14 md:py-20 bg-[#eceff1]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
             <div className="flex items-end justify-between mb-10">
@@ -227,7 +227,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('testimonials')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
+                className="hidden md:inline-flex border-[#cfd8dc] text-[#37474f] hover:bg-[#455a64] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -241,7 +241,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((t, i) => (
                 <FadeIn key={t.id} delay={i * 0.08}>
-                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm h-full">
+                  <Card className="bg-white rounded-lg border border-[#cfd8dc] shadow-sm h-full">
                     <CardContent className="p-6">
                       <div className="flex gap-0.5 mb-4">
                         {Array.from({ length: 5 }).map((_, si) => (
@@ -254,9 +254,9 @@ export default function HomePage() {
                       <p className="text-[#1A1A2E] text-sm leading-relaxed mb-5 italic">
                         &ldquo;{t.content}&rdquo;
                       </p>
-                      <div className="border-t border-[#E5E7EB] pt-4">
+                      <div className="border-t border-[#cfd8dc] pt-4">
                         <p className="font-semibold text-[#1A1A2E] text-sm">{t.name}</p>
-                        <p className="text-[#4B5563] text-sm">{t.designation}{t.designation && t.company ? ', ' : ''}{t.company}</p>
+                        <p className="text-[#546e7a] text-sm">{t.designation}{t.designation && t.company ? ', ' : ''}{t.company}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -268,7 +268,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('testimonials')}
-              className="border-[#E5E7EB] text-[#334155] rounded-md"
+              className="border-[#cfd8dc] text-[#37474f] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -288,7 +288,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('blog')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
+                className="hidden md:inline-flex border-[#cfd8dc] text-[#37474f] hover:bg-[#455a64] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -302,20 +302,20 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {blogs.map((b, i) => (
                 <FadeIn key={b.id} delay={i * 0.08}>
-                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full">
+                  <Card className="bg-white rounded-lg border border-[#cfd8dc] shadow-sm card-hover h-full">
                     {b.coverImageUrl ? (
                       <div className="h-40 bg-cover bg-center rounded-t-lg" style={{ backgroundImage: `url(${b.coverImageUrl})` }} />
                     ) : (
-                      <div className="h-40 bg-[#f1f5f9] flex items-center justify-center rounded-t-lg">
-                        <span className="text-4xl font-bold text-[#334155]/10">{b.title.charAt(0)}</span>
+                      <div className="h-40 bg-[#eceff1] flex items-center justify-center rounded-t-lg">
+                        <span className="text-4xl font-bold text-[#37474f]/10">{b.title.charAt(0)}</span>
                       </div>
                     )}
                     <CardContent className="p-6">
-                      <p className="text-sm text-[#4B5563] mb-2">
+                      <p className="text-sm text-[#546e7a] mb-2">
                         {new Date(b.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}{b.author ? ` · ${b.author}` : ''}
                       </p>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 line-clamp-2">{b.title}</h3>
-                      <p className="text-[#4B5563] text-sm leading-relaxed line-clamp-3">{b.excerpt}</p>
+                      <p className="text-[#546e7a] text-sm leading-relaxed line-clamp-3">{b.excerpt}</p>
                     </CardContent>
                   </Card>
                 </FadeIn>
@@ -326,7 +326,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('blog')}
-              className="border-[#E5E7EB] text-[#334155] rounded-md"
+              className="border-[#cfd8dc] text-[#37474f] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>

@@ -202,7 +202,7 @@ export default function ClientsPage() {
   return (
     <>
       {/* ════════════════ HERO ════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${NAVY_DARK} 0%, ${NAVY} 40%, #2A5F8A 100%)` }}>
+      <section className="relative overflow-hidden" style={{ background: `#37474f` }}>
         <FloatingParticles names={clients.map(c => c.name)} />
 
         {/* Decorative circles */}
@@ -403,7 +403,7 @@ export default function ClientsPage() {
                         exit={{ opacity: 0, scale: 0.92 }}
                         transition={{ duration: 0.35, delay: i * 0.04 }}
                       >
-                        <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
+                        <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#cfd8dc] shadow-sm card-hover h-full group">
                           {/* Gradient left border */}
                           <div
                             className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
@@ -464,7 +464,7 @@ export default function ClientsPage() {
                       exit={{ opacity: 0, scale: 0.92 }}
                       transition={{ duration: 0.35, delay: i * 0.04 }}
                     >
-                      <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
+                      <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#cfd8dc] shadow-sm card-hover h-full group">
                         {/* Gradient left border */}
                         <div
                           className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
@@ -563,7 +563,7 @@ export default function ClientsPage() {
                 const count = clients.filter(c => c.industry === ind).length
                 return (
                   <FadeIn key={ind} delay={i * 0.06}>
-                    <div className="group relative bg-white rounded-2xl border border-[#E5E7EB] p-5 text-center card-hover cursor-default overflow-hidden">
+                    <div className="group relative bg-white rounded-2xl border border-[#cfd8dc] p-5 text-center card-hover cursor-default overflow-hidden">
                       {/* Hover gradient overlay */}
                       <div
                         className={`absolute inset-0 bg-gradient-to-br ${meta.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
@@ -600,7 +600,7 @@ export default function ClientsPage() {
       {/* ════════════════ CTA ════════════════ */}
       <section
         className="relative overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${NAVY_DARK} 0%, ${NAVY} 100%)` }}
+        style={{ background: `#37474f` }}
       >
         <div className="absolute -top-20 -right-20 w-[350px] h-[350px] rounded-full border border-white/[0.04]" />
         <div className="absolute -bottom-16 -left-16 w-[250px] h-[250px] rounded-full border border-white/[0.04]" />

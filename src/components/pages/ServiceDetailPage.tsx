@@ -319,7 +319,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <section className="py-20 text-center">
         <h2 className="text-2xl font-bold text-[#1A1A2E] mb-4">Service Not Found</h2>
-        <Button onClick={() => navigate('services')} className="bg-[#334155] hover:bg-[#1e293b] text-[#1A1A2E]">
+        <Button onClick={() => navigate('services')} className="bg-[#455a64] hover:bg-[#37474f] text-[#1A1A2E]">
           Back to Services
         </Button>
       </section>
@@ -333,7 +333,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
       {/* ══════════════════════════════════════════════
           HERO SECTION — Navy gradient with image overlay
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 50%, #d4d4d4 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: '#37474f' }}>
         {/* Background pattern */}
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(232,117,26,0.08) 0%, transparent 40%)',
@@ -418,10 +418,10 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
 
               {/* Capabilities List */}
               <FadeIn delay={0.1}>
-                <div className="bg-[#f1f5f9] rounded-xl p-6 md:p-8 border border-gray-100">
+                <div className="bg-[#eceff1] rounded-xl p-6 md:p-8 border border-gray-100">
                   <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#334155]/10 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-[#334155]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#455a64]/10 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-[#37474f]" />
                     </div>
                     Service Capabilities
                   </h2>
@@ -435,15 +435,15 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.06 }}
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-[#334155]/10 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle className="w-3.5 h-3.5 text-[#334155]" />
+                            <div className="w-6 h-6 rounded-full bg-[#455a64]/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <CheckCircle className="w-3.5 h-3.5 text-[#37474f]" />
                             </div>
                             <div>
                               <span className="text-[#374151] text-sm md:text-base leading-relaxed">{cap.text}</span>
                               {cap.subItems && cap.subItems.length > 0 && (
                                 <ul className="mt-2 ml-2 space-y-1.5">
                                   {cap.subItems.map((sub, j) => (
-                                    <li key={j} className="flex items-center gap-2 text-[#4B5563] text-sm">
+                                    <li key={j} className="flex items-center gap-2 text-[#546e7a] text-sm">
                                       <div className="w-1.5 h-1.5 rounded-full bg-[#4A90D9] shrink-0" />
                                       {sub}
                                     </li>
@@ -479,12 +479,12 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.08 }}
                           className="flex gap-4 items-start"
                         >
-                          <div className="w-10 h-10 rounded-full bg-[#334155] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-[#455a64] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
                             {i + 1}
                           </div>
                           <div className="flex-1 pt-1">
                             <h4 className="font-semibold text-[#1A1A2E] text-base">{step.title}</h4>
-                            <p className="text-[#4B5563] text-sm mt-0.5">{step.desc}</p>
+                            <p className="text-[#546e7a] text-sm mt-0.5">{step.desc}</p>
                           </div>
                           {i < data.processSteps.length - 1 && (
                             <div className="hidden lg:block absolute left-5 mt-10 w-0.5 h-6 bg-[#5A7EA8]" />
@@ -516,8 +516,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.3, delay: i * 0.06 }}
                           className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow"
                         >
-                          <div className="w-8 h-8 rounded-full bg-[#334155]/10 flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4 text-[#334155]" />
+                          <div className="w-8 h-8 rounded-full bg-[#455a64]/10 flex items-center justify-center shrink-0">
+                            <Zap className="w-4 h-4 text-[#37474f]" />
                           </div>
                           <span className="text-[#374151] text-sm font-medium">{ref}</span>
                         </motion.div>
@@ -532,20 +532,20 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                 <FadeIn delay={0.2}>
                   <div className="mt-8">
                     <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#334155]/10 flex items-center justify-center">
-                        <HardHat className="w-4 h-4 text-[#334155]" />
+                      <div className="w-8 h-8 rounded-lg bg-[#455a64]/10 flex items-center justify-center">
+                        <HardHat className="w-4 h-4 text-[#37474f]" />
                       </div>
                       Related Projects
                     </h2>
                     <div className="space-y-3">
                       {data.relatedProjects.map((proj, i) => (
-                        <div key={i} className="flex items-center gap-4 bg-[#f1f5f9] rounded-lg p-4 border border-gray-100">
-                          <div className="w-10 h-10 rounded-full bg-[#334155] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm">
+                        <div key={i} className="flex items-center gap-4 bg-[#eceff1] rounded-lg p-4 border border-gray-100">
+                          <div className="w-10 h-10 rounded-full bg-[#455a64] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm">
                             {i + 1}
                           </div>
                           <div>
                             <h4 className="font-semibold text-[#1A1A2E] text-sm">{proj.name}</h4>
-                            <p className="text-[#4B5563] text-sm">{proj.client} — {proj.location}</p>
+                            <p className="text-[#546e7a] text-sm">{proj.client} — {proj.location}</p>
                           </div>
                         </div>
                       ))}
@@ -570,7 +570,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-[#334155] text-[#1A1A2E] border-0 px-3 py-1 text-sm font-medium">
+                    <Badge className="bg-[#455a64] text-[#1A1A2E] border-0 px-3 py-1 text-sm font-medium">
                       <Icon className="w-3.5 h-3.5 mr-1.5" />
                       {data.name}
                     </Badge>
@@ -583,18 +583,18 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                     <div className="h-1.5 bg-gradient-to-r from-[#efefef] to-[#2A5A8A]" />
                     <CardContent className="p-5">
                       <div className="text-center mb-4">
-                        <div className="w-14 h-14 rounded-xl bg-[#334155]/10 flex items-center justify-center mx-auto mb-3">
-                          <Icon className="w-7 h-7 text-[#334155]" />
+                        <div className="w-14 h-14 rounded-xl bg-[#455a64]/10 flex items-center justify-center mx-auto mb-3">
+                          <Icon className="w-7 h-7 text-[#37474f]" />
                         </div>
                         <h3 className="font-bold text-[#1A1A2E] text-base">{data.name}</h3>
-                        <p className="text-sm text-[#4B5563] mt-1">{data.tagline}</p>
+                        <p className="text-sm text-[#546e7a] mt-1">{data.tagline}</p>
                       </div>
                       <Button onClick={() => navigate('contact')}
-                        className="w-full bg-[#334155] hover:bg-[#1e293b] text-[#1A1A2E] rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
+                        className="w-full bg-[#455a64] hover:bg-[#37474f] text-[#1A1A2E] rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
                         Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                       <a href="tel:+919941905833"
-                        className="w-full flex items-center justify-center gap-2 text-[#334155] font-semibold text-sm h-10 rounded-lg border border-[#334155]/20 hover:bg-[#334155]/5 transition-colors">
+                        className="w-full flex items-center justify-center gap-2 text-[#37474f] font-semibold text-sm h-10 rounded-lg border border-[#334155]/20 hover:bg-[#455a64]/5 transition-colors">
                         <Phone className="w-4 h-4" /> +91 9941905833
                       </a>
                     </CardContent>
@@ -608,13 +608,13 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                       <h4 className="font-bold text-[#1A1A2E] text-sm mb-4">Why Choose SVEPL?</h4>
                       <div className="space-y-3">
                         {[
-                          { icon: Award, label: '20+ Years Experience', color: 'text-[#334155]' },
+                          { icon: Award, label: '20+ Years Experience', color: 'text-[#37474f]' },
                           { icon: Users, label: '150+ Expert Employees', color: 'text-[#E8751A]' },
-                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#334155]' },
+                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#37474f]' },
                           { icon: Shield, label: 'ISO Certified Processes', color: 'text-[#E8751A]' },
                         ].map((item, i) => (
                           <div key={i} className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#f1f5f9] flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-[#eceff1] flex items-center justify-center shrink-0">
                               <item.icon className={`w-4 h-4 ${item.color}`} />
                             </div>
                             <span className="text-[#374151] text-sm">{item.label}</span>
@@ -633,7 +633,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
       {/* ══════════════════════════════════════════════
           CTA BANNER
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #efefef 0%, #d4d4d4 50%, #d4d4d4 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: '#37474f' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-white/5" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-white/5" />

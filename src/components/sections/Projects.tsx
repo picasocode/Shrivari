@@ -131,7 +131,7 @@ export default function Projects() {
                         className={`shrink-0 text-sm ${
                           project.category === 'ongoing'
                             ? 'bg-[#2196F3]/10 text-[#2196F3] border-[#2196F3]/20'
-                            : 'bg-[#334155]/5 text-[#334155] border-[#5A7EA8]'
+                            : 'bg-[#455a64]/5 text-[#37474f] border-[#5A7EA8]'
                         }`}
                       >
                         {project.category === 'ongoing' ? 'Ongoing' : 'Completed'}
