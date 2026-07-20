@@ -403,7 +403,7 @@ export default function ClientsPage() {
                         exit={{ opacity: 0, scale: 0.92 }}
                         transition={{ duration: 0.35, delay: i * 0.04 }}
                       >
-                        <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#cfd8dc] shadow-sm card-hover h-full group">
+                        <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#dddddd] shadow-sm card-hover h-full group">
                           {/* Gradient left border */}
                           <div
                             className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
@@ -464,7 +464,7 @@ export default function ClientsPage() {
                       exit={{ opacity: 0, scale: 0.92 }}
                       transition={{ duration: 0.35, delay: i * 0.04 }}
                     >
-                      <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#cfd8dc] shadow-sm card-hover h-full group">
+                      <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#dddddd] shadow-sm card-hover h-full group">
                         {/* Gradient left border */}
                         <div
                           className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
@@ -563,7 +563,7 @@ export default function ClientsPage() {
                 const count = clients.filter(c => c.industry === ind).length
                 return (
                   <FadeIn key={ind} delay={i * 0.06}>
-                    <div className="group relative bg-white rounded-2xl border border-[#cfd8dc] p-5 text-center card-hover cursor-default overflow-hidden">
+                    <div className="group relative bg-white rounded-2xl border border-[#dddddd] p-5 text-center card-hover cursor-default overflow-hidden">
                       {/* Hover gradient overlay */}
                       <div
                         className={`absolute inset-0 bg-gradient-to-br ${meta.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}

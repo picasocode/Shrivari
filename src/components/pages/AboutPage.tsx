@@ -292,7 +292,7 @@ export default function AboutPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 leading-snug">
                 Powering India<br />
-                <span className="text-[#37474f]">Since 1998</span>
+                <span className="text-[#444444]">Since 1998</span>
               </h2>
               <div className="section-bar mb-6" />
               <p className="text-[#374151] leading-relaxed mb-4">{aboutText}</p>
@@ -304,7 +304,7 @@ export default function AboutPage() {
               </p>
               <div className="flex flex-wrap gap-3">
                 {['EPC Solutions', 'Panel Manufacturing', 'EHV up to 400KV', 'Solar EPC', 'AMC Services', 'Liasion Services'].map(tag => (
-                  <span key={tag} className="inline-flex items-center gap-1.5 text-sm font-medium text-[#37474f] bg-[#eceff1] rounded-full px-3 py-1.5">
+                  <span key={tag} className="inline-flex items-center gap-1.5 text-sm font-medium text-[#444444] bg-[#efefef] rounded-full px-3 py-1.5">
                     <ChevronRight className="w-3 h-3 text-[#E8751A]" />
                     {tag}
                   </span>
@@ -331,7 +331,7 @@ export default function AboutPage() {
                       </div>
                       <div>
                         <p className="text-lg font-bold text-[#1A1A2E] leading-tight">29+ Years</p>
-                        <p className="text-sm text-[#546e7a]">of Engineering Excellence</p>
+                        <p className="text-sm text-[#666666]">of Engineering Excellence</p>
                       </div>
                     </div>
                   </div>
@@ -341,10 +341,10 @@ export default function AboutPage() {
               {/* Mini project stats grid below image */}
               <div className="grid grid-cols-3 gap-3 mt-4">
                 {projectStats.slice(0, 6).map((ps) => (
-                  <div key={ps.label} className="bg-[#eceff1] rounded-lg p-3 text-center">
+                  <div key={ps.label} className="bg-[#efefef] rounded-lg p-3 text-center">
                     <ps.icon className="w-4 h-4 text-[#E8751A] mx-auto mb-1" />
                     <p className="text-sm font-bold text-[#1A1A2E]">{ps.value}</p>
-                    <p className="text-[10px] text-[#546e7a] leading-tight">{ps.label}</p>
+                    <p className="text-[10px] text-[#666666] leading-tight">{ps.label}</p>
                   </div>
                 ))}
               </div>
@@ -361,18 +361,18 @@ export default function AboutPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-[#455a64]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-[#0D1D3A]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#E8751A]/[0.02] rounded-full translate-y-1/2 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#334155]/20 text-[#37474f] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#444444] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Journey
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Milestones That Define Us</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of grit, innovation, and the relentless pursuit of excellence.
               </p>
             </div>
@@ -388,7 +388,7 @@ export default function AboutPage() {
                 {[...Array(4)].map((_, i) => (
                   <div key={i} className="flex items-start">
                     <div className="ml-14 md:ml-0 md:w-[calc(50%-2rem)]">
-                      <Card className="bg-white rounded-xl border border-[#cfd8dc] shadow-sm">
+                      <Card className="bg-white rounded-xl border border-[#dddddd] shadow-sm">
                         <CardContent className="p-5 space-y-3">
                           <Skeleton className="h-5 w-16 rounded-full" />
                           <Skeleton className="h-6 w-48" />
@@ -408,7 +408,7 @@ export default function AboutPage() {
                   <div className={`relative flex items-start mb-10 last:mb-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     {/* Content card */}
                     <div className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${isEven ? 'md:pr-0 md:text-right' : 'md:pl-0 md:text-left'}`}>
-                      <Card className="bg-white rounded-xl border border-[#cfd8dc] shadow-sm hover:shadow-md transition-shadow duration-300">
+                      <Card className="bg-white rounded-xl border border-[#dddddd] shadow-sm hover:shadow-md transition-shadow duration-300">
                         <CardContent className="p-5">
                           <div className={`flex items-center gap-3 mb-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
                             <Badge className="rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider" style={{
@@ -420,7 +420,7 @@ export default function AboutPage() {
                             </Badge>
                           </div>
                           <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{m.title}</h3>
-                          <p className="text-[#546e7a] text-sm leading-relaxed">{m.description}</p>
+                          <p className="text-[#666666] text-sm leading-relaxed">{m.description}</p>
                         </CardContent>
                       </Card>
                     </div>
@@ -461,14 +461,14 @@ export default function AboutPage() {
             {/* Mission — Navy accent */}
             <FadeIn delay={0}>
               <div className="relative group">
-                <div className="absolute -top-3 -left-3 w-20 h-20 rounded-xl bg-[#455a64] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
+                <div className="absolute -top-3 -left-3 w-20 h-20 rounded-xl bg-[#0D1D3A] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
                 <Card className="bg-white rounded-xl border-l-4 border-l-[#efefef] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
                   <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-[#455a64]/8 flex items-center justify-center mb-5">
-                      <Target className="w-7 h-7 text-[#37474f]" />
+                    <div className="w-14 h-14 rounded-xl bg-[#0D1D3A]/8 flex items-center justify-center mb-5">
+                      <Target className="w-7 h-7 text-[#444444]" />
                     </div>
                     <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Mission</h3>
-                    <p className="text-[#546e7a] text-sm leading-relaxed">{mission}</p>
+                    <p className="text-[#666666] text-sm leading-relaxed">{mission}</p>
                   </CardContent>
                 </Card>
               </div>
@@ -484,7 +484,7 @@ export default function AboutPage() {
                       <Eye className="w-7 h-7 text-[#E8751A]" />
                     </div>
                     <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Vision</h3>
-                    <p className="text-[#546e7a] text-sm leading-relaxed">{vision}</p>
+                    <p className="text-[#666666] text-sm leading-relaxed">{vision}</p>
                   </CardContent>
                 </Card>
               </div>
@@ -510,7 +510,7 @@ export default function AboutPage() {
                       ].map((v) => (
                         <div key={v.label} className="flex items-center gap-2">
                           <v.icon className="w-4 h-4 text-[#0D9488] flex-shrink-0" />
-                          <span className="text-[#546e7a] text-sm">{v.label}</span>
+                          <span className="text-[#666666] text-sm">{v.label}</span>
                         </div>
                       ))}
                     </div>
@@ -583,7 +583,7 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           PROJECT STATS — Horizontal scrollable cards
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-20 bg-[#eceff1] relative overflow-hidden">
+      <section className="py-16 md:py-20 bg-[#efefef] relative overflow-hidden">
         {/* Decorative dots pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
@@ -593,12 +593,12 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
-              <Badge variant="outline" className="border-[#334155]/20 text-[#37474f] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#444444] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Project Portfolio
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Delivered at Scale</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 From EHV switchyards to LT panels, from solar plants to CEIG approvals — our delivery record speaks for itself.
               </p>
             </div>
@@ -607,13 +607,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {projectStats.map((ps, i) => (
               <FadeIn key={ps.label} delay={i * 0.04}>
-                <Card className="bg-white rounded-xl border border-[#cfd8dc] shadow-sm card-hover text-center h-full">
+                <Card className="bg-white rounded-xl border border-[#dddddd] shadow-sm card-hover text-center h-full">
                   <CardContent className="p-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#455a64]/8 flex items-center justify-center mx-auto mb-3">
-                      <ps.icon className="w-5 h-5 text-[#37474f]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#0D1D3A]/8 flex items-center justify-center mx-auto mb-3">
+                      <ps.icon className="w-5 h-5 text-[#444444]" />
                     </div>
-                    <p className="text-xl font-bold text-[#37474f] mb-1">{ps.value}</p>
-                    <p className="text-[10px] text-[#546e7a] leading-tight">{ps.label}</p>
+                    <p className="text-xl font-bold text-[#444444] mb-1">{ps.value}</p>
+                    <p className="text-[10px] text-[#666666] leading-tight">{ps.label}</p>
                   </CardContent>
                 </Card>
               </FadeIn>
@@ -627,7 +627,7 @@ export default function AboutPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background pattern */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#455a64]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#0D1D3A]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -637,7 +637,7 @@ export default function AboutPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Our Unique Selling Proposition</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 See how SVEPL&apos;s comprehensive capabilities compare with typical competitors in the electrical engineering space.
               </p>
             </div>
@@ -645,18 +645,18 @@ export default function AboutPage() {
 
           {/* Desktop table */}
           <FadeIn delay={0.1}>
-            <div className="hidden md:block rounded-xl border border-[#cfd8dc] overflow-hidden shadow-sm">
+            <div className="hidden md:block rounded-xl border border-[#dddddd] overflow-hidden shadow-sm">
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="bg-[#455a64] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
-                    <th className="bg-[#455a64] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
+                    <th className="bg-[#0D1D3A] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
+                    <th className="bg-[#0D1D3A] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#E8751A]" />
                         SVEPL
                       </div>
                     </th>
-                    <th className="bg-[#eceff1] text-[#546e7a] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
+                    <th className="bg-[#efefef] text-[#666666] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
                       <div className="flex items-center gap-2">
                         <XCircle className="w-4 h-4 text-[#9CA3AF]" />
                         Typical Competitor
@@ -667,18 +667,18 @@ export default function AboutPage() {
                 <tbody>
                   {uspData.map((row, i) => (
                     <tr key={row.category} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FAFBFC]'}>
-                      <td className="px-6 py-4 border-t border-[#cfd8dc]">
-                        <Badge className="bg-[#455a64]/8 text-[#37474f] border-0 rounded-full px-3 py-1 text-sm font-semibold">
+                      <td className="px-6 py-4 border-t border-[#dddddd]">
+                        <Badge className="bg-[#0D1D3A]/8 text-[#444444] border-0 rounded-full px-3 py-1 text-sm font-semibold">
                           {row.category}
                         </Badge>
                       </td>
-                      <td className="px-6 py-4 border-t border-[#cfd8dc]">
+                      <td className="px-6 py-4 border-t border-[#dddddd]">
                         <div className="flex items-start gap-2">
                           <CheckCircle2 className="w-4 h-4 text-[#0D9488] flex-shrink-0 mt-0.5" />
                           <span className="text-sm text-[#374151] leading-relaxed">{row.svepl}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 border-t border-[#cfd8dc]">
+                      <td className="px-6 py-4 border-t border-[#dddddd]">
                         <div className="flex items-start gap-2">
                           <XCircle className="w-4 h-4 text-[#D1D5DB] flex-shrink-0 mt-0.5" />
                           <span className="text-sm text-[#9CA3AF] leading-relaxed">{row.competitor}</span>
@@ -695,9 +695,9 @@ export default function AboutPage() {
           <div className="md:hidden space-y-4">
             {uspData.map((row, i) => (
               <FadeIn key={row.category} delay={i * 0.05}>
-                <Card className="bg-white rounded-xl border border-[#cfd8dc] shadow-sm overflow-hidden">
+                <Card className="bg-white rounded-xl border border-[#dddddd] shadow-sm overflow-hidden">
                   <CardContent className="p-0">
-                    <div className="bg-[#455a64] px-4 py-2.5">
+                    <div className="bg-[#0D1D3A] px-4 py-2.5">
                       <Badge className="bg-white/15 text-white border-0 rounded-full px-3 py-1 text-sm font-semibold">
                         {row.category}
                       </Badge>
@@ -748,12 +748,12 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#334155]/20 text-[#37474f] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#444444] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Presence
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Across South India</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 With our headquarters in Chennai and 8 branch offices across South India, we ensure rapid response and local expertise for every project.
               </p>
             </div>
@@ -762,18 +762,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {branches.map((branch, i) => (
               <FadeIn key={branch.city} delay={i * 0.06}>
-                <Card className={`bg-white rounded-xl border shadow-sm card-hover h-full overflow-hidden ${branch.isHQ ? 'border-[#E8751A]/30 ring-1 ring-[#E8751A]/10' : 'border-[#cfd8dc]'}`}>
+                <Card className={`bg-white rounded-xl border shadow-sm card-hover h-full overflow-hidden ${branch.isHQ ? 'border-[#E8751A]/30 ring-1 ring-[#E8751A]/10' : 'border-[#dddddd]'}`}>
                   <CardContent className="p-0">
                     {/* Colored header strip */}
-                    <div className={`h-2 ${branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#455a64]/20'}`} />
+                    <div className={`h-2 ${branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#0D1D3A]/20'}`} />
                     <div className="p-5">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${branch.isHQ ? 'bg-[#E8751A]/10' : 'bg-[#455a64]/8'}`}>
-                          <branch.icon className={`w-5 h-5 ${branch.isHQ ? 'text-[#E8751A]' : 'text-[#37474f]'}`} />
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${branch.isHQ ? 'bg-[#E8751A]/10' : 'bg-[#0D1D3A]/8'}`}>
+                          <branch.icon className={`w-5 h-5 ${branch.isHQ ? 'text-[#E8751A]' : 'text-[#444444]'}`} />
                         </div>
                         <div>
                           <h3 className="text-base font-bold text-[#1A1A2E]">{branch.city}</h3>
-                          <p className="text-sm text-[#546e7a]">{branch.state}</p>
+                          <p className="text-sm text-[#666666]">{branch.state}</p>
                         </div>
                       </div>
                       {branch.isHQ ? (
@@ -782,7 +782,7 @@ export default function AboutPage() {
                           Headquarters
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="border-[#334155]/15 text-[#37474f]/70 rounded-full px-3 py-1 text-[10px] font-medium">
+                        <Badge variant="outline" className="border-[#334155]/15 text-[#444444]/70 rounded-full px-3 py-1 text-[10px] font-medium">
                           {branch.type}
                         </Badge>
                       )}
@@ -796,12 +796,12 @@ export default function AboutPage() {
           {/* International presence */}
           <FadeIn delay={0.3}>
             <div className="mt-10 text-center">
-              <div className="inline-flex items-center gap-2 bg-white rounded-full border border-[#cfd8dc] px-5 py-2.5 shadow-sm">
-                <Globe className="w-4 h-4 text-[#37474f]" />
-                <span className="text-sm font-medium text-[#546e7a]">International Projects:</span>
+              <div className="inline-flex items-center gap-2 bg-white rounded-full border border-[#dddddd] px-5 py-2.5 shadow-sm">
+                <Globe className="w-4 h-4 text-[#444444]" />
+                <span className="text-sm font-medium text-[#666666]">International Projects:</span>
                 <div className="flex gap-1.5">
                   {['Nigeria', 'Qatar', 'Bangladesh', 'Sri Lanka', 'Oman', 'Sierra Leone'].map(country => (
-                    <span key={country} className="inline-flex items-center text-[10px] font-semibold text-[#37474f] bg-[#eceff1] rounded-full px-2 py-0.5">
+                    <span key={country} className="inline-flex items-center text-[10px] font-semibold text-[#444444] bg-[#efefef] rounded-full px-2 py-0.5">
                       {country}
                     </span>
                   ))}
@@ -816,7 +816,7 @@ export default function AboutPage() {
               <p className="text-sm text-[#9CA3AF] mb-3 font-medium uppercase tracking-wider">Approved By</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {['TNPDCL', 'TANTRANSCO', 'APTRANSCO', 'TSTRANSCO', 'APSPDCL', 'KPTCL', 'KSEB', 'GOA', 'OPTCL', 'OPDCL'].map(util => (
-                  <span key={util} className="text-[10px] font-semibold text-[#37474f]/70 bg-white border border-[#cfd8dc] rounded-md px-2.5 py-1">
+                  <span key={util} className="text-[10px] font-semibold text-[#444444]/70 bg-white border border-[#dddddd] rounded-md px-2.5 py-1">
                     {util}
                   </span>
                 ))}

@@ -66,8 +66,8 @@ const leaders = [
     accentLight: 'rgba(27,58,92,0.10)',
     accentMid: 'rgba(27,58,92,0.20)',
     borderColor: 'border-[#334155]',
-    badgeBg: 'bg-[#455a64]/10',
-    badgeText: 'text-[#37474f]',
+    badgeBg: 'bg-[#0D1D3A]/10',
+    badgeText: 'text-[#444444]',
     barGradient: 'from-[#efefef] to-[#3B6FA0]',
   },
   {
@@ -368,20 +368,20 @@ export default function TeamPage() {
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1.5px, transparent 0)',
           backgroundSize: '32px 32px',
         }} />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#455a64]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#0D1D3A]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#E8751A]/[0.02] rounded-full translate-y-1/2 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#334155]/20 text-[#37474f] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#444444] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Directors
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
-                Meet the <span className="text-[#37474f]">Leadership</span>
+                Meet the <span className="text-[#444444]">Leadership</span>
               </h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 Six seasoned professionals with deep expertise across electrical engineering, operations, finance, and renewable energy — steering SVEPL&apos;s growth since 1998.
               </p>
             </div>
@@ -446,7 +446,7 @@ export default function TeamPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="flex-1 text-[#546e7a] hover:text-[#37474f] text-sm h-8 rounded-lg"
+                          className="flex-1 text-[#666666] hover:text-[#444444] text-sm h-8 rounded-lg"
                           onClick={() => window.open('https://linkedin.com', '_blank')}
                         >
                           <Linkedin className="w-3.5 h-3.5 mr-1.5" />
@@ -456,7 +456,7 @@ export default function TeamPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="flex-1 text-[#546e7a] hover:text-[#37474f] text-sm h-8 rounded-lg"
+                          className="flex-1 text-[#666666] hover:text-[#444444] text-sm h-8 rounded-lg"
                           onClick={() => navigate('contact')}
                         >
                           <Mail className="w-3.5 h-3.5 mr-1.5" />
@@ -633,10 +633,10 @@ export default function TeamPage() {
                 Capabilities
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
-                End-to-End <span className="text-[#37474f]">Under One Roof</span>
+                End-to-End <span className="text-[#444444]">Under One Roof</span>
               </h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 From design engineering to CEIG approvals, our comprehensive capabilities ensure seamless project delivery — no outsourcing, no gaps.
               </p>
             </div>
@@ -651,7 +651,7 @@ export default function TeamPage() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="h-full"
                 >
-                  <div className="relative bg-[#eceff1] rounded-2xl p-5 md:p-6 text-center h-full group hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-100">
+                  <div className="relative bg-[#efefef] rounded-2xl p-5 md:p-6 text-center h-full group hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-100">
                     {/* Hexagonal icon frame */}
                     <div className="relative mx-auto mb-4 w-16 h-16">
                       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 64 64">
@@ -668,7 +668,7 @@ export default function TeamPage() {
                         <cap.icon className="w-6 h-6 transition-colors duration-300" style={{ color: cap.accent }} />
                       </div>
                     </div>
-                    <h3 className="text-sm font-bold text-[#1A1A2E] mb-1 group-hover:text-[#37474f] transition-colors">{cap.label}</h3>
+                    <h3 className="text-sm font-bold text-[#1A1A2E] mb-1 group-hover:text-[#444444] transition-colors">{cap.label}</h3>
                     <p className="text-[11px] text-[#9CA3AF] font-medium">{cap.sub}</p>
                     {/* Hover accent dot */}
                     <motion.div
@@ -684,9 +684,9 @@ export default function TeamPage() {
           {/* Central connecting message */}
           <FadeIn delay={0.4}>
             <div className="mt-10 text-center">
-              <div className="inline-flex items-center gap-3 bg-[#455a64]/[0.04] rounded-full px-6 py-3 border border-[#334155]/[0.08]">
+              <div className="inline-flex items-center gap-3 bg-[#0D1D3A]/[0.04] rounded-full px-6 py-3 border border-[#334155]/[0.08]">
                 <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                <span className="text-sm text-[#374151] font-medium">All capabilities are <strong className="text-[#37474f]">in-house</strong> — ensuring quality, speed, and accountability</span>
+                <span className="text-sm text-[#374151] font-medium">All capabilities are <strong className="text-[#444444]">in-house</strong> — ensuring quality, speed, and accountability</span>
               </div>
             </div>
           </FadeIn>

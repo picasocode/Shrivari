@@ -198,7 +198,7 @@ export default function ProductsPage() {
                 <TabsList className="bg-white/[0.07] backdrop-blur-sm border border-white/10 rounded-xl p-1.5 h-auto gap-1">
                   <TabsTrigger
                     value="lt"
-                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#455a64] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#efefef]/40 text-white/60 hover:text-white/80 transition-all"
+                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#0D1D3A] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#efefef]/40 text-white/60 hover:text-white/80 transition-all"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     LT Panels (415V)
@@ -268,14 +268,14 @@ export default function ProductsPage() {
                 <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E]">
                   {activeTab === 'lt' ? 'Low Tension Panels' : 'High Tension Panels'}
                 </h2>
-                <p className="text-[#546e7a] mt-2 text-sm">
+                <p className="text-[#666666] mt-2 text-sm">
                   {activeTab === 'lt'
                     ? 'Distribution and control panels rated up to 415V for commercial and residential applications.'
                     : 'Switchgear and protection panels rated 11kV–33kV for industrial and utility-grade installations.'}
                 </p>
               </div>
               <div className="shrink-0">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#cfd8dc] text-sm text-[#546e7a] shadow-sm">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#dddddd] text-sm text-[#666666] shadow-sm">
                   <FileText className="w-4 h-4" />
                   Showing <strong className="text-[#1A1A2E]">{currentProducts.length}</strong> of{' '}
                   <strong className="text-[#1A1A2E]">{totalProducts}</strong> products
@@ -317,7 +317,7 @@ export default function ProductsPage() {
               <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-3">
                 LT vs HT — At a Glance
               </h2>
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 Understand the key engineering differences between our Low Tension and High Tension panel systems.
               </p>
             </div>
@@ -326,25 +326,25 @@ export default function ProductsPage() {
           <FadeIn delay={0.15}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LT Card */}
-              <div className="relative rounded-2xl overflow-hidden border border-[#cfd8dc] bg-white shadow-sm">
-                <div className="h-2 bg-[#455a64]" />
+              <div className="relative rounded-2xl overflow-hidden border border-[#dddddd] bg-white shadow-sm">
+                <div className="h-2 bg-[#0D1D3A]" />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-lg bg-[#455a64]/10 flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-[#37474f]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#0D1D3A]/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-[#444444]" />
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1A1A2E] text-lg">LT Panels</h3>
-                      <p className="text-sm text-[#546e7a]">Up to 415V</p>
+                      <p className="text-sm text-[#666666]">Up to 415V</p>
                     </div>
                   </div>
                   <ul className="space-y-3">
                     {COMPARISON_DATA.map((row, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm">
-                        <CheckCircle className="w-4 h-4 text-[#37474f] shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-[#444444] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-[#1A1A2E]">{row.attribute}:</span>{' '}
-                          <span className="text-[#546e7a]">{row.lt}</span>
+                          <span className="text-[#666666]">{row.lt}</span>
                         </div>
                       </li>
                     ))}
@@ -353,7 +353,7 @@ export default function ProductsPage() {
               </div>
 
               {/* HT Card */}
-              <div className="relative rounded-2xl overflow-hidden border border-[#cfd8dc] bg-white shadow-sm">
+              <div className="relative rounded-2xl overflow-hidden border border-[#dddddd] bg-white shadow-sm">
                 <div className="h-2 bg-[#E8751A]" />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-5">
@@ -362,7 +362,7 @@ export default function ProductsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1A1A2E] text-lg">HT Panels</h3>
-                      <p className="text-sm text-[#546e7a]">11kV – 33kV</p>
+                      <p className="text-sm text-[#666666]">11kV – 33kV</p>
                     </div>
                   </div>
                   <ul className="space-y-3">
@@ -371,7 +371,7 @@ export default function ProductsPage() {
                         <CheckCircle className="w-4 h-4 text-[#E8751A] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-[#1A1A2E]">{row.attribute}:</span>{' '}
-                          <span className="text-[#546e7a]">{row.ht}</span>
+                          <span className="text-[#666666]">{row.ht}</span>
                         </div>
                       </li>
                     ))}
@@ -392,17 +392,17 @@ export default function ProductsPage() {
               <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-3">
                 Technical Specifications
               </h2>
-              <p className="text-[#546e7a] max-w-xl mx-auto text-sm">
+              <p className="text-[#666666] max-w-xl mx-auto text-sm">
                 Standard specifications across our product range. Custom configurations available on request.
               </p>
             </div>
           </FadeIn>
 
           <FadeIn delay={0.15}>
-            <div className="rounded-2xl overflow-hidden border border-[#cfd8dc] bg-white shadow-sm">
+            <div className="rounded-2xl overflow-hidden border border-[#dddddd] bg-white shadow-sm">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-[#455a64] hover:bg-[#455a64]">
+                  <TableRow className="bg-[#0D1D3A] hover:bg-[#0D1D3A]">
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">Parameter</TableHead>
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">
                       <div className="flex items-center gap-2">
@@ -427,10 +427,10 @@ export default function ProductsPage() {
                       <TableCell className="px-6 py-3.5 font-medium text-[#1A1A2E] text-sm">
                         {row.param}
                       </TableCell>
-                      <TableCell className="px-6 py-3.5 text-[#546e7a] text-sm">
+                      <TableCell className="px-6 py-3.5 text-[#666666] text-sm">
                         {row.lt}
                       </TableCell>
-                      <TableCell className="px-6 py-3.5 text-[#546e7a] text-sm">
+                      <TableCell className="px-6 py-3.5 text-[#666666] text-sm">
                         {row.ht}
                       </TableCell>
                     </TableRow>
@@ -512,17 +512,17 @@ function ProductGrid({
   onNavigate: (page: string, params?: Record<string, string>) => void
 }) {
   const barColor = variant === 'lt' ? '#efefef' : '#E8751A'
-  const barColorLight = variant === 'lt' ? 'bg-[#455a64]/8' : 'bg-[#E8751A]/8'
-  const iconColor = variant === 'lt' ? 'text-[#37474f]' : 'text-[#E8751A]'
-  const btnBg = variant === 'lt' ? 'bg-[#455a64] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
-  const badgeBg = variant === 'lt' ? 'bg-[#455a64]/10 text-[#37474f]' : 'bg-[#E8751A]/10 text-[#E8751A]'
+  const barColorLight = variant === 'lt' ? 'bg-[#0D1D3A]/8' : 'bg-[#E8751A]/8'
+  const iconColor = variant === 'lt' ? 'text-[#444444]' : 'text-[#E8751A]'
+  const btnBg = variant === 'lt' ? 'bg-[#0D1D3A] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
+  const badgeBg = variant === 'lt' ? 'bg-[#0D1D3A]/10 text-[#444444]' : 'bg-[#E8751A]/10 text-[#E8751A]'
   const Icon = variant === 'lt' ? Zap : Shield
 
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
         <CircuitBoard className="w-12 h-12 text-[#CBD5E1] mx-auto mb-4" />
-        <p className="text-[#546e7a] text-sm">No products found in this category.</p>
+        <p className="text-[#666666] text-sm">No products found in this category.</p>
       </div>
     )
   }
@@ -533,13 +533,13 @@ function ProductGrid({
         const features = parseFeatures(p.features)
         return (
           <FadeIn key={p.id} delay={i * 0.07}>
-            <Card className="bg-white rounded-2xl border border-[#cfd8dc] shadow-sm card-hover h-full overflow-hidden py-0 gap-0">
+            <Card className="bg-white rounded-2xl border border-[#dddddd] shadow-sm card-hover h-full overflow-hidden py-0 gap-0">
               {/* Colored top bar */}
               <div className="h-1.5" style={{ backgroundColor: barColor }} />
 
               {/* Product image strip */}
               {p.imageUrl && (
-                <div className="relative h-40 overflow-hidden bg-[#eceff1]">
+                <div className="relative h-40 overflow-hidden bg-[#efefef]">
                   <img
                     src={p.imageUrl}
                     alt={p.name}
@@ -572,7 +572,7 @@ function ProductGrid({
                 </div>
 
                 {/* Description */}
-                <p className="text-[#546e7a] text-sm leading-relaxed mb-4 line-clamp-2">
+                <p className="text-[#666666] text-sm leading-relaxed mb-4 line-clamp-2">
                   {p.description}
                 </p>
 
@@ -584,7 +584,7 @@ function ProductGrid({
                     </p>
                     <ul className="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
                       {features.slice(0, 6).map((f, fi) => (
-                        <li key={fi} className="flex items-start gap-2 text-sm text-[#546e7a]">
+                        <li key={fi} className="flex items-start gap-2 text-sm text-[#666666]">
                           <CheckCircle className={`w-4 h-4 shrink-0 mt-0.5 ${iconColor}`} />
                           <span className="leading-snug">{f}</span>
                         </li>
