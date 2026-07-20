@@ -369,7 +369,7 @@ export default function ServicesPage() {
                   className={`
                     relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
                     ${isActive
-                      ? 'bg-[#efefef] text-white shadow-lg shadow-[#efefef]/20'
+                      ? 'bg-[#efefef] text-[#1A1A2E] shadow-lg shadow-[#efefef]/20'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
                   `}
                 >

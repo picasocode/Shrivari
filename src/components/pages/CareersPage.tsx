@@ -586,7 +586,7 @@ export default function CareersPage() {
                   onClick={() => setActiveDepartment(dept.value)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
-                      ? 'bg-[#efefef] text-white shadow-md'
+                      ? 'bg-[#efefef] text-[#1A1A2E] shadow-md'
                       : 'bg-[#F0F4F8] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
                   }`}
                 >

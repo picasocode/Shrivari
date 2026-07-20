@@ -380,7 +380,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
               <>
                 <Button
                   onClick={onAdminClick}
-                  className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
+                  className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] text-sm font-semibold rounded-md px-5 h-9 transition-colors"
                 >
                   <Shield className="w-3.5 h-3.5 mr-1.5" />
                   Dashboard
@@ -397,7 +397,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
             ) : (
               <Button
                 onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-white text-sm font-semibold rounded-md px-5 h-9 transition-colors"
+                className="hidden md:inline-flex bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] text-sm font-semibold rounded-md px-5 h-9 transition-colors"
               >
                 <Shield className="w-3.5 h-3.5 mr-1.5" />
                 Admin
@@ -594,7 +594,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                 <div className="p-4 border-t border-gray-100 space-y-2">
                   {isLoggedIn ? (
                     <>
-                      <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-white rounded-md text-sm">
+                      <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] rounded-md text-sm">
                         <Shield className="w-3.5 h-3.5 mr-1.5" />
                         Dashboard
                       </Button>
@@ -604,7 +604,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-white rounded-md text-sm">
+                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] rounded-md text-sm">
                       <Shield className="w-3.5 h-3.5 mr-1.5" />
                       Admin Login
                     </Button>

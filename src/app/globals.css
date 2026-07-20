@@ -52,7 +52,7 @@
   --popover: #FFFFFF;
   --popover-foreground: #1A1A2E;
   --primary: #efefef;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #1A1A2E;
   --secondary: #F5F5F5;
   --secondary-foreground: #1A1A2E;
   --muted: #F5F5F5;
@@ -69,7 +69,7 @@
   --chart-4: #7C3AED;
   --chart-5: #F5F5F5;
   --sidebar: #efefef;
-  --sidebar-foreground: #F5F5F5;
+  --sidebar-foreground: #1A1A2E;
   --sidebar-primary: #E8751A;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #d4d4d4;
@@ -114,7 +114,7 @@ html { scroll-behavior: smooth; }
 
 /* ── Hero overlay ── */
 .hero-overlay {
-  background: linear-gradient(to right, rgba(45,45,45,0.88) 0%, rgba(45,45,45,0.65) 55%, rgba(45,45,45,0.30) 100%);
+  background: linear-gradient(to right, rgba(239,239,239,0.88) 0%, rgba(239,239,239,0.65) 55%, rgba(239,239,239,0.30) 100%);
 }
 
 /* ── Page header ── */

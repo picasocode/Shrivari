@@ -319,7 +319,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <section className="py-20 text-center">
         <h2 className="text-2xl font-bold text-[#1A1A2E] mb-4">Service Not Found</h2>
-        <Button onClick={() => navigate('services')} className="bg-[#efefef] hover:bg-[#d4d4d4] text-white">
+        <Button onClick={() => navigate('services')} className="bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E]">
           Back to Services
         </Button>
       </section>
@@ -479,7 +479,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.08 }}
                           className="flex gap-4 items-start"
                         >
-                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-white flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
                             {i + 1}
                           </div>
                           <div className="flex-1 pt-1">
@@ -540,7 +540,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                     <div className="space-y-3">
                       {data.relatedProjects.map((proj, i) => (
                         <div key={i} className="flex items-center gap-4 bg-[#F0F4F8] rounded-lg p-4 border border-gray-100">
-                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-white flex items-center justify-center shrink-0 font-bold text-sm">
+                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm">
                             {i + 1}
                           </div>
                           <div>
@@ -570,7 +570,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-[#efefef] text-white border-0 px-3 py-1 text-sm font-medium">
+                    <Badge className="bg-[#efefef] text-[#1A1A2E] border-0 px-3 py-1 text-sm font-medium">
                       <Icon className="w-3.5 h-3.5 mr-1.5" />
                       {data.name}
                     </Badge>
@@ -590,7 +590,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                         <p className="text-sm text-[#4B5563] mt-1">{data.tagline}</p>
                       </div>
                       <Button onClick={() => navigate('contact')}
-                        className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-white rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
+                        className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
                         Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                       <a href="tel:+919941905833"

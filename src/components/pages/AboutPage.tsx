@@ -649,8 +649,8 @@ export default function AboutPage() {
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="bg-[#efefef] text-white text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
-                    <th className="bg-[#efefef] text-white text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
+                    <th className="bg-[#efefef] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
+                    <th className="bg-[#efefef] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#E8751A]" />
                         SVEPL

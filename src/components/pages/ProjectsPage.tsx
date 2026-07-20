@@ -419,7 +419,7 @@ export default function ProjectsPage() {
               </div>
               <p className="text-gray-700 text-lg font-medium mb-2">Failed to load projects</p>
               <p className="text-gray-500 text-sm mb-4">{error}</p>
-              <Button onClick={() => window.location.reload()} className="bg-[#efefef] hover:bg-[#d4d4d4] text-white">
+              <Button onClick={() => window.location.reload()} className="bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E]">
                 Retry
               </Button>
             </div>
@@ -456,7 +456,7 @@ export default function ProjectsPage() {
               <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
                 <div className="overflow-x-auto max-h-[70vh] overflow-y-auto">
                   <table className="w-full text-sm">
-                    <thead className="bg-[#efefef] text-white sticky top-0 z-10">
+                    <thead className="bg-[#efefef] text-[#1A1A2E] sticky top-0 z-10">
                       <tr>
                         <th className="text-left px-4 py-3 font-semibold text-sm uppercase tracking-wide w-12">#</th>
                         <th className="text-left px-4 py-3 font-semibold text-sm uppercase tracking-wide">Customer</th>
@@ -620,7 +620,7 @@ export default function ProjectsPage() {
                         onClick={() => setPage(pageNum)}
                         className={`w-8 h-8 rounded-md text-sm font-medium transition-colors ${
                           page === pageNum
-                            ? 'bg-[#efefef] text-white'
+                            ? 'bg-[#efefef] text-[#1A1A2E]'
                             : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                         }`}
                       >

@@ -93,7 +93,7 @@ function RatingPill({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
         active
-          ? 'bg-[#efefef] text-white border-[#efefef] shadow-md'
+          ? 'bg-[#efefef] text-[#1A1A2E] border-[#efefef] shadow-md'
           : 'bg-white text-[#efefef] border-[#D1D9E6] hover:border-[#efefef] hover:bg-[#F0F4F8]'
       }`}
     >
