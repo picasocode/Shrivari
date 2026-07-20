@@ -93,8 +93,8 @@ function RatingPill({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
         active
-          ? 'bg-[#efefef] text-[#1A1A2E] border-[#efefef] shadow-md'
-          : 'bg-white text-[#efefef] border-[#D1D9E6] hover:border-[#efefef] hover:bg-[#F0F4F8]'
+          ? 'bg-[#334155] text-[#1A1A2E] border-[#334155] shadow-md'
+          : 'bg-white text-[#334155] border-[#D1D9E6] hover:border-[#334155] hover:bg-[#f1f5f9]'
       }`}
     >
       <Star className={`w-3.5 h-3.5 ${active ? 'text-[#E8751A] fill-[#E8751A]' : 'text-[#E8751A] fill-[#E8751A]'}`} />
@@ -222,8 +222,8 @@ export default function TestimonialsPage() {
                 }}
               >
                 {/* Decorative quote marks */}
-                <Quote className="absolute top-4 left-6 w-16 h-16 md:w-24 md:h-24 text-[#efefef]/[0.06] fill-[#efefef]/[0.06]" strokeWidth={1} />
-                <Quote className="absolute bottom-4 right-6 w-12 h-12 md:w-18 md:h-18 text-[#efefef]/[0.04] fill-[#efefef]/[0.04] rotate-180" strokeWidth={1} />
+                <Quote className="absolute top-4 left-6 w-16 h-16 md:w-24 md:h-24 text-[#334155]/[0.06] fill-[#efefef]/[0.06]" strokeWidth={1} />
+                <Quote className="absolute bottom-4 right-6 w-12 h-12 md:w-18 md:h-18 text-[#334155]/[0.04] fill-[#efefef]/[0.04] rotate-180" strokeWidth={1} />
 
                 {/* Orange accent bar */}
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-[#E8751A] to-[#E8751A]/30 rounded-r-full" />
@@ -233,9 +233,9 @@ export default function TestimonialsPage() {
                   <div className="flex flex-col items-center text-center md:text-left md:items-start shrink-0">
                     <InitialsAvatar name={featured.name} size="lg" />
                     <div className="mt-3">
-                      <h3 className="text-xl md:text-2xl font-bold text-[#efefef]">{featured.name}</h3>
+                      <h3 className="text-xl md:text-2xl font-bold text-[#334155]">{featured.name}</h3>
                       <p className="text-[#4B5563] text-sm mt-0.5">{featured.designation}</p>
-                      <Badge className="mt-2 bg-[#efefef]/10 text-[#efefef] hover:bg-[#efefef]/20 border-0 font-medium text-sm">
+                      <Badge className="mt-2 bg-[#334155]/10 text-[#334155] hover:bg-[#334155]/20 border-0 font-medium text-sm">
                         {featured.company}
                       </Badge>
                     </div>
@@ -267,7 +267,7 @@ export default function TestimonialsPage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-6 px-8 rounded-2xl bg-[#F8FAFB] border border-[#E2E8F0]">
                 {/* Average rating */}
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl md:text-5xl font-bold text-[#efefef]">{avgRating}</span>
+                  <span className="text-4xl md:text-5xl font-bold text-[#334155]">{avgRating}</span>
                   <div>
                     <StarRating rating={Math.round(avgRating)} size="md" />
                     <p className="text-sm text-[#4B5563] mt-0.5">{testimonials.length} review{testimonials.length !== 1 ? 's' : ''}</p>
@@ -284,7 +284,7 @@ export default function TestimonialsPage() {
                     const pct = testimonials.length > 0 ? (ratingCounts[r] / testimonials.length) * 100 : 0
                     return (
                       <div key={r} className="flex items-center gap-2 text-sm">
-                        <span className="w-3 text-[#efefef] font-medium">{r}</span>
+                        <span className="w-3 text-[#334155] font-medium">{r}</span>
                         <Star className="w-3 h-3 text-[#E8751A] fill-[#E8751A]" />
                         <div className="flex-1 h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
                           <motion.div
@@ -346,7 +346,7 @@ export default function TestimonialsPage() {
                 <MessageSquare className="w-5 h-5 text-[#E8751A]" />
                 <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Testimonials</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#efefef] mb-3">What Our Clients Say</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#334155] mb-3">What Our Clients Say</h2>
               <div className="section-bar mx-auto" />
             </div>
           </FadeIn>
@@ -368,7 +368,7 @@ export default function TestimonialsPage() {
               {activeFilter !== null && (
                 <Button
                   variant="outline"
-                  className="mt-4 border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white"
+                  className="mt-4 border-[#334155] text-[#334155] hover:bg-[#334155] hover:text-white"
                   onClick={() => setActiveFilter(null)}
                 >
                   Show All
@@ -404,7 +404,7 @@ export default function TestimonialsPage() {
 
                       <CardContent className="relative p-6">
                         {/* Decorative small quote */}
-                        <Quote className="absolute top-3 right-4 w-8 h-8 text-[#efefef]/[0.07] fill-[#efefef]/[0.07]" strokeWidth={1} />
+                        <Quote className="absolute top-3 right-4 w-8 h-8 text-[#334155]/[0.07] fill-[#efefef]/[0.07]" strokeWidth={1} />
 
                         {/* Star rating */}
                         <div className="mb-4">
@@ -420,7 +420,7 @@ export default function TestimonialsPage() {
                         <div className="flex items-center gap-3 pt-4 border-t border-[#E2E8F0]">
                           <InitialsAvatar name={t.name} size="sm" />
                           <div className="min-w-0">
-                            <p className="font-semibold text-[#efefef] text-sm truncate">{t.name}</p>
+                            <p className="font-semibold text-[#334155] text-sm truncate">{t.name}</p>
                             <p className="text-[#4B5563] text-sm truncate">
                               {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                             </p>
@@ -453,7 +453,7 @@ export default function TestimonialsPage() {
                   <Play className="w-5 h-5 text-[#E8751A]" />
                   <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Video Stories</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#efefef] mb-3">Hear It From Them</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#334155] mb-3">Hear It From Them</h2>
                 <div className="section-bar mx-auto" />
               </div>
             </FadeIn>
@@ -468,7 +468,7 @@ export default function TestimonialsPage() {
                   <FadeIn key={t.id} delay={i * 0.1}>
                     <div className="rounded-xl overflow-hidden shadow-lg border border-[#E2E8F0] bg-white">
                       {/* Video embed area */}
-                      <div className="relative aspect-video bg-[#efefef]">
+                      <div className="relative aspect-video bg-[#334155]">
                         {isPlaying && ytId ? (
                           <iframe
                             src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
@@ -504,7 +504,7 @@ export default function TestimonialsPage() {
                       <div className="p-5 flex items-center gap-3">
                         <InitialsAvatar name={t.name} size="sm" />
                         <div>
-                          <p className="font-semibold text-[#efefef] text-sm">{t.name}</p>
+                          <p className="font-semibold text-[#334155] text-sm">{t.name}</p>
                           <p className="text-[#4B5563] text-sm">
                             {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                           </p>

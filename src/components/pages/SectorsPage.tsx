@@ -578,7 +578,7 @@ export default function SectorsPage() {
                         </div>
 
                         {/* Sector name */}
-                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 group-hover:text-[#efefef] transition-colors">
+                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 group-hover:text-[#334155] transition-colors">
                           {sector.name}
                         </h3>
 
@@ -742,7 +742,7 @@ export default function SectorsPage() {
       {/* ═══════════════════════════════════════════════════════
           4. PROJECT SHOWCASE — Horizontal Scrolling
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-[#f1f5f9] relative overflow-hidden">
         {/* Decorative dots */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
@@ -753,7 +753,7 @@ export default function SectorsPage() {
           <FadeIn>
             <div className="flex items-end justify-between mb-10">
               <div>
-                <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+                <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                   Notable Projects
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-2">Project Showcase by Sector</h2>
@@ -765,14 +765,14 @@ export default function SectorsPage() {
                 <button
                   onClick={() => scrollProjects('left')}
                   disabled={!canScrollLeft}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollLeft ? 'border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollLeft ? 'border-[#334155] text-[#334155] hover:bg-[#334155] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
                 >
                   <ChevronRight className="w-5 h-5 rotate-180" />
                 </button>
                 <button
                   onClick={() => scrollProjects('right')}
                   disabled={!canScrollRight}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollRight ? 'border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollRight ? 'border-[#334155] text-[#334155] hover:bg-[#334155] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -847,12 +847,12 @@ export default function SectorsPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-20 bg-white relative overflow-hidden">
         {/* Decorative gradient */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#334155]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
-              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Trusted Partnerships
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Consultant Partners</h2>
@@ -869,8 +869,8 @@ export default function SectorsPage() {
                 <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center group h-full">
                   <CardContent className="p-5">
                     {/* Consultant monogram */}
-                    <div className="w-16 h-16 rounded-full bg-[#efefef]/5 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#efefef] transition-colors duration-300">
-                      <span className="text-lg font-bold text-[#efefef] group-hover:text-white transition-colors duration-300">
+                    <div className="w-16 h-16 rounded-full bg-[#334155]/5 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#334155] transition-colors duration-300">
+                      <span className="text-lg font-bold text-[#334155] group-hover:text-white transition-colors duration-300">
                         {consultant.name.slice(0, 2)}
                       </span>
                     </div>
@@ -985,7 +985,7 @@ export default function SectorsPage() {
                     <span className="text-sm text-[#4B5563]">Headquarters</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#efefef]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#334155]" />
                     <span className="text-sm text-[#4B5563]">Branch Office</span>
                   </div>
                 </div>
@@ -1007,17 +1007,17 @@ export default function SectorsPage() {
                       className={`rounded-lg p-3 border transition-colors ${
                         branch.isHQ
                           ? 'bg-[#E8751A]/5 border-[#E8751A]/20'
-                          : 'bg-white border-[#E5E7EB] hover:border-[#efefef]/20'
+                          : 'bg-white border-[#E5E7EB] hover:border-[#334155]/20'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 ${
-                          branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#efefef]/8'
+                          branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#334155]/8'
                         }`}>
                           {branch.isHQ ? (
                             <Building2 className="w-4 h-4 text-white" />
                           ) : (
-                            <MapPin className="w-4 h-4 text-[#efefef]" />
+                            <MapPin className="w-4 h-4 text-[#334155]" />
                           )}
                         </div>
                         <div>
@@ -1032,7 +1032,7 @@ export default function SectorsPage() {
                 </div>
 
                 {/* International presence */}
-                <div className="mt-6 bg-[#efefef] rounded-xl p-5 border border-[#efefef]">
+                <div className="mt-6 bg-[#334155] rounded-xl p-5 border border-[#334155]">
                   <div className="flex items-center gap-2 mb-4">
                     <Globe className="w-5 h-5 text-[#E8751A]" />
                     <h3 className="text-white font-bold text-sm">International Presence</h3>

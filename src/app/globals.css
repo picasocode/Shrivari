@@ -44,37 +44,62 @@
 }
 
 :root {
+  /* ═══════════════════════════════════════════
+     PROFESSIONAL LIGHT THEME - OPTIMIZED PALETTE
+     Background: #efefef (Light Gray)
+     ═══════════════════════════════════════════ */
+  
   --radius: 0.5rem;
-  --background: #FFFFFF;
-  --foreground: #1A1A2E;
-  --card: #FFFFFF;
-  --card-foreground: #1A1A2E;
-  --popover: #FFFFFF;
-  --popover-foreground: #1A1A2E;
-  --primary: #efefef;
-  --primary-foreground: #1A1A2E;
-  --secondary: #F5F5F5;
-  --secondary-foreground: #1A1A2E;
-  --muted: #F5F5F5;
-  --muted-foreground: #4B5563;
+  
+  /* Base Colors */
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  
+  /* Card & Popover */
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  
+  /* Primary - Deep Slate for buttons/nav */
+  --primary: #334155;
+  --primary-foreground: #ffffff;
+  
+  /* Secondary - Soft gray */
+  --secondary: #f1f5f9;
+  --secondary-foreground: #334155;
+  
+  /* Muted - Subtle backgrounds */
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  
+  /* Accent - Orange (brand color) */
   --accent: #E8751A;
-  --accent-foreground: #FFFFFF;
-  --destructive: #DC2626;
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #efefef;
-  --chart-1: #efefef;
+  --accent-foreground: #ffffff;
+  
+  /* Destructive */
+  --destructive: #dc2626;
+  
+  /* Borders & Inputs */
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #E8751A;
+  
+  /* Chart colors */
+  --chart-1: #334155;
   --chart-2: #E8751A;
-  --chart-3: #404040;
-  --chart-4: #7C3AED;
-  --chart-5: #F5F5F5;
-  --sidebar: #efefef;
-  --sidebar-foreground: #1A1A2E;
+  --chart-3: #0ea5e9;
+  --chart-4: #8b5cf6;
+  --chart-5: #10b981;
+  
+  /* Sidebar */
+  --sidebar: #334155;
+  --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #E8751A;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #d4d4d4;
-  --sidebar-accent-foreground: #E8EDF4;
-  --sidebar-border: #d4d4d4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #475569;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #475569;
   --sidebar-ring: #E8751A;
 }
 
@@ -91,8 +116,8 @@
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
 html { scroll-behavior: smooth; }
 
 /* ── Smooth card hover ── */
@@ -112,14 +137,14 @@ html { scroll-behavior: smooth; }
   border-radius: 2px;
 }
 
-/* ── Hero overlay ── */
+/* ── Hero overlay - Professional dark gradient ── */
 .hero-overlay {
-  background: linear-gradient(to right, rgba(239,239,239,0.88) 0%, rgba(239,239,239,0.65) 55%, rgba(239,239,239,0.30) 100%);
+  background: linear-gradient(to right, rgba(51,65,85,0.92) 0%, rgba(51,65,85,0.70) 55%, rgba(51,65,85,0.35) 100%);
 }
 
-/* ── Page header ── */
+/* ── Page header - Deep slate gradient ── */
 .page-header {
-  background: linear-gradient(135deg, #efefef 0%, #d4d4d4 100%);
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
 }
 
 /* ── Marquee ── */

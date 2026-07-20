@@ -414,7 +414,7 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#E8751A]/[0.03] rounded-full -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#334155]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -476,7 +476,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 3: LIFE AT SVEPL — Three pillars with connectors
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-[#f1f5f9] relative overflow-hidden">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
@@ -486,7 +486,7 @@ export default function CareersPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Culture
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Life at SVEPL</h2>
@@ -501,11 +501,11 @@ export default function CareersPage() {
           <div className="relative">
             {/* Connecting lines between pillars (desktop only) */}
             <div className="hidden lg:block absolute top-[50%] left-[16.67%] right-[16.67%] h-px">
-              <div className="w-full h-full border-t-2 border-dashed border-[#efefef]/15" />
+              <div className="w-full h-full border-t-2 border-dashed border-[#334155]/15" />
               {/* Center dot */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E8751A] border-2 border-white shadow-md" />
               {/* Side dots */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#efefef]/20 border-2 border-white" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#334155]/20 border-2 border-white" />
               <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#0D9488]/20 border-2 border-white" />
             </div>
 
@@ -586,8 +586,8 @@ export default function CareersPage() {
                   onClick={() => setActiveDepartment(dept.value)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
-                      ? 'bg-[#efefef] text-[#1A1A2E] shadow-md'
-                      : 'bg-[#F0F4F8] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
+                      ? 'bg-[#334155] text-[#1A1A2E] shadow-md'
+                      : 'bg-[#f1f5f9] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
                   }`}
                 >
                   {dept.label}
@@ -761,10 +761,10 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 6: APPLICATION CTA — Contact and apply
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-[#f1f5f9] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-[10%] left-[5%] w-48 h-48 bg-[#E8751A]/[0.04] rounded-full blur-2xl" />
-        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#efefef]/[0.04] rounded-full blur-2xl" />
+        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#334155]/[0.04] rounded-full blur-2xl" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <div className="relative bg-white rounded-2xl shadow-xl border border-[#E5E7EB] overflow-hidden">
@@ -800,12 +800,12 @@ export default function CareersPage() {
                       </div>
                     </a>
                     <a href="tel:+919941905833" className="flex items-center gap-3 group">
-                      <div className="w-10 h-10 rounded-lg bg-[#efefef]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#efefef]/20 transition-colors">
-                        <Phone className="w-5 h-5 text-[#efefef]" />
+                      <div className="w-10 h-10 rounded-lg bg-[#334155]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#334155]/20 transition-colors">
+                        <Phone className="w-5 h-5 text-[#334155]" />
                       </div>
                       <div>
                         <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wider font-medium">Phone</p>
-                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#efefef] transition-colors">+91 9941905833</p>
+                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#334155] transition-colors">+91 9941905833</p>
                       </div>
                     </a>
                   </div>

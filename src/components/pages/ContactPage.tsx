@@ -85,7 +85,7 @@ function FloatingField({
 
 /* ─── Contact Info ─── */
 const contactInfo = [
-  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#efefef]/10 text-[#efefef]' },
+  { icon: Phone, label: 'Phone', value: '+91 9941905833', href: 'tel:+919941905833', color: 'bg-[#334155]/10 text-[#334155]' },
   { icon: Mail, label: 'Email', value: 'srivaari@gmail.com', href: 'mailto:srivaari@gmail.com', color: 'bg-sky-100 text-sky-600' },
   { icon: MapPin, label: 'Address', value: 'Chennai, Tamil Nadu, India', href: null, color: 'bg-rose-100 text-rose-600' },
   { icon: Clock, label: 'Business Hours', value: 'Mon–Sat: 9:30 AM – 6:30 PM', href: null, color: 'bg-amber-100 text-amber-600' },
@@ -243,7 +243,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, scale: 0.9, y: -10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                            className="flex items-center gap-3 bg-[#efefef]/5 border border-[#5A7EA8] text-[#efefef] px-5 py-4 rounded-xl mb-8"
+                            className="flex items-center gap-3 bg-[#334155]/5 border border-[#5A7EA8] text-[#334155] px-5 py-4 rounded-xl mb-8"
                           >
                             <motion.div
                               initial={{ scale: 0 }}
@@ -254,7 +254,7 @@ export default function ContactPage() {
                             </motion.div>
                             <div>
                               <p className="font-semibold text-sm">Message sent successfully!</p>
-                              <p className="text-sm text-[#efefef]">We&apos;ll get back to you soon.</p>
+                              <p className="text-sm text-[#334155]">We&apos;ll get back to you soon.</p>
                             </div>
                           </motion.div>
                         )}
@@ -341,7 +341,7 @@ export default function ContactPage() {
                           animate={{ y: [0, -8, 0] }}
                           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                         >
-                          <div className="w-12 h-12 rounded-full bg-[#efefef] flex items-center justify-center mx-auto shadow-lg shadow-[#efefef]/30">
+                          <div className="w-12 h-12 rounded-full bg-[#334155] flex items-center justify-center mx-auto shadow-lg shadow-[#efefef]/30">
                             <MapPin className="w-5 h-5 text-white" />
                           </div>
                           <div className="w-3 h-3 bg-[#E8751A] rounded-full mx-auto mt-1" />

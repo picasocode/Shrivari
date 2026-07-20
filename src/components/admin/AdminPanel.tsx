@@ -136,7 +136,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     <ToastProvider>
     <div className="fixed inset-0 z-[100] bg-white flex">
       {/* Sidebar */}
-      <div className="w-56 bg-[#efefef] flex flex-col shrink-0">
+      <div className="w-56 bg-[#334155] flex flex-col shrink-0">
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
             <Shield className="w-5 h-5 text-[#E8751A]" />
@@ -181,7 +181,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto bg-[#F0F4F8]">
+      <div className="flex-1 overflow-y-auto bg-[#f1f5f9]">
         <div className="p-6 md:p-8">
           {activeSection === 'products' && <ProductsSection />}
           {activeSection === 'services' && <ServicesSection />}
@@ -220,7 +220,7 @@ function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
         </div>
       </div>
       {loading ? (
-        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#efefef] animate-spin" /></div>
+        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#334155] animate-spin" /></div>
       ) : error ? (
         <div className="flex flex-col items-center py-20 text-[#4B5563]">
           <AlertCircle className="w-10 h-10 mb-3" />
@@ -271,7 +271,7 @@ function ProductsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Name</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Category</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Active</TableHead>
@@ -386,7 +386,7 @@ function ServicesSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Name</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Slug</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Active</TableHead>
@@ -496,7 +496,7 @@ function ClientsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Name</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Industry</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Location</TableHead>
@@ -605,7 +605,7 @@ function TestimonialsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Name</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Company</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Rating</TableHead>
@@ -751,7 +751,7 @@ function BlogsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Title</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Author</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Published</TableHead>
@@ -860,7 +860,7 @@ function ProjectsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
+            <TableRow className="bg-[#f1f5f9]">
               <TableHead className="text-sm font-semibold">Name</TableHead>
               <TableHead className="text-sm font-semibold hidden md:table-cell">Client</TableHead>
               <TableHead className="text-sm font-semibold hidden lg:table-cell">Category</TableHead>
@@ -1044,7 +1044,7 @@ function SettingsSection() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#efefef] animate-spin" /></div>
+    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#334155] animate-spin" /></div>
   }
 
   if (error) {

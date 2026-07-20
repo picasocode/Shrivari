@@ -319,7 +319,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <section className="py-20 text-center">
         <h2 className="text-2xl font-bold text-[#1A1A2E] mb-4">Service Not Found</h2>
-        <Button onClick={() => navigate('services')} className="bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E]">
+        <Button onClick={() => navigate('services')} className="bg-[#334155] hover:bg-[#1e293b] text-[#1A1A2E]">
           Back to Services
         </Button>
       </section>
@@ -418,10 +418,10 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
 
               {/* Capabilities List */}
               <FadeIn delay={0.1}>
-                <div className="bg-[#F0F4F8] rounded-xl p-6 md:p-8 border border-gray-100">
+                <div className="bg-[#f1f5f9] rounded-xl p-6 md:p-8 border border-gray-100">
                   <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#efefef]/10 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-[#efefef]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#334155]/10 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-[#334155]" />
                     </div>
                     Service Capabilities
                   </h2>
@@ -435,8 +435,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.06 }}
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-[#efefef]/10 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle className="w-3.5 h-3.5 text-[#efefef]" />
+                            <div className="w-6 h-6 rounded-full bg-[#334155]/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <CheckCircle className="w-3.5 h-3.5 text-[#334155]" />
                             </div>
                             <div>
                               <span className="text-[#374151] text-sm md:text-base leading-relaxed">{cap.text}</span>
@@ -479,7 +479,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.08 }}
                           className="flex gap-4 items-start"
                         >
-                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-[#334155] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
                             {i + 1}
                           </div>
                           <div className="flex-1 pt-1">
@@ -516,8 +516,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.3, delay: i * 0.06 }}
                           className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow"
                         >
-                          <div className="w-8 h-8 rounded-full bg-[#efefef]/10 flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4 text-[#efefef]" />
+                          <div className="w-8 h-8 rounded-full bg-[#334155]/10 flex items-center justify-center shrink-0">
+                            <Zap className="w-4 h-4 text-[#334155]" />
                           </div>
                           <span className="text-[#374151] text-sm font-medium">{ref}</span>
                         </motion.div>
@@ -532,15 +532,15 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                 <FadeIn delay={0.2}>
                   <div className="mt-8">
                     <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#efefef]/10 flex items-center justify-center">
-                        <HardHat className="w-4 h-4 text-[#efefef]" />
+                      <div className="w-8 h-8 rounded-lg bg-[#334155]/10 flex items-center justify-center">
+                        <HardHat className="w-4 h-4 text-[#334155]" />
                       </div>
                       Related Projects
                     </h2>
                     <div className="space-y-3">
                       {data.relatedProjects.map((proj, i) => (
-                        <div key={i} className="flex items-center gap-4 bg-[#F0F4F8] rounded-lg p-4 border border-gray-100">
-                          <div className="w-10 h-10 rounded-full bg-[#efefef] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm">
+                        <div key={i} className="flex items-center gap-4 bg-[#f1f5f9] rounded-lg p-4 border border-gray-100">
+                          <div className="w-10 h-10 rounded-full bg-[#334155] text-[#1A1A2E] flex items-center justify-center shrink-0 font-bold text-sm">
                             {i + 1}
                           </div>
                           <div>
@@ -570,7 +570,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-[#efefef] text-[#1A1A2E] border-0 px-3 py-1 text-sm font-medium">
+                    <Badge className="bg-[#334155] text-[#1A1A2E] border-0 px-3 py-1 text-sm font-medium">
                       <Icon className="w-3.5 h-3.5 mr-1.5" />
                       {data.name}
                     </Badge>
@@ -579,22 +579,22 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
 
                 {/* Contact Card */}
                 <FadeIn delay={0.15}>
-                  <Card className="border-2 border-[#efefef]/10 shadow-lg overflow-hidden">
+                  <Card className="border-2 border-[#334155]/10 shadow-lg overflow-hidden">
                     <div className="h-1.5 bg-gradient-to-r from-[#efefef] to-[#2A5A8A]" />
                     <CardContent className="p-5">
                       <div className="text-center mb-4">
-                        <div className="w-14 h-14 rounded-xl bg-[#efefef]/10 flex items-center justify-center mx-auto mb-3">
-                          <Icon className="w-7 h-7 text-[#efefef]" />
+                        <div className="w-14 h-14 rounded-xl bg-[#334155]/10 flex items-center justify-center mx-auto mb-3">
+                          <Icon className="w-7 h-7 text-[#334155]" />
                         </div>
                         <h3 className="font-bold text-[#1A1A2E] text-base">{data.name}</h3>
                         <p className="text-sm text-[#4B5563] mt-1">{data.tagline}</p>
                       </div>
                       <Button onClick={() => navigate('contact')}
-                        className="w-full bg-[#efefef] hover:bg-[#d4d4d4] text-[#1A1A2E] rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
+                        className="w-full bg-[#334155] hover:bg-[#1e293b] text-[#1A1A2E] rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
                         Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                       <a href="tel:+919941905833"
-                        className="w-full flex items-center justify-center gap-2 text-[#efefef] font-semibold text-sm h-10 rounded-lg border border-[#efefef]/20 hover:bg-[#efefef]/5 transition-colors">
+                        className="w-full flex items-center justify-center gap-2 text-[#334155] font-semibold text-sm h-10 rounded-lg border border-[#334155]/20 hover:bg-[#334155]/5 transition-colors">
                         <Phone className="w-4 h-4" /> +91 9941905833
                       </a>
                     </CardContent>
@@ -608,13 +608,13 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                       <h4 className="font-bold text-[#1A1A2E] text-sm mb-4">Why Choose SVEPL?</h4>
                       <div className="space-y-3">
                         {[
-                          { icon: Award, label: '20+ Years Experience', color: 'text-[#efefef]' },
+                          { icon: Award, label: '20+ Years Experience', color: 'text-[#334155]' },
                           { icon: Users, label: '150+ Expert Employees', color: 'text-[#E8751A]' },
-                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#efefef]' },
+                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#334155]' },
                           { icon: Shield, label: 'ISO Certified Processes', color: 'text-[#E8751A]' },
                         ].map((item, i) => (
                           <div key={i} className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-[#f1f5f9] flex items-center justify-center shrink-0">
                               <item.icon className={`w-4 h-4 ${item.color}`} />
                             </div>
                             <span className="text-[#374151] text-sm">{item.label}</span>

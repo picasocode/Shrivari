@@ -102,7 +102,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={name}
                       onChange={e => setName(e.target.value)}
                       placeholder="Admin name"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#334155] focus:ring-[#efefef]/20"
                     />
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#334155] focus:ring-[#efefef]/20"
                     />
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Min. 6 characters"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#334155] focus:ring-[#efefef]/20"
                     />
                     <button
                       type="button"
@@ -162,7 +162,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#334155] focus:ring-[#efefef]/20"
                       autoFocus
                     />
                   </div>
@@ -176,7 +176,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#efefef] focus:ring-[#efefef]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#334155] focus:ring-[#efefef]/20"
                     />
                     <button
                       type="button"

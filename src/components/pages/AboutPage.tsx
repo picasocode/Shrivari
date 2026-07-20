@@ -292,7 +292,7 @@ export default function AboutPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 leading-snug">
                 Powering India<br />
-                <span className="text-[#efefef]">Since 1998</span>
+                <span className="text-[#334155]">Since 1998</span>
               </h2>
               <div className="section-bar mb-6" />
               <p className="text-[#374151] leading-relaxed mb-4">{aboutText}</p>
@@ -304,7 +304,7 @@ export default function AboutPage() {
               </p>
               <div className="flex flex-wrap gap-3">
                 {['EPC Solutions', 'Panel Manufacturing', 'EHV up to 400KV', 'Solar EPC', 'AMC Services', 'Liasion Services'].map(tag => (
-                  <span key={tag} className="inline-flex items-center gap-1.5 text-sm font-medium text-[#efefef] bg-[#F0F4F8] rounded-full px-3 py-1.5">
+                  <span key={tag} className="inline-flex items-center gap-1.5 text-sm font-medium text-[#334155] bg-[#f1f5f9] rounded-full px-3 py-1.5">
                     <ChevronRight className="w-3 h-3 text-[#E8751A]" />
                     {tag}
                   </span>
@@ -341,7 +341,7 @@ export default function AboutPage() {
               {/* Mini project stats grid below image */}
               <div className="grid grid-cols-3 gap-3 mt-4">
                 {projectStats.slice(0, 6).map((ps) => (
-                  <div key={ps.label} className="bg-[#F0F4F8] rounded-lg p-3 text-center">
+                  <div key={ps.label} className="bg-[#f1f5f9] rounded-lg p-3 text-center">
                     <ps.icon className="w-4 h-4 text-[#E8751A] mx-auto mb-1" />
                     <p className="text-sm font-bold text-[#1A1A2E]">{ps.value}</p>
                     <p className="text-[10px] text-[#4B5563] leading-tight">{ps.label}</p>
@@ -361,13 +361,13 @@ export default function AboutPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-[#efefef]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-[#334155]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#E8751A]/[0.02] rounded-full translate-y-1/2 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Journey
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Milestones That Define Us</h2>
@@ -461,11 +461,11 @@ export default function AboutPage() {
             {/* Mission — Navy accent */}
             <FadeIn delay={0}>
               <div className="relative group">
-                <div className="absolute -top-3 -left-3 w-20 h-20 rounded-xl bg-[#efefef] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
+                <div className="absolute -top-3 -left-3 w-20 h-20 rounded-xl bg-[#334155] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
                 <Card className="bg-white rounded-xl border-l-4 border-l-[#efefef] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
                   <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-[#efefef]/8 flex items-center justify-center mb-5">
-                      <Target className="w-7 h-7 text-[#efefef]" />
+                    <div className="w-14 h-14 rounded-xl bg-[#334155]/8 flex items-center justify-center mb-5">
+                      <Target className="w-7 h-7 text-[#334155]" />
                     </div>
                     <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Mission</h3>
                     <p className="text-[#4B5563] text-sm leading-relaxed">{mission}</p>
@@ -583,7 +583,7 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           PROJECT STATS — Horizontal scrollable cards
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-20 bg-[#F0F4F8] relative overflow-hidden">
+      <section className="py-16 md:py-20 bg-[#f1f5f9] relative overflow-hidden">
         {/* Decorative dots pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, #efefef 1px, transparent 0)',
@@ -593,7 +593,7 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-12">
-              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Project Portfolio
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Delivered at Scale</h2>
@@ -609,10 +609,10 @@ export default function AboutPage() {
               <FadeIn key={ps.label} delay={i * 0.04}>
                 <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm card-hover text-center h-full">
                   <CardContent className="p-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#efefef]/8 flex items-center justify-center mx-auto mb-3">
-                      <ps.icon className="w-5 h-5 text-[#efefef]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#334155]/8 flex items-center justify-center mx-auto mb-3">
+                      <ps.icon className="w-5 h-5 text-[#334155]" />
                     </div>
-                    <p className="text-xl font-bold text-[#efefef] mb-1">{ps.value}</p>
+                    <p className="text-xl font-bold text-[#334155] mb-1">{ps.value}</p>
                     <p className="text-[10px] text-[#4B5563] leading-tight">{ps.label}</p>
                   </CardContent>
                 </Card>
@@ -627,7 +627,7 @@ export default function AboutPage() {
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background pattern */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#efefef]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#334155]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -649,14 +649,14 @@ export default function AboutPage() {
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="bg-[#efefef] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
-                    <th className="bg-[#efefef] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
+                    <th className="bg-[#334155] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
+                    <th className="bg-[#334155] text-[#1A1A2E] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#E8751A]" />
                         SVEPL
                       </div>
                     </th>
-                    <th className="bg-[#F0F4F8] text-[#4B5563] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
+                    <th className="bg-[#f1f5f9] text-[#4B5563] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
                       <div className="flex items-center gap-2">
                         <XCircle className="w-4 h-4 text-[#9CA3AF]" />
                         Typical Competitor
@@ -668,7 +668,7 @@ export default function AboutPage() {
                   {uspData.map((row, i) => (
                     <tr key={row.category} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FAFBFC]'}>
                       <td className="px-6 py-4 border-t border-[#E5E7EB]">
-                        <Badge className="bg-[#efefef]/8 text-[#efefef] border-0 rounded-full px-3 py-1 text-sm font-semibold">
+                        <Badge className="bg-[#334155]/8 text-[#334155] border-0 rounded-full px-3 py-1 text-sm font-semibold">
                           {row.category}
                         </Badge>
                       </td>
@@ -697,7 +697,7 @@ export default function AboutPage() {
               <FadeIn key={row.category} delay={i * 0.05}>
                 <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm overflow-hidden">
                   <CardContent className="p-0">
-                    <div className="bg-[#efefef] px-4 py-2.5">
+                    <div className="bg-[#334155] px-4 py-2.5">
                       <Badge className="bg-white/15 text-white border-0 rounded-full px-3 py-1 text-sm font-semibold">
                         {row.category}
                       </Badge>
@@ -748,7 +748,7 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#efefef]/20 text-[#efefef] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
+              <Badge variant="outline" className="border-[#334155]/20 text-[#334155] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Presence
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Across South India</h2>
@@ -765,11 +765,11 @@ export default function AboutPage() {
                 <Card className={`bg-white rounded-xl border shadow-sm card-hover h-full overflow-hidden ${branch.isHQ ? 'border-[#E8751A]/30 ring-1 ring-[#E8751A]/10' : 'border-[#E5E7EB]'}`}>
                   <CardContent className="p-0">
                     {/* Colored header strip */}
-                    <div className={`h-2 ${branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#efefef]/20'}`} />
+                    <div className={`h-2 ${branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#334155]/20'}`} />
                     <div className="p-5">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${branch.isHQ ? 'bg-[#E8751A]/10' : 'bg-[#efefef]/8'}`}>
-                          <branch.icon className={`w-5 h-5 ${branch.isHQ ? 'text-[#E8751A]' : 'text-[#efefef]'}`} />
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${branch.isHQ ? 'bg-[#E8751A]/10' : 'bg-[#334155]/8'}`}>
+                          <branch.icon className={`w-5 h-5 ${branch.isHQ ? 'text-[#E8751A]' : 'text-[#334155]'}`} />
                         </div>
                         <div>
                           <h3 className="text-base font-bold text-[#1A1A2E]">{branch.city}</h3>
@@ -782,7 +782,7 @@ export default function AboutPage() {
                           Headquarters
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="border-[#efefef]/15 text-[#efefef]/70 rounded-full px-3 py-1 text-[10px] font-medium">
+                        <Badge variant="outline" className="border-[#334155]/15 text-[#334155]/70 rounded-full px-3 py-1 text-[10px] font-medium">
                           {branch.type}
                         </Badge>
                       )}
@@ -797,11 +797,11 @@ export default function AboutPage() {
           <FadeIn delay={0.3}>
             <div className="mt-10 text-center">
               <div className="inline-flex items-center gap-2 bg-white rounded-full border border-[#E5E7EB] px-5 py-2.5 shadow-sm">
-                <Globe className="w-4 h-4 text-[#efefef]" />
+                <Globe className="w-4 h-4 text-[#334155]" />
                 <span className="text-sm font-medium text-[#4B5563]">International Projects:</span>
                 <div className="flex gap-1.5">
                   {['Nigeria', 'Qatar', 'Bangladesh', 'Sri Lanka', 'Oman', 'Sierra Leone'].map(country => (
-                    <span key={country} className="inline-flex items-center text-[10px] font-semibold text-[#efefef] bg-[#F0F4F8] rounded-full px-2 py-0.5">
+                    <span key={country} className="inline-flex items-center text-[10px] font-semibold text-[#334155] bg-[#f1f5f9] rounded-full px-2 py-0.5">
                       {country}
                     </span>
                   ))}
@@ -816,7 +816,7 @@ export default function AboutPage() {
               <p className="text-sm text-[#9CA3AF] mb-3 font-medium uppercase tracking-wider">Approved By</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {['TNPDCL', 'TANTRANSCO', 'APTRANSCO', 'TSTRANSCO', 'APSPDCL', 'KPTCL', 'KSEB', 'GOA', 'OPTCL', 'OPDCL'].map(util => (
-                  <span key={util} className="text-[10px] font-semibold text-[#efefef]/70 bg-white border border-[#E5E7EB] rounded-md px-2.5 py-1">
+                  <span key={util} className="text-[10px] font-semibold text-[#334155]/70 bg-white border border-[#E5E7EB] rounded-md px-2.5 py-1">
                     {util}
                   </span>
                 ))}

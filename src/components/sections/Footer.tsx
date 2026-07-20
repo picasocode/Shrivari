@@ -16,7 +16,7 @@ const links: { label: string; page: PageName }[] = [
 export default function Footer() {
   const { navigate } = useRouter()
   return (
-    <footer className="bg-[#0D1D3A] text-white">
+    <footer className="bg-[#1e293b] text-white">
       <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>

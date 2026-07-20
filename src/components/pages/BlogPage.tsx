@@ -51,7 +51,7 @@ const TAG_COLORS: Record<string, string> = {
   Safety: 'bg-rose-100 text-rose-800',
   Industry: 'bg-slate-100 text-slate-700',
   Technology: 'bg-cyan-100 text-cyan-800',
-  Guide: 'bg-[#efefef]/10 text-[#d4d4d4]',
+  Guide: 'bg-[#334155]/10 text-[#475569]',
   Insights: 'bg-violet-100 text-violet-800',
 }
 
@@ -175,7 +175,7 @@ export default function BlogPage() {
                     <div className="flex items-center justify-between">
                       {featured.author && (
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-[#efefef] flex items-center justify-center text-white text-sm font-bold">
+                          <div className="w-8 h-8 rounded-full bg-[#334155] flex items-center justify-center text-white text-sm font-bold">
                             {featured.author.charAt(0).toUpperCase()}
                           </div>
                           <span className="text-sm font-medium text-[#1A1A2E]">{featured.author}</span>
@@ -227,7 +227,7 @@ export default function BlogPage() {
                             />
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-[#F0F4F8] to-[#E2E8F0] flex items-center justify-center">
-                              <span className="text-4xl font-bold text-[#efefef]/10">{b.title.charAt(0)}</span>
+                              <span className="text-4xl font-bold text-[#334155]/10">{b.title.charAt(0)}</span>
                             </div>
                           )}
                         </div>
@@ -240,7 +240,7 @@ export default function BlogPage() {
                               </span>
                               <span className="flex items-center gap-1 text-[11px] text-[#9CA3AF]"><Clock className="w-3 h-3" />{readingTime(b.content)}</span>
                             </div>
-                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#efefef] transition-colors">
+                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#334155] transition-colors">
                               {b.title}
                             </h3>
                             <p className="text-[#4B5563] text-sm leading-relaxed line-clamp-2">{b.excerpt}</p>

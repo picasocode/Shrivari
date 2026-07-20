@@ -101,7 +101,7 @@ export default function HomePage() {
       <Hero />
 
       {/* ─── About Preview ─── */}
-      <section className="py-14 md:py-20 bg-[#F0F4F8]">
+      <section className="py-14 md:py-20 bg-[#f1f5f9]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <FadeIn>
@@ -111,7 +111,7 @@ export default function HomePage() {
               <Button
                 onClick={() => navigate('about')}
                 variant="outline"
-                className="border-[#efefef] text-[#efefef] hover:bg-[#efefef] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
+                className="border-[#334155] text-[#334155] hover:bg-[#334155] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
               >
                 Read More <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -128,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Stats Counter ─── */}
-      <section className="py-14 md:py-20 bg-[#efefef]">
+      <section className="py-14 md:py-20 bg-[#334155]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Our Achievements</h2>
@@ -167,7 +167,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('services')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#efefef] hover:bg-[#efefef] hover:text-white hover:border-[#efefef] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -185,7 +185,7 @@ export default function HomePage() {
                 <FadeIn key={p.id} delay={i * 0.08}>
                   <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full">
                     <CardContent className="p-6">
-                      <Badge className="bg-[#F0F4F8] text-[#efefef] hover:bg-[#E5E7EB] mb-3 rounded text-sm font-semibold">{p.category || 'Ongoing'}</Badge>
+                      <Badge className="bg-[#f1f5f9] text-[#334155] hover:bg-[#E5E7EB] mb-3 rounded text-sm font-semibold">{p.category || 'Ongoing'}</Badge>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
                       <p className="text-[#4B5563] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-[#4B5563]">
@@ -207,7 +207,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('services')}
-              className="border-[#E5E7EB] text-[#efefef] rounded-md"
+              className="border-[#E5E7EB] text-[#334155] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -216,7 +216,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Testimonials Preview ─── */}
-      <section className="py-14 md:py-20 bg-[#F0F4F8]">
+      <section className="py-14 md:py-20 bg-[#f1f5f9]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
             <div className="flex items-end justify-between mb-10">
@@ -227,7 +227,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('testimonials')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#efefef] hover:bg-[#efefef] hover:text-white hover:border-[#efefef] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -268,7 +268,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('testimonials')}
-              className="border-[#E5E7EB] text-[#efefef] rounded-md"
+              className="border-[#E5E7EB] text-[#334155] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -288,7 +288,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('blog')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#efefef] hover:bg-[#efefef] hover:text-white hover:border-[#efefef] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#334155] hover:bg-[#334155] hover:text-white hover:border-[#334155] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -306,8 +306,8 @@ export default function HomePage() {
                     {b.coverImageUrl ? (
                       <div className="h-40 bg-cover bg-center rounded-t-lg" style={{ backgroundImage: `url(${b.coverImageUrl})` }} />
                     ) : (
-                      <div className="h-40 bg-[#F0F4F8] flex items-center justify-center rounded-t-lg">
-                        <span className="text-4xl font-bold text-[#efefef]/10">{b.title.charAt(0)}</span>
+                      <div className="h-40 bg-[#f1f5f9] flex items-center justify-center rounded-t-lg">
+                        <span className="text-4xl font-bold text-[#334155]/10">{b.title.charAt(0)}</span>
                       </div>
                     )}
                     <CardContent className="p-6">
@@ -326,7 +326,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('blog')}
-              className="border-[#E5E7EB] text-[#efefef] rounded-md"
+              className="border-[#E5E7EB] text-[#334155] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>

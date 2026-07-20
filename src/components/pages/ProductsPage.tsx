@@ -198,7 +198,7 @@ export default function ProductsPage() {
                 <TabsList className="bg-white/[0.07] backdrop-blur-sm border border-white/10 rounded-xl p-1.5 h-auto gap-1">
                   <TabsTrigger
                     value="lt"
-                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#efefef] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#efefef]/40 text-white/60 hover:text-white/80 transition-all"
+                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#334155] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#efefef]/40 text-white/60 hover:text-white/80 transition-all"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     LT Panels (415V)
@@ -327,11 +327,11 @@ export default function ProductsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LT Card */}
               <div className="relative rounded-2xl overflow-hidden border border-[#E5E7EB] bg-white shadow-sm">
-                <div className="h-2 bg-[#efefef]" />
+                <div className="h-2 bg-[#334155]" />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-lg bg-[#efefef]/10 flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-[#efefef]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#334155]/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-[#334155]" />
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1A1A2E] text-lg">LT Panels</h3>
@@ -341,7 +341,7 @@ export default function ProductsPage() {
                   <ul className="space-y-3">
                     {COMPARISON_DATA.map((row, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm">
-                        <CheckCircle className="w-4 h-4 text-[#efefef] shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-[#334155] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-[#1A1A2E]">{row.attribute}:</span>{' '}
                           <span className="text-[#4B5563]">{row.lt}</span>
@@ -402,7 +402,7 @@ export default function ProductsPage() {
             <div className="rounded-2xl overflow-hidden border border-[#E5E7EB] bg-white shadow-sm">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-[#efefef] hover:bg-[#efefef]">
+                  <TableRow className="bg-[#334155] hover:bg-[#334155]">
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">Parameter</TableHead>
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">
                       <div className="flex items-center gap-2">
@@ -512,10 +512,10 @@ function ProductGrid({
   onNavigate: (page: string, params?: Record<string, string>) => void
 }) {
   const barColor = variant === 'lt' ? '#efefef' : '#E8751A'
-  const barColorLight = variant === 'lt' ? 'bg-[#efefef]/8' : 'bg-[#E8751A]/8'
-  const iconColor = variant === 'lt' ? 'text-[#efefef]' : 'text-[#E8751A]'
-  const btnBg = variant === 'lt' ? 'bg-[#efefef] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
-  const badgeBg = variant === 'lt' ? 'bg-[#efefef]/10 text-[#efefef]' : 'bg-[#E8751A]/10 text-[#E8751A]'
+  const barColorLight = variant === 'lt' ? 'bg-[#334155]/8' : 'bg-[#E8751A]/8'
+  const iconColor = variant === 'lt' ? 'text-[#334155]' : 'text-[#E8751A]'
+  const btnBg = variant === 'lt' ? 'bg-[#334155] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
+  const badgeBg = variant === 'lt' ? 'bg-[#334155]/10 text-[#334155]' : 'bg-[#E8751A]/10 text-[#E8751A]'
   const Icon = variant === 'lt' ? Zap : Shield
 
   if (products.length === 0) {
@@ -539,7 +539,7 @@ function ProductGrid({
 
               {/* Product image strip */}
               {p.imageUrl && (
-                <div className="relative h-40 overflow-hidden bg-[#F0F4F8]">
+                <div className="relative h-40 overflow-hidden bg-[#f1f5f9]">
                   <img
                     src={p.imageUrl}
                     alt={p.name}
