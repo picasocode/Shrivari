@@ -154,7 +154,7 @@ export default function Contact() {
                         className={`rounded-lg ${errors.name ? 'border-red-400' : ''}`}
                       />
                       {errors.name && (
-                        <p className="text-red-500 text-xs">{errors.name}</p>
+                        <p className="text-red-500 text-sm">{errors.name}</p>
                       )}
                     </div>
 
@@ -173,7 +173,7 @@ export default function Contact() {
                         className={`rounded-lg ${errors.email ? 'border-red-400' : ''}`}
                       />
                       {errors.email && (
-                        <p className="text-red-500 text-xs">{errors.email}</p>
+                        <p className="text-red-500 text-sm">{errors.email}</p>
                       )}
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export default function Contact() {
                       className={`rounded-lg resize-none ${errors.message ? 'border-red-400' : ''}`}
                     />
                     {errors.message && (
-                      <p className="text-red-500 text-xs">{errors.message}</p>
+                      <p className="text-red-500 text-sm">{errors.message}</p>
                     )}
                   </div>
 

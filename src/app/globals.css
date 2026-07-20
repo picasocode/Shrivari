@@ -51,30 +51,30 @@
   --card-foreground: #1A1A2E;
   --popover: #FFFFFF;
   --popover-foreground: #1A1A2E;
-  --primary: #1B3A5C;
+  --primary: #2D2D2D;
   --primary-foreground: #FFFFFF;
-  --secondary: #F0F4F8;
+  --secondary: #F5F5F5;
   --secondary-foreground: #1A1A2E;
-  --muted: #F0F4F8;
-  --muted-foreground: #6B7280;
+  --muted: #F5F5F5;
+  --muted-foreground: #4B5563;
   --accent: #E8751A;
   --accent-foreground: #FFFFFF;
   --destructive: #DC2626;
   --border: #E5E7EB;
   --input: #E5E7EB;
-  --ring: #1B3A5C;
-  --chart-1: #1B3A5C;
+  --ring: #2D2D2D;
+  --chart-1: #2D2D2D;
   --chart-2: #E8751A;
-  --chart-3: #2A5A8A;
+  --chart-3: #404040;
   --chart-4: #7C3AED;
-  --chart-5: #F0F4F8;
-  --sidebar: #1B3A5C;
-  --sidebar-foreground: #F0F4F8;
+  --chart-5: #F5F5F5;
+  --sidebar: #2D2D2D;
+  --sidebar-foreground: #F5F5F5;
   --sidebar-primary: #E8751A;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #152D4F;
+  --sidebar-accent: #1a1a1a;
   --sidebar-accent-foreground: #E8EDF4;
-  --sidebar-border: #152D4F;
+  --sidebar-border: #1a1a1a;
   --sidebar-ring: #E8751A;
 }
 
@@ -114,12 +114,12 @@ html { scroll-behavior: smooth; }
 
 /* ── Hero overlay ── */
 .hero-overlay {
-  background: linear-gradient(to right, rgba(27,58,92,0.88) 0%, rgba(27,58,92,0.65) 55%, rgba(27,58,92,0.30) 100%);
+  background: linear-gradient(to right, rgba(45,45,45,0.88) 0%, rgba(45,45,45,0.65) 55%, rgba(45,45,45,0.30) 100%);
 }
 
 /* ── Page header ── */
 .page-header {
-  background: linear-gradient(135deg, #1B3A5C 0%, #152D4F 100%);
+  background: linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 100%);
 }
 
 /* ── Marquee ── */

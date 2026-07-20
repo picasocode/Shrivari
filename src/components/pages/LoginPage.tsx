@@ -71,7 +71,7 @@ export default function LoginPage({ onClose }: LoginPageProps) {
       >
         <Card className="bg-white rounded-xl shadow-2xl border-0 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#1B3A5C] to-[#152D4F] p-6 text-center">
+          <div className="bg-gradient-to-r from-[#2D2D2D] to-[#1a1a1a] p-6 text-center">
             <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-4">
               <KeyRound className="w-7 h-7 text-[#E8751A]" />
             </div>
@@ -97,43 +97,43 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[#1A1A2E]">Full Name</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563]" />
                     <Input
                       value={name}
                       onChange={e => setName(e.target.value)}
                       placeholder="Admin name"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#1B3A5C] focus:ring-[#1B3A5C]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[#1A1A2E]">Email</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563]" />
                     <Input
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#1B3A5C] focus:ring-[#1B3A5C]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[#1A1A2E]">Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563]" />
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Min. 6 characters"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#1B3A5C] focus:ring-[#1B3A5C]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A2E] transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4B5563] hover:text-[#1A1A2E] transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -156,13 +156,13 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[#1A1A2E]">Email</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563]" />
                     <Input
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="admin@shrivaari.com"
-                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#1B3A5C] focus:ring-[#1B3A5C]/20"
+                      className="pl-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
                       autoFocus
                     />
                   </div>
@@ -170,18 +170,18 @@ export default function LoginPage({ onClose }: LoginPageProps) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[#1A1A2E]">Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4B5563]" />
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#1B3A5C] focus:ring-[#1B3A5C]/20"
+                      className="pl-10 pr-10 h-11 rounded-lg border-[#E5E7EB] focus:border-[#2D2D2D] focus:ring-[#2D2D2D]/20"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A2E] transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4B5563] hover:text-[#1A1A2E] transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -204,12 +204,12 @@ export default function LoginPage({ onClose }: LoginPageProps) {
             <div className="mt-5 flex items-center justify-between">
               <button
                 onClick={onClose}
-                className="text-sm text-[#6B7280] hover:text-[#1A1A2E] transition-colors"
+                className="text-sm text-[#4B5563] hover:text-[#1A1A2E] transition-colors"
               >
                 ← Back to website
               </button>
               {mode === 'login' && (
-                <div className="flex items-center gap-1 text-xs text-[#6B7280]">
+                <div className="flex items-center gap-1 text-sm text-[#4B5563]">
                   <Shield className="w-3.5 h-3.5" />
                   Secured access
                 </div>

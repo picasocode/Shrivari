@@ -52,7 +52,7 @@ function InitialsAvatar({ name, size = 'md' }: { name: string; size?: 'sm' | 'md
     .slice(0, 2)
 
   const sizeMap = {
-    sm: 'w-9 h-9 text-xs',
+    sm: 'w-9 h-9 text-sm',
     md: 'w-11 h-11 text-sm',
     lg: 'w-16 h-16 text-xl',
   }
@@ -61,7 +61,7 @@ function InitialsAvatar({ name, size = 'md' }: { name: string; size?: 'sm' | 'md
     <div
       className={`${sizeMap[size]} rounded-full flex items-center justify-center font-bold shrink-0`}
       style={{
-        background: 'linear-gradient(135deg, #1B3A5C 0%, #2D6A8A 100%)',
+        background: 'linear-gradient(135deg, #2D2D2D 0%, #2D6A8A 100%)',
         color: '#FFFFFF',
       }}
     >
@@ -93,13 +93,13 @@ function RatingPill({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
         active
-          ? 'bg-[#1B3A5C] text-white border-[#1B3A5C] shadow-md'
-          : 'bg-white text-[#1B3A5C] border-[#D1D9E6] hover:border-[#1B3A5C] hover:bg-[#F0F4F8]'
+          ? 'bg-[#2D2D2D] text-white border-[#2D2D2D] shadow-md'
+          : 'bg-white text-[#2D2D2D] border-[#D1D9E6] hover:border-[#2D2D2D] hover:bg-[#F0F4F8]'
       }`}
     >
       <Star className={`w-3.5 h-3.5 ${active ? 'text-[#E8751A] fill-[#E8751A]' : 'text-[#E8751A] fill-[#E8751A]'}`} />
       {label}
-      <span className={`text-xs ${active ? 'text-white/70' : 'text-gray-400'}`}>({count})</span>
+      <span className={`text-sm ${active ? 'text-white/70' : 'text-gray-400'}`}>({count})</span>
     </button>
   )
 }
@@ -157,7 +157,7 @@ export default function TestimonialsPage() {
         {/* Background gradient */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #1B3A5C 30%, #1A5C6B 70%, #1B6B6B 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #2D2D2D 30%, #1A5C6B 70%, #1B6B6B 100%)' }}
         />
 
         {/* Decorative elements */}
@@ -222,8 +222,8 @@ export default function TestimonialsPage() {
                 }}
               >
                 {/* Decorative quote marks */}
-                <Quote className="absolute top-4 left-6 w-16 h-16 md:w-24 md:h-24 text-[#1B3A5C]/[0.06] fill-[#1B3A5C]/[0.06]" strokeWidth={1} />
-                <Quote className="absolute bottom-4 right-6 w-12 h-12 md:w-18 md:h-18 text-[#1B3A5C]/[0.04] fill-[#1B3A5C]/[0.04] rotate-180" strokeWidth={1} />
+                <Quote className="absolute top-4 left-6 w-16 h-16 md:w-24 md:h-24 text-[#2D2D2D]/[0.06] fill-[#2D2D2D]/[0.06]" strokeWidth={1} />
+                <Quote className="absolute bottom-4 right-6 w-12 h-12 md:w-18 md:h-18 text-[#2D2D2D]/[0.04] fill-[#2D2D2D]/[0.04] rotate-180" strokeWidth={1} />
 
                 {/* Orange accent bar */}
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-[#E8751A] to-[#E8751A]/30 rounded-r-full" />
@@ -233,9 +233,9 @@ export default function TestimonialsPage() {
                   <div className="flex flex-col items-center text-center md:text-left md:items-start shrink-0">
                     <InitialsAvatar name={featured.name} size="lg" />
                     <div className="mt-3">
-                      <h3 className="text-xl md:text-2xl font-bold text-[#1B3A5C]">{featured.name}</h3>
-                      <p className="text-[#6B7280] text-sm mt-0.5">{featured.designation}</p>
-                      <Badge className="mt-2 bg-[#1B3A5C]/10 text-[#1B3A5C] hover:bg-[#1B3A5C]/20 border-0 font-medium text-xs">
+                      <h3 className="text-xl md:text-2xl font-bold text-[#2D2D2D]">{featured.name}</h3>
+                      <p className="text-[#4B5563] text-sm mt-0.5">{featured.designation}</p>
+                      <Badge className="mt-2 bg-[#2D2D2D]/10 text-[#2D2D2D] hover:bg-[#2D2D2D]/20 border-0 font-medium text-sm">
                         {featured.company}
                       </Badge>
                     </div>
@@ -267,10 +267,10 @@ export default function TestimonialsPage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-6 px-8 rounded-2xl bg-[#F8FAFB] border border-[#E2E8F0]">
                 {/* Average rating */}
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl md:text-5xl font-bold text-[#1B3A5C]">{avgRating}</span>
+                  <span className="text-4xl md:text-5xl font-bold text-[#2D2D2D]">{avgRating}</span>
                   <div>
                     <StarRating rating={Math.round(avgRating)} size="md" />
-                    <p className="text-sm text-[#6B7280] mt-0.5">{testimonials.length} review{testimonials.length !== 1 ? 's' : ''}</p>
+                    <p className="text-sm text-[#4B5563] mt-0.5">{testimonials.length} review{testimonials.length !== 1 ? 's' : ''}</p>
                   </div>
                 </div>
 
@@ -284,7 +284,7 @@ export default function TestimonialsPage() {
                     const pct = testimonials.length > 0 ? (ratingCounts[r] / testimonials.length) * 100 : 0
                     return (
                       <div key={r} className="flex items-center gap-2 text-sm">
-                        <span className="w-3 text-[#1B3A5C] font-medium">{r}</span>
+                        <span className="w-3 text-[#2D2D2D] font-medium">{r}</span>
                         <Star className="w-3 h-3 text-[#E8751A] fill-[#E8751A]" />
                         <div className="flex-1 h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
                           <motion.div
@@ -294,7 +294,7 @@ export default function TestimonialsPage() {
                             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
                           />
                         </div>
-                        <span className="w-6 text-right text-[#6B7280] text-xs">{ratingCounts[r]}</span>
+                        <span className="w-6 text-right text-[#4B5563] text-sm">{ratingCounts[r]}</span>
                       </div>
                     )
                   })}
@@ -313,7 +313,7 @@ export default function TestimonialsPage() {
           <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
             <FadeIn>
               <div className="flex flex-wrap items-center gap-3 justify-center">
-                <span className="text-sm font-medium text-[#6B7280] mr-1">Filter:</span>
+                <span className="text-sm font-medium text-[#4B5563] mr-1">Filter:</span>
                 <RatingPill
                   label="All"
                   count={testimonials.length}
@@ -346,7 +346,7 @@ export default function TestimonialsPage() {
                 <MessageSquare className="w-5 h-5 text-[#E8751A]" />
                 <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Testimonials</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3A5C] mb-3">What Our Clients Say</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#2D2D2D] mb-3">What Our Clients Say</h2>
               <div className="section-bar mx-auto" />
             </div>
           </FadeIn>
@@ -360,7 +360,7 @@ export default function TestimonialsPage() {
           ) : filteredTestimonials.length === 0 ? (
             <div className="text-center py-16">
               <MessageSquare className="w-12 h-12 text-[#D1D9E6] mx-auto mb-4" />
-              <p className="text-[#6B7280] text-lg">
+              <p className="text-[#4B5563] text-lg">
                 {activeFilter !== null
                   ? `No ${activeFilter}-star testimonials found.`
                   : 'No testimonials yet.'}
@@ -368,7 +368,7 @@ export default function TestimonialsPage() {
               {activeFilter !== null && (
                 <Button
                   variant="outline"
-                  className="mt-4 border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white"
+                  className="mt-4 border-[#2D2D2D] text-[#2D2D2D] hover:bg-[#2D2D2D] hover:text-white"
                   onClick={() => setActiveFilter(null)}
                 >
                   Show All
@@ -399,12 +399,12 @@ export default function TestimonialsPage() {
                       {/* Top accent line */}
                       <div
                         className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ background: 'linear-gradient(90deg, #1B3A5C, #E8751A)' }}
+                        style={{ background: 'linear-gradient(90deg, #2D2D2D, #E8751A)' }}
                       />
 
                       <CardContent className="relative p-6">
                         {/* Decorative small quote */}
-                        <Quote className="absolute top-3 right-4 w-8 h-8 text-[#1B3A5C]/[0.07] fill-[#1B3A5C]/[0.07]" strokeWidth={1} />
+                        <Quote className="absolute top-3 right-4 w-8 h-8 text-[#2D2D2D]/[0.07] fill-[#2D2D2D]/[0.07]" strokeWidth={1} />
 
                         {/* Star rating */}
                         <div className="mb-4">
@@ -420,8 +420,8 @@ export default function TestimonialsPage() {
                         <div className="flex items-center gap-3 pt-4 border-t border-[#E2E8F0]">
                           <InitialsAvatar name={t.name} size="sm" />
                           <div className="min-w-0">
-                            <p className="font-semibold text-[#1B3A5C] text-sm truncate">{t.name}</p>
-                            <p className="text-[#6B7280] text-xs truncate">
+                            <p className="font-semibold text-[#2D2D2D] text-sm truncate">{t.name}</p>
+                            <p className="text-[#4B5563] text-sm truncate">
                               {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                             </p>
                           </div>
@@ -453,7 +453,7 @@ export default function TestimonialsPage() {
                   <Play className="w-5 h-5 text-[#E8751A]" />
                   <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Video Stories</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1B3A5C] mb-3">Hear It From Them</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#2D2D2D] mb-3">Hear It From Them</h2>
                 <div className="section-bar mx-auto" />
               </div>
             </FadeIn>
@@ -468,7 +468,7 @@ export default function TestimonialsPage() {
                   <FadeIn key={t.id} delay={i * 0.1}>
                     <div className="rounded-xl overflow-hidden shadow-lg border border-[#E2E8F0] bg-white">
                       {/* Video embed area */}
-                      <div className="relative aspect-video bg-[#1B3A5C]">
+                      <div className="relative aspect-video bg-[#2D2D2D]">
                         {isPlaying && ytId ? (
                           <iframe
                             src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
@@ -504,8 +504,8 @@ export default function TestimonialsPage() {
                       <div className="p-5 flex items-center gap-3">
                         <InitialsAvatar name={t.name} size="sm" />
                         <div>
-                          <p className="font-semibold text-[#1B3A5C] text-sm">{t.name}</p>
-                          <p className="text-[#6B7280] text-xs">
+                          <p className="font-semibold text-[#2D2D2D] text-sm">{t.name}</p>
+                          <p className="text-[#4B5563] text-sm">
                             {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                           </p>
                         </div>
@@ -529,7 +529,7 @@ export default function TestimonialsPage() {
         {/* Background */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #1A5C6B 60%, #1B6B6B 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1A5C6B 60%, #1B6B6B 100%)' }}
         />
 
         {/* Decorative circles */}

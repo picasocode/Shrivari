@@ -127,7 +127,7 @@ export default function ProductsPage() {
   const heroImage = activeTab === 'lt' ? '/images/lt-panel.jpg' : '/images/ht-panel.jpg'
   const currentProducts = activeTab === 'lt' ? ltProducts : htProducts
   const totalProducts = ltProducts.length + htProducts.length
-  const accentColor = activeTab === 'lt' ? '#1B3A5C' : '#E8751A'
+  const accentColor = activeTab === 'lt' ? '#2D2D2D' : '#E8751A'
   const accentLabel = activeTab === 'lt' ? 'LT Panels (415V)' : 'HT Panels (11KV–33KV)'
 
   return (
@@ -135,7 +135,7 @@ export default function ProductsPage() {
       {/* ═══════════ HERO – Split Layout ═══════════ */}
       <section className="relative overflow-hidden" style={{ minHeight: '440px' }}>
         {/* Background gradient for entire hero */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D2340] via-[#1B3A5C] to-[#152D4F]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D2340] via-[#2D2D2D] to-[#1a1a1a]" />
 
         {/* Subtle grid pattern overlay */}
         <div
@@ -172,7 +172,7 @@ export default function ProductsPage() {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 mb-6">
                 <Gauge className="w-4 h-4 text-[#E8751A]" />
-                <span className="text-white/80 text-xs font-medium tracking-wide uppercase">
+                <span className="text-white/80 text-sm font-medium tracking-wide uppercase">
                   Technical Catalog
                 </span>
               </div>
@@ -198,7 +198,7 @@ export default function ProductsPage() {
                 <TabsList className="bg-white/[0.07] backdrop-blur-sm border border-white/10 rounded-xl p-1.5 h-auto gap-1">
                   <TabsTrigger
                     value="lt"
-                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#1B3A5C] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#1B3A5C]/40 text-white/60 hover:text-white/80 transition-all"
+                    className="rounded-lg px-6 py-3 text-sm font-semibold data-[state=active]:bg-[#2D2D2D] data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-[#2D2D2D]/40 text-white/60 hover:text-white/80 transition-all"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     LT Panels (415V)
@@ -241,7 +241,7 @@ export default function ProductsPage() {
                   {/* Overlay tag */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-5">
                     <Badge
-                      className="text-xs font-semibold tracking-wide border-0"
+                      className="text-sm font-semibold tracking-wide border-0"
                       style={{
                         backgroundColor: accentColor,
                         color: '#fff',
@@ -268,14 +268,14 @@ export default function ProductsPage() {
                 <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E]">
                   {activeTab === 'lt' ? 'Low Tension Panels' : 'High Tension Panels'}
                 </h2>
-                <p className="text-[#6B7280] mt-2 text-sm">
+                <p className="text-[#4B5563] mt-2 text-sm">
                   {activeTab === 'lt'
                     ? 'Distribution and control panels rated up to 415V for commercial and residential applications.'
                     : 'Switchgear and protection panels rated 11kV–33kV for industrial and utility-grade installations.'}
                 </p>
               </div>
               <div className="shrink-0">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E5E7EB] text-sm text-[#6B7280] shadow-sm">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E5E7EB] text-sm text-[#4B5563] shadow-sm">
                   <FileText className="w-4 h-4" />
                   Showing <strong className="text-[#1A1A2E]">{currentProducts.length}</strong> of{' '}
                   <strong className="text-[#1A1A2E]">{totalProducts}</strong> products
@@ -317,7 +317,7 @@ export default function ProductsPage() {
               <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-3">
                 LT vs HT — At a Glance
               </h2>
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
+              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
                 Understand the key engineering differences between our Low Tension and High Tension panel systems.
               </p>
             </div>
@@ -327,24 +327,24 @@ export default function ProductsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LT Card */}
               <div className="relative rounded-2xl overflow-hidden border border-[#E5E7EB] bg-white shadow-sm">
-                <div className="h-2 bg-[#1B3A5C]" />
+                <div className="h-2 bg-[#2D2D2D]" />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-[#1B3A5C]" />
+                    <div className="w-10 h-10 rounded-lg bg-[#2D2D2D]/10 flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-[#2D2D2D]" />
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1A1A2E] text-lg">LT Panels</h3>
-                      <p className="text-xs text-[#6B7280]">Up to 415V</p>
+                      <p className="text-sm text-[#4B5563]">Up to 415V</p>
                     </div>
                   </div>
                   <ul className="space-y-3">
                     {COMPARISON_DATA.map((row, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm">
-                        <CheckCircle className="w-4 h-4 text-[#1B3A5C] shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-[#2D2D2D] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-[#1A1A2E]">{row.attribute}:</span>{' '}
-                          <span className="text-[#6B7280]">{row.lt}</span>
+                          <span className="text-[#4B5563]">{row.lt}</span>
                         </div>
                       </li>
                     ))}
@@ -362,7 +362,7 @@ export default function ProductsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1A1A2E] text-lg">HT Panels</h3>
-                      <p className="text-xs text-[#6B7280]">11kV – 33kV</p>
+                      <p className="text-sm text-[#4B5563]">11kV – 33kV</p>
                     </div>
                   </div>
                   <ul className="space-y-3">
@@ -371,7 +371,7 @@ export default function ProductsPage() {
                         <CheckCircle className="w-4 h-4 text-[#E8751A] shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-[#1A1A2E]">{row.attribute}:</span>{' '}
-                          <span className="text-[#6B7280]">{row.ht}</span>
+                          <span className="text-[#4B5563]">{row.ht}</span>
                         </div>
                       </li>
                     ))}
@@ -392,7 +392,7 @@ export default function ProductsPage() {
               <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-3">
                 Technical Specifications
               </h2>
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
+              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
                 Standard specifications across our product range. Custom configurations available on request.
               </p>
             </div>
@@ -402,7 +402,7 @@ export default function ProductsPage() {
             <div className="rounded-2xl overflow-hidden border border-[#E5E7EB] bg-white shadow-sm">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-[#1B3A5C] hover:bg-[#1B3A5C]">
+                  <TableRow className="bg-[#2D2D2D] hover:bg-[#2D2D2D]">
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">Parameter</TableHead>
                     <TableHead className="text-white font-semibold text-sm px-6 py-4">
                       <div className="flex items-center gap-2">
@@ -427,10 +427,10 @@ export default function ProductsPage() {
                       <TableCell className="px-6 py-3.5 font-medium text-[#1A1A2E] text-sm">
                         {row.param}
                       </TableCell>
-                      <TableCell className="px-6 py-3.5 text-[#6B7280] text-sm">
+                      <TableCell className="px-6 py-3.5 text-[#4B5563] text-sm">
                         {row.lt}
                       </TableCell>
-                      <TableCell className="px-6 py-3.5 text-[#6B7280] text-sm">
+                      <TableCell className="px-6 py-3.5 text-[#4B5563] text-sm">
                         {row.ht}
                       </TableCell>
                     </TableRow>
@@ -441,7 +441,7 @@ export default function ProductsPage() {
           </FadeIn>
 
           <FadeIn delay={0.25}>
-            <p className="text-center text-xs text-[#9CA3AF] mt-4">
+            <p className="text-center text-sm text-[#9CA3AF] mt-4">
               * All specifications are subject to change. Contact our engineering team for project-specific requirements.
             </p>
           </FadeIn>
@@ -450,7 +450,7 @@ export default function ProductsPage() {
 
       {/* ═══════════ CTA ═══════════ */}
       <section className="relative overflow-hidden py-20 md:py-28">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D2340] via-[#1B3A5C] to-[#152D4F]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D2340] via-[#2D2D2D] to-[#1a1a1a]" />
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -464,7 +464,7 @@ export default function ProductsPage() {
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 mb-6">
               <Battery className="w-4 h-4 text-[#E8751A]" />
-              <span className="text-white/80 text-xs font-medium tracking-wide uppercase">
+              <span className="text-white/80 text-sm font-medium tracking-wide uppercase">
                 Get Started
               </span>
             </div>
@@ -511,18 +511,18 @@ function ProductGrid({
   variant: 'lt' | 'ht'
   onNavigate: (page: string, params?: Record<string, string>) => void
 }) {
-  const barColor = variant === 'lt' ? '#1B3A5C' : '#E8751A'
-  const barColorLight = variant === 'lt' ? 'bg-[#1B3A5C]/8' : 'bg-[#E8751A]/8'
-  const iconColor = variant === 'lt' ? 'text-[#1B3A5C]' : 'text-[#E8751A]'
-  const btnBg = variant === 'lt' ? 'bg-[#1B3A5C] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
-  const badgeBg = variant === 'lt' ? 'bg-[#1B3A5C]/10 text-[#1B3A5C]' : 'bg-[#E8751A]/10 text-[#E8751A]'
+  const barColor = variant === 'lt' ? '#2D2D2D' : '#E8751A'
+  const barColorLight = variant === 'lt' ? 'bg-[#2D2D2D]/8' : 'bg-[#E8751A]/8'
+  const iconColor = variant === 'lt' ? 'text-[#2D2D2D]' : 'text-[#E8751A]'
+  const btnBg = variant === 'lt' ? 'bg-[#2D2D2D] hover:bg-[#142D48]' : 'bg-[#E8751A] hover:bg-[#D06818]'
+  const badgeBg = variant === 'lt' ? 'bg-[#2D2D2D]/10 text-[#2D2D2D]' : 'bg-[#E8751A]/10 text-[#E8751A]'
   const Icon = variant === 'lt' ? Zap : Shield
 
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
         <CircuitBoard className="w-12 h-12 text-[#CBD5E1] mx-auto mb-4" />
-        <p className="text-[#6B7280] text-sm">No products found in this category.</p>
+        <p className="text-[#4B5563] text-sm">No products found in this category.</p>
       </div>
     )
   }
@@ -572,7 +572,7 @@ function ProductGrid({
                 </div>
 
                 {/* Description */}
-                <p className="text-[#6B7280] text-sm leading-relaxed mb-4 line-clamp-2">
+                <p className="text-[#4B5563] text-sm leading-relaxed mb-4 line-clamp-2">
                   {p.description}
                 </p>
 

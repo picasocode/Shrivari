@@ -164,7 +164,7 @@ export default function Services() {
                           {JSON.parse(service.features || '[]').slice(0, 3).map((feat: string, idx: number) => (
                             <span
                               key={idx}
-                              className="text-xs bg-[#E8ECF0] text-[#2D3748] px-2 py-1 rounded-md"
+                              className="text-sm bg-[#E8ECF0] text-[#2D3748] px-2 py-1 rounded-md"
                             >
                               {feat}
                             </span>

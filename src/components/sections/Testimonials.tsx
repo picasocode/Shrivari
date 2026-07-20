@@ -169,7 +169,7 @@ export default function Testimonials() {
                           <p className="text-[#0D1B3E] font-medium text-sm">
                             {testimonial.name}
                           </p>
-                          <p className="text-[#718096] text-xs">
+                          <p className="text-[#718096] text-sm">
                             {testimonial.designation}
                             {testimonial.company && `, ${testimonial.company}`}
                           </p>

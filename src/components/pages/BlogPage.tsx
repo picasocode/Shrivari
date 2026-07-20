@@ -51,7 +51,7 @@ const TAG_COLORS: Record<string, string> = {
   Safety: 'bg-rose-100 text-rose-800',
   Industry: 'bg-slate-100 text-slate-700',
   Technology: 'bg-cyan-100 text-cyan-800',
-  Guide: 'bg-[#1B3A5C]/10 text-[#0D1D3A]',
+  Guide: 'bg-[#2D2D2D]/10 text-[#1a1a1a]',
   Insights: 'bg-violet-100 text-violet-800',
 }
 
@@ -85,7 +85,7 @@ export default function BlogPage() {
       {/* ════════════════════════════════════════════
           HERO — Editorial Masthead
       ════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #1B3A5C 0%, #1B3A5C 40%, #152D4F 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #2D2D2D 0%, #2D2D2D 40%, #1a1a1a 100%)' }}>
         {/* Decorative grid lines */}
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 120px)' }} />
 
@@ -150,18 +150,18 @@ export default function BlogPage() {
                         style={{ backgroundImage: `url(${featured.coverImageUrl})` }}
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#1B3A5C] to-[#152D4F] flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#2D2D2D] to-[#1a1a1a] flex items-center justify-center">
                         <BookOpen className="w-16 h-16 text-white/20" />
                       </div>
                     )}
                     {/* Featured badge */}
-                    <div className="absolute top-4 left-4 bg-[#E8751A] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <div className="absolute top-4 left-4 bg-[#E8751A] text-white text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                       Featured
                     </div>
                   </div>
                   {/* Content side */}
                   <CardContent className="p-6 md:p-10 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 text-xs text-[#6B7280] mb-3">
+                    <div className="flex items-center gap-3 text-sm text-[#4B5563] mb-3">
                       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${TAG_COLORS[categoryTag(featured.title)]}`}>
                         {categoryTag(featured.title)}
                       </span>
@@ -171,11 +171,11 @@ export default function BlogPage() {
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-3 leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif' }}>
                       {featured.title}
                     </h2>
-                    <p className="text-[#6B7280] leading-relaxed mb-5 line-clamp-3">{featured.excerpt}</p>
+                    <p className="text-[#4B5563] leading-relaxed mb-5 line-clamp-3">{featured.excerpt}</p>
                     <div className="flex items-center justify-between">
                       {featured.author && (
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-[#1B3A5C] flex items-center justify-center text-white text-xs font-bold">
+                          <div className="w-8 h-8 rounded-full bg-[#2D2D2D] flex items-center justify-center text-white text-sm font-bold">
                             {featured.author.charAt(0).toUpperCase()}
                           </div>
                           <span className="text-sm font-medium text-[#1A1A2E]">{featured.author}</span>
@@ -205,7 +205,7 @@ export default function BlogPage() {
           ) : rest.length === 0 && !featured ? (
             <div className="text-center py-16">
               <BookOpen className="w-12 h-12 text-[#CBD5E1] mx-auto mb-4" />
-              <p className="text-[#6B7280] text-lg">No blog posts yet. Check back soon!</p>
+              <p className="text-[#4B5563] text-lg">No blog posts yet. Check back soon!</p>
             </div>
           ) : rest.length === 0 ? null : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -227,7 +227,7 @@ export default function BlogPage() {
                             />
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-[#F0F4F8] to-[#E2E8F0] flex items-center justify-center">
-                              <span className="text-4xl font-bold text-[#1B3A5C]/10">{b.title.charAt(0)}</span>
+                              <span className="text-4xl font-bold text-[#2D2D2D]/10">{b.title.charAt(0)}</span>
                             </div>
                           )}
                         </div>
@@ -240,17 +240,17 @@ export default function BlogPage() {
                               </span>
                               <span className="flex items-center gap-1 text-[11px] text-[#9CA3AF]"><Clock className="w-3 h-3" />{readingTime(b.content)}</span>
                             </div>
-                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#1B3A5C] transition-colors">
+                            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug line-clamp-2 group-hover:text-[#2D2D2D] transition-colors">
                               {b.title}
                             </h3>
-                            <p className="text-[#6B7280] text-sm leading-relaxed line-clamp-2">{b.excerpt}</p>
+                            <p className="text-[#4B5563] text-sm leading-relaxed line-clamp-2">{b.excerpt}</p>
                           </div>
                           <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#F0F4F8]">
-                            <div className="flex items-center gap-3 text-xs text-[#9CA3AF]">
+                            <div className="flex items-center gap-3 text-sm text-[#9CA3AF]">
                               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(b.createdAt)}</span>
                               {b.author && <span className="flex items-center gap-1"><User className="w-3 h-3" />{b.author}</span>}
                             </div>
-                            <span className="flex items-center gap-1 text-[#E8751A] font-semibold text-xs group-hover:gap-2 transition-all">
+                            <span className="flex items-center gap-1 text-[#E8751A] font-semibold text-sm group-hover:gap-2 transition-all">
                               Read <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                             </span>
                           </div>
@@ -271,7 +271,7 @@ export default function BlogPage() {
       <section className="bg-white py-16 md:py-20">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
-            <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 60%, #3A6090 100%)' }}>
+            <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 60%, #3A6090 100%)' }}>
               {/* Decorative circles */}
               <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full border-[24px] border-white/[0.04]" />
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full border-[20px] border-white/[0.04]" />
@@ -336,13 +336,13 @@ export default function BlogPage() {
           <Dialog open={!!selectedBlog} onOpenChange={(open) => { if (!open) setSelectedBlog(null) }}>
             <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl p-0">
               {/* Dialog header with gradient */}
-              <div className="sticky top-0 z-10 bg-gradient-to-r from-[#1B3A5C] to-[#152D4F] px-6 pt-6 pb-4 -mx-1 -mt-1 rounded-t-2xl">
+              <div className="sticky top-0 z-10 bg-gradient-to-r from-[#2D2D2D] to-[#1a1a1a] px-6 pt-6 pb-4 -mx-1 -mt-1 rounded-t-2xl">
                 <DialogHeader>
                   <DialogTitle className="text-xl md:text-2xl font-bold text-white pr-8 leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif' }}>
                     {selectedBlog.title}
                   </DialogTitle>
                 </DialogHeader>
-                <div className="flex items-center gap-4 text-xs text-white/60 mt-3">
+                <div className="flex items-center gap-4 text-sm text-white/60 mt-3">
                   <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{formatDate(selectedBlog.createdAt)}</span>
                   {selectedBlog.author && <span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5" />{selectedBlog.author}</span>}
                   <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{readingTime(selectedBlog.content)}</span>

@@ -136,7 +136,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     <ToastProvider>
     <div className="fixed inset-0 z-[100] bg-white flex">
       {/* Sidebar */}
-      <div className="w-56 bg-[#1B3A5C] flex flex-col shrink-0">
+      <div className="w-56 bg-[#2D2D2D] flex flex-col shrink-0">
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
             <Shield className="w-5 h-5 text-[#E8751A]" />
@@ -167,7 +167,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
           <div className="p-3 border-t border-white/10">
             <div className="px-3 py-2 mb-2">
               <p className="text-white text-sm font-medium truncate">{user.name}</p>
-              <p className="text-white/40 text-xs truncate">{user.email}</p>
+              <p className="text-white/40 text-sm truncate">{user.email}</p>
             </div>
             <button
               onClick={handleLogout}
@@ -209,20 +209,20 @@ function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-[#1A1A2E]">{title}</h2>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onRetry} className="rounded-md text-xs">
+          <Button variant="outline" size="sm" onClick={onRetry} className="rounded-md text-sm">
             <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
           </Button>
           {onAdd && (
-            <Button size="sm" onClick={onAdd} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md text-xs">
+            <Button size="sm" onClick={onAdd} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md text-sm">
               <Plus className="w-3.5 h-3.5 mr-1" /> Add
             </Button>
           )}
         </div>
       </div>
       {loading ? (
-        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#1B3A5C] animate-spin" /></div>
+        <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#2D2D2D] animate-spin" /></div>
       ) : error ? (
-        <div className="flex flex-col items-center py-20 text-[#6B7280]">
+        <div className="flex flex-col items-center py-20 text-[#4B5563]">
           <AlertCircle className="w-10 h-10 mb-3" />
           <p className="mb-2">Failed to load data.</p>
           <Button variant="outline" onClick={onRetry} className="rounded-md">Try Again</Button>
@@ -272,18 +272,18 @@ function ProductsSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Category</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Active</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Name</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Category</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Active</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(p => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium text-sm">{p.name}</TableCell>
-                <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs rounded">{p.category}</Badge></TableCell>
-                <TableCell className="hidden lg:table-cell">{p.active ? <Badge className="bg-green-50 text-green-600 text-xs rounded">Active</Badge> : <Badge variant="secondary" className="text-xs rounded">Inactive</Badge>}</TableCell>
+                <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-sm rounded">{p.category}</Badge></TableCell>
+                <TableCell className="hidden lg:table-cell">{p.active ? <Badge className="bg-green-50 text-green-600 text-sm rounded">Active</Badge> : <Badge variant="secondary" className="text-sm rounded">Inactive</Badge>}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(p)}><Pencil className="w-3.5 h-3.5" /></Button>
@@ -309,28 +309,36 @@ function ProductDialog({ item, onClose, onSave }: { item: Product | null; onClos
       : { name: '', slug: '', category: 'LT Panels', description: '', features: '', imageUrl: '', order: 0, active: true }
   )
 
+  useEffect(() => {
+    if (item) {
+      setForm({ name: item.name, slug: item.slug, category: item.category, description: item.description, features: item.features, imageUrl: item.imageUrl, order: item.order, active: item.active })
+    } else {
+      setForm({ name: '', slug: '', category: 'LT Panels', description: '', features: '', imageUrl: '', order: 0, active: true })
+    }
+  }, [item])
+
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Product' : 'Add Product'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Category</Label>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Category</Label>
               <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                 <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
                 <SelectContent><SelectItem value="LT Panels">LT Panels</SelectItem><SelectItem value="HT Panels">HT Panels</SelectItem></SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-sm font-medium">Active</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
@@ -379,18 +387,18 @@ function ServicesSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Slug</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Active</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Name</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Slug</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Active</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(s => (
               <TableRow key={s.id}>
                 <TableCell className="font-medium text-sm">{s.name}</TableCell>
-                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{s.slug}</TableCell>
-                <TableCell className="hidden lg:table-cell">{s.active ? <Badge className="bg-green-50 text-green-600 text-xs rounded">Active</Badge> : <Badge variant="secondary" className="text-xs rounded">Inactive</Badge>}</TableCell>
+                <TableCell className="hidden md:table-cell text-sm text-[#4B5563]">{s.slug}</TableCell>
+                <TableCell className="hidden lg:table-cell">{s.active ? <Badge className="bg-green-50 text-green-600 text-sm rounded">Active</Badge> : <Badge variant="secondary" className="text-sm rounded">Inactive</Badge>}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(s)}><Pencil className="w-3.5 h-3.5" /></Button>
@@ -416,23 +424,31 @@ function ServiceDialog({ item, onClose, onSave }: { item: Service | null; onClos
       : { name: '', slug: '', description: '', icon: '', features: '', imageUrl: '', order: 0, active: true }
   )
 
+  useEffect(() => {
+    if (item) {
+      setForm({ name: item.name, slug: item.slug, description: item.description, icon: item.icon, features: item.features, imageUrl: item.imageUrl, order: item.order, active: item.active })
+    } else {
+      setForm({ name: '', slug: '', description: '', icon: '', features: '', imageUrl: '', order: 0, active: true })
+    }
+  }, [item])
+
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Service' : 'Add Service'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Icon</Label><Input value={form.icon} onChange={e => setForm(f => ({ ...f, icon: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Icon</Label><Input value={form.icon} onChange={e => setForm(f => ({ ...f, icon: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-sm font-medium">Active</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
@@ -481,18 +497,18 @@ function ClientsSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Industry</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Location</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Name</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Industry</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Location</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(c => (
               <TableRow key={c.id}>
                 <TableCell className="font-medium text-sm">{c.name}</TableCell>
-                <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs rounded">{c.industry}</Badge></TableCell>
-                <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{c.location}</TableCell>
+                <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-sm rounded">{c.industry}</Badge></TableCell>
+                <TableCell className="hidden lg:table-cell text-sm text-[#4B5563]">{c.location}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(c)}><Pencil className="w-3.5 h-3.5" /></Button>
@@ -518,22 +534,30 @@ function ClientDialog({ item, onClose, onSave }: { item: Client | null; onClose:
       : { name: '', industry: '', location: '', logoUrl: '', description: '', order: 0, active: true }
   )
 
+  useEffect(() => {
+    if (item) {
+      setForm({ name: item.name, industry: item.industry, location: item.location, logoUrl: item.logoUrl, description: item.description, order: item.order, active: item.active })
+    } else {
+      setForm({ name: '', industry: '', location: '', logoUrl: '', description: '', order: 0, active: true })
+    }
+  }, [item])
+
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Client' : 'Add Client'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Industry</Label><Input value={form.industry} onChange={e => setForm(f => ({ ...f, industry: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Industry</Label><Input value={form.industry} onChange={e => setForm(f => ({ ...f, industry: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Logo URL</Label><Input value={form.logoUrl} onChange={e => setForm(f => ({ ...f, logoUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Logo URL</Label><Input value={form.logoUrl} onChange={e => setForm(f => ({ ...f, logoUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-sm font-medium">Active</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
@@ -582,24 +606,24 @@ function TestimonialsSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Company</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Rating</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Video</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Name</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Company</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Rating</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Video</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(t => (
               <TableRow key={t.id}>
                 <TableCell className="font-medium text-sm">{t.name}</TableCell>
-                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{t.company}</TableCell>
-                <TableCell className="hidden lg:table-cell"><Badge className="bg-[#E8751A]/10 text-[#E8751A] text-xs rounded">{t.rating}/5</Badge></TableCell>
+                <TableCell className="hidden md:table-cell text-sm text-[#4B5563]">{t.company}</TableCell>
+                <TableCell className="hidden lg:table-cell"><Badge className="bg-[#E8751A]/10 text-[#E8751A] text-sm rounded">{t.rating}/5</Badge></TableCell>
                 <TableCell className="hidden md:table-cell">
                   {t.videoUrl ? (
-                    <Badge className="bg-red-50 text-red-600 text-xs rounded gap-1"><Youtube className="w-3 h-3" /> YouTube</Badge>
+                    <Badge className="bg-red-50 text-red-600 text-sm rounded gap-1"><Youtube className="w-3 h-3" /> YouTube</Badge>
                   ) : (
-                    <span className="text-xs text-[#9CA3AF]">—</span>
+                    <span className="text-sm text-[#9CA3AF]">—</span>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
@@ -628,6 +652,14 @@ function TestimonialDialog({ item, onClose, onSave }: { item: Testimonial | null
   )
   const [saving, setSaving] = useState(false)
 
+  useEffect(() => {
+    if (item) {
+      setForm({ name: item.name, company: item.company, designation: item.designation, content: item.content, rating: item.rating, videoUrl: item.videoUrl || '', imageUrl: item.imageUrl || '', order: item.order, active: item.active })
+    } else {
+      setForm({ name: '', company: '', designation: '', content: '', rating: 5, videoUrl: '', imageUrl: '', order: 0, active: true })
+    }
+  }, [item])
+
   // Extract YouTube ID for live preview
   const ytMatch = form.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?\s]+)/)
   const ytId = ytMatch ? ytMatch[1] : null
@@ -643,18 +675,18 @@ function TestimonialDialog({ item, onClose, onSave }: { item: Testimonial | null
         <DialogHeader><DialogTitle>{item ? 'Edit Testimonial' : 'Add Testimonial'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Company</Label><Input value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Company</Label><Input value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Designation</Label><Input value={form.designation} onChange={e => setForm(f => ({ ...f, designation: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Rating</Label><Input type="number" min={1} max={5} value={form.rating} onChange={e => setForm(f => ({ ...f, rating: parseInt(e.target.value) || 5 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Designation</Label><Input value={form.designation} onChange={e => setForm(f => ({ ...f, designation: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Rating</Label><Input type="number" min={1} max={5} value={form.rating} onChange={e => setForm(f => ({ ...f, rating: parseInt(e.target.value) || 5 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Content</Label><Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={4} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Content</Label><Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={4} className="rounded-md text-sm resize-none" /></div>
           <div className="space-y-1.5">
-            <Label className="text-xs font-medium flex items-center gap-1.5"><Youtube className="w-3.5 h-3.5 text-red-600" /> YouTube Video URL</Label>
+            <Label className="text-sm font-medium flex items-center gap-1.5"><Youtube className="w-3.5 h-3.5 text-red-600" /> YouTube Video URL</Label>
             <Input value={form.videoUrl} onChange={e => setForm(f => ({ ...f, videoUrl: e.target.value }))} placeholder="https://www.youtube.com/watch?v=..." className="rounded-md h-9 text-sm" />
-            <p className="text-[11px] text-[#6B7280]">Paste a YouTube link to show this testimonial as a video review on the website. Supported: youtube.com/watch?v=, youtu.be/, embed/</p>
+            <p className="text-[11px] text-[#4B5563]">Paste a YouTube link to show this testimonial as a video review on the website. Supported: youtube.com/watch?v=, youtu.be/, embed/</p>
             {ytId && (
               <div className="mt-2 rounded-md overflow-hidden border border-[#E5E7EB]">
                 <img src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`} alt="Video preview" className="w-full h-24 object-cover" />
@@ -665,10 +697,10 @@ function TestimonialDialog({ item, onClose, onSave }: { item: Testimonial | null
               <p className="text-[11px] text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Not a valid YouTube URL</p>
             )}
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL (optional avatar)</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Image URL (optional avatar)</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-sm font-medium">Active</Label></div>
           </div>
         </div>
         <DialogFooter>
@@ -720,18 +752,18 @@ function BlogsSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Title</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Author</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Published</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Title</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Author</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Published</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(b => (
               <TableRow key={b.id}>
                 <TableCell className="font-medium text-sm max-w-xs truncate">{b.title}</TableCell>
-                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{b.author}</TableCell>
-                <TableCell className="hidden lg:table-cell">{b.published ? <Badge className="bg-green-50 text-green-600 text-xs rounded">Published</Badge> : <Badge variant="secondary" className="text-xs rounded">Draft</Badge>}</TableCell>
+                <TableCell className="hidden md:table-cell text-sm text-[#4B5563]">{b.author}</TableCell>
+                <TableCell className="hidden lg:table-cell">{b.published ? <Badge className="bg-green-50 text-green-600 text-sm rounded">Published</Badge> : <Badge variant="secondary" className="text-sm rounded">Draft</Badge>}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(b)}><Pencil className="w-3.5 h-3.5" /></Button>
@@ -757,22 +789,30 @@ function BlogDialog({ item, onClose, onSave }: { item: Blog | null; onClose: () 
       : { title: '', slug: '', excerpt: '', content: '', coverImageUrl: '', author: '', published: false }
   )
 
+  useEffect(() => {
+    if (item) {
+      setForm({ title: item.title, slug: item.slug, excerpt: item.excerpt, content: item.content, coverImageUrl: item.coverImageUrl, author: item.author, published: item.published })
+    } else {
+      setForm({ title: '', slug: '', excerpt: '', content: '', coverImageUrl: '', author: '', published: false })
+    }
+  }, [item])
+
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Blog Post' : 'Add Blog Post'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Title</Label><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Title</Label><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Author</Label><Input value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Cover Image URL</Label><Input value={form.coverImageUrl} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Author</Label><Input value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Cover Image URL</Label><Input value={form.coverImageUrl} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Excerpt</Label><Textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} rows={2} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Content</Label><Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={6} className="rounded-md text-sm resize-none" /></div>
-          <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={v => setForm(f => ({ ...f, published: v }))} /><Label className="text-xs font-medium">Published</Label></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Excerpt</Label><Textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} rows={2} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Content</Label><Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={6} className="rounded-md text-sm resize-none" /></div>
+          <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={v => setForm(f => ({ ...f, published: v }))} /><Label className="text-sm font-medium">Published</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
@@ -821,18 +861,18 @@ function ProjectsSection() {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Client</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Category</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              <TableHead className="text-sm font-semibold">Name</TableHead>
+              <TableHead className="text-sm font-semibold hidden md:table-cell">Client</TableHead>
+              <TableHead className="text-sm font-semibold hidden lg:table-cell">Category</TableHead>
+              <TableHead className="text-sm font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map(p => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium text-sm">{p.name}</TableCell>
-                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{p.client}</TableCell>
-                <TableCell className="hidden lg:table-cell"><Badge variant="secondary" className="text-xs rounded">{p.category}</Badge></TableCell>
+                <TableCell className="hidden md:table-cell text-sm text-[#4B5563]">{p.client}</TableCell>
+                <TableCell className="hidden lg:table-cell"><Badge variant="secondary" className="text-sm rounded">{p.category}</Badge></TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(p)}><Pencil className="w-3.5 h-3.5" /></Button>
@@ -858,29 +898,37 @@ function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClos
       : { name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', order: 0, active: true }
   )
 
+  useEffect(() => {
+    if (item) {
+      setForm({ name: item.name, client: item.client, location: item.location, description: item.description, imageUrl: item.imageUrl, category: item.category, order: item.order, active: item.active })
+    } else {
+      setForm({ name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', order: 0, active: true })
+    }
+  }, [item])
+
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Project' : 'Add Project'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Client</Label><Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Client</Label><Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Category</Label>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Category</Label>
               <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                 <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
                 <SelectContent><SelectItem value="ongoing">Ongoing</SelectItem><SelectItem value="completed">Completed</SelectItem></SelectContent>
               </Select>
             </div>
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5"><Label className="text-sm font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+            <div className="space-y-1.5"><Label className="text-sm font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-sm font-medium">Active</Label></div>
           </div>
         </div>
         <DialogFooter>
@@ -927,7 +975,7 @@ function MessagesSection() {
   return (
     <SectionWrapper title="Contact Messages" loading={loading} error={error} onRetry={load}>
       {messages.length === 0 ? (
-        <p className="text-[#6B7280] text-center py-12">No messages yet.</p>
+        <p className="text-[#4B5563] text-center py-12">No messages yet.</p>
       ) : (
         <div className="space-y-4">
           {messages.map(m => (
@@ -938,18 +986,18 @@ function MessagesSection() {
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <h3 className="font-semibold text-sm text-[#1A1A2E]">{m.name}</h3>
-                  {!m.read && <Badge className="bg-[#E8751A]/10 text-[#E8751A] text-xs rounded">New</Badge>}
+                  {!m.read && <Badge className="bg-[#E8751A]/10 text-[#E8751A] text-sm rounded">New</Badge>}
                 </div>
-                <span className="text-xs text-[#6B7280]">{new Date(m.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                <span className="text-sm text-[#4B5563]">{new Date(m.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
               </div>
-              <div className="flex items-center gap-4 text-xs text-[#6B7280] mb-2">
+              <div className="flex items-center gap-4 text-sm text-[#4B5563] mb-2">
                 <span>{m.email}</span>
                 {m.phone && <span>{m.phone}</span>}
               </div>
               {m.subject && <p className="text-sm font-medium text-[#1A1A2E] mb-1">{m.subject}</p>}
               <p className="text-sm text-[#374151] leading-relaxed mb-3">{m.message}</p>
               {!m.read && (
-                <Button size="sm" variant="outline" onClick={() => markAsRead(m.id)} className="rounded-md text-xs">
+                <Button size="sm" variant="outline" onClick={() => markAsRead(m.id)} className="rounded-md text-sm">
                   <Check className="w-3.5 h-3.5 mr-1" /> Mark as Read
                 </Button>
               )}
@@ -996,12 +1044,12 @@ function SettingsSection() {
   }
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#1B3A5C] animate-spin" /></div>
+    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#2D2D2D] animate-spin" /></div>
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center py-20 text-[#6B7280]">
+      <div className="flex flex-col items-center py-20 text-[#4B5563]">
         <AlertCircle className="w-10 h-10 mb-3" />
         <p className="mb-2">Failed to load settings.</p>
         <Button variant="outline" onClick={load} className="rounded-md">Try Again</Button>
@@ -1021,7 +1069,7 @@ function SettingsSection() {
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm p-6 space-y-5">
         {Object.entries(settings).map(([key, value]) => (
           <div key={key} className="space-y-1.5">
-            <Label className="text-xs font-medium text-[#1A1A2E]">{key}</Label>
+            <Label className="text-sm font-medium text-[#1A1A2E]">{key}</Label>
             <Textarea
               value={value}
               onChange={e => setSettings(prev => ({ ...prev, [key]: e.target.value }))}

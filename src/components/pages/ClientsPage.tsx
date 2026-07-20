@@ -31,8 +31,8 @@ import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
 
 /* ─── Brand Tokens ─── */
-const NAVY = '#1B3A5C'
-const NAVY_DARK = '#1B3A5C'
+const NAVY = '#2D2D2D'
+const NAVY_DARK = '#2D2D2D'
 const ORANGE = '#E8751A'
 const LIGHT_BG = '#F0F4F8'
 
@@ -56,11 +56,11 @@ const INDUSTRY_META: Record<string, { gradient: string; icon: React.ElementType 
   'Real Estate': { gradient: 'from-amber-400 to-orange-500', icon: Building2 },
   Cranes: { gradient: 'from-orange-500 to-amber-500', icon: Factory },
   Granites: { gradient: 'from-stone-400 to-stone-600', icon: Landmark },
-  Government: { gradient: 'from-[#1B3A5C] to-teal-600', icon: Landmark },
+  Government: { gradient: 'from-[#2D2D2D] to-teal-600', icon: Landmark },
   Airport: { gradient: 'from-sky-500 to-blue-500', icon: Ship },
   Carbon: { gradient: 'from-gray-500 to-gray-700', icon: Flame },
   Media: { gradient: 'from-pink-400 to-rose-500', icon: Landmark },
-  default: { gradient: `from-[#1B3A5C] to-[#152D4F]`, icon: Building2 },
+  default: { gradient: `from-[#2D2D2D] to-[#1a1a1a]`, icon: Building2 },
 }
 
 function getIndustryMeta(industry: string) {
@@ -235,7 +235,7 @@ export default function ClientsPage() {
             transition={{ duration: 0.7, delay: 0.15 }}
           >
             <Badge
-              className="mb-6 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
+              className="mb-6 text-sm font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
               style={{ background: 'rgba(232,117,26,0.15)', color: ORANGE }}
             >
               Partnership Showcase
@@ -284,7 +284,7 @@ export default function ClientsPage() {
                       <AnimatedCounter target={stat.value} />
                       {stat.label === 'Years of Trust' && '+'}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 font-medium">
+                    <div className="text-sm text-gray-500 mt-1 font-medium">
                       {stat.label}
                     </div>
                   </div>
@@ -355,7 +355,7 @@ export default function ClientsPage() {
                       background:
                         activeFilter === ind ? NAVY : 'transparent',
                       color:
-                        activeFilter === ind ? '#FFFFFF' : '#6B7280',
+                        activeFilter === ind ? '#FFFFFF' : '#4B5563',
                       border: `1.5px solid ${activeFilter === ind ? NAVY : '#D1D5DB'}`,
                     }}
                   >
@@ -443,7 +443,7 @@ export default function ClientsPage() {
 
                             {/* Location */}
                             {c.location && (
-                              <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                              <div className="flex items-center gap-1.5 text-sm text-gray-400">
                                 <MapPin className="w-3.5 h-3.5" style={{ color: ORANGE }} />
                                 <span>{c.location}</span>
                               </div>
@@ -510,7 +510,7 @@ export default function ClientsPage() {
 
                           {/* Location */}
                           {c.location && (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                            <div className="flex items-center gap-1.5 text-sm text-gray-400">
                               <MapPin className="w-3.5 h-3.5" style={{ color: ORANGE }} />
                               <span>{c.location}</span>
                             </div>
@@ -584,7 +584,7 @@ export default function ClientsPage() {
                         >
                           {ind}
                         </h4>
-                        <span className="text-xs text-gray-400 group-hover:text-white/80 transition-colors duration-500">
+                        <span className="text-sm text-gray-400 group-hover:text-white/80 transition-colors duration-500">
                           {count} partner{count !== 1 ? 's' : ''}
                         </span>
                       </div>
@@ -608,7 +608,7 @@ export default function ClientsPage() {
         <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-20 md:py-28 text-center">
           <FadeIn>
             <Badge
-              className="mb-5 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
+              className="mb-5 text-sm font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
               style={{ background: 'rgba(232,117,26,0.15)', color: ORANGE }}
             >
               Become a Partner

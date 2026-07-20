@@ -161,13 +161,13 @@ export default function Clients() {
                       {client.industry && (
                         <Badge
                           variant="secondary"
-                          className="text-xs bg-[#2196F3]/10 text-[#2196F3] border-0 mb-1.5"
+                          className="text-sm bg-[#2196F3]/10 text-[#2196F3] border-0 mb-1.5"
                         >
                           {client.industry}
                         </Badge>
                       )}
                       {client.location && (
-                        <div className="flex items-center gap-1 text-xs text-[#718096]">
+                        <div className="flex items-center gap-1 text-sm text-[#718096]">
                           <MapPin className="w-3 h-3" />
                           <span>{client.location}</span>
                         </div>

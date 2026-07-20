@@ -319,7 +319,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
     return (
       <section className="py-20 text-center">
         <h2 className="text-2xl font-bold text-[#1A1A2E] mb-4">Service Not Found</h2>
-        <Button onClick={() => navigate('services')} className="bg-[#1B3A5C] hover:bg-[#152D4F] text-white">
+        <Button onClick={() => navigate('services')} className="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white">
           Back to Services
         </Button>
       </section>
@@ -333,7 +333,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
       {/* ══════════════════════════════════════════════
           HERO SECTION — Navy gradient with image overlay
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 50%, #1a1a1a 100%)' }}>
         {/* Background pattern */}
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(232,117,26,0.08) 0%, transparent 40%)',
@@ -384,7 +384,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
             className="flex flex-wrap gap-2 mt-4"
           >
             {data.highlights.map((h, i) => (
-              <Badge key={i} className="bg-white/10 text-white border border-white/20 px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm">
+              <Badge key={i} className="bg-white/10 text-white border border-white/20 px-3 py-1 text-sm font-medium rounded-full backdrop-blur-sm">
                 {h}
               </Badge>
             ))}
@@ -420,8 +420,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
               <FadeIn delay={0.1}>
                 <div className="bg-[#F0F4F8] rounded-xl p-6 md:p-8 border border-gray-100">
                   <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-[#1B3A5C]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#2D2D2D]/10 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-[#2D2D2D]" />
                     </div>
                     Service Capabilities
                   </h2>
@@ -435,15 +435,15 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.06 }}
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-[#1B3A5C]/10 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle className="w-3.5 h-3.5 text-[#1B3A5C]" />
+                            <div className="w-6 h-6 rounded-full bg-[#2D2D2D]/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <CheckCircle className="w-3.5 h-3.5 text-[#2D2D2D]" />
                             </div>
                             <div>
                               <span className="text-[#374151] text-sm md:text-base leading-relaxed">{cap.text}</span>
                               {cap.subItems && cap.subItems.length > 0 && (
                                 <ul className="mt-2 ml-2 space-y-1.5">
                                   {cap.subItems.map((sub, j) => (
-                                    <li key={j} className="flex items-center gap-2 text-[#6B7280] text-sm">
+                                    <li key={j} className="flex items-center gap-2 text-[#4B5563] text-sm">
                                       <div className="w-1.5 h-1.5 rounded-full bg-[#4A90D9] shrink-0" />
                                       {sub}
                                     </li>
@@ -479,12 +479,12 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.4, delay: i * 0.08 }}
                           className="flex gap-4 items-start"
                         >
-                          <div className="w-10 h-10 rounded-full bg-[#1B3A5C] text-white flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-[#2D2D2D] text-white flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
                             {i + 1}
                           </div>
                           <div className="flex-1 pt-1">
                             <h4 className="font-semibold text-[#1A1A2E] text-base">{step.title}</h4>
-                            <p className="text-[#6B7280] text-sm mt-0.5">{step.desc}</p>
+                            <p className="text-[#4B5563] text-sm mt-0.5">{step.desc}</p>
                           </div>
                           {i < data.processSteps.length - 1 && (
                             <div className="hidden lg:block absolute left-5 mt-10 w-0.5 h-6 bg-[#5A7EA8]" />
@@ -516,8 +516,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                           transition={{ duration: 0.3, delay: i * 0.06 }}
                           className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow"
                         >
-                          <div className="w-8 h-8 rounded-full bg-[#1B3A5C]/10 flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4 text-[#1B3A5C]" />
+                          <div className="w-8 h-8 rounded-full bg-[#2D2D2D]/10 flex items-center justify-center shrink-0">
+                            <Zap className="w-4 h-4 text-[#2D2D2D]" />
                           </div>
                           <span className="text-[#374151] text-sm font-medium">{ref}</span>
                         </motion.div>
@@ -532,20 +532,20 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                 <FadeIn delay={0.2}>
                   <div className="mt-8">
                     <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center">
-                        <HardHat className="w-4 h-4 text-[#1B3A5C]" />
+                      <div className="w-8 h-8 rounded-lg bg-[#2D2D2D]/10 flex items-center justify-center">
+                        <HardHat className="w-4 h-4 text-[#2D2D2D]" />
                       </div>
                       Related Projects
                     </h2>
                     <div className="space-y-3">
                       {data.relatedProjects.map((proj, i) => (
                         <div key={i} className="flex items-center gap-4 bg-[#F0F4F8] rounded-lg p-4 border border-gray-100">
-                          <div className="w-10 h-10 rounded-full bg-[#1B3A5C] text-white flex items-center justify-center shrink-0 font-bold text-sm">
+                          <div className="w-10 h-10 rounded-full bg-[#2D2D2D] text-white flex items-center justify-center shrink-0 font-bold text-sm">
                             {i + 1}
                           </div>
                           <div>
                             <h4 className="font-semibold text-[#1A1A2E] text-sm">{proj.name}</h4>
-                            <p className="text-[#6B7280] text-xs">{proj.client} — {proj.location}</p>
+                            <p className="text-[#4B5563] text-sm">{proj.client} — {proj.location}</p>
                           </div>
                         </div>
                       ))}
@@ -570,7 +570,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-[#1B3A5C] text-white border-0 px-3 py-1 text-xs font-medium">
+                    <Badge className="bg-[#2D2D2D] text-white border-0 px-3 py-1 text-sm font-medium">
                       <Icon className="w-3.5 h-3.5 mr-1.5" />
                       {data.name}
                     </Badge>
@@ -579,22 +579,22 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
 
                 {/* Contact Card */}
                 <FadeIn delay={0.15}>
-                  <Card className="border-2 border-[#1B3A5C]/10 shadow-lg overflow-hidden">
-                    <div className="h-1.5 bg-gradient-to-r from-[#1B3A5C] to-[#2A5A8A]" />
+                  <Card className="border-2 border-[#2D2D2D]/10 shadow-lg overflow-hidden">
+                    <div className="h-1.5 bg-gradient-to-r from-[#2D2D2D] to-[#2A5A8A]" />
                     <CardContent className="p-5">
                       <div className="text-center mb-4">
-                        <div className="w-14 h-14 rounded-xl bg-[#1B3A5C]/10 flex items-center justify-center mx-auto mb-3">
-                          <Icon className="w-7 h-7 text-[#1B3A5C]" />
+                        <div className="w-14 h-14 rounded-xl bg-[#2D2D2D]/10 flex items-center justify-center mx-auto mb-3">
+                          <Icon className="w-7 h-7 text-[#2D2D2D]" />
                         </div>
                         <h3 className="font-bold text-[#1A1A2E] text-base">{data.name}</h3>
-                        <p className="text-xs text-[#6B7280] mt-1">{data.tagline}</p>
+                        <p className="text-sm text-[#4B5563] mt-1">{data.tagline}</p>
                       </div>
                       <Button onClick={() => navigate('contact')}
-                        className="w-full bg-[#1B3A5C] hover:bg-[#152D4F] text-white rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
+                        className="w-full bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
                         Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                       <a href="tel:+919941905833"
-                        className="w-full flex items-center justify-center gap-2 text-[#1B3A5C] font-semibold text-sm h-10 rounded-lg border border-[#1B3A5C]/20 hover:bg-[#1B3A5C]/5 transition-colors">
+                        className="w-full flex items-center justify-center gap-2 text-[#2D2D2D] font-semibold text-sm h-10 rounded-lg border border-[#2D2D2D]/20 hover:bg-[#2D2D2D]/5 transition-colors">
                         <Phone className="w-4 h-4" /> +91 9941905833
                       </a>
                     </CardContent>
@@ -608,9 +608,9 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                       <h4 className="font-bold text-[#1A1A2E] text-sm mb-4">Why Choose SVEPL?</h4>
                       <div className="space-y-3">
                         {[
-                          { icon: Award, label: '20+ Years Experience', color: 'text-[#1B3A5C]' },
+                          { icon: Award, label: '20+ Years Experience', color: 'text-[#2D2D2D]' },
                           { icon: Users, label: '150+ Expert Employees', color: 'text-[#E8751A]' },
-                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#1B3A5C]' },
+                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#2D2D2D]' },
                           { icon: Shield, label: 'ISO Certified Processes', color: 'text-[#E8751A]' },
                         ].map((item, i) => (
                           <div key={i} className="flex items-center gap-3">
@@ -633,7 +633,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
       {/* ══════════════════════════════════════════════
           CTA BANNER
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 50%, #1a1a1a 100%)' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-white/5" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-white/5" />

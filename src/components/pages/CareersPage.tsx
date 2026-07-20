@@ -50,7 +50,7 @@ const whyJoinData = [
     title: 'In-House Design',
     desc: 'We don\'t outsource engineering. Our design team handles everything from concept to commissioning — giving you real, hands-on experience.',
     icon: Lightbulb,
-    accent: '#1B3A5C',
+    accent: '#2D2D2D',
     bgAccent: '#EFF6FF',
     stat: '100%',
     statLabel: 'In-House',
@@ -98,7 +98,7 @@ const lifePillars = [
     title: 'Professional Growth',
     desc: 'Structured training programs, industry certifications, and skill development workshops. We invest in your expertise.',
     icon: Rocket,
-    color: '#1B3A5C',
+    color: '#2D2D2D',
     bgColor: '#EFF6FF',
     items: ['Technical Training Programs', 'Industry Certifications', 'Leadership Development', 'Cross-Department Exposure'],
   },
@@ -207,8 +207,8 @@ const departments: { label: string; value: Department }[] = [
 ]
 
 const careerPath = [
-  { title: 'Graduate Trainee', years: '0-2 yrs', icon: GraduationCap, color: '#6B7280' },
-  { title: 'Engineer', years: '2-5 yrs', icon: Briefcase, color: '#1B3A5C' },
+  { title: 'Graduate Trainee', years: '0-2 yrs', icon: GraduationCap, color: '#4B5563' },
+  { title: 'Engineer', years: '2-5 yrs', icon: Briefcase, color: '#2D2D2D' },
   { title: 'Senior Engineer', years: '5-8 yrs', icon: Zap, color: '#0D9488' },
   { title: 'Lead Engineer', years: '8-12 yrs', icon: Star, color: '#E8751A' },
   { title: 'Manager', years: '12-18 yrs', icon: Crown, color: '#7C3AED' },
@@ -216,7 +216,7 @@ const careerPath = [
 ]
 
 const departmentColorMap: Record<string, string> = {
-  Engineering: '#1B3A5C',
+  Engineering: '#2D2D2D',
   Operations: '#E8751A',
   Design: '#7C3AED',
   Service: '#0D9488',
@@ -238,7 +238,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: HERO — Full-width with animated graph/arrow
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #1B3A5C 40%, #152D4F 100%)' }}>
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 40%, #1a1a1a 100%)' }}>
         {/* Animated rising graph SVG in background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Grid pattern */}
@@ -401,7 +401,7 @@ export default function CareersPage() {
           transition={{ delay: 1.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         >
-          <span className="text-white/25 text-xs uppercase tracking-[0.2em]">Explore</span>
+          <span className="text-white/25 text-sm uppercase tracking-[0.2em]">Explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>
             <ChevronDown className="w-5 h-5 text-white/25" />
           </motion.div>
@@ -414,17 +414,17 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#E8751A]/[0.03] rounded-full -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1B3A5C]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2D2D2D]/[0.02] rounded-full translate-y-1/3 -translate-x-1/3" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Why SVEPL
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Why Join Shri Vaari Electricals?</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
+              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
                 Six compelling reasons why engineers and professionals choose to build their careers with us.
               </p>
             </div>
@@ -458,7 +458,7 @@ export default function CareersPage() {
                     <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 group-hover:translate-x-1 transition-transform duration-300">
                       {item.title}
                     </h3>
-                    <p className="text-[#6B7280] text-sm leading-relaxed">{item.desc}</p>
+                    <p className="text-[#4B5563] text-sm leading-relaxed">{item.desc}</p>
 
                     {/* Bottom decorative element */}
                     <div className="mt-5 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -479,19 +479,19 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
         {/* Subtle dot pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #1B3A5C 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #2D2D2D 1px, transparent 0)',
           backgroundSize: '28px 28px',
         }} />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#1B3A5C]/20 text-[#1B3A5C] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge variant="outline" className="border-[#2D2D2D]/20 text-[#2D2D2D] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 Our Culture
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Life at SVEPL</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
+              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
                 Three pillars define the SVEPL experience — where professional growth, collaboration, and impact converge.
               </p>
             </div>
@@ -501,11 +501,11 @@ export default function CareersPage() {
           <div className="relative">
             {/* Connecting lines between pillars (desktop only) */}
             <div className="hidden lg:block absolute top-[50%] left-[16.67%] right-[16.67%] h-px">
-              <div className="w-full h-full border-t-2 border-dashed border-[#1B3A5C]/15" />
+              <div className="w-full h-full border-t-2 border-dashed border-[#2D2D2D]/15" />
               {/* Center dot */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E8751A] border-2 border-white shadow-md" />
               {/* Side dots */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#1B3A5C]/20 border-2 border-white" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#2D2D2D]/20 border-2 border-white" />
               <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#0D9488]/20 border-2 border-white" />
             </div>
 
@@ -529,7 +529,7 @@ export default function CareersPage() {
 
                       {/* Title */}
                       <h3 className="text-xl font-bold text-[#1A1A2E] mb-2">{pillar.title}</h3>
-                      <p className="text-[#6B7280] text-sm leading-relaxed mb-5">{pillar.desc}</p>
+                      <p className="text-[#4B5563] text-sm leading-relaxed mb-5">{pillar.desc}</p>
 
                       {/* Items list */}
                       <div className="space-y-2.5">
@@ -557,21 +557,21 @@ export default function CareersPage() {
       <section id="current-openings" className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative corner shapes */}
         <svg className="absolute top-0 right-0 w-40 h-40 opacity-[0.03]" viewBox="0 0 160 160">
-          <rect x="0" y="0" width="160" height="160" fill="#1B3A5C" />
+          <rect x="0" y="0" width="160" height="160" fill="#2D2D2D" />
           <rect x="20" y="20" width="120" height="120" fill="white" />
-          <rect x="40" y="40" width="80" height="80" fill="#1B3A5C" />
+          <rect x="40" y="40" width="80" height="80" fill="#2D2D2D" />
         </svg>
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-10">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 <Briefcase className="w-3 h-3 mr-1" />
                 Open Positions
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Current Openings</h2>
               <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
+              <p className="text-[#4B5563] max-w-xl mx-auto text-sm">
                 Find your next role in electrical engineering, project management, design, or service operations.
               </p>
             </div>
@@ -586,8 +586,8 @@ export default function CareersPage() {
                   onClick={() => setActiveDepartment(dept.value)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
-                      ? 'bg-[#1B3A5C] text-white shadow-md'
-                      : 'bg-[#F0F4F8] text-[#6B7280] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
+                      ? 'bg-[#2D2D2D] text-white shadow-md'
+                      : 'bg-[#F0F4F8] text-[#4B5563] hover:bg-[#E5E7EB] hover:text-[#1A1A2E]'
                   }`}
                 >
                   {dept.label}
@@ -600,7 +600,7 @@ export default function CareersPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <AnimatePresence mode="popLayout">
               {filteredJobs.map((job, i) => {
-                const deptColor = departmentColorMap[job.department] || '#6B7280'
+                const deptColor = departmentColorMap[job.department] || '#4B5563'
                 return (
                   <motion.div
                     key={job.title}
@@ -626,26 +626,26 @@ export default function CareersPage() {
 
                             {/* Badges row */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-xs font-medium gap-1">
+                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
                                 <MapPin className="w-3 h-3 text-[#E8751A]" />
                                 {job.location}
                               </Badge>
-                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-xs font-medium gap-1">
+                              <Badge variant="outline" className="border-[#E5E7EB] text-[#374151] rounded-md px-2.5 py-0.5 text-sm font-medium gap-1">
                                 <Clock className="w-3 h-3 text-[#0D9488]" />
                                 {job.experience}
                               </Badge>
-                              <Badge className="rounded-md px-2.5 py-0.5 text-xs font-semibold border-0" style={{ backgroundColor: `${deptColor}12`, color: deptColor }}>
+                              <Badge className="rounded-md px-2.5 py-0.5 text-sm font-semibold border-0" style={{ backgroundColor: `${deptColor}12`, color: deptColor }}>
                                 {job.department}
                               </Badge>
                             </div>
 
                             {/* Bottom row: type + apply button */}
                             <div className="flex items-center justify-between">
-                              <span className="text-xs text-[#9CA3AF] font-medium">{job.type}</span>
+                              <span className="text-sm text-[#9CA3AF] font-medium">{job.type}</span>
                               <Button
                                 onClick={() => navigate('contact')}
                                 size="sm"
-                                className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md px-4 h-8 text-xs font-semibold transition-colors"
+                                className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md px-4 h-8 text-sm font-semibold transition-colors"
                               >
                                 Apply Now
                                 <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -674,7 +674,7 @@ export default function CareersPage() {
       {/* ═══════════════════════════════════════════════════════
           SECTION 5: GROWTH PATH — Career progression ladder
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #1B3A5C 50%, #152D4F 100%)' }}>
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #2D2D2D 50%, #1a1a1a 100%)' }}>
         {/* Background texture */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
@@ -686,7 +686,7 @@ export default function CareersPage() {
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge className="bg-white/10 text-white/70 border border-white/10 rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge className="bg-white/10 text-white/70 border border-white/10 rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                 <TrendingUp className="w-3 h-3 mr-1" />
                 Career Progression
               </Badge>
@@ -722,7 +722,7 @@ export default function CareersPage() {
                       {/* Title */}
                       <p className="text-white text-sm font-bold text-center mb-1">{step.title}</p>
                       {/* Years */}
-                      <p className="text-white/40 text-xs text-center">{step.years}</p>
+                      <p className="text-white/40 text-sm text-center">{step.years}</p>
                       {/* Accent dot */}
                       <div className="w-2.5 h-2.5 rounded-full mx-auto mt-3" style={{ backgroundColor: step.color }} />
                     </motion.div>
@@ -747,7 +747,7 @@ export default function CareersPage() {
                       {/* Card */}
                       <div className="flex-1 bg-white/[0.06] backdrop-blur-sm rounded-xl border border-white/10 p-4">
                         <p className="text-white font-bold text-sm mb-0.5">{step.title}</p>
-                        <p className="text-white/40 text-xs">{step.years}</p>
+                        <p className="text-white/40 text-sm">{step.years}</p>
                       </div>
                     </div>
                   </FadeIn>
@@ -764,18 +764,18 @@ export default function CareersPage() {
       <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-[10%] left-[5%] w-48 h-48 bg-[#E8751A]/[0.04] rounded-full blur-2xl" />
-        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#1B3A5C]/[0.04] rounded-full blur-2xl" />
+        <div className="absolute bottom-[10%] right-[5%] w-64 h-64 bg-[#2D2D2D]/[0.04] rounded-full blur-2xl" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <div className="relative bg-white rounded-2xl shadow-xl border border-[#E5E7EB] overflow-hidden">
             {/* Top accent bar */}
-            <div className="h-2 bg-gradient-to-r from-[#1B3A5C] via-[#E8751A] to-[#0D9488]" />
+            <div className="h-2 bg-gradient-to-r from-[#2D2D2D] via-[#E8751A] to-[#0D9488]" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
               {/* Left: CTA content */}
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <FadeIn>
-                  <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+                  <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-sm font-semibold mb-4">
                     <Send className="w-3 h-3 mr-1" />
                     Apply Now
                   </Badge>
@@ -784,7 +784,7 @@ export default function CareersPage() {
                     <span className="text-[#E8751A]">Your Future?</span>
                   </h2>
                   <div className="section-bar mb-4" />
-                  <p className="text-[#6B7280] text-sm leading-relaxed mb-8 max-w-md">
+                  <p className="text-[#4B5563] text-sm leading-relaxed mb-8 max-w-md">
                     Take the next step in your career. Send your resume to our HR team and we&apos;ll connect with you about opportunities that match your skills and aspirations.
                   </p>
 
@@ -800,12 +800,12 @@ export default function CareersPage() {
                       </div>
                     </a>
                     <a href="tel:+919941905833" className="flex items-center gap-3 group">
-                      <div className="w-10 h-10 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1B3A5C]/20 transition-colors">
-                        <Phone className="w-5 h-5 text-[#1B3A5C]" />
+                      <div className="w-10 h-10 rounded-lg bg-[#2D2D2D]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#2D2D2D]/20 transition-colors">
+                        <Phone className="w-5 h-5 text-[#2D2D2D]" />
                       </div>
                       <div>
                         <p className="text-[10px] text-[#9CA3AF] uppercase tracking-wider font-medium">Phone</p>
-                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#1B3A5C] transition-colors">+91 9941905833</p>
+                        <p className="text-sm font-semibold text-[#1A1A2E] group-hover:text-[#2D2D2D] transition-colors">+91 9941905833</p>
                       </div>
                     </a>
                   </div>
@@ -822,7 +822,7 @@ export default function CareersPage() {
               </div>
 
               {/* Right: Decorative + Stats */}
-              <div className="relative bg-gradient-to-br from-[#1B3A5C] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center">
+              <div className="relative bg-gradient-to-br from-[#2D2D2D] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center">
                 {/* Background pattern */}
                 <div className="absolute inset-0 opacity-[0.04]" style={{
                   backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',

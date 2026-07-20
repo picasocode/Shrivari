@@ -179,18 +179,18 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 type AccentDef = { bg: string; light: string; border: string; text: string; ring: string }
 
 const accentMap: Record<string, AccentDef> = {
-  'Design & Engineering':                              { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+  'Design & Engineering':                              { bg: 'bg-[#2D2D2D]',     light: 'bg-[#2D2D2D]/5',   border: 'border-[#2D2D2D]',     text: 'text-[#2D2D2D]',     ring: 'ring-[#5A7EA8]' },
   'Project Execution':                                 { bg: 'bg-amber-500',      light: 'bg-amber-50',      border: 'border-amber-500',      text: 'text-amber-600',      ring: 'ring-amber-200' },
   'Testing & Commissioning':                           { bg: 'bg-teal-600',       light: 'bg-teal-50',       border: 'border-teal-600',       text: 'text-teal-700',       ring: 'ring-teal-200' },
   'Energy & Harmonic Audit':                           { bg: 'bg-green-600',      light: 'bg-green-50',      border: 'border-green-600',      text: 'text-green-700',      ring: 'ring-green-200' },
-  'AMC':                                               { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+  'AMC':                                               { bg: 'bg-[#2D2D2D]',     light: 'bg-[#2D2D2D]/5',   border: 'border-[#2D2D2D]',     text: 'text-[#2D2D2D]',     ring: 'ring-[#5A7EA8]' },
   'Liaison with CEIG':                                 { bg: 'bg-slate-600',      light: 'bg-slate-50',      border: 'border-slate-600',      text: 'text-slate-600',      ring: 'ring-slate-200' },
   'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO':      { bg: 'bg-cyan-600',       light: 'bg-cyan-50',       border: 'border-cyan-600',       text: 'text-cyan-700',       ring: 'ring-cyan-200' },
   'Solar Works':                                       { bg: 'bg-orange-500',     light: 'bg-orange-50',     border: 'border-orange-500',     text: 'text-orange-600',     ring: 'ring-orange-200' },
 }
 
 const defaultAccent: AccentDef = {
-  bg: 'bg-[#1B3A5C]', light: 'bg-[#1B3A5C]/5', border: 'border-[#1B3A5C]', text: 'text-[#1B3A5C]', ring: 'ring-[#5A7EA8]',
+  bg: 'bg-[#2D2D2D]', light: 'bg-[#2D2D2D]/5', border: 'border-[#2D2D2D]', text: 'text-[#2D2D2D]', ring: 'ring-[#5A7EA8]',
 }
 
 function getAccent(name: string): AccentDef {
@@ -218,7 +218,7 @@ export default function ServicesPage() {
       {/* ══════════════════════════════════════════════
           HERO SECTION — Navy gradient + floating icons
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 50%, #1a1a1a 100%)' }}>
         {/* Animated floating icons */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {floatingIcons.map((Icon, i) => {
@@ -369,12 +369,12 @@ export default function ServicesPage() {
                   className={`
                     relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
                     ${isActive
-                      ? 'bg-[#1B3A5C] text-white shadow-lg shadow-[#1B3A5C]/20'
+                      ? 'bg-[#2D2D2D] text-white shadow-lg shadow-[#2D2D2D]/20'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
                   `}
                 >
                   {cat}
-                  <span className={`ml-2 text-xs ${isActive ? 'text-white/70' : 'text-gray-400'}`}>
+                  <span className={`ml-2 text-sm ${isActive ? 'text-white/70' : 'text-gray-400'}`}>
                     ({count})
                   </span>
                 </button>
@@ -424,7 +424,7 @@ export default function ServicesPage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
-                          <Badge className={`${accent.bg} text-white border-0 px-2.5 py-0.5 text-xs font-semibold`}>
+                          <Badge className={`${accent.bg} text-white border-0 px-2.5 py-0.5 text-sm font-semibold`}>
                             {s.category}
                           </Badge>
                           <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -435,7 +435,7 @@ export default function ServicesPage() {
 
                       <CardContent className="p-5">
                         {/* Title */}
-                        <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug group-hover:text-[#1B3A5C] transition-colors">
+                        <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug group-hover:text-[#2D2D2D] transition-colors">
                           {s.name}
                         </h3>
 
@@ -447,14 +447,14 @@ export default function ServicesPage() {
                         {/* Bottom row: feature count + explore link */}
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                           <Badge
-                            className={`${accent.light} ${accent.text} border-0 text-xs font-semibold rounded-md px-2.5 py-1`}
+                            className={`${accent.light} ${accent.text} border-0 text-sm font-semibold rounded-md px-2.5 py-1`}
                           >
                             {s.capabilities.length} Capabilities
                           </Badge>
 
                           <span className={`
                             inline-flex items-center gap-1 text-sm font-semibold
-                            text-[#1B3A5C]
+                            text-[#2D2D2D]
                             transition-all duration-300
                             group-hover:gap-2
                           `}>
@@ -495,7 +495,7 @@ export default function ServicesPage() {
       {/* ══════════════════════════════════════════════
           CTA BANNER
           ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 100%)' }}>
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #1a1a1a 100%)' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
             style={{ background: 'radial-gradient(circle, #E8751A, transparent 70%)' }}

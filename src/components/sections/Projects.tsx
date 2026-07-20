@@ -128,10 +128,10 @@ export default function Projects() {
                       </h3>
                       <Badge
                         variant={project.category === 'ongoing' ? 'default' : 'secondary'}
-                        className={`shrink-0 text-xs ${
+                        className={`shrink-0 text-sm ${
                           project.category === 'ongoing'
                             ? 'bg-[#2196F3]/10 text-[#2196F3] border-[#2196F3]/20'
-                            : 'bg-[#1B3A5C]/5 text-[#1B3A5C] border-[#5A7EA8]'
+                            : 'bg-[#2D2D2D]/5 text-[#2D2D2D] border-[#5A7EA8]'
                         }`}
                       >
                         {project.category === 'ongoing' ? 'Ongoing' : 'Completed'}

@@ -149,7 +149,7 @@ export default function Blog() {
 
                     {/* Meta */}
                     <div className="flex items-center justify-between pt-3 border-t border-[#E8ECF0]">
-                      <div className="flex items-center gap-3 text-xs text-[#718096]">
+                      <div className="flex items-center gap-3 text-sm text-[#718096]">
                         <div className="flex items-center gap-1">
                           <User className="w-3 h-3" />
                           <span>{blog.author}</span>
@@ -162,7 +162,7 @@ export default function Blog() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-[#2196F3] hover:text-[#1E88E5] text-xs p-0 h-auto"
+                        className="text-[#2196F3] hover:text-[#1E88E5] text-sm p-0 h-auto"
                         onClick={() => setSelectedBlog(blog)}
                       >
                         Read More
