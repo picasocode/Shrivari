@@ -62,13 +62,13 @@ function BarCounter({ value, suffix, label, maxVal, delay = 0, icon: Icon }: { v
           <Icon className="w-4 h-4 text-[#E8751A]" />
         </div>
         <div className="flex-1 flex items-baseline justify-between">
-          <span className="text-white/60 text-sm font-medium">{label}</span>
-          <span className="text-2xl md:text-3xl font-bold text-white tabular-nums">
+          <span className="text-[#6B7280] text-sm font-medium">{label}</span>
+          <span className="text-2xl md:text-3xl font-bold text-[#1A1A2E] tabular-nums">
             {count}{suffix}
           </span>
         </div>
       </div>
-      <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+      <div className="h-2.5 bg-[#1B3A5C]/10 rounded-full overflow-hidden">
         <motion.div
           className="h-full rounded-full"
           style={{
@@ -163,36 +163,19 @@ export default function AboutPage() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-          HERO — Full-width parallax navy gradient
+          HERO — Plain light theme (no gradient)
           ═══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative h-[90vh] min-h-[560px] overflow-hidden flex items-center justify-center">
-        {/* Parallax background layers */}
+      <section ref={heroRef} className="relative h-[90vh] min-h-[560px] overflow-hidden flex items-center justify-center bg-[#EFEFEF]">
+        {/* Plain background with subtle parallax */}
         <motion.div
           style={{ y: heroY }}
-          className="absolute inset-0 bg-[#0C2340]"
+          className="absolute inset-0 bg-[#EFEFEF]"
         >
-          {/* Technical grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+          {/* Subtle grid pattern */}
+          <div className="absolute inset-0 opacity-[0.5]" style={{
+            backgroundImage: 'linear-gradient(#D8D8D8 1px, transparent 1px), linear-gradient(90deg, #D8D8D8 1px, transparent 1px)',
             backgroundSize: '60px 60px',
           }} />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0" style={{
-            background: 'radial-gradient(ellipse at 25% 45%, rgba(232,117,26,0.15) 0%, transparent 55%), radial-gradient(ellipse at 75% 60%, rgba(13,148,136,0.08) 0%, transparent 50%), linear-gradient(160deg, #0C2340 0%, #1B3A5C 40%, #152D4F 100%)',
-          }} />
-          {/* Floating accent shapes */}
-          <div className="absolute top-[12%] right-[8%] w-72 h-72 rounded-full bg-[#E8751A]/5 blur-3xl" />
-          <div className="absolute bottom-[15%] left-[5%] w-96 h-96 rounded-full bg-[#0D9488]/5 blur-3xl" />
-          {/* Circuit-like decorative lines */}
-          <svg className="absolute top-[20%] left-[3%] w-40 h-40 opacity-[0.06]" viewBox="0 0 160 160">
-            <circle cx="80" cy="80" r="60" stroke="#E8751A" strokeWidth="1" fill="none" />
-            <circle cx="80" cy="80" r="40" stroke="#E8751A" strokeWidth="0.5" fill="none" />
-            <line x1="80" y1="20" x2="80" y2="140" stroke="#E8751A" strokeWidth="0.5" />
-            <line x1="20" y1="80" x2="140" y2="80" stroke="#E8751A" strokeWidth="0.5" />
-          </svg>
-          <svg className="absolute bottom-[10%] right-[5%] w-32 h-32 opacity-[0.05]" viewBox="0 0 120 120">
-            <polygon points="60,10 110,90 10,90" stroke="#fff" strokeWidth="0.8" fill="none" />
-          </svg>
         </motion.div>
 
         {/* Content */}
@@ -211,10 +194,10 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25, ease: 'easeOut' }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-5 tracking-tight"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold text-[#1A1A2E] mb-5 tracking-tight"
           >
             Concept to{' '}
-            <span className="bg-gradient-to-r from-[#E8751A] to-[#F59E0B] bg-clip-text text-transparent">
+            <span className="text-[#E8751A]">
               Commissioning
             </span>
           </motion.h1>
@@ -223,7 +206,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
-            className="text-lg sm:text-xl md:text-2xl text-white/50 font-light mb-3 tracking-wide"
+            className="text-lg sm:text-xl md:text-2xl text-[#4B5563] font-light mb-3 tracking-wide"
           >
             Shri Vaari Electricals Pvt Ltd — 29+ Years of Engineering Excellence
           </motion.p>
@@ -232,7 +215,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55, ease: 'easeOut' }}
-            className="text-sm md:text-base text-white/35 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm md:text-base text-[#6B7280] max-w-2xl mx-auto leading-relaxed"
           >
             From a small firm in Chennai to one of South India&apos;s most trusted electrical engineering companies —
             with operations across 8 cities, projects in 6 countries, and a turnover exceeding ₹200 Crores.
@@ -251,8 +234,8 @@ export default function AboutPage() {
               { label: 'Up to 400 KV', icon: Zap },
               { label: '6 Countries', icon: Globe },
             ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-white/50">
-                <item.icon className="w-4 h-4 text-[#E8751A]/70" />
+              <div key={item.label} className="flex items-center gap-2 text-[#4B5563]">
+                <item.icon className="w-4 h-4 text-[#E8751A]" />
                 <span className="text-xs md:text-sm font-medium">{item.label}</span>
               </div>
             ))}
@@ -266,12 +249,12 @@ export default function AboutPage() {
           transition={{ delay: 1.2 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         >
-          <span className="text-white/30 text-xs uppercase tracking-[0.2em]">Scroll</span>
+          <span className="text-[#9CA3AF] text-xs uppercase tracking-[0.2em]">Scroll</span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ChevronDown className="w-5 h-5 text-white/30" />
+            <ChevronDown className="w-5 h-5 text-[#9CA3AF]" />
           </motion.div>
         </motion.div>
       </section>
@@ -357,17 +340,14 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          JOURNEY TIMELINE — Vertical milestone timeline
+          JOURNEY TIMELINE — Horizontal milestone timeline
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
-        {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-[#1B3A5C]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#E8751A]/[0.02] rounded-full translate-y-1/2 -translate-x-1/3" />
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#1B3A5C]/20 text-[#1B3A5C] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
                 Our Journey
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Milestones That Define Us</h2>
@@ -378,67 +358,62 @@ export default function AboutPage() {
             </div>
           </FadeIn>
 
-          {/* Timeline */}
-          <div className="relative max-w-3xl mx-auto">
-            {/* Center line */}
-            <div className="absolute left-5 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#1B3A5C]/20 via-[#E8751A]/30 to-[#0D9488]/20 md:-translate-x-px" />
+          {/* Horizontal Timeline */}
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {[...Array(5)].map((_, i) => (
+                <Card key={i} className="bg-[#EFEFEF] rounded-xl border border-[#E5E7EB]">
+                  <CardContent className="p-4 space-y-3">
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="relative">
+              {/* Horizontal connecting line */}
+              <div className="absolute top-5 left-0 right-0 h-px bg-gradient-to-r from-[#1B3A5C]/20 via-[#E8751A]/30 to-[#0D9488]/20 hidden md:block" />
 
-            {loading ? (
-              <div className="space-y-10">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="flex items-start">
-                    <div className="ml-14 md:ml-0 md:w-[calc(50%-2rem)]">
-                      <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm">
-                        <CardContent className="p-5 space-y-3">
-                          <Skeleton className="h-5 w-16 rounded-full" />
-                          <Skeleton className="h-6 w-48" />
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-3/4" />
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : milestones.map((m, i) => {
-              const isEven = i % 2 === 0
-              const MIcon = milestoneIconMap[m.icon] || Zap
-              return (
-                <FadeIn key={m.year + m.title} delay={i * 0.06}>
-                  <div className={`relative flex items-start mb-10 last:mb-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                    {/* Content card */}
-                    <div className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${isEven ? 'md:pr-0 md:text-right' : 'md:pl-0 md:text-left'}`}>
-                      <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300">
-                        <CardContent className="p-5">
-                          <div className={`flex items-center gap-3 mb-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                            <Badge className="rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider" style={{
-                              backgroundColor: `${m.color}10`,
-                              color: m.color,
-                              border: `1px solid ${m.color}25`,
-                            }}>
-                              {m.year}
-                            </Badge>
+              {/* Horizontal scroll container */}
+              <div className="flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:overflow-visible">
+                {milestones.map((m, i) => {
+                  const MIcon = milestoneIconMap[m.icon] || Zap
+                  return (
+                    <FadeIn key={m.year + m.title} delay={i * 0.06}>
+                      <div className="relative flex-shrink-0 w-[280px] md:w-auto">
+                        {/* Timeline node */}
+                        <div className="flex md:justify-center mb-4 relative z-10">
+                          <div className="w-10 h-10 rounded-full bg-white border-2 shadow-md flex items-center justify-center" style={{ borderColor: m.color }}>
+                            <MIcon className="w-4 h-4" style={{ color: m.color }} />
                           </div>
-                          <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{m.title}</h3>
-                          <p className="text-[#6B7280] text-sm leading-relaxed">{m.description}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
+                        </div>
 
-                    {/* Timeline node */}
-                    <div className="absolute left-5 md:left-1/2 -translate-x-1/2 flex items-center justify-center z-10">
-                      <div className="w-10 h-10 rounded-full bg-white border-2 shadow-md flex items-center justify-center" style={{ borderColor: m.color }}>
-                        <MIcon className="w-4 h-4" style={{ color: m.color }} />
+                        {/* Content card */}
+                        <Card className="bg-[#EFEFEF] rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
+                          <CardContent className="p-5">
+                            <div className="flex items-center gap-3 mb-3">
+                              <Badge className="rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider" style={{
+                                backgroundColor: `${m.color}10`,
+                                color: m.color,
+                                border: `1px solid ${m.color}25`,
+                              }}>
+                                {m.year}
+                              </Badge>
+                            </div>
+                            <h3 className="text-base font-bold text-[#1A1A2E] mb-2">{m.title}</h3>
+                            <p className="text-[#6B7280] text-sm leading-relaxed">{m.description}</p>
+                          </CardContent>
+                        </Card>
                       </div>
-                    </div>
-
-                    {/* Spacer for opposite side */}
-                    <div className="hidden md:block md:w-[calc(50%-2rem)]" />
-                  </div>
-                </FadeIn>
-              )
-            })}
-          </div>
+                    </FadeIn>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -523,39 +498,32 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          STATS — Horizontal bar chart style on dark background
+          STATS — Horizontal bar chart style on light background
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #1B3A5C 50%, #152D4F 100%)' }}>
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
-          backgroundSize: '24px 24px',
-        }} />
-        <div className="absolute top-[10%] right-[-5%] w-80 h-80 rounded-full bg-[#E8751A]/5 blur-3xl" />
-
+      <section className="py-16 md:py-24 relative overflow-hidden bg-[#EFEFEF]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left — Text */}
             <FadeIn>
-              <Badge className="bg-white/10 text-white/70 border border-white/10 rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+              <Badge className="bg-[#E8751A]/10 text-[#E8751A] border border-[#E8751A]/20 rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
                 By The Numbers
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-snug">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 leading-snug">
                 Numbers That Tell<br />Our Story
               </h2>
               <div className="section-bar mb-4" />
-              <p className="text-white/50 text-sm leading-relaxed max-w-md mb-6">
+              <p className="text-[#6B7280] text-sm leading-relaxed max-w-md mb-6">
                 Nearly three decades of relentless commitment reflected in every project delivered, every team member empowered, and every client relationship sustained. A CAGR of ~23% speaks to our consistent growth trajectory.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] shadow-sm">
                   <Shield className="w-5 h-5 text-[#E8751A] mb-2" />
-                  <p className="text-white text-sm font-semibold">CRISIL Rating</p>
+                  <p className="text-[#1A1A2E] text-sm font-semibold">CRISIL Rating</p>
                   <p className="text-[#E8751A] text-lg font-bold">BB+</p>
                 </div>
-                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] shadow-sm">
                   <TrendingUp className="w-5 h-5 text-[#0D9488] mb-2" />
-                  <p className="text-white text-sm font-semibold">Revenue CAGR</p>
+                  <p className="text-[#1A1A2E] text-sm font-semibold">Revenue CAGR</p>
                   <p className="text-[#0D9488] text-lg font-bold">~23%</p>
                 </div>
               </div>
@@ -583,12 +551,7 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           PROJECT STATS — Horizontal scrollable cards
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-20 bg-[#F0F4F8] relative overflow-hidden">
-        {/* Decorative dots pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #1B3A5C 1px, transparent 0)',
-          backgroundSize: '28px 28px',
-        }} />
+      <section className="py-16 md:py-20 bg-white relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
@@ -730,14 +693,9 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           BRANCHES — Map-like grid
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F8FAFB] relative overflow-hidden">
-        {/* Map-like decorative background */}
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #1B3A5C 1px, transparent 0)',
-          backgroundSize: '32px 32px',
-        }} />
+      <section className="py-16 md:py-24 bg-[#EFEFEF] relative overflow-hidden">
         {/* South India silhouette suggestion */}
-        <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-[0.03]" viewBox="0 0 500 500">
+        <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-[0.04]" viewBox="0 0 500 500">
           <ellipse cx="250" cy="250" rx="200" ry="220" stroke="#1B3A5C" strokeWidth="2" fill="none" />
           <ellipse cx="250" cy="250" rx="140" ry="160" stroke="#1B3A5C" strokeWidth="1" fill="none" />
           <ellipse cx="250" cy="250" rx="80" ry="100" stroke="#1B3A5C" strokeWidth="0.5" fill="none" />
@@ -829,26 +787,17 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           CTA — Join Our Journey
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #0C2340 100%)' }}>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8751A]/5 rounded-full -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#0D9488]/5 rounded-full translate-y-1/2 -translate-x-1/3" />
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-          backgroundSize: '80px 80px',
-        }} />
-
+      <section className="relative py-16 md:py-24 overflow-hidden bg-[#EFEFEF]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 text-center relative z-10">
           <FadeIn>
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 bg-white border border-[#E5E7EB] rounded-full px-4 py-1.5 mb-6 shadow-sm">
               <Shield className="w-4 h-4 text-[#E8751A]" />
-              <span className="text-white/60 text-xs font-medium">29+ Years of Trusted Partnerships</span>
+              <span className="text-[#4B5563] text-xs font-medium">29+ Years of Trusted Partnerships</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A2E] mb-4 leading-tight">
               Join Our Journey
             </h2>
-            <p className="text-white/50 mb-8 max-w-xl mx-auto text-sm leading-relaxed">
+            <p className="text-[#6B7280] mb-8 max-w-xl mx-auto text-sm leading-relaxed">
               Whether you&apos;re a client seeking reliable electrical solutions from concept to commissioning, or a professional looking to build a meaningful career — we&apos;d love to hear from you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -861,7 +810,7 @@ export default function AboutPage() {
               <Button
                 onClick={() => navigate('services')}
                 variant="outline"
-                className="border-white/20 text-white hover:bg-white/10 hover:border-white/40 rounded-full px-8 h-12 font-semibold transition-colors"
+                className="border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white rounded-full px-8 h-12 font-semibold transition-colors"
               >
                 Explore Our Services
               </Button>

@@ -2,10 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import {
-  ArrowRight, Star, Users, Building2,
-  MapPin, TrendingUp, Globe, Route, UserCheck, HardHat,
-} from 'lucide-react'
+import { ArrowRight, Star, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -16,42 +13,6 @@ import {
   fetchSettings, fetchProjects, fetchTestimonials, fetchBlogs,
   type SiteSettings, type Project, type Testimonial, type Blog,
 } from '@/lib/api'
-
-/* ─── animated counter ─── */
-function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-
-  useEffect(() => {
-    if (!isInView) return
-    let startTime: number | null = null
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(eased * value))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [isInView, value, duration])
-
-  return <span ref={ref}>{count}{suffix}</span>
-}
-
-/* ─── stat definitions ─── */
-const stats = [
-  { icon: Users, value: 3000, suffix: '+', label: 'Customers' },
-  { icon: UserCheck, value: 400, suffix: '+', label: 'Employees' },
-  { icon: MapPin, value: 7, suffix: '', label: 'Branches' },
-  { icon: TrendingUp, value: 125, suffix: ' Cr', label: 'Turnover' },
-  { icon: Globe, value: 20, suffix: '+', label: 'MNCs' },
-  { icon: Route, value: 100, suffix: 'Km+', label: 'Lines' },
-  { icon: Building2, value: 20, suffix: '+', label: 'Consultants' },
-  { icon: HardHat, value: 30, suffix: '+', label: 'EHV Projects' },
-]
-
-
 
 /* ─── fade-in wrapper ─── */
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -123,34 +84,6 @@ export default function HomePage() {
                 className="rounded-lg shadow w-full object-cover"
               />
             </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Stats Counter ─── */}
-      <section className="py-14 md:py-20 bg-[#1B3A5C]">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Our Achievements</h2>
-            <div className="section-bar mx-auto mb-4" />
-            <p className="text-white/60 mb-12 max-w-2xl mx-auto text-sm">
-              Numbers that reflect our commitment to excellence and decades of trusted service.
-            </p>
-          </FadeIn>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((s, i) => (
-              <FadeIn key={s.label} delay={i * 0.06}>
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 mb-3">
-                    <s.icon className="w-5 h-5 text-[#E8751A]" />
-                  </div>
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-1">
-                    <AnimatedCounter value={s.value} suffix={s.suffix} />
-                  </div>
-                  <p className="text-white/60 text-sm">{s.label}</p>
-                </div>
-              </FadeIn>
-            ))}
           </div>
         </div>
       </section>
