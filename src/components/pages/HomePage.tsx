@@ -72,7 +72,7 @@ export default function HomePage() {
               <Button
                 onClick={() => navigate('about')}
                 variant="outline"
-                className="border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
+                className="border-[#1F2937] text-[#1F2937] hover:bg-[#1F2937] hover:text-white rounded-md px-6 h-10 font-semibold transition-colors"
               >
                 Read More <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -100,7 +100,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('services')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white hover:border-[#1B3A5C] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -118,7 +118,7 @@ export default function HomePage() {
                 <FadeIn key={p.id} delay={i * 0.08}>
                   <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full">
                     <CardContent className="p-6">
-                      <Badge className="bg-[#F0F4F8] text-[#1B3A5C] hover:bg-[#E5E7EB] mb-3 rounded text-xs font-semibold">{p.category || 'Ongoing'}</Badge>
+                      <Badge className="bg-[#F0F4F8] text-[#1F2937] hover:bg-[#E5E7EB] mb-3 rounded text-xs font-semibold">{p.category || 'Ongoing'}</Badge>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
                       <p className="text-[#6B7280] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
                       <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7280]">
@@ -140,7 +140,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('services')}
-              className="border-[#E5E7EB] text-[#1B3A5C] rounded-md"
+              className="border-[#E5E7EB] text-[#1F2937] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -160,7 +160,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('testimonials')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white hover:border-[#1B3A5C] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -201,7 +201,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('testimonials')}
-              className="border-[#E5E7EB] text-[#1B3A5C] rounded-md"
+              className="border-[#E5E7EB] text-[#1F2937] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -221,7 +221,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('blog')}
-                className="hidden md:inline-flex border-[#E5E7EB] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white hover:border-[#1B3A5C] rounded-md"
+                className="hidden md:inline-flex border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -240,7 +240,7 @@ export default function HomePage() {
                       <div className="h-40 bg-cover bg-center rounded-t-lg" style={{ backgroundImage: `url(${b.coverImageUrl})` }} />
                     ) : (
                       <div className="h-40 bg-[#F0F4F8] flex items-center justify-center rounded-t-lg">
-                        <span className="text-4xl font-bold text-[#1B3A5C]/10">{b.title.charAt(0)}</span>
+                        <span className="text-4xl font-bold text-[#1F2937]/10">{b.title.charAt(0)}</span>
                       </div>
                     )}
                     <CardContent className="p-6">
@@ -259,7 +259,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => navigate('blog')}
-              className="border-[#E5E7EB] text-[#1B3A5C] rounded-md"
+              className="border-[#E5E7EB] text-[#1F2937] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
