@@ -55,7 +55,7 @@ function AppContent() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-8 h-8 border-3 border-[#1B3A5C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-[#1F2937] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
