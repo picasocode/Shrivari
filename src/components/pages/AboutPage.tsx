@@ -367,12 +367,12 @@ export default function AboutPage() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 [grid-auto-rows:1fr]">
               {milestones.map((m, i) => {
                 const MIcon = milestoneIconMap[m.icon] || Zap
                 return (
-                  <FadeIn key={m.year + m.title} delay={i * 0.06}>
-                    <Card className="group relative bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col overflow-hidden">
+                  <FadeIn key={m.year + m.title} delay={i * 0.06} className="h-full">
+                    <Card className="group relative bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full min-h-[300px] flex flex-col overflow-hidden">
                       {/* Top accent bar */}
                       <div className="h-1.5 w-full" style={{ backgroundColor: m.color }} />
                       <CardContent className="p-6 flex flex-col flex-1">
