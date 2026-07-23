@@ -188,7 +188,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25, ease: 'easeOut' }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold text-[#1A1A2E] mb-5 tracking-tight"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold text-black mb-5 tracking-tight"
           >
             Concept to{' '}
             <span className="text-[#E8751A]">
@@ -200,7 +200,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
-            className="text-lg sm:text-xl md:text-2xl text-[#4B5563] font-light mb-3 tracking-wide"
+            className="text-lg sm:text-xl md:text-2xl text-black font-light mb-3 tracking-wide"
           >
             Shri Vaari Electricals Pvt Ltd — 29+ Years of Engineering Excellence
           </motion.p>
@@ -209,7 +209,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55, ease: 'easeOut' }}
-            className="text-sm md:text-base text-[#6B7280] max-w-2xl mx-auto leading-relaxed"
+            className="text-sm md:text-base text-black max-w-2xl mx-auto leading-relaxed"
           >
             From a small firm in Chennai to one of South India&apos;s most trusted electrical engineering companies —
             with operations across 8 cities, projects in 6 countries, and a turnover exceeding ₹200 Crores.
@@ -228,7 +228,7 @@ export default function AboutPage() {
               { label: 'Up to 400 KV', icon: Zap },
               { label: '6 Countries', icon: Globe },
             ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-[#4B5563]">
+              <div key={item.label} className="flex items-center gap-2 text-black">
                 <item.icon className="w-4 h-4 text-[#E8751A]" />
                 <span className="text-xs md:text-sm font-medium">{item.label}</span>
               </div>
