@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -30,7 +30,7 @@ export interface JourneyProps {
   className?: string
 }
 
-export default function Journey3x3AnimatedFlow({
+export default function Journey3x3LightFlow({
   label = 'OUR EVOLUTION',
   title = 'Engineered for Scale and Precision',
   description = 'From a visionary enterprise in 1998 to a ₹200+ Crore industry leader — every milestone represents innovation and execution.',
@@ -44,15 +44,15 @@ export default function Journey3x3AnimatedFlow({
 
   const sectionRef = useRef<HTMLElement>(null)
 
-  /* Scroll Progress for Liquid Energy Beam */
+  /* Scroll-driven animation beam for the S-curve */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 75%', 'end 85%'],
+    offset: ['start 70%', 'end 85%'],
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping: 20,
+    stiffness: 70,
+    damping: 24,
     restDelta: 0.001,
   })
 
@@ -79,10 +79,10 @@ export default function Journey3x3AnimatedFlow({
   const handleCta = onCtaClick ?? (() => navigate('contact'))
 
   /* 
-    Snake Mapping Matrix:
-    Row 0: Cols 0, 1, 2  (Step 1, 2, 3) -> Left to Right
-    Row 1: Cols 2, 1, 0  (Step 6, 5, 4) -> Right to Left
-    Row 2: Cols 0, 1, 2  (Step 7, 8, 9) -> Left to Right
+    Snake Matrix Ordering:
+    Row 0: 01 → 02 → 03 (Cols 0, 1, 2)
+    Row 1: 06 ← 05 ← 04 (Cols 2, 1, 0)
+    Row 2: 07 → 08 → 09 (Cols 0, 1, 2)
   */
   const getSnakeCard = (row: number, col: number) => {
     let index = 0
@@ -97,26 +97,24 @@ export default function Journey3x3AnimatedFlow({
     }
   }
 
-  /* Calculate trigger progress point per card for dynamic glow activation */
-  const cardThreshold = (step: number) => (step - 0.5) / 9
-
   return (
     <section 
       ref={sectionRef} 
-      className={`py-24 bg-slate-950 text-white relative overflow-hidden ${className}`.trim()}
+      className={`py-24 bg-slate-50/70 text-slate-900 relative overflow-hidden font-sans ${className}`.trim()}
+      style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
     >
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-orange-500/10 blur-[140px] pointer-events-none rounded-full" />
+      {/* Light Ambient Glow Background */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-orange-200/30 blur-[130px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-[#FF6B50]" />
@@ -125,17 +123,17 @@ export default function Journey3x3AnimatedFlow({
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
               {title}
             </h2>
 
-            <p className="text-slate-400 text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
+            <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto tracking-normal">
               {description}
             </p>
 
             <Button
               onClick={handleCta}
-              className="bg-[#FF6B50] hover:bg-[#e0583f] text-white rounded-full px-8 h-12 text-sm font-semibold shadow-lg shadow-orange-500/25 transition-all duration-300 hover:scale-105 active:scale-95"
+              className="bg-[#FF6B50] hover:bg-[#e0583f] text-white rounded-full px-8 h-12 text-sm font-semibold shadow-lg shadow-orange-500/20 transition-all duration-200 hover:scale-105 active:scale-95"
             >
               <span>{ctaText}</span>
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -147,13 +145,13 @@ export default function Journey3x3AnimatedFlow({
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[...Array(9)].map((_, i) => (
-              <Skeleton key={i} className="h-56 w-full rounded-2xl bg-slate-900" />
+              <Skeleton key={i} className="h-56 w-full rounded-2xl bg-slate-200/60" />
             ))}
           </div>
         ) : (
           <div className="relative">
             
-            {/* Desktop SVG Fluid Energy Beam (Hidden on Mobile) */}
+            {/* Desktop SVG Fluid Energy Beam (S-Snake Path) */}
             <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
               <svg 
                 className="w-full h-full" 
@@ -161,27 +159,27 @@ export default function Journey3x3AnimatedFlow({
                 fill="none" 
                 preserveAspectRatio="none"
               >
-                {/* Background Dim Guide Line */}
+                {/* Subtle Base Path Line */}
                 <path
-                  d="M 200 150 L 1000 150 C 1180 150 1180 450 1000 450 L 200 450 C 20 450 20 750 200 750 L 1000 750"
-                  stroke="#1E293B"
+                  d="M 200 150 L 1000 150 C 1170 150 1170 450 1000 450 L 200 450 C 30 450 30 750 200 750 L 1000 750"
+                  stroke="#E2E8F0"
                   strokeWidth="4"
                   strokeLinecap="round"
                 />
 
-                {/* Animated Gradient Flowing Beam */}
+                {/* Animated Light Energy Flow Path */}
                 <motion.path
-                  d="M 200 150 L 1000 150 C 1180 150 1180 450 1000 450 L 200 450 C 20 450 20 750 200 750 L 1000 750"
-                  stroke="url(#snake-flow-gradient)"
+                  d="M 200 150 L 1000 150 C 1170 150 1170 450 1000 450 L 200 450 C 30 450 30 750 200 750 L 1000 750"
+                  stroke="url(#light-snake-gradient)"
                   strokeWidth="5"
                   strokeLinecap="round"
                   style={{ pathLength: smoothProgress }}
                 />
 
                 <defs>
-                  <linearGradient id="snake-flow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="light-snake-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#FF6B50" />
-                    <stop offset="50%" stopColor="#FF8C00" />
+                    <stop offset="50%" stopColor="#FFA07A" />
                     <stop offset="100%" stopColor="#FF3B00" />
                   </linearGradient>
                 </defs>
@@ -197,50 +195,50 @@ export default function Journey3x3AnimatedFlow({
                   return (
                     <motion.div
                       key={`${row}-${col}`}
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
+                      viewport={{ once: true, margin: '-30px' }}
                       transition={{ 
-                        duration: 0.5, 
-                        delay: (row * 3 + col) * 0.07,
+                        duration: 0.45, 
+                        delay: (row * 3 + col) * 0.06,
                         ease: [0.21, 0.47, 0.32, 0.98]
                       }}
                       className="group relative"
                     >
-                      <div className="relative p-7 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-2xl transition-all duration-300 group-hover:-translate-y-2 group-hover:border-orange-500/50 group-hover:shadow-orange-500/10 flex flex-col justify-between min-h-[230px] overflow-hidden">
+                      <div className="relative p-7 rounded-2xl bg-white border border-slate-200/80 shadow-xl shadow-slate-200/50 transition-all duration-300 group-hover:-translate-y-2 group-hover:border-orange-300 group-hover:shadow-2xl group-hover:shadow-orange-500/10 flex flex-col justify-between min-h-[230px] overflow-hidden">
                         
-                        {/* Animated Glow Highlight on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        {/* Subtle Orange Glow Top Highlight on Hover */}
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FF6B50] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                        {/* Large Step Watermark */}
-                        <span className="absolute right-4 top-1 text-7xl font-black text-slate-800/50 pointer-events-none select-none group-hover:text-orange-500/10 transition-colors">
+                        {/* Large Watermark Step Number */}
+                        <span className="absolute right-4 top-1 text-7xl font-black text-slate-100 pointer-events-none select-none group-hover:text-orange-500/10 transition-colors tracking-tighter">
                           {String(stepNumber).padStart(2, '0')}
                         </span>
 
                         <div>
                           {/* Year Badge */}
                           <div className="mb-4">
-                            <span className="inline-block px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-[#FF6B50] text-xs font-bold tracking-wider group-hover:bg-[#FF6B50] group-hover:text-white transition-colors">
+                            <span className="inline-block px-3 py-1 rounded-full bg-orange-50 border border-orange-200/60 text-[#FF6B50] text-xs font-bold tracking-wider group-hover:bg-[#FF6B50] group-hover:text-white group-hover:border-[#FF6B50] transition-colors">
                               {milestone.year}
                             </span>
                           </div>
 
                           {/* Title */}
-                          <h3 className="text-lg font-bold text-white mb-2 leading-snug group-hover:text-[#FF6B50] transition-colors">
+                          <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug tracking-tight group-hover:text-[#FF6B50] transition-colors">
                             {milestone.title}
                           </h3>
 
                           {/* Description */}
-                          <p className="text-xs text-slate-400 leading-relaxed">
+                          <p className="text-xs text-slate-500 leading-relaxed tracking-normal">
                             {milestone.description}
                           </p>
                         </div>
 
                         {/* Footer Status */}
-                        <div className="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-medium text-slate-500">
-                          <span>Milestone {stepNumber} / 9</span>
+                        <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-400">
+                          <span>Step {stepNumber} / 9</span>
                           <span className="text-[#FF6B50] font-semibold group-hover:translate-x-1 transition-transform">
-                            {isReversedRow ? '← Flow' : 'Flow →'}
+                            {isReversedRow ? '← Snake Flow' : 'Snake Flow →'}
                           </span>
                         </div>
 
