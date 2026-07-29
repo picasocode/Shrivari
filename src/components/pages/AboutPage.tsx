@@ -298,143 +298,198 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          JOURNEY — S-curve animated flowing timeline
+          JOURNEY — Horizontal S-curve timeline (intro panel + snake flow)
           ═══════════════════════════════════════════════════════ */}
       <section ref={journeyRef} className="py-16 md:py-24 bg-white relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14 md:mb-20">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Our Journey
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Milestones That Define Us</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of grit, innovation, and the relentless pursuit of excellence.
-              </p>
-            </div>
-          </FadeIn>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
-          {loading ? (
-            <div className="space-y-8 max-w-2xl mx-auto">
-              {[...Array(5)].map((_, i) => (
-                <Card key={i} className="bg-white rounded-2xl border border-[#E5E7EB]">
-                  <CardContent className="p-6 space-y-3">
-                    <Skeleton className="h-5 w-16 rounded-full" />
-                    <Skeleton className="h-6 w-full" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="relative">
-              {/* ─── Desktop animated S-curve SVG ─── */}
-              <svg
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full hidden lg:block pointer-events-none z-0"
-                viewBox="0 0 100 1000"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <linearGradient id="journeyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#E8751A" />
-                    <stop offset="50%" stopColor="#1F2937" />
-                    <stop offset="100%" stopColor="#0D9488" />
-                  </linearGradient>
-                </defs>
-                <motion.path
-                  d="M 50,0 C 85,80 85,120 50,200 C 15,280 15,320 50,400 C 85,480 85,520 50,600 C 15,680 15,720 50,800 C 85,880 85,920 50,1000"
-                  stroke="url(#journeyGrad)"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                  style={{ pathLength, opacity: 0.9 }}
-                />
-                {/* Subtle glow underlay */}
-                <motion.path
-                  d="M 50,0 C 85,80 85,120 50,200 C 15,280 15,320 50,400 C 85,480 85,520 50,600 C 15,680 15,720 50,800 C 85,880 85,920 50,1000"
-                  stroke="url(#journeyGrad)"
-                  strokeWidth="10"
-                  fill="none"
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                  style={{ pathLength, opacity: 0.12 }}
-                />
-              </svg>
+            {/* ─── Left: Intro text panel (sticky on desktop) ─── */}
+            <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+              <FadeIn>
+                <span className="block text-[#E8751A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+                  Our Journey
+                </span>
+                <h2 className="text-3xl md:text-4xl lg:text-[2.6rem] font-bold text-[#1A1A2E] mb-4 leading-[1.1]">
+                  We have best team and best process
+                </h2>
+                <div className="section-bar mb-5" />
+                <p className="text-[#6B7280] text-sm leading-relaxed mb-7 max-w-md">
+                  From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of grit, innovation, and the relentless pursuit of excellence.
+                </p>
+                <Button
+                  onClick={() => navigate('contact')}
+                  className="bg-[#E8751A] hover:bg-[#d56817] text-white rounded-full px-6 h-11 font-semibold shadow-md hover:shadow-lg transition-all"
+                >
+                  Get Started <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
 
-              {/* ─── Mobile vertical line ─── */}
-              <div className="lg:hidden absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-[#E8751A] via-[#1F2937] to-[#0D9488] opacity-40" />
-
-              {/* ─── Alternating milestone cards ─── */}
-              <div className="grid lg:grid-cols-2 gap-8 lg:gap-x-32 lg:gap-y-20 relative z-10">
-                {milestones.map((m, i) => {
-                  const MIcon = milestoneIconMap[m.icon] || Zap
-                  const isLeft = i % 2 === 0
-                  const nodePos = isLeft ? '-right-3' : '-left-3'
-                  return (
-                    <FadeIn key={m.year + m.title} delay={i * 0.05}>
-                      <div className={`relative pl-12 lg:pl-0 ${isLeft ? 'lg:pr-16' : 'lg:pl-16 lg:mt-16'}`}>
-                        {/* Mobile timeline node */}
-                        <div
-                          className="lg:hidden absolute left-3 top-7 w-4 h-4 rounded-full border-4 border-white shadow-md z-10"
-                          style={{ backgroundColor: m.color }}
-                        />
-                        {/* Desktop timeline node on the curve */}
-                        <div
-                          className={`hidden lg:flex absolute top-8 ${nodePos} w-5 h-5 rounded-full shadow-lg z-10 ring-4 ring-white items-center justify-center`}
-                          style={{ backgroundColor: m.color }}
-                        >
-                          <div className="absolute inset-0 rounded-full animate-ping opacity-40" style={{ backgroundColor: m.color }} />
-                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                        </div>
-
-                        {/* Card */}
-                        <Card className="group bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                          {/* Top accent bar */}
-                          <div className="h-1.5 w-full" style={{ backgroundColor: m.color }} />
-                          <CardContent className="p-6">
-                            {/* Icon + Year */}
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${m.color}15` }}>
-                                <MIcon className="w-6 h-6" style={{ color: m.color }} />
-                              </div>
-                              <span className="text-2xl font-extrabold tabular-nums" style={{ color: m.color }}>
-                                {m.year}
-                              </span>
-                            </div>
-                            {/* Title */}
-                            <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-snug">{m.title}</h3>
-                            {/* Description */}
-                            <p className="text-[#6B7280] text-sm leading-relaxed">{m.description}</p>
-                            {/* Index marker footer */}
-                            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#F3F4F6]">
-                              <span className="text-[10px] font-bold tracking-widest text-[#9CA3AF]">
-                                {String(i + 1).padStart(2, '0')} / {String(milestones.length).padStart(2, '0')}
-                              </span>
-                              <div className="flex-1 h-px bg-[#F3F4F6]" />
-                              <ArrowRight className="w-3.5 h-3.5 text-[#9CA3AF] group-hover:text-[#E8751A] group-hover:translate-x-1 transition-all" />
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </FadeIn>
-                  )
-                })}
-              </div>
-
-              {/* End cap */}
-              <div className="hidden lg:flex justify-center mt-16">
-                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#EFEFEF] border border-[#E5E7EB]">
-                  <Sparkles className="w-4 h-4 text-[#E8751A]" />
-                  <span className="text-xs font-semibold text-[#1F2937] tracking-wider">THE JOURNEY CONTINUES…</span>
+                {/* Mini stat strip */}
+                <div className="mt-10 pt-8 border-t border-[#F3F4F6] grid grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-2xl font-bold text-[#1A1A2E] tabular-nums">29+</p>
+                    <p className="text-xs text-[#6B7280] mt-0.5">Years</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-[#1A1A2E] tabular-nums">9</p>
+                    <p className="text-xs text-[#6B7280] mt-0.5">Milestones</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-[#1A1A2E] tabular-nums">₹200Cr</p>
+                    <p className="text-xs text-[#6B7280] mt-0.5">Turnover</p>
+                  </div>
                 </div>
-              </div>
+              </FadeIn>
             </div>
-          )}
+
+            {/* ─── Right: S-curve timeline ─── */}
+            <div className="lg:col-span-8">
+              {loading ? (
+                <div className="space-y-6">
+                  {[...Array(5)].map((_, i) => (
+                    <Card key={i} className="bg-white rounded-2xl border border-[#E5E7EB]">
+                      <CardContent className="p-6 space-y-3">
+                        <Skeleton className="h-5 w-16 rounded-full" />
+                        <Skeleton className="h-6 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-3/4" />
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : milestones.length === 0 ? (
+                <p className="text-[#6B7280] text-sm">No milestones to display.</p>
+              ) : (
+                <div className="relative">
+                  {/* ─── Desktop: Horizontal snake S-curve ─── */}
+                  <div className="hidden lg:block relative min-h-[640px]">
+                    {/* SVG snake curve (single coral line) */}
+                    <svg
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                    >
+                      {/* Subtle glow underlay */}
+                      <motion.path
+                        d="M 16.67,83.33 L 78.33,83.33 Q 83.33,83.33 83.33,78.33 L 83.33,55 Q 83.33,50 78.33,50 L 21.67,50 Q 16.67,50 16.67,45 L 16.67,21.67 Q 16.67,16.67 21.67,16.67 L 83.33,16.67"
+                        stroke="#E8751A"
+                        strokeWidth="9"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        vectorEffect="non-scaling-stroke"
+                        style={{ pathLength, opacity: 0.1 }}
+                      />
+                      {/* Main line */}
+                      <motion.path
+                        d="M 16.67,83.33 L 78.33,83.33 Q 83.33,83.33 83.33,78.33 L 83.33,55 Q 83.33,50 78.33,50 L 21.67,50 Q 16.67,50 16.67,45 L 16.67,21.67 Q 16.67,16.67 21.67,16.67 L 83.33,16.67"
+                        stroke="#E8751A"
+                        strokeWidth="2.5"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        vectorEffect="non-scaling-stroke"
+                        style={{ pathLength, opacity: 0.85 }}
+                      />
+                    </svg>
+
+                    {/* 3x3 grid of milestones (snake order) */}
+                    <div className="relative z-10 grid grid-cols-3 grid-rows-3 gap-x-6 gap-y-2 h-full min-h-[640px]">
+                      {(() => {
+                        const visible = milestones.slice(0, 9)
+                        // Map data index -> grid cell (col, row) in snake order
+                        // bottom row (row 3): nodes 1,2,3 -> L→R
+                        // middle row (row 2): nodes 4,5,6 -> R→L
+                        // top row (row 1): nodes 7,8,9 -> L→R
+                        const gridMap = [
+                          'col-start-1 row-start-3', // 1 bottom-left
+                          'col-start-2 row-start-3', // 2 bottom-center
+                          'col-start-3 row-start-3', // 3 bottom-right
+                          'col-start-3 row-start-2', // 4 middle-right
+                          'col-start-2 row-start-2', // 5 middle-center
+                          'col-start-1 row-start-2', // 6 middle-left
+                          'col-start-1 row-start-1', // 7 top-left
+                          'col-start-2 row-start-1', // 8 top-center
+                          'col-start-3 row-start-1', // 9 top-right
+                        ]
+                        return visible.map((m, i) => {
+                          const isLast = i === visible.length - 1
+                          return (
+                            <FadeIn key={m.id || (m.year + m.title)} delay={i * 0.06} className={`relative ${gridMap[i] || ''}`}>
+                              <div className="relative h-full flex flex-col items-center justify-center text-center px-2 py-3">
+                                {/* Last milestone: subtle circular background */}
+                                {isLast && (
+                                  <div className="absolute inset-0 -m-3 rounded-full bg-[#F0F4F8] -z-10" />
+                                )}
+                                {/* Large faded background number */}
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute text-8xl xl:text-[7rem] font-extrabold text-[#E8EAEF] select-none pointer-events-none leading-none z-0"
+                                  style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                                >
+                                  {i + 1}
+                                </span>
+                                {/* Content */}
+                                <div className="relative z-10 max-w-[190px]">
+                                  {/* Small gray circle marker */}
+                                  <div className="w-2.5 h-2.5 rounded-full bg-[#9CA3AF] mx-auto mb-3 ring-4 ring-white shadow-sm" />
+                                  <div className="text-[11px] font-bold tracking-wider text-[#E8751A] mb-1 uppercase">{m.year}</div>
+                                  <h3 className="text-sm font-bold text-[#1A1A2E] mb-1.5 leading-snug">{m.title}</h3>
+                                  <p className="text-[11px] text-[#6B7280] leading-relaxed line-clamp-3">{m.description}</p>
+                                </div>
+                              </div>
+                            </FadeIn>
+                          )
+                        })
+                      })()}
+                    </div>
+
+                    {/* End cap */}
+                    <div className="flex justify-center mt-4">
+                      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EFEFEF] border border-[#E5E7EB]">
+                        <Sparkles className="w-3.5 h-3.5 text-[#E8751A]" />
+                        <span className="text-[11px] font-semibold text-[#1F2937] tracking-wider">THE JOURNEY CONTINUES…</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ─── Mobile: Vertical timeline with faded numbers ─── */}
+                  <div className="lg:hidden relative pl-8">
+                    {/* Vertical line */}
+                    <div className="absolute left-3 top-0 bottom-0 w-px bg-[#E8751A] opacity-40" />
+                    <div className="space-y-5">
+                      {milestones.map((m, i) => (
+                        <FadeIn key={m.id || (m.year + m.title)} delay={i * 0.05}>
+                          <div className="relative">
+                            {/* Marker */}
+                            <div className="absolute -left-[1.45rem] top-3 w-3 h-3 rounded-full bg-[#9CA3AF] ring-4 ring-white shadow-sm z-10" />
+                            {/* Card */}
+                            <div className="relative bg-white rounded-xl border border-[#E5E7EB] p-4 shadow-sm overflow-hidden">
+                              {/* Large faded background number */}
+                              <span
+                                aria-hidden="true"
+                                className="absolute text-6xl font-extrabold text-[#E8EAEF] select-none pointer-events-none leading-none"
+                                style={{ top: '-0.25rem', right: '0.5rem' }}
+                              >
+                                {i + 1}
+                              </span>
+                              <div className="relative z-10">
+                                <div className="text-[11px] font-bold tracking-wider text-[#E8751A] mb-1 uppercase">{m.year}</div>
+                                <h3 className="text-sm font-bold text-[#1A1A2E] mb-1.5 leading-snug">{m.title}</h3>
+                                <p className="text-xs text-[#6B7280] leading-relaxed">{m.description}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </FadeIn>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
