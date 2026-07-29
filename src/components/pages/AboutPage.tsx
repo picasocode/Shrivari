@@ -5,15 +5,15 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import {
   ChevronRight, Target, Eye, Heart, Shield, Award, Users, Clock,
   ChevronDown, Building2, Factory, Rocket, Sparkles, ArrowRight,
-  MapPin, Zap, Sun, CheckCircle2, XCircle, Globe, TrendingUp,
+  MapPin, Zap, Sun, CheckCircle2, Globe, TrendingUp,
   Cpu, Wrench, FileCheck, Handshake, Lightbulb, BadgeCheck, Star,
-  Factory as Manufacturing, Network, LayoutGrid,
+  Factory as Manufacturing,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
-import { fetchSettings, fetchMilestones, fetchBranches, type SiteSettings, type Milestone, type Branch } from '@/lib/api'
+import { fetchSettings, fetchMilestones, type SiteSettings, type Milestone } from '@/lib/api'
 import { Skeleton } from '@/components/ui/skeleton'
 
 /* ─── Fade-in helper ─── */
@@ -101,38 +101,11 @@ const branchIconMap: Record<string, React.ElementType> = {
   Building2, MapPin, Globe, Zap, Factory, Award,
 }
 
-const uspData = [
-  { category: 'Products', svepl: 'LT/HT/Indoor/Outdoor/CRP — all under one roof with independent Type tested design certified by CPRI/CE', competitor: 'Usually specialize in only 1-2 product categories; rely on third-party type testing', sveplHas: true },
-  { category: 'Projects', svepl: 'All Industries / Commercial / Residential / All Voltages bundled together — single window solution', competitor: 'Typically limited to specific industries or voltage levels; fragmented offerings', sveplHas: true },
-  { category: 'CEIG/TNEB Compliances', svepl: '100% compliance — 2000+ approvals and Safety certificates obtained', competitor: 'Often outsource compliance; limited in-house expertise; lower approval rates', sveplHas: true },
-  { category: 'Organization', svepl: 'Fast decision making / Flexible team principles — agile and responsive', competitor: 'Bureaucratic processes; slow turnaround times; rigid structures', sveplHas: true },
-  { category: 'Design & Engineering', svepl: 'Completely IN-HOUSE design and engineering capability', competitor: 'Depend on external design consultants; limited customization', sveplHas: true },
-  { category: 'Infrastructure', svepl: 'Comprehensive infrastructure including own Transport fleet', competitor: 'Limited infrastructure; rely on external logistics', sveplHas: true },
-  { category: 'Licenses', svepl: 'ESA License issued by all CEIGs in South India & approved by CEA; TNEB Class-1 Contractor', competitor: 'Limited regional licenses; cannot operate pan-South India', sveplHas: true },
-]
-
-
-
-const projectStats = [
-  { label: 'EHV Overhead Lines', value: '100+ KMs', icon: Network },
-  { label: 'EHV UG Cable Works', value: '45+ KMs', icon: Zap },
-  { label: 'EHV Switchyards', value: '65 Projects', icon: Building2 },
-  { label: 'GIS Substations', value: '10+ Projects', icon: LayoutGrid },
-  { label: 'Solar Rooftop', value: '5.5 MW', icon: Sun },
-  { label: 'Solar Ground Mount', value: '450 MW', icon: Sun },
-  { label: 'CEIG/CEA Approvals', value: '2000+', icon: FileCheck },
-  { label: 'AMC Customers', value: '10+', icon: Wrench },
-  { label: 'Liasion Approvals', value: '2500+', icon: Shield },
-  { label: 'LT Panels', value: '10000+', icon: Manufacturing },
-  { label: '11/22/33 KV Projects', value: '1200+', icon: Cpu },
-]
-
 /* ─── Main Component ─── */
 export default function AboutPage() {
   const { navigate } = useRouter()
   const [settings, setSettings] = useState<SiteSettings | null>(null)
   const [milestones, setMilestones] = useState<Milestone[]>([])
-  const [branches, setBranches] = useState<Branch[]>([])
   const [loading, setLoading] = useState(true)
 
   /* Parallax hero scroll */
@@ -145,11 +118,9 @@ export default function AboutPage() {
     Promise.all([
       fetchSettings().catch(() => null),
       fetchMilestones(true).catch(() => []),
-      fetchBranches(true).catch(() => []),
-    ]).then(([s, m, b]) => {
+    ]).then(([s, m]) => {
       setSettings(s as SiteSettings | null)
       setMilestones(m as Milestone[])
-      setBranches(b as Branch[])
       setLoading(false)
     })
   }, [])
@@ -215,25 +186,6 @@ export default function AboutPage() {
             with operations across 8 cities, projects in 6 countries, and a turnover exceeding ₹200 Crores.
           </motion.p>
 
-          {/* Quick stats row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7, ease: 'easeOut' }}
-            className="flex flex-wrap justify-center gap-4 md:gap-8 mt-8"
-          >
-            {[
-              { label: 'CRISIL BB+', icon: Shield },
-              { label: 'TNEB Class-1', icon: Award },
-              { label: 'Up to 400 KV', icon: Zap },
-              { label: '6 Countries', icon: Globe },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-black">
-                <item.icon className="w-4 h-4 text-[#E8751A]" />
-                <span className="text-xs md:text-sm font-medium">{item.label}</span>
-              </div>
-            ))}
-          </motion.div>
         </motion.div>
 
         {/* Scroll indicator */}
@@ -313,17 +265,6 @@ export default function AboutPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Mini project stats grid below image */}
-              <div className="grid grid-cols-3 gap-3 mt-4">
-                {projectStats.slice(0, 6).map((ps) => (
-                  <div key={ps.label} className="bg-[#F0F4F8] rounded-lg p-3 text-center">
-                    <ps.icon className="w-4 h-4 text-[#E8751A] mx-auto mb-1" />
-                    <p className="text-sm font-bold text-[#1A1A2E]">{ps.value}</p>
-                    <p className="text-[10px] text-[#6B7280] leading-tight">{ps.label}</p>
-                  </div>
-                ))}
               </div>
             </FadeIn>
           </div>
@@ -535,242 +476,6 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          PROJECT STATS — Horizontal scrollable cards
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-20 bg-white relative overflow-hidden">
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <Badge variant="outline" className="border-[#1F2937]/20 text-[#1F2937] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Project Portfolio
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Delivered at Scale</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                From EHV switchyards to LT panels, from solar plants to CEIG approvals — our delivery record speaks for itself.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {projectStats.map((ps, i) => (
-              <FadeIn key={ps.label} delay={i * 0.04}>
-                <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm card-hover text-center h-full">
-                  <CardContent className="p-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#1F2937]/8 flex items-center justify-center mx-auto mb-3">
-                      <ps.icon className="w-5 h-5 text-[#1F2937]" />
-                    </div>
-                    <p className="text-xl font-bold text-[#1F2937] mb-1">{ps.value}</p>
-                    <p className="text-[10px] text-[#6B7280] leading-tight">{ps.label}</p>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          OUR USP — Comparison table
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
-        {/* Decorative background pattern */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#1F2937]/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                What Sets Us Apart
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Our Unique Selling Proposition</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                See how SVEPL&apos;s comprehensive capabilities compare with typical competitors in the electrical engineering space.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Desktop table */}
-          <FadeIn delay={0.1}>
-            <div className="hidden md:block rounded-xl border border-[#E5E7EB] overflow-hidden shadow-sm">
-              <table className="w-full">
-                <thead>
-                  <tr>
-                    <th className="bg-[#1F2937] text-white text-left px-6 py-4 text-sm font-semibold w-[15%]">Category</th>
-                    <th className="bg-[#1F2937] text-white text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-[#E8751A]" />
-                        SVEPL
-                      </div>
-                    </th>
-                    <th className="bg-[#F0F4F8] text-[#6B7280] text-left px-6 py-4 text-sm font-semibold w-[42.5%]">
-                      <div className="flex items-center gap-2">
-                        <XCircle className="w-4 h-4 text-[#9CA3AF]" />
-                        Typical Competitor
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {uspData.map((row, i) => (
-                    <tr key={row.category} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FAFBFC]'}>
-                      <td className="px-6 py-4 border-t border-[#E5E7EB]">
-                        <Badge className="bg-[#1F2937]/8 text-[#1F2937] border-0 rounded-full px-3 py-1 text-xs font-semibold">
-                          {row.category}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4 border-t border-[#E5E7EB]">
-                        <div className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#0D9488] flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-[#374151] leading-relaxed">{row.svepl}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 border-t border-[#E5E7EB]">
-                        <div className="flex items-start gap-2">
-                          <XCircle className="w-4 h-4 text-[#D1D5DB] flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-[#9CA3AF] leading-relaxed">{row.competitor}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </FadeIn>
-
-          {/* Mobile cards */}
-          <div className="md:hidden space-y-4">
-            {uspData.map((row, i) => (
-              <FadeIn key={row.category} delay={i * 0.05}>
-                <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="bg-[#1F2937] px-4 py-2.5">
-                      <Badge className="bg-white/15 text-white border-0 rounded-full px-3 py-1 text-xs font-semibold">
-                        {row.category}
-                      </Badge>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-[#0D9488] flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-[#0D9488] uppercase tracking-wider mb-0.5">SVEPL</p>
-                          <span className="text-sm text-[#374151] leading-relaxed">{row.svepl}</span>
-                        </div>
-                      </div>
-                      <div className="h-px bg-[#E5E7EB]" />
-                      <div className="flex items-start gap-2">
-                        <XCircle className="w-4 h-4 text-[#D1D5DB] flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-0.5">Typical Competitor</p>
-                          <span className="text-sm text-[#9CA3AF] leading-relaxed">{row.competitor}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          BRANCHES — Map-like grid
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#EFEFEF] relative overflow-hidden">
-        {/* South India silhouette suggestion */}
-        <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-[0.04]" viewBox="0 0 500 500">
-          <ellipse cx="250" cy="250" rx="200" ry="220" stroke="#1F2937" strokeWidth="2" fill="none" />
-          <ellipse cx="250" cy="250" rx="140" ry="160" stroke="#1F2937" strokeWidth="1" fill="none" />
-          <ellipse cx="250" cy="250" rx="80" ry="100" stroke="#1F2937" strokeWidth="0.5" fill="none" />
-          <line x1="250" y1="30" x2="250" y2="470" stroke="#1F2937" strokeWidth="0.5" />
-          <line x1="30" y1="250" x2="470" y2="250" stroke="#1F2937" strokeWidth="0.5" />
-        </svg>
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#1F2937]/20 text-[#1F2937] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Our Presence
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Across South India</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                With our headquarters in Chennai and 8 branch offices across South India, we ensure rapid response and local expertise for every project.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {branches.map((branch, i) => (
-              <FadeIn key={branch.city} delay={i * 0.06}>
-                <Card className={`bg-white rounded-xl border shadow-sm card-hover h-full overflow-hidden ${branch.isHQ ? 'border-[#E8751A]/30 ring-1 ring-[#E8751A]/10' : 'border-[#E5E7EB]'}`}>
-                  <CardContent className="p-0">
-                    {/* Colored header strip */}
-                    <div className={`h-2 ${branch.isHQ ? 'bg-[#E8751A]' : 'bg-[#1F2937]/20'}`} />
-                    <div className="p-5">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${branch.isHQ ? 'bg-[#E8751A]/10' : 'bg-[#1F2937]/8'}`}>
-                          <branch.icon className={`w-5 h-5 ${branch.isHQ ? 'text-[#E8751A]' : 'text-[#1F2937]'}`} />
-                        </div>
-                        <div>
-                          <h3 className="text-base font-bold text-[#1A1A2E]">{branch.city}</h3>
-                          <p className="text-xs text-[#6B7280]">{branch.state}</p>
-                        </div>
-                      </div>
-                      {branch.isHQ ? (
-                        <Badge className="bg-[#E8751A]/10 text-[#E8751A] border-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
-                          <Sparkles className="w-3 h-3 mr-1" />
-                          Headquarters
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="border-[#1F2937]/15 text-[#1F2937]/70 rounded-full px-3 py-1 text-[10px] font-medium">
-                          {branch.type}
-                        </Badge>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
-
-          {/* International presence */}
-          <FadeIn delay={0.3}>
-            <div className="mt-10 text-center">
-              <div className="inline-flex items-center gap-2 bg-white rounded-full border border-[#E5E7EB] px-5 py-2.5 shadow-sm">
-                <Globe className="w-4 h-4 text-[#1F2937]" />
-                <span className="text-xs font-medium text-[#6B7280]">International Projects:</span>
-                <div className="flex gap-1.5">
-                  {['Nigeria', 'Qatar', 'Bangladesh', 'Sri Lanka', 'Oman', 'Sierra Leone'].map(country => (
-                    <span key={country} className="inline-flex items-center text-[10px] font-semibold text-[#1F2937] bg-[#F0F4F8] rounded-full px-2 py-0.5">
-                      {country}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Approved by utilities */}
-          <FadeIn delay={0.4}>
-            <div className="mt-8 text-center">
-              <p className="text-xs text-[#9CA3AF] mb-3 font-medium uppercase tracking-wider">Approved By</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {['TNPDCL', 'TANTRANSCO', 'APTRANSCO', 'TSTRANSCO', 'APSPDCL', 'KPTCL', 'KSEB', 'GOA', 'OPTCL', 'OPDCL'].map(util => (
-                  <span key={util} className="text-[10px] font-semibold text-[#1F2937]/70 bg-white border border-[#E5E7EB] rounded-md px-2.5 py-1">
-                    {util}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
