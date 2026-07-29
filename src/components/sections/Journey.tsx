@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useSpring, useTransform } from 'framer-motion'
 import { 
   ArrowRight, 
@@ -57,9 +57,9 @@ function FadeIn({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.45, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={className}
     >
       {children}
@@ -110,16 +110,17 @@ export default function Journey({
   const [loading, setLoading] = useState(true)
 
   const journeyRef = useRef<HTMLElement>(null)
+  const timelineRef = useRef<HTMLDivElement>(null)
 
-  /* Scroll Progress Line */
+  /* ─── Scroll Progress Hooks ─── */
   const { scrollYProgress } = useScroll({
     target: journeyRef,
-    offset: ['start 70%', 'end 80%'],
+    offset: ['start 60%', 'end 90%'],
   })
 
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
     restDelta: 0.001,
   })
 
@@ -154,112 +155,147 @@ export default function Journey({
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* ─── Left Sticky Hero Panel ─── */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-            <FadeIn>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-[#E8751A]" />
-                <span className="text-xs font-bold tracking-wider text-[#E8751A] uppercase">
-                  {label}
-                </span>
-              </div>
+        
+        {/* ─── Header / Hero Banner ─── */}
+        <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-24">
+          <FadeIn>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+              <Sparkles className="w-4 h-4 text-[#E8751A]" />
+              <span className="text-xs font-bold tracking-wider text-[#E8751A] uppercase">
+                {label}
+              </span>
+            </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
-                {title}
-              </h2>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+              {title}
+            </h2>
 
-              <div className="w-16 h-1 bg-[#E8751A] rounded-full mb-6" />
+            <div className="w-20 h-1.5 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mx-auto mb-6" />
 
-              <p className="text-slate-600 text-base leading-relaxed mb-8">
-                {description}
-              </p>
+            <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
+              {description}
+            </p>
 
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Button
                 onClick={handleCta}
-                className="bg-[#E8751A] hover:bg-[#d56817] text-white shadow-lg shadow-orange-500/20 rounded-xl px-7 h-12 font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+                className="bg-[#E8751A] hover:bg-[#d56817] text-white shadow-xl shadow-orange-500/25 rounded-xl px-8 h-12 font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
               >
                 <span>{ctaText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
+            </div>
 
-              {/* Stats Bar */}
-              {stats && stats.length > 0 && (
-                <div className="mt-12 pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4">
-                  {stats.map((s) => (
-                    <div key={s.label} className="flex flex-col">
-                      <span className="text-2xl font-black text-slate-900 tabular-nums">
-                        {s.value}
-                      </span>
-                      <span className="text-xs font-medium text-slate-500 mt-1">
-                        {s.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </FadeIn>
-          </div>
-
-          {/* ─── Right Timeline Section ─── */}
-          <div className="lg:col-span-8">
-            {loading ? (
-              <div className="space-y-6">
-                {[...Array(4)].map((_, i) => (
-                  <Card key={i} className="bg-white/80 rounded-2xl border border-slate-200/80 shadow-sm">
-                    <CardContent className="p-6 space-y-3">
-                      <Skeleton className="h-6 w-20 rounded-full" />
-                      <Skeleton className="h-6 w-1/2" />
-                      <Skeleton className="h-4 w-full" />
-                    </CardContent>
-                  </Card>
+            {/* Stats Counter Bar */}
+            {stats && stats.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-xl mx-auto">
+                {stats.map((s) => (
+                  <div key={s.label} className="flex flex-col items-center">
+                    <span className="text-2xl sm:text-3xl font-black text-slate-900 tabular-nums">
+                      {s.value}
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
+                      {s.label}
+                    </span>
+                  </div>
                 ))}
               </div>
-            ) : milestones.length === 0 ? (
-              <div className="text-center py-12 text-slate-500">No milestones available.</div>
-            ) : (
-              <div className="relative pl-6 sm:pl-8">
-                
-                {/* Dynamic Scroll Animated Background Line */}
-                <div className="absolute left-[17px] sm:left-[25px] top-4 bottom-6 w-0.5 bg-slate-200" />
+            )}
+          </FadeIn>
+        </div>
+
+        {/* ─── Interactive S-Curve Timeline Section ─── */}
+        <div ref={timelineRef} className="relative">
+          {loading ? (
+            <div className="space-y-8 max-w-2xl mx-auto">
+              {[...Array(4)].map((_, i) => (
+                <Card key={i} className="bg-white/80 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-6 w-1/2" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : milestones.length === 0 ? (
+            <div className="text-center py-12 text-slate-500">No milestones available.</div>
+          ) : (
+            <div className="relative min-h-[600px]">
+              
+              {/* ─── S-Curve Background Animated SVG Line (Desktop) ─── */}
+              <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 1000">
+                  <defs>
+                    <linearGradient id="sCurveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#E8751A" />
+                      <stop offset="50%" stopColor="#F59E0B" />
+                      <stop offset="100%" stopColor="#0D9488" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Static Grey Guide Path */}
+                  <path
+                    d={generateSCurvePath(milestones.length)}
+                    fill="none"
+                    stroke="#E2E8F0"
+                    strokeWidth="4"
+                    strokeDasharray="6 6"
+                  />
+
+                  {/* Dynamic Scroll Animated Path */}
+                  <motion.path
+                    d={generateSCurvePath(milestones.length)}
+                    fill="none"
+                    stroke="url(#sCurveGradient)"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    style={{ pathLength: smoothProgress }}
+                  />
+                </svg>
+              </div>
+
+              {/* ─── Vertical Line Fallback (Mobile/Tablet) ─── */}
+              <div className="block lg:hidden absolute left-6 sm:left-8 top-4 bottom-6 w-1 bg-slate-200 rounded-full">
                 <motion.div
-                  style={{ scaleY }}
-                  className="absolute left-[17px] sm:left-[25px] top-4 bottom-6 w-0.5 bg-gradient-to-b from-[#E8751A] via-amber-500 to-teal-500 origin-top"
+                  style={{ scaleY: smoothProgress }}
+                  className="w-full h-full bg-gradient-to-b from-[#E8751A] via-amber-500 to-teal-500 origin-top rounded-full"
                 />
+              </div>
 
-                {/* Timeline Cards Container */}
-                <div className="space-y-8">
-                  {milestones.map((m, i) => (
+              {/* ─── Timeline Items Flow ─── */}
+              <div className="space-y-12 lg:space-y-24 relative z-10">
+                {milestones.map((m, i) => {
+                  const isEven = i % 2 === 0
+                  return (
                     <FadeIn key={m.id || (m.year + m.title)} delay={i * 0.05}>
-                      <div className="relative group flex items-start gap-4 sm:gap-6">
+                      <div className={`flex flex-col lg:flex-row items-center gap-6 lg:gap-16 ${
+                        isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                      }`}>
                         
-                        {/* Timeline Node Point with Icon */}
-                        <div className="relative z-10 flex-shrink-0 flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-[#E8751A] text-[#E8751A] shadow-md group-hover:bg-[#E8751A] group-hover:text-white transition-colors duration-300">
-                          <GetMilestoneIcon name={m.icon} className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-
-                        {/* Content Card */}
-                        <div className="flex-1">
-                          <Card className="bg-white/90 backdrop-blur-sm border border-slate-200/70 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-300 rounded-2xl overflow-hidden">
-                            <CardContent className="p-5 sm:p-6 relative">
+                        {/* Milestone Content Card */}
+                        <div className="w-full lg:w-1/2 pl-12 lg:pl-0">
+                          <Card className="bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-md hover:shadow-xl hover:border-orange-300 transition-all duration-300 rounded-2xl overflow-hidden group hover:-translate-y-1">
+                            <CardContent className="p-6 sm:p-8 relative">
                               
                               {/* Background Index Number */}
                               <span
                                 aria-hidden="true"
-                                className="absolute right-4 top-2 text-5xl sm:text-6xl font-black text-slate-100 select-none pointer-events-none transition-colors duration-300 group-hover:text-orange-500/10"
+                                className="absolute right-4 top-2 text-6xl sm:text-7xl font-black text-slate-100 select-none pointer-events-none transition-colors duration-300 group-hover:text-orange-500/10"
                               >
                                 {String(i + 1).padStart(2, '0')}
                               </span>
 
-                              <div className="relative z-10 space-y-2">
-                                <div className="inline-block px-2.5 py-0.5 rounded-md bg-orange-50 text-[#E8751A] text-xs font-extrabold tracking-wider uppercase border border-orange-200/60">
-                                  {m.year}
+                              <div className="relative z-10 space-y-3">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-orange-50 text-[#E8751A] text-xs font-extrabold tracking-wider uppercase border border-orange-200/60">
+                                  <span>{m.year}</span>
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#E8751A] transition-colors">
+
+                                <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#E8751A] transition-colors">
                                   {m.title}
                                 </h3>
-                                <p className="text-slate-600 text-sm leading-relaxed">
+
+                                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                                   {m.description}
                                 </p>
                               </div>
@@ -268,27 +304,64 @@ export default function Journey({
                           </Card>
                         </div>
 
+                        {/* Interactive Node Marker Center Point */}
+                        <div className="absolute left-6 sm:left-8 lg:relative lg:left-0 flex items-center justify-center flex-shrink-0 z-20">
+                          <motion.div 
+                            whileHover={{ scale: 1.2 }}
+                            className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white border-4 border-[#E8751A] text-[#E8751A] shadow-lg shadow-orange-500/20 group cursor-pointer"
+                          >
+                            <GetMilestoneIcon name={m.icon} className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                            <span className="absolute -inset-2 rounded-full border border-orange-400/30 animate-ping pointer-events-none" />
+                          </motion.div>
+                        </div>
+
+                        {/* Spacer Column for Opposite Side (Desktop) */}
+                        <div className="hidden lg:block lg:w-1/2" />
+
                       </div>
                     </FadeIn>
-                  ))}
-                </div>
-
-                {/* Timeline End Cap */}
-                <div className="mt-10 pl-10 sm:pl-12">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white shadow-md">
-                    <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-bold tracking-wider uppercase">
-                      The Journey Continues...
-                    </span>
-                  </div>
-                </div>
-
+                  )
+                })}
               </div>
-            )}
-          </div>
 
+              {/* ─── Timeline End Marker ─── */}
+              <div className="mt-16 text-center pl-10 lg:pl-0">
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white shadow-xl">
+                  <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                  <span className="text-xs sm:text-sm font-bold tracking-wider uppercase">
+                    The Journey Continues...
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          )}
         </div>
+
       </div>
     </section>
   )
+}
+
+/* ─── S-Curve Dynamic SVG Path Generator ─── */
+function generateSCurvePath(totalItems: number): string {
+  if (totalItems <= 0) return ''
+  
+  const width = 1000
+  const stepY = 1000 / (totalItems + 0.5)
+  let path = `M ${width / 2} 20`
+
+  for (let i = 0; i < totalItems; i++) {
+    const currentY = (i + 0.5) * stepY
+    const nextY = (i + 1.5) * stepY
+    const isEven = i % 2 === 0
+
+    // Control point offsets for alternating smooth curves
+    const controlX1 = isEven ? width * 0.85 : width * 0.15
+    const controlX2 = isEven ? width * 0.15 : width * 0.85
+
+    path += ` C ${controlX1} ${currentY}, ${controlX2} ${nextY}, ${width / 2} ${nextY}`
+  }
+
+  return path
 }
