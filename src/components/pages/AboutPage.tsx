@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion'
 import {
   ChevronRight, Target, Eye, Heart, Shield, Award, Users, Clock,
   ChevronDown, Building2, Factory, Rocket, Sparkles, ArrowRight,
@@ -101,6 +101,19 @@ const branchIconMap: Record<string, React.ElementType> = {
   Building2, MapPin, Globe, Zap, Factory, Award,
 }
 
+/* ─── Fallback milestones (used if API is unavailable) ─── */
+const FALLBACK_MILESTONES: Milestone[] = [
+  { id: 'm1', year: '1998', title: 'Inception', description: 'Shri Vaari Electricals was established as a firm in Chennai', icon: 'Rocket', color: '#1F2937', order: 1, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm2', year: '1999', title: 'AMC Services Launched', description: 'Started a new business vertical — Annual Maintenance Contract Services for Industrial Customers', icon: 'Wrench', color: '#E8751A', order: 2, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm3', year: '2003', title: 'New Office & Factory', description: 'Constructed a new office and factory building at Guindy, Chennai with 20,000 sq ft space', icon: 'Factory', color: '#0D9488', order: 3, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm4', year: '2005', title: 'Private Limited Entity', description: 'The company was formally incorporated as a Private Limited Entity', icon: 'Award', color: '#1F2937', order: 4, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm5', year: '2009', title: 'First EHV Project', description: 'Executed our first Extra High Voltage project', icon: 'Zap', color: '#E8751A', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm6', year: '2014', title: 'Solar EPC Division', description: 'Started Solar Plants EPC division', icon: 'Sun', color: '#0D9488', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm7', year: '2015', title: 'Schneider Partnership', description: 'Formed a strategic partnership with Schneider Electric', icon: 'Handshake', color: '#1F2937', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm8', year: '2018', title: '₹100+ Crores Turnover', description: 'Achieved a landmark turnover of ₹100+ Crores', icon: 'TrendingUp', color: '#E8751A', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm9', year: '2025', title: 'IEC-61439 Certified', description: 'LT Panels tested to IEC-61439 standards', icon: 'BadgeCheck', color: '#0D9488', order: 9, active: true, createdAt: '', updatedAt: '' },
+]
+
 /* ─── Main Component ─── */
 export default function AboutPage() {
   const { navigate } = useRouter()
@@ -114,13 +127,23 @@ export default function AboutPage() {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
+  /* Journey S-curve draw on scroll */
+  const journeyRef = useRef<HTMLElement>(null)
+  const { scrollYProgress: journeyProgress } = useScroll({
+    target: journeyRef,
+    offset: ['start end', 'end start'],
+  })
+  const pathLengthRaw = useTransform(journeyProgress, [0.05, 0.85], [0, 1])
+  const pathLength = useSpring(pathLengthRaw, { stiffness: 80, damping: 20, restDelta: 0.001 })
+
   useEffect(() => {
     Promise.all([
       fetchSettings().catch(() => null),
       fetchMilestones(true).catch(() => []),
     ]).then(([s, m]) => {
       setSettings(s as SiteSettings | null)
-      setMilestones(m as Milestone[])
+      const milestonesData = (m as Milestone[]) || []
+      setMilestones(milestonesData.length > 0 ? milestonesData : FALLBACK_MILESTONES)
       setLoading(false)
     })
   }, [])
@@ -275,13 +298,13 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          JOURNEY TIMELINE — Horizontal milestone timeline
+          JOURNEY — S-curve animated flowing timeline
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+      <section ref={journeyRef} className="py-16 md:py-24 bg-white relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
-            <div className="text-center mb-14">
+            <div className="text-center mb-14 md:mb-20">
               <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
                 Our Journey
               </Badge>
@@ -293,10 +316,9 @@ export default function AboutPage() {
             </div>
           </FadeIn>
 
-          {/* Milestone Cards — equal height, modern design */}
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
+            <div className="space-y-8 max-w-2xl mx-auto">
+              {[...Array(5)].map((_, i) => (
                 <Card key={i} className="bg-white rounded-2xl border border-[#E5E7EB]">
                   <CardContent className="p-6 space-y-3">
                     <Skeleton className="h-5 w-16 rounded-full" />
@@ -308,41 +330,109 @@ export default function AboutPage() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 [grid-auto-rows:1fr]">
-              {milestones.map((m, i) => {
-                const MIcon = milestoneIconMap[m.icon] || Zap
-                return (
-                  <FadeIn key={m.year + m.title} delay={i * 0.06} className="h-full">
-                    <Card className="group relative bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full min-h-[300px] flex flex-col overflow-hidden">
-                      {/* Top accent bar */}
-                      <div className="h-1.5 w-full" style={{ backgroundColor: m.color }} />
-                      <CardContent className="p-6 flex flex-col flex-1">
-                        {/* Icon + Year row */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${m.color}12` }}>
-                            <MIcon className="w-6 h-6" style={{ color: m.color }} />
-                          </div>
-                          <span className="text-2xl font-extrabold tabular-nums" style={{ color: `${m.color}` }}>
-                            {m.year}
-                          </span>
+            <div className="relative">
+              {/* ─── Desktop animated S-curve SVG ─── */}
+              <svg
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full hidden lg:block pointer-events-none z-0"
+                viewBox="0 0 100 1000"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient id="journeyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#E8751A" />
+                    <stop offset="50%" stopColor="#1F2937" />
+                    <stop offset="100%" stopColor="#0D9488" />
+                  </linearGradient>
+                </defs>
+                <motion.path
+                  d="M 50,0 C 85,80 85,120 50,200 C 15,280 15,320 50,400 C 85,480 85,520 50,600 C 15,680 15,720 50,800 C 85,880 85,920 50,1000"
+                  stroke="url(#journeyGrad)"
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                  style={{ pathLength, opacity: 0.9 }}
+                />
+                {/* Subtle glow underlay */}
+                <motion.path
+                  d="M 50,0 C 85,80 85,120 50,200 C 15,280 15,320 50,400 C 85,480 85,520 50,600 C 15,680 15,720 50,800 C 85,880 85,920 50,1000"
+                  stroke="url(#journeyGrad)"
+                  strokeWidth="10"
+                  fill="none"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                  style={{ pathLength, opacity: 0.12 }}
+                />
+              </svg>
+
+              {/* ─── Mobile vertical line ─── */}
+              <div className="lg:hidden absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-[#E8751A] via-[#1F2937] to-[#0D9488] opacity-40" />
+
+              {/* ─── Alternating milestone cards ─── */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-x-32 lg:gap-y-20 relative z-10">
+                {milestones.map((m, i) => {
+                  const MIcon = milestoneIconMap[m.icon] || Zap
+                  const isLeft = i % 2 === 0
+                  const nodePos = isLeft ? '-right-3' : '-left-3'
+                  return (
+                    <FadeIn key={m.year + m.title} delay={i * 0.05}>
+                      <div className={`relative pl-12 lg:pl-0 ${isLeft ? 'lg:pr-16' : 'lg:pl-16 lg:mt-16'}`}>
+                        {/* Mobile timeline node */}
+                        <div
+                          className="lg:hidden absolute left-3 top-7 w-4 h-4 rounded-full border-4 border-white shadow-md z-10"
+                          style={{ backgroundColor: m.color }}
+                        />
+                        {/* Desktop timeline node on the curve */}
+                        <div
+                          className={`hidden lg:flex absolute top-8 ${nodePos} w-5 h-5 rounded-full shadow-lg z-10 ring-4 ring-white items-center justify-center`}
+                          style={{ backgroundColor: m.color }}
+                        >
+                          <div className="absolute inset-0 rounded-full animate-ping opacity-40" style={{ backgroundColor: m.color }} />
+                          <div className="w-1.5 h-1.5 rounded-full bg-white" />
                         </div>
-                        {/* Title */}
-                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-snug">{m.title}</h3>
-                        {/* Description — clamped for equal height */}
-                        <p className="text-[#6B7280] text-sm leading-relaxed line-clamp-3 flex-1">{m.description}</p>
-                        {/* Bottom index marker */}
-                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#F3F4F6]">
-                          <span className="text-[10px] font-bold tracking-widest text-[#9CA3AF]">
-                            {String(i + 1).padStart(2, '0')} / {String(milestones.length).padStart(2, '0')}
-                          </span>
-                          <div className="flex-1 h-px bg-[#F3F4F6]" />
-                          <ArrowRight className="w-3.5 h-3.5 text-[#9CA3AF] group-hover:text-[#E8751A] group-hover:translate-x-1 transition-all" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </FadeIn>
-                )
-              })}
+
+                        {/* Card */}
+                        <Card className="group bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                          {/* Top accent bar */}
+                          <div className="h-1.5 w-full" style={{ backgroundColor: m.color }} />
+                          <CardContent className="p-6">
+                            {/* Icon + Year */}
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${m.color}15` }}>
+                                <MIcon className="w-6 h-6" style={{ color: m.color }} />
+                              </div>
+                              <span className="text-2xl font-extrabold tabular-nums" style={{ color: m.color }}>
+                                {m.year}
+                              </span>
+                            </div>
+                            {/* Title */}
+                            <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-snug">{m.title}</h3>
+                            {/* Description */}
+                            <p className="text-[#6B7280] text-sm leading-relaxed">{m.description}</p>
+                            {/* Index marker footer */}
+                            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#F3F4F6]">
+                              <span className="text-[10px] font-bold tracking-widest text-[#9CA3AF]">
+                                {String(i + 1).padStart(2, '0')} / {String(milestones.length).padStart(2, '0')}
+                              </span>
+                              <div className="flex-1 h-px bg-[#F3F4F6]" />
+                              <ArrowRight className="w-3.5 h-3.5 text-[#9CA3AF] group-hover:text-[#E8751A] group-hover:translate-x-1 transition-all" />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </FadeIn>
+                  )
+                })}
+              </div>
+
+              {/* End cap */}
+              <div className="hidden lg:flex justify-center mt-16">
+                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#EFEFEF] border border-[#E5E7EB]">
+                  <Sparkles className="w-4 h-4 text-[#E8751A]" />
+                  <span className="text-xs font-semibold text-[#1F2937] tracking-wider">THE JOURNEY CONTINUES…</span>
+                </div>
+              </div>
             </div>
           )}
         </div>
