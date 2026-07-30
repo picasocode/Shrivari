@@ -63,3 +63,35 @@ Stage Summary:
 - The component's public API (`label`, `title`, `description`, `ctaText`, `onCtaClick`, `stats`, `className`) lets the same section be dropped onto the Home page or any other page with different copy if desired.
 - Visual + interaction behavior is unchanged from the previous inline implementation (verified via Agent Browser + VLM).
 - Produced artifacts: new `src/components/sections/Journey.tsx`, refactored `src/components/pages/AboutPage.tsx`.
+
+---
+Task ID: 3
+Agent: main (Z.ai Code)
+Task: Pull latest code from git, then update the About Us page: remove the service tag chips (EPC Solutions, Panel Manufacturing, EHV up to 400KV, Solar EPC, AMC Services, Liasion Services), update the Our Story text with new professional company description, add an "Our Expertise" grid (8 items), restructure Mission/Vision into 2 cards (Mission with 5 bullet points), add a Core Values section (5 cards), and add an Infrastructure & Capabilities section (4 cards).
+
+Work Log:
+- Pulled latest code from git (git reset --hard origin/main) — got the new Journey component which is now a dark horizontal slider infographic (HorizontalInfographicJourney).
+- Rewrote /home/z/my-project/src/components/pages/AboutPage.tsx comprehensively:
+  - Updated imports: added Factory, Zap, Boxes, FileCheck, Wrench, RefreshCw, Award, ClipboardCheck, Network, HardHat, Cpu, type LucideIcon. Removed ChevronRight (no longer used after removing tags). Renamed Factory alias from `Factory as Manufacturing` to plain `Factory` (and updated statsData to use Factory).
+  - Added 4 new data constants: EXPERTISE (8 items with icons), MISSION_POINTS (5 bullets), CORE_VALUES (5 values with name+desc+icon), INFRASTRUCTURE (4 capabilities with title+desc+icon). Added VISION_TEXT constant.
+  - OUR STORY section: removed the tag chips row (EPC Solutions / Panel Manufacturing / EHV up to 400KV / Solar EPC / AMC Services / Liasion Services). Replaced with new professional text (3 paragraphs covering: 415V–400kV specialization + fastest growing since 1998; multi-location/market leadership/Nepal-Bhutan-Qatar; integrated design & engineering consultancy). Added a bordered "OUR EXPERTISE" panel with a 2-column grid of 8 expertise items, each with an icon in a rounded square.
+  - MISSION & VISION section: restructured from the old 3-card (Mission/Vision/Values) layout into 2 side-by-side cards. Mission card (navy left border, Target icon) now shows 5 bullet points with checkmarks. Vision card (orange left border, Eye icon) shows the new vision text + "ENGINEERING EXCELLENCE" footer tagline.
+  - CORE VALUES section (NEW): light-gray background with subtle grid pattern. 5 cards in a responsive grid (1/2/5 cols). Each card: gradient orange icon tile, faded 01-05 number, value name, description. Values: Integrity, Engineering Excellence, Safety, Innovation, Customer Commitment.
+  - INFRASTRUCTURE & CAPABILITIES section (NEW): white background, 2/3 + 1/3 header layout, then 4 cards in a grid (1/2/4 cols). Each card has dark borders (border-2 border-[#1F2937]) on all four sides, a dark icon tile, a large faded background number, title, and description. Cards: Engineering Team, Manufacturing Facility, Project Execution, Testing & Commissioning.
+  - Kept HERO, JOURNEY, STATS, and CTA sections unchanged.
+- Fixed a runtime error: `Factory is not defined` — caused by importing `Factory as Manufacturing` but using `Factory` directly in the new EXPERTISE/INFRASTRUCTURE arrays. Fixed by importing `Factory` directly and updating statsData to use `Factory`.
+- Ran `bun run lint` — passed with no errors.
+- Verified with Agent Browser + VLM:
+  - Our Story: "Powering India Since 1998" heading renders, new professional text visible, team image on right with "29+ Years" overlay badge. Old tag chips are GONE.
+  - OUR EXPERTISE panel: all 8 items render in a 2-column grid with orange icons (EHV/HV/MV/LV, AIS & GIS Substations, Industrial Electrification, HT & LT Panel Manufacturing, Solar EPC, Utility Liaison & CEIG Approvals, Testing & Commissioning, Electrical Retrofitting & Upgradation).
+  - Our Mission & Vision: 2 side-by-side cards. Mission card (navy border, target icon) with all 5 bullet points + checkmarks. Vision card (orange border, eye icon) with new vision text + ENGINEERING EXCELLENCE tagline.
+  - Core Values: 5 cards in a horizontal row (Integrity 01, Engineering Excellence 02, Safety 03, Innovation 04, Customer Commitment 05), each with icon, number, name, description. Professional design.
+  - Infrastructure & Capabilities: 4 cards (Engineering Team, Manufacturing Facility, Project Execution, Testing & Commissioning) with dark borders on all four sides, faded background numbers, dark icon tiles, titles and descriptions.
+- No errors in dev.log related to AboutPage (only pre-existing Supabase env-var errors for blogs/settings/milestones APIs).
+
+Stage Summary:
+- About Us page fully redesigned with professional content and layout.
+- Removed: the 6 service tag chips (EPC Solutions, Panel Manufacturing, EHV up to 400KV, Solar EPC, AMC Services, Liasion Services).
+- Added: OUR EXPERTISE panel (8 items), restructured Mission/Vision (2 cards, mission now has 5 bullets), Core Values section (5 cards), Infrastructure & Capabilities section (4 cards with dark borders).
+- All new copy from the user is integrated and professionally styled with the existing coral (#E8751A) + navy (#1F2937) color system.
+- Produced artifacts: rewritten /home/z/my-project/src/components/pages/AboutPage.tsx.
