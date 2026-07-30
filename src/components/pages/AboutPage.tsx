@@ -398,25 +398,27 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════════════════════════
           CORE VALUES — Image-forward bento grid, single coral accent
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#0B0F17] text-white relative overflow-hidden">
-        {/* Ambient glow */}
-        <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] bg-[#E8751A]/10 blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] bg-[#E8751A]/[0.06] blur-[140px] rounded-full pointer-events-none" />
+      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+        {/* Ambient coral glow */}
+        <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] bg-[#E8751A]/[0.05] blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] bg-[#E8751A]/[0.04] blur-[140px] rounded-full pointer-events-none" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12 items-end">
               <div className="lg:col-span-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/15 border border-[#E8751A]/25 mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
                   <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Our Principles</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 leading-tight tracking-tight">
+                <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A2E] mb-3 leading-tight tracking-tight">
                   Core Values That<br />
                   <span className="text-[#E8751A]">Define Us</span>
                 </h2>
               </div>
-              <p className="text-slate-400 text-sm leading-relaxed lg:max-w-xs">
+              <p className="text-[#6B7280] text-sm leading-relaxed lg:max-w-xs">
                 Five principles that guide every decision, every project, and every relationship we build — from the drawing board to commissioning.
               </p>
             </div>
@@ -432,7 +434,7 @@ export default function AboutPage() {
                   <motion.div
                     whileHover={{ y: -6 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                    className="group relative h-full overflow-hidden rounded-2xl bg-[#141A24] border border-white/[0.06] hover:border-[#E8751A]/40 transition-colors duration-500"
+                    className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
                   >
                     {/* Image */}
                     <div className={`relative overflow-hidden ${isWide ? 'h-48 md:h-56' : 'h-52 md:h-60'}`}>
@@ -444,12 +446,12 @@ export default function AboutPage() {
                         whileHover={{ scale: 1.08 }}
                         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
                       />
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#141A24] via-[#141A24]/40 to-transparent" />
+                      {/* Coral sweep overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       {/* Coral accent line on hover */}
                       <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
                       {/* Number badge */}
-                      <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center">
+                      <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
                         <span className="text-sm font-bold text-[#E8751A] tabular-nums">
                           {String(i + 1).padStart(2, '0')}
                         </span>
@@ -458,10 +460,10 @@ export default function AboutPage() {
 
                     {/* Content */}
                     <div className="p-5 md:p-6">
-                      <h3 className={`font-bold text-white mb-2 leading-tight tracking-tight ${isWide ? 'text-xl md:text-2xl' : 'text-lg'}`}>
+                      <h3 className={`font-bold text-[#1A1A2E] mb-2 leading-tight tracking-tight ${isWide ? 'text-xl md:text-2xl' : 'text-lg'}`}>
                         {value.name}
                       </h3>
-                      <p className="text-slate-400 text-sm leading-relaxed">
+                      <p className="text-[#6B7280] text-sm leading-relaxed">
                         {value.desc}
                       </p>
                     </div>
