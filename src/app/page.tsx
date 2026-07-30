@@ -8,6 +8,7 @@ import Footer from '@/components/sections/Footer'
 import HomePage from '@/components/pages/HomePage'
 import AboutPage from '@/components/pages/AboutPage'
 import ProductsPage from '@/components/pages/ProductsPage'
+import ManufacturingPage from '@/components/pages/ManufacturingPage'
 import ServicesPage from '@/components/pages/ServicesPage'
 import ServiceDetailPage from '@/components/pages/ServiceDetailPage'
 import ClientsPage from '@/components/pages/ClientsPage'
@@ -39,6 +40,7 @@ function AppContent() {
     home: <HomePage />,
     about: <AboutPage />,
     products: <ProductsPage />,
+    manufacturing: <ManufacturingPage />,
     services: <ServicesPage />,
     'service-detail': <ServiceDetailPage slug={router.params.slug || ''} />,
     clients: <ClientsPage />,
