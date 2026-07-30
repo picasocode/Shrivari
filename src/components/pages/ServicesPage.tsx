@@ -6,7 +6,7 @@ import Image from 'next/image'
 import {
   ChevronRight, ArrowRight, PenTool, Hammer, FlaskConical,
   BarChart3, ShieldCheck, FileCheck, Building2, Sun,
-  Zap, Wrench, Shield,
+  Zap, Wrench, Shield, Network, Factory, Boxes,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -161,6 +161,79 @@ const services: StaticService[] = [
     category: 'Renewable',
     image: '/images/services/solar-works.png',
   },
+  {
+    id: 's9',
+    name: 'Electrical EPC Solutions',
+    slug: 'electrical-epc-solutions',
+    description: 'Comprehensive electrical EPC services covering engineering, procurement, installation, testing, commissioning, and maintenance for industrial and infrastructure projects.',
+    capabilities: [
+      'Electrical system design',
+      'Detailed engineering',
+      'Equipment procurement',
+      'Installation & erection',
+      'Testing & commissioning',
+      'Utility coordination',
+      'Project management',
+      'Operation support',
+    ],
+    category: 'EPC',
+    image: '/images/services/electrical-epc-solutions.png',
+  },
+  {
+    id: 's10',
+    name: 'EHV / HV Substations',
+    slug: 'ehv-hv-substations',
+    description: 'Engineering and execution of AIS and GIS substations up to 400 kV with reliable power distribution and protection systems.',
+    capabilities: [
+      'Switchyard construction',
+      'GIS/AIS substations',
+      'Transformer installations',
+      'Protection systems',
+      'Relay coordination',
+      'SCADA integration',
+      'Bus duct systems',
+      'Grounding systems',
+    ],
+    category: 'EPC',
+    image: '/images/services/ehv-hv-substations.png',
+  },
+  {
+    id: 's11',
+    name: 'Industrial Electrification',
+    slug: 'industrial-electrification',
+    description: 'Complete industrial electrification solutions for manufacturing plants, process industries, commercial facilities, and infrastructure projects.',
+    capabilities: [
+      'Power distribution systems',
+      'Cable laying and termination',
+      'Motor control systems',
+      'Lighting systems',
+      'Earthing systems',
+      'DG synchronization',
+      'Energy management',
+      'Retrofitting solutions',
+    ],
+    category: 'EPC',
+    image: '/images/services/industrial-electrification.png',
+  },
+  {
+    id: 's12',
+    name: 'HT & LT Panel Manufacturing',
+    slug: 'ht-lt-panel-manufacturing',
+    description: 'Design and manufacture of high-quality HT Panels, LT panels and Bus ducts customized to project and industry requirements.',
+    capabilities: [
+      'PCC Panels',
+      'MCC Panels',
+      'APFC Panels',
+      'PLC Panels',
+      'Synchronization Panels',
+      'VFD Panels',
+      'AMF Panels',
+      'Distribution Boards',
+      'Bus Duct Systems',
+    ],
+    category: 'Manufacturing',
+    image: '/images/services/ht-lt-panel-manufacturing.png',
+  },
 ]
 
 /* ─── Icon Map ─── */
@@ -173,6 +246,10 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Liaison with CEIG': FileCheck,
   'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO': Building2,
   'Solar Works': Sun,
+  'Electrical EPC Solutions': Network,
+  'EHV / HV Substations': Zap,
+  'Industrial Electrification': Factory,
+  'HT & LT Panel Manufacturing': Boxes,
 }
 
 /* ─── Accent Colors per Service — NAVY THEME ─── */
@@ -187,6 +264,10 @@ const accentMap: Record<string, AccentDef> = {
   'Liaison with CEIG':                                 { bg: 'bg-slate-600',      light: 'bg-slate-50',      border: 'border-slate-600',      text: 'text-slate-600',      ring: 'ring-slate-200' },
   'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO':      { bg: 'bg-cyan-600',       light: 'bg-cyan-50',       border: 'border-cyan-600',       text: 'text-cyan-700',       ring: 'ring-cyan-200' },
   'Solar Works':                                       { bg: 'bg-orange-500',     light: 'bg-orange-50',     border: 'border-orange-500',     text: 'text-orange-600',     ring: 'ring-orange-200' },
+  'Electrical EPC Solutions':                          { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+  'EHV / HV Substations':                              { bg: 'bg-slate-700',      light: 'bg-slate-50',      border: 'border-slate-700',      text: 'text-slate-700',      ring: 'ring-slate-200' },
+  'Industrial Electrification':                        { bg: 'bg-amber-600',      light: 'bg-amber-50',      border: 'border-amber-600',      text: 'text-amber-700',      ring: 'ring-amber-200' },
+  'HT & LT Panel Manufacturing':                       { bg: 'bg-teal-700',       light: 'bg-teal-50',       border: 'border-teal-700',       text: 'text-teal-700',       ring: 'ring-teal-200' },
 }
 
 const defaultAccent: AccentDef = {
@@ -198,8 +279,8 @@ function getAccent(name: string): AccentDef {
 }
 
 /* ─── Category ─── */
-type CategoryKey = 'All' | 'Engineering' | 'Maintenance' | 'Liaison' | 'Renewable'
-const categories: CategoryKey[] = ['All', 'Engineering', 'Maintenance', 'Liaison', 'Renewable']
+type CategoryKey = 'All' | 'Engineering' | 'EPC' | 'Manufacturing' | 'Maintenance' | 'Liaison' | 'Renewable'
+const categories: CategoryKey[] = ['All', 'Engineering', 'EPC', 'Manufacturing', 'Maintenance', 'Liaison', 'Renewable']
 
 /* ─── Floating icons for hero background ─── */
 const floatingIcons = [Zap, Wrench, Shield, Sun, PenTool, Hammer, BarChart3, FlaskConical, ShieldCheck]
