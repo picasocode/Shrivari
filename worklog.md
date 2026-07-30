@@ -159,3 +159,34 @@ Stage Summary:
 - Core Values dark theme removed; now uses the same light theme as Infrastructure (and the rest of the About page).
 - Both Core Values and Infrastructure are now visually unified: light backgrounds, white image-forward cards, dark text, single coral accent, identical card styling and animations.
 - Produced artifacts: updated /home/z/my-project/src/components/pages/AboutPage.tsx.
+
+---
+Task ID: 5
+Agent: main
+Task: Add images for Vision & Mission sections; remove dark theme from Journey; add small cut-corner design to Journey
+
+Work Log:
+- Read current AboutPage.tsx and Journey.tsx to understand structure
+- Generated 2 photorealistic images: mission.png (engineers reviewing blueprints) and vision.png (engineer silhouette at sunrise over power infrastructure) at 1344x768
+- Redesigned Journey component: removed dark slate-950 bg, switched to light #F8FAFC bg with subtle grid pattern and ambient coral glows
+- Redesigned Journey milestone cards: compact 150px height, diagonal cut-corner via clipPath on bottom-right, coral triangle accent placed BEHIND card showing through the cut
+- Added animated coral progress rail with gradient fill that advances with activeIndex
+- Updated Journey header/nav buttons to light theme (white bg, slate borders, coral hover)
+- Redesigned Mission & Vision section in AboutPage.tsx: image-forward cards with photorealistic headers
+- Mission card: navy gradient overlay, Target icon badge, bullet points preserved below image
+- Vision card: coral gradient overlay, Eye icon badge, vision text + Engineering Excellence footer
+- Both cards: hover lift animation, accent line sweep, image zoom on hover
+- Updated section header to coral pill style matching Core Values/Infrastructure
+- Verified with Agent Browser: navigated to About page, screenshotted all sections
+- VLM verification: 9/10 overall, all sections light, cut corners visible, images present, cohesive coral accent
+- Lint passed clean, no app errors in dev log (only pre-existing Supabase config errors)
+- Committed and pushed to git (c2e1998)
+
+Stage Summary:
+- Journey section: dark theme REMOVED, now light #F8FAFC with small cut-corner card design
+- Mission & Vision: now image-forward with photorealistic headers (mission.png, vision.png)
+- All 8 About page sections now use light theme (no dark sections remain)
+- Single coral (#E8751A) accent maintained consistently across Journey, Mission/Vision, Core Values, Infrastructure
+- Files modified: src/components/sections/Journey.tsx, src/components/pages/AboutPage.tsx
+- Files added: public/images/mission-vision/mission.png, public/images/mission-vision/vision.png
+- Git: pushed to origin/main (commit c2e1998)
