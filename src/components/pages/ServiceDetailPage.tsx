@@ -10,6 +10,7 @@ import {
   Cpu, Wrench, Shield, FileText, Lightbulb, Users,
   ClipboardCheck, Settings, HardHat, TrendingUp,
   BadgeCheck, Stamp, Globe, Sparkles,
+  Network, Factory, Boxes,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -269,6 +270,127 @@ const serviceData: Record<string, StaticServiceData> = {
     ],
     image: '/images/services/solar-works.png',
   },
+  'electrical-epc-solutions': {
+    name: 'Electrical EPC Solutions',
+    slug: 'electrical-epc-solutions',
+    shortName: 'EPC Solutions',
+    description: 'SVEPL delivers comprehensive electrical EPC services covering the complete project lifecycle — engineering, procurement, installation, testing, commissioning, and maintenance — for industrial and infrastructure projects. Our single-window accountability ensures seamless execution from concept to commissioning.',
+    tagline: 'Concept to Commissioning — Single Window EPC',
+    capabilities: [
+      { text: 'Electrical system design' },
+      { text: 'Detailed engineering' },
+      { text: 'Equipment procurement' },
+      { text: 'Installation & erection' },
+      { text: 'Testing & commissioning' },
+      { text: 'Utility coordination' },
+      { text: 'Project management' },
+      { text: 'Operation support' },
+    ],
+    processSteps: [
+      { title: 'Engineering & Design', desc: 'Detailed electrical system design and engineering with load flow and short circuit studies' },
+      { title: 'Procurement', desc: 'Quality equipment procurement from approved vendors with warranty assurance' },
+      { title: 'Installation & Erection', desc: 'Professional installation and erection of electrical equipment and systems' },
+      { title: 'Testing & Commissioning', desc: 'Comprehensive testing and commissioning with NABL-accredited lab support' },
+      { title: 'Handover & Support', desc: 'Project handover with documentation, training, and ongoing operation support' },
+    ],
+    highlights: ['Single Window EPC', '415V to 400 kV', 'Turnkey Execution', 'Operation Support'],
+    relatedProjects: [
+      { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
+      { name: '132KV/11KV Switchyard', client: 'MM Forging', location: 'Viralimalai' },
+    ],
+    image: '/images/services/electrical-epc-solutions.png',
+  },
+  'ehv-hv-substations': {
+    name: 'EHV / HV Substations',
+    slug: 'ehv-hv-substations',
+    shortName: 'EHV Substations',
+    description: 'SVEPL engineers and executes AIS and GIS substations up to 400 kV with reliable power distribution and protection systems. Our expertise spans switchyard construction, transformer installations, protection systems, relay coordination, SCADA integration, bus duct systems, and grounding systems.',
+    tagline: 'AIS & GIS Substations Up to 400 kV',
+    capabilities: [
+      { text: 'Switchyard construction' },
+      { text: 'GIS/AIS substations' },
+      { text: 'Transformer installations' },
+      { text: 'Protection systems' },
+      { text: 'Relay coordination' },
+      { text: 'SCADA integration' },
+      { text: 'Bus duct systems' },
+      { text: 'Grounding systems' },
+    ],
+    processSteps: [
+      { title: 'Site Preparation', desc: 'Civil works, structural design, and earth mat design as per IEEE-80' },
+      { title: 'Equipment Erection', desc: 'Installation of transformers, breakers, isolators, and bus structures' },
+      { title: 'Protection & Control', desc: 'Relay panel installation, relay coordination, and SCADA integration' },
+      { title: 'Testing & Commissioning', desc: 'Pre-commissioning tests, protection relay testing, and live energization' },
+      { title: 'Energization', desc: 'Statutory approvals, safety certification, and grid synchronization' },
+    ],
+    highlights: ['Up to 400 kV', 'AIS & GIS', 'SCADA Integrated', 'IEEE-80 Compliant'],
+    relatedProjects: [
+      { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
+      { name: '132KV/11KV Switchyard', client: 'MM Forging', location: 'Viralimalai' },
+    ],
+    image: '/images/services/ehv-hv-substations.png',
+  },
+  'industrial-electrification': {
+    name: 'Industrial Electrification',
+    slug: 'industrial-electrification',
+    shortName: 'Industrial Elec.',
+    description: 'SVEPL provides complete industrial electrification solutions for manufacturing plants, process industries, commercial facilities, and infrastructure projects. From power distribution systems to motor control, lighting, earthing, DG synchronization, energy management, and retrofitting — we deliver end-to-end electrification.',
+    tagline: 'Complete Industrial Electrification Solutions',
+    capabilities: [
+      { text: 'Power distribution systems' },
+      { text: 'Cable laying and termination' },
+      { text: 'Motor control systems' },
+      { text: 'Lighting systems' },
+      { text: 'Earthing systems' },
+      { text: 'DG synchronization' },
+      { text: 'Energy management' },
+      { text: 'Retrofitting solutions' },
+    ],
+    processSteps: [
+      { title: 'Load Assessment', desc: 'Detailed load analysis and power distribution system design' },
+      { title: 'Installation', desc: 'Cable laying, panel installation, motor control centers, and lighting systems' },
+      { title: 'Integration', desc: 'DG synchronization, energy management systems, and SCADA integration' },
+      { title: 'Testing', desc: 'Earthing system testing, insulation testing, and commissioning' },
+      { title: 'Retrofitting', desc: 'Upgradation and retrofitting of existing electrical systems' },
+    ],
+    highlights: ['Manufacturing Plants', 'DG Synchronization', 'Energy Management', 'Retrofitting'],
+    relatedProjects: [
+      { name: 'Industrial Electrification', client: 'Ashok Leyland', location: 'Hosur' },
+      { name: 'Plant Electrification', client: 'MM Forging', location: 'Viralimalai' },
+    ],
+    image: '/images/services/industrial-electrification.png',
+  },
+  'ht-lt-panel-manufacturing': {
+    name: 'HT & LT Panel Manufacturing',
+    slug: 'ht-lt-panel-manufacturing',
+    shortName: 'Panel Mfg.',
+    description: 'SVEPL designs and manufactures high-quality HT Panels, LT panels, and Bus ducts customized to project and industry requirements. Our state-of-the-art 20,000 sq ft manufacturing facility at Guindy produces PCC, MCC, APFC, PLC, Synchronization, VFD, AMF panels, distribution boards, and bus duct systems — all certified to IEC-61439 standards.',
+    tagline: 'Custom-Built Panels & Bus Duct Systems',
+    capabilities: [
+      { text: 'PCC Panels' },
+      { text: 'MCC Panels' },
+      { text: 'APFC Panels' },
+      { text: 'PLC Panels' },
+      { text: 'Synchronization Panels' },
+      { text: 'VFD Panels' },
+      { text: 'AMF Panels' },
+      { text: 'Distribution Boards' },
+      { text: 'Bus Duct Systems' },
+    ],
+    processSteps: [
+      { title: 'Design & Engineering', desc: 'Custom panel design based on load requirements and project specifications' },
+      { title: 'Manufacturing', desc: 'Precision manufacturing at our 20,000 sq ft Guindy facility with quality control' },
+      { title: 'Assembly & Wiring', desc: 'Professional assembly, wiring, and bus bar fabrication' },
+      { title: 'Testing', desc: 'IEC-61439 compliant testing including routine and type tests' },
+      { title: 'Delivery & Commissioning', desc: 'Delivery, installation support, and on-site commissioning' },
+    ],
+    highlights: ['IEC-61439 Certified', '20,000 sq ft Facility', 'Custom Design', 'Bus Duct Systems'],
+    relatedProjects: [
+      { name: 'LT Panel Supply', client: 'Ashok Leyland', location: 'Hosur' },
+      { name: 'PCC/MCC Panels', client: 'MM Forging', location: 'Viralimalai' },
+    ],
+    image: '/images/services/ht-lt-panel-manufacturing.png',
+  },
 }
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -280,6 +402,10 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Liaison with CEIG': FileCheck,
   'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO': Building2,
   'Solar Works': Sun,
+  'Electrical EPC Solutions': Network,
+  'EHV / HV Substations': Zap,
+  'Industrial Electrification': Factory,
+  'HT & LT Panel Manufacturing': Boxes,
 }
 
 const slugToName: Record<string, string> = {
@@ -291,6 +417,10 @@ const slugToName: Record<string, string> = {
   'liasion-ceig': 'Liaison with CEIG',
   'liasion-utilities': 'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO',
   'solar-works': 'Solar Works',
+  'electrical-epc-solutions': 'Electrical EPC Solutions',
+  'ehv-hv-substations': 'EHV / HV Substations',
+  'industrial-electrification': 'Industrial Electrification',
+  'ht-lt-panel-manufacturing': 'HT & LT Panel Manufacturing',
 }
 
 /* ─── Animation helper ─── */
