@@ -3,11 +3,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import {
-  ChevronRight, Target, Eye, Heart, Shield, Users, Clock,
   ChevronDown, Building2, ArrowRight,
   Sun, CheckCircle2, TrendingUp,
   Handshake, Lightbulb, BadgeCheck,
-  Factory as Manufacturing,
+  Factory,
+  Target, Eye, Shield, Users, Clock,
+  Zap, Boxes, FileCheck, Wrench, RefreshCw,
+  Award, ClipboardCheck, Network, HardHat, Cpu,
+  type LucideIcon,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -87,9 +90,45 @@ const statsData = [
   { value: 364, suffix: '+', label: 'Team Members', maxVal: 400, icon: Users },
   { value: 200, suffix: '+ Cr', label: 'Annual Revenue', maxVal: 220, icon: TrendingUp },
   { value: 450, suffix: '+ MW', label: 'Solar Capacity', maxVal: 500, icon: Sun },
-  { value: 10000, suffix: '+', label: 'LT Panels Installed', maxVal: 11000, icon: Manufacturing },
+  { value: 10000, suffix: '+', label: 'LT Panels Installed', maxVal: 11000, icon: Factory },
   { value: 1200, suffix: '+', label: 'Projects Completed', maxVal: 1300, icon: Building2 },
 ]
+
+const EXPERTISE: { label: string; icon: LucideIcon }[] = [
+  { label: 'EHV / HV / MV / LV Electrical Systems', icon: Zap },
+  { label: 'AIS & GIS Substations', icon: Network },
+  { label: 'Industrial Electrification', icon: Factory },
+  { label: 'HT & LT Panel Manufacturing', icon: Boxes },
+  { label: 'Solar EPC', icon: Sun },
+  { label: 'Utility Liaison & CEIG Approvals', icon: FileCheck },
+  { label: 'Testing & Commissioning', icon: ClipboardCheck },
+  { label: 'Electrical Retrofitting & Upgradation', icon: RefreshCw },
+]
+
+const MISSION_POINTS = [
+  'Deliver reliable and efficient electrical engineering solutions',
+  'Maintain the highest standards of quality and safety',
+  'Build long-term client relationships through execution excellence',
+  'Continuously adopt modern technologies and engineering practices',
+  'Create sustainable value for customers and stakeholders',
+]
+
+const CORE_VALUES: { name: string; desc: string; icon: LucideIcon }[] = [
+  { name: 'Integrity', desc: 'Transparent and ethical business practices.', icon: Shield },
+  { name: 'Engineering Excellence', desc: 'Commitment to technical precision and quality execution.', icon: Award },
+  { name: 'Safety', desc: 'Prioritizing personnel, equipment, and operational safety.', icon: HardHat },
+  { name: 'Innovation', desc: 'Adopting advanced technologies and engineering methodologies.', icon: Lightbulb },
+  { name: 'Customer Commitment', desc: 'Delivering solutions aligned with client objectives and timelines.', icon: Handshake },
+]
+
+const INFRASTRUCTURE: { title: string; desc: string; icon: LucideIcon }[] = [
+  { title: 'Engineering Team', desc: 'Experienced electrical engineers, project managers, testing engineers, and commissioning specialists.', icon: Users },
+  { title: 'Manufacturing Facility', desc: 'Modern panel manufacturing infrastructure with quality-focused production processes.', icon: Factory },
+  { title: 'Project Execution', desc: 'Capability to execute projects across industrial plants, substations, infrastructure facilities, and commercial developments.', icon: Building2 },
+  { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', icon: ClipboardCheck },
+]
+
+const VISION_TEXT = 'To become a trusted leader in integrated electrical infrastructure solutions through engineering excellence, innovation, safety, and customer satisfaction.'
 
 /* ─── Main Component ─── */
 export default function AboutPage() {
@@ -112,11 +151,9 @@ export default function AboutPage() {
       })
   }, [])
 
-  const aboutText = settings?.about_text || 'Shri Vaari Electricals Private Limited (SVEPL) is a professionally managed engineering firm established in 1998 in Chennai, India. With over 29 years of expertise, we have grown from a small firm to a 364+ strong organization, becoming one of South India\'s most trusted names in EPC solutions, panel manufacturing, and comprehensive electrical services. Our commitment to quality, safety, and innovation has earned us the trust of clients across India and internationally.'
+  const aboutText = settings?.about_text || 'Shri Vaari Electricals Pvt. Ltd. is a professionally managed electrical engineering and EPC company specializing in the design, engineering, supply, installation, testing, commissioning, and maintenance of electrical infrastructure projects from 415 volts up to 400 kV.'
 
-  const mission = settings?.mission || 'To deliver world-class electrical engineering solutions — from concept to commissioning — with unwavering commitment to safety, quality, and innovation, empowering industries and infrastructure across India and beyond.'
-
-  const vision = settings?.vision || 'To become India\'s leading integrated electrical solutions provider, setting benchmarks in quality, safety, and sustainability while powering the nation\'s infrastructure growth and contributing to a greener energy future.'
+  const vision = settings?.vision || VISION_TEXT
 
   return (
     <>
@@ -193,7 +230,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          OUR STORY — Split layout with connecting line
+          OUR STORY — Split layout with expertise grid
           ═══════════════════════════════════════════════════════ */}
       <section className="relative py-16 md:py-24 bg-white">
         {/* Decorative vertical connector */}
@@ -211,20 +248,34 @@ export default function AboutPage() {
                 <span className="text-[#1F2937]">Since 1998</span>
               </h2>
               <div className="section-bar mb-6" />
-              <p className="text-[#374151] leading-relaxed mb-4">{aboutText}</p>
               <p className="text-[#374151] leading-relaxed mb-4">
-                Headquartered at C-37, Thiru-Vi-Ka Industrial Estate, Guindy, Chennai, we operate across 8 branch offices in South India. We hold an ESA License issued by all CEIGs in South India and approved by CEA, and are a TNEB Class-1 Contractor approved by AP/Telangana/Karnataka utilities. Our capabilities span up to 400 KV, with international project experience in Nigeria, Qatar, Bangladesh, Sri Lanka, Oman, and Sierra Leone.
+                <span className="font-semibold text-[#1A1A2E]">{aboutText}</span> Started in 1998, SHRI VAARI ELECTRICALS is the fastest growing company in India in the field of electrical engineering.
+              </p>
+              <p className="text-[#374151] leading-relaxed mb-4">
+                A professionally managed, multi-location engineering firm with market leadership in India, we are establishing a significant position in overseas markets such as Nepal, Bhutan, and Qatar in the EPC field (Engineering, Procurement and Construction).
               </p>
               <p className="text-[#374151] leading-relaxed mb-6">
-                We have worked with leading consultants including CRN, SME, NNE, JACOBS, TCE, and ABBETT, and are approved by TNPDCL, TANTRANSCO, APTRANSCO, TSTRANSCO, APSPDCL, KPTCL, KSEB, GOA, OPTCL, and OPDCL.
+                We offer integrated design and engineering consultancy services from concept to completion for a wide range of projects across industries. We also specialize in project planning and appraisal, economic evaluation, design and detailed engineering, energy audit, safety audit, and supervision of construction and erection.
               </p>
-              <div className="flex flex-wrap gap-3">
-                {['EPC Solutions', 'Panel Manufacturing', 'EHV up to 400KV', 'Solar EPC', 'AMC Services', 'Liasion Services'].map(tag => (
-                  <span key={tag} className="inline-flex items-center gap-1.5 text-xs font-medium text-[#1F2937] bg-[#F0F4F8] rounded-full px-3 py-1.5">
-                    <ChevronRight className="w-3 h-3 text-[#E8751A]" />
-                    {tag}
-                  </span>
-                ))}
+
+              {/* Expertise Grid */}
+              <div className="bg-[#F8FAFC] rounded-2xl border border-[#E5E7EB] p-5 md:p-6">
+                <h4 className="text-sm font-bold text-[#1A1A2E] uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
+                  <span className="w-8 h-0.5 bg-[#E8751A] rounded-full" />
+                  Our Expertise
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
+                  {EXPERTISE.map((item) => (
+                    <div key={item.label} className="flex items-start gap-2.5 group">
+                      <div className="w-7 h-7 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center flex-shrink-0 group-hover:border-[#E8751A]/40 group-hover:bg-[#E8751A]/5 transition-colors">
+                        <item.icon className="w-3.5 h-3.5 text-[#E8751A]" />
+                      </div>
+                      <span className="text-sm text-[#374151] font-medium leading-tight pt-0.5">
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </FadeIn>
 
@@ -262,8 +313,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          JOURNEY — Horizontal S-curve timeline (intro panel + snake flow)
-          Extracted into /components/sections/Journey.tsx for reusability.
+          JOURNEY — Horizontal slider timeline
           ═══════════════════════════════════════════════════════ */}
       <Journey
         label="Our Journey"
@@ -271,15 +321,10 @@ export default function AboutPage() {
         description="From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of grit, innovation, and the relentless pursuit of excellence."
         ctaText="Get Started"
         onCtaClick={() => navigate('contact')}
-        stats={[
-          { value: '29+', label: 'Years' },
-          { value: '9', label: 'Milestones' },
-          { value: '₹200Cr', label: 'Turnover' },
-        ]}
       />
 
       {/* ═══════════════════════════════════════════════════════
-          MISSION / VISION / VALUES — Three overlapping accent cards
+          MISSION & VISION — Two accent cards
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
@@ -288,23 +333,34 @@ export default function AboutPage() {
               <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
                 What Drives Us
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Mission, Vision &amp; Values</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Our Mission &amp; Vision</h2>
               <div className="section-bar mx-auto" />
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:-mb-6">
-            {/* Mission — Navy accent */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Mission — Navy accent with bullet points */}
             <FadeIn delay={0}>
-              <div className="relative group">
-                <div className="absolute -top-3 -left-3 w-20 h-20 rounded-xl bg-[#1F2937] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
-                <Card className="bg-white rounded-xl border-l-4 border-l-[#1F2937] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
-                  <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-[#1F2937]/8 flex items-center justify-center mb-5">
-                      <Target className="w-7 h-7 text-[#1F2937]" />
+              <div className="relative group h-full">
+                <div className="absolute -top-3 -left-3 w-24 h-24 rounded-2xl bg-[#1F2937] -z-10 opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300" />
+                <Card className="bg-white rounded-2xl border-l-4 border-l-[#1F2937] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
+                  <CardContent className="p-6 md:p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-xl bg-[#1F2937]/8 flex items-center justify-center">
+                        <Target className="w-7 h-7 text-[#1F2937]" />
+                      </div>
+                      <h3 className="text-xl font-bold text-[#1A1A2E]">Our Mission</h3>
                     </div>
-                    <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Mission</h3>
-                    <p className="text-[#6B7280] text-sm leading-relaxed">{mission}</p>
+                    <ul className="space-y-3.5">
+                      {MISSION_POINTS.map((point, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className="w-5 h-5 rounded-full bg-[#1F2937]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle2 className="w-3 h-3 text-[#1F2937]" />
+                          </div>
+                          <span className="text-[#374151] text-sm leading-relaxed">{point}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </CardContent>
                 </Card>
               </div>
@@ -312,48 +368,128 @@ export default function AboutPage() {
 
             {/* Vision — Orange accent */}
             <FadeIn delay={0.1}>
-              <div className="relative group md:-mt-4">
-                <div className="absolute -top-3 -right-3 w-20 h-20 rounded-xl bg-[#E8751A] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
-                <Card className="bg-white rounded-xl border-l-4 border-l-[#E8751A] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full md:shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-[#E8751A]/8 flex items-center justify-center mb-5">
-                      <Eye className="w-7 h-7 text-[#E8751A]" />
+              <div className="relative group h-full">
+                <div className="absolute -top-3 -right-3 w-24 h-24 rounded-2xl bg-[#E8751A] -z-10 opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300" />
+                <Card className="bg-white rounded-2xl border-l-4 border-l-[#E8751A] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
+                  <CardContent className="p-6 md:p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-xl bg-[#E8751A]/8 flex items-center justify-center">
+                        <Eye className="w-7 h-7 text-[#E8751A]" />
+                      </div>
+                      <h3 className="text-xl font-bold text-[#1A1A2E]">Our Vision</h3>
                     </div>
-                    <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Vision</h3>
-                    <p className="text-[#6B7280] text-sm leading-relaxed">{vision}</p>
+                    <p className="text-[#374151] text-base leading-relaxed">
+                      {vision}
+                    </p>
+                    <div className="mt-8 pt-6 border-t border-[#E5E7EB]">
+                      <div className="flex items-center gap-2 text-[#E8751A]">
+                        <BadgeCheck className="w-5 h-5" />
+                        <span className="text-sm font-semibold uppercase tracking-wider">Engineering Excellence</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             </FadeIn>
+          </div>
+        </div>
+      </section>
 
-            {/* Values — Teal accent */}
-            <FadeIn delay={0.2}>
-              <div className="relative group">
-                <div className="absolute -bottom-3 -left-3 w-20 h-20 rounded-xl bg-[#0D9488] -z-10 opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
-                <Card className="bg-white rounded-xl border-l-4 border-l-[#0D9488] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
-                  <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-[#0D9488]/8 flex items-center justify-center mb-5">
-                      <Heart className="w-7 h-7 text-[#0D9488]" />
-                    </div>
-                    <h3 className="text-lg font-bold text-[#1A1A2E] mb-3">Our Values</h3>
-                    <div className="space-y-2.5">
-                      {[
-                        { label: 'Safety First', icon: Shield },
-                        { label: 'Quality Without Compromise', icon: BadgeCheck },
-                        { label: 'Integrity & Transparency', icon: CheckCircle2 },
-                        { label: 'Innovation & Adaptability', icon: Lightbulb },
-                        { label: 'Client Partnership', icon: Handshake },
-                      ].map((v) => (
-                        <div key={v.label} className="flex items-center gap-2">
-                          <v.icon className="w-4 h-4 text-[#0D9488] flex-shrink-0" />
-                          <span className="text-[#6B7280] text-sm">{v.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+      {/* ═══════════════════════════════════════════════════════
+          CORE VALUES — 5 value cards
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+                Our Principles
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Core Values</h2>
+              <div className="section-bar mx-auto" />
+              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto mt-4">
+                The principles that guide every decision, every project, and every relationship we build.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {CORE_VALUES.map((value, i) => (
+              <FadeIn key={value.name} delay={i * 0.08}>
+                <div className="group h-full">
+                  <Card className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:border-[#E8751A]/30 hover:-translate-y-1 transition-all duration-300 h-full">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E8751A]/10 to-[#E8751A]/5 flex items-center justify-center mb-4 group-hover:from-[#E8751A] group-hover:to-[#D4691A] transition-all duration-300">
+                        <value.icon className="w-6 h-6 text-[#E8751A] group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <div className="text-[10px] font-bold text-[#9CA3AF] tracking-[0.2em] mb-1.5">
+                        {String(i + 1).padStart(2, '0')}
+                      </div>
+                      <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
+                        {value.name}
+                      </h3>
+                      <p className="text-[#6B7280] text-xs leading-relaxed">
+                        {value.desc}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          INFRASTRUCTURE & CAPABILITIES — 4 capability cards
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14 items-end">
+              <div className="lg:col-span-2">
+                <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
+                  Built To Deliver
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 leading-snug">
+                  Infrastructure &amp; Capabilities
+                </h2>
+                <div className="section-bar mb-4" />
               </div>
-            </FadeIn>
+              <p className="text-[#6B7280] text-sm leading-relaxed">
+                A robust foundation of engineering talent, modern manufacturing infrastructure, and proven project execution capabilities — built to deliver complex electrical projects at scale.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {INFRASTRUCTURE.map((item, i) => (
+              <FadeIn key={item.title} delay={i * 0.08}>
+                <div className="group h-full relative">
+                  <Card className="bg-white rounded-2xl border-2 border-[#1F2937] shadow-sm hover:shadow-lg transition-all duration-300 h-full overflow-hidden">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-5">
+                        <div className="w-12 h-12 rounded-xl bg-[#1F2937] flex items-center justify-center group-hover:bg-[#E8751A] transition-colors duration-300">
+                          <item.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <span className="text-3xl font-black text-[#F0F4F8] tabular-nums group-hover:text-[#E8751A]/10 transition-colors">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-[#6B7280] text-xs leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
