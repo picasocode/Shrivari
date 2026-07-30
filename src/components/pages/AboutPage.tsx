@@ -5,11 +5,11 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import {
   ChevronDown, Building2, ArrowRight,
   Sun, CheckCircle2, TrendingUp,
-  Handshake, Lightbulb, BadgeCheck,
   Factory,
   Target, Eye, Shield, Users, Clock,
-  Zap, Boxes, FileCheck, Wrench, RefreshCw,
-  Award, ClipboardCheck, Network, HardHat, Cpu,
+  Zap, Boxes, FileCheck, RefreshCw,
+  ClipboardCheck, Network,
+  BadgeCheck,
   type LucideIcon,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
@@ -113,19 +113,19 @@ const MISSION_POINTS = [
   'Create sustainable value for customers and stakeholders',
 ]
 
-const CORE_VALUES: { name: string; desc: string; icon: LucideIcon }[] = [
-  { name: 'Integrity', desc: 'Transparent and ethical business practices.', icon: Shield },
-  { name: 'Engineering Excellence', desc: 'Commitment to technical precision and quality execution.', icon: Award },
-  { name: 'Safety', desc: 'Prioritizing personnel, equipment, and operational safety.', icon: HardHat },
-  { name: 'Innovation', desc: 'Adopting advanced technologies and engineering methodologies.', icon: Lightbulb },
-  { name: 'Customer Commitment', desc: 'Delivering solutions aligned with client objectives and timelines.', icon: Handshake },
+const CORE_VALUES: { name: string; desc: string; image: string }[] = [
+  { name: 'Integrity', desc: 'Transparent and ethical business practices in every engagement.', image: '/images/values/integrity.png' },
+  { name: 'Engineering Excellence', desc: 'Commitment to technical precision and quality execution.', image: '/images/values/excellence.png' },
+  { name: 'Safety', desc: 'Prioritizing personnel, equipment, and operational safety.', image: '/images/values/safety.png' },
+  { name: 'Innovation', desc: 'Adopting advanced technologies and engineering methodologies.', image: '/images/values/innovation.png' },
+  { name: 'Customer Commitment', desc: 'Delivering solutions aligned with client objectives and timelines.', image: '/images/values/commitment.png' },
 ]
 
-const INFRASTRUCTURE: { title: string; desc: string; icon: LucideIcon }[] = [
-  { title: 'Engineering Team', desc: 'Experienced electrical engineers, project managers, testing engineers, and commissioning specialists.', icon: Users },
-  { title: 'Manufacturing Facility', desc: 'Modern panel manufacturing infrastructure with quality-focused production processes.', icon: Factory },
-  { title: 'Project Execution', desc: 'Capability to execute projects across industrial plants, substations, infrastructure facilities, and commercial developments.', icon: Building2 },
-  { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', icon: ClipboardCheck },
+const INFRASTRUCTURE: { title: string; desc: string; image: string }[] = [
+  { title: 'Engineering Team', desc: 'Experienced electrical engineers, project managers, testing engineers, and commissioning specialists.', image: '/images/infra/team.png' },
+  { title: 'Manufacturing Facility', desc: 'Modern panel manufacturing infrastructure with quality-focused production processes.', image: '/images/infra/manufacturing.png' },
+  { title: 'Project Execution', desc: 'Capability to execute projects across industrial plants, substations, infrastructure facilities, and commercial developments.', image: '/images/infra/execution.png' },
+  { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', image: '/images/infra/testing.png' },
 ]
 
 const VISION_TEXT = 'To become a trusted leader in integrated electrical infrastructure solutions through engineering excellence, innovation, safety, and customer satisfaction.'
@@ -396,98 +396,146 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          CORE VALUES — 5 value cards
+          CORE VALUES — Image-forward bento grid, single coral accent
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <section className="py-16 md:py-24 bg-[#0B0F17] text-white relative overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] bg-[#E8751A]/10 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] bg-[#E8751A]/[0.06] blur-[140px] rounded-full pointer-events-none" />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Our Principles
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Core Values</h2>
-              <div className="section-bar mx-auto" />
-              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto mt-4">
-                The principles that guide every decision, every project, and every relationship we build.
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12 items-end">
+              <div className="lg:col-span-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/15 border border-[#E8751A]/25 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                  <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Our Principles</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-3 leading-tight tracking-tight">
+                  Core Values That<br />
+                  <span className="text-[#E8751A]">Define Us</span>
+                </h2>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed lg:max-w-xs">
+                Five principles that guide every decision, every project, and every relationship we build — from the drawing board to commissioning.
               </p>
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {CORE_VALUES.map((value, i) => (
-              <FadeIn key={value.name} delay={i * 0.08}>
-                <div className="group h-full">
-                  <Card className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm hover:shadow-xl hover:border-[#E8751A]/30 hover:-translate-y-1 transition-all duration-300 h-full">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E8751A]/10 to-[#E8751A]/5 flex items-center justify-center mb-4 group-hover:from-[#E8751A] group-hover:to-[#D4691A] transition-all duration-300">
-                        <value.icon className="w-6 h-6 text-[#E8751A] group-hover:text-white transition-colors duration-300" />
+          {/* Bento grid: 3 cards top row, 2 wide cards bottom row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5">
+            {CORE_VALUES.map((value, i) => {
+              const isWide = i >= 3 // last 2 cards are wide
+              const colSpan = isWide ? 'lg:col-span-3' : 'lg:col-span-2'
+              return (
+                <FadeIn key={value.name} delay={i * 0.08} className={colSpan}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                    className="group relative h-full overflow-hidden rounded-2xl bg-[#141A24] border border-white/[0.06] hover:border-[#E8751A]/40 transition-colors duration-500"
+                  >
+                    {/* Image */}
+                    <div className={`relative overflow-hidden ${isWide ? 'h-48 md:h-56' : 'h-52 md:h-60'}`}>
+                      <motion.img
+                        src={value.image}
+                        alt={value.name}
+                        className="w-full h-full object-cover"
+                        initial={false}
+                        whileHover={{ scale: 1.08 }}
+                        transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#141A24] via-[#141A24]/40 to-transparent" />
+                      {/* Coral accent line on hover */}
+                      <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
+                      {/* Number badge */}
+                      <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center">
+                        <span className="text-sm font-bold text-[#E8751A] tabular-nums">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
                       </div>
-                      <div className="text-[10px] font-bold text-[#9CA3AF] tracking-[0.2em] mb-1.5">
-                        {String(i + 1).padStart(2, '0')}
-                      </div>
-                      <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5 md:p-6">
+                      <h3 className={`font-bold text-white mb-2 leading-tight tracking-tight ${isWide ? 'text-xl md:text-2xl' : 'text-lg'}`}>
                         {value.name}
                       </h3>
-                      <p className="text-[#6B7280] text-xs leading-relaxed">
+                      <p className="text-slate-400 text-sm leading-relaxed">
                         {value.desc}
                       </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </FadeIn>
-            ))}
+                    </div>
+                  </motion.div>
+                </FadeIn>
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          INFRASTRUCTURE & CAPABILITIES — 4 capability cards
+          INFRASTRUCTURE & CAPABILITIES — Image-forward cards, single coral
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-14 items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-end">
               <div className="lg:col-span-2">
-                <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                  Built To Deliver
-                </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 leading-snug">
-                  Infrastructure &amp; Capabilities
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                  <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Built To Deliver</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A2E] mb-3 leading-tight tracking-tight">
+                  Infrastructure &amp;<br />
+                  <span className="text-[#E8751A]">Capabilities</span>
                 </h2>
-                <div className="section-bar mb-4" />
               </div>
-              <p className="text-[#6B7280] text-sm leading-relaxed">
-                A robust foundation of engineering talent, modern manufacturing infrastructure, and proven project execution capabilities — built to deliver complex electrical projects at scale.
+              <p className="text-[#6B7280] text-sm leading-relaxed lg:max-w-xs">
+                A robust foundation of engineering talent, modern manufacturing infrastructure, and proven execution capabilities — built to deliver complex projects at scale.
               </p>
             </div>
           </FadeIn>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {INFRASTRUCTURE.map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.08}>
-                <div className="group h-full relative">
-                  <Card className="bg-white rounded-2xl border-2 border-[#1F2937] shadow-sm hover:shadow-lg transition-all duration-300 h-full overflow-hidden">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="w-12 h-12 rounded-xl bg-[#1F2937] flex items-center justify-center group-hover:bg-[#E8751A] transition-colors duration-300">
-                          <item.icon className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-3xl font-black text-[#F0F4F8] tabular-nums group-hover:text-[#E8751A]/10 transition-colors">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                      </div>
-                      <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-[#6B7280] text-xs leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+              <FadeIn key={item.title} delay={i * 0.1}>
+                <motion.div
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
+                >
+                  {/* Image */}
+                  <div className="relative overflow-hidden h-52 md:h-56">
+                    <motion.img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      initial={false}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+                    />
+                    {/* Coral sweep overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Coral accent line on hover */}
+                    <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
+                    {/* Number badge */}
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
+                      <span className="text-sm font-bold text-[#E8751A] tabular-nums">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5 md:p-6">
+                    <h3 className="text-base md:text-lg font-bold text-[#1A1A2E] mb-2 leading-tight tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-[#6B7280] text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
               </FadeIn>
             ))}
           </div>

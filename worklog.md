@@ -95,3 +95,43 @@ Stage Summary:
 - Added: OUR EXPERTISE panel (8 items), restructured Mission/Vision (2 cards, mission now has 5 bullets), Core Values section (5 cards), Infrastructure & Capabilities section (4 cards with dark borders).
 - All new copy from the user is integrated and professionally styled with the existing coral (#E8751A) + navy (#1F2937) color system.
 - Produced artifacts: rewritten /home/z/my-project/src/components/pages/AboutPage.tsx.
+
+---
+Task ID: 4
+Agent: main (Z.ai Code)
+Task: Redesign the Core Values and Infrastructure & Capabilities sections on the About page to be image-forward (real photos on top of cards, NO icons), single coral accent color, lively animations, non-templated layout. Do NOT touch anything before Core Values (hero, story, journey, mission/vision). Push to git.
+
+Work Log:
+- Generated 9 cohesive photorealistic images (warm professional industrial style) using the image-generation skill (z-ai CLI):
+  - Core Values (5): /public/images/values/{integrity,excellence,safety,innovation,commitment}.png — handshake, engineer with blueprints, PPE worker, smart control room, engineer+client collaboration.
+  - Infrastructure (4): /public/images/infra/{team,manufacturing,execution,testing}.png — engineering team, panel factory, substation construction, switchgear testing.
+- Updated data constants in AboutPage.tsx:
+  - CORE_VALUES: changed type from {name,desc,icon} to {name,desc,image} with image paths.
+  - INFRASTRUCTURE: changed type from {title,desc,icon} to {title,desc,image} with image paths.
+- Cleaned up unused icon imports (Award, HardHat, Lightbulb, Handshake, Wrench, Cpu). Kept Network (used in EXPERTISE). Fixed a runtime ReferenceError: Network is not defined by re-adding Network to imports.
+- CORE VALUES section — full redesign:
+  - Dark theme (#0B0F17 background) with ambient coral glows for a "live" feel.
+  - Asymmetric header: "Our Principles" coral pill + "Core Values That Define Us" headline (coral "Define Us") + side description.
+  - Bento grid (non-templated): 6-column grid where first 3 cards span 2 cols (top row) and last 2 cards span 3 cols (bottom row, wider) — breaks the monotony of 5 identical cards.
+  - Each card: real photograph on top (motion.img with whileHover scale 1.08 zoom), gradient overlay, coral accent line that sweeps full-width on hover, glassmorphic number badge (01-05) in coral, value name + description below.
+  - Spring-based lift animation on hover (whileHover y: -6).
+  - Single coral (#E8751A) accent throughout — no multicolor.
+- INFRASTRUCTURE & CAPABILITIES section — full redesign:
+  - White background, asymmetric header matching Core Values style ("Built To Deliver" coral pill + "Infrastructure & Capabilities" headline with coral "Capabilities").
+  - 4 image-forward cards in a responsive grid (1/2/4 cols).
+  - Each card: real photograph on top (motion.img with whileHover scale 1.1 zoom), coral sweep overlay on hover, coral accent line that animates full-width on hover, white glassmorphic number badge (01-04) with coral number, title + description below.
+  - Spring-based lift animation (whileHover y: -8) + shadow-2xl with coral tint on hover.
+  - Single coral accent throughout.
+- Verified with Agent Browser + VLM:
+  - Core Values: confirmed dark theme, 3 cards on top (Integrity/Engineering Excellence/Safety) + 2 wider cards on bottom (Innovation/Customer Commitment), real photographs on top, coral number badges 01-05, coral accent. VLM rated 8.5/10 "agency-quality work", image-forward, single accent color, non-templated.
+  - Infrastructure: confirmed white background, 4 image cards (Engineering Team/Manufacturing Facility/Project Execution/Testing & Commissioning), real photos on top, coral number badges 01-04, image-forward not icon-based.
+  - DOM verified all 9 card titles present.
+  - Lint passes, no runtime errors (only pre-existing Supabase env-var API errors).
+- Sections BEFORE Core Values (Hero, Our Story, Journey, Mission/Vision) were NOT touched, per user instruction.
+
+Stage Summary:
+- Core Values and Infrastructure sections completely redesigned from icon-based templated cards to image-forward, animated, single-coral-accent, non-templated layouts.
+- Core Values uses a dark bento grid (3+2 varied card sizes) for visual interest; Infrastructure uses a clean 4-card image grid on white.
+- Both sections share cohesive design language: real photography on top, coral number badges, coral accent line animation on hover, spring-based card lift, image zoom on hover.
+- 9 new photorealistic images generated and saved under /public/images/values/ and /public/images/infra/.
+- Produced artifacts: rewritten sections in /home/z/my-project/src/components/pages/AboutPage.tsx, 9 new images.
