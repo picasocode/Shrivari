@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, createContext, useContext } from 'react'
 
-export type PageName = 'home' | 'about' | 'team' | 'sectors' | 'careers' | 'products' | 'services' | 'clients' | 'projects' | 'testimonials' | 'blog' | 'contact' | 'admin' | 'blog-post' | 'service-detail'
+export type PageName = 'home' | 'about' | 'team' | 'sectors' | 'careers' | 'products' | 'manufacturing' | 'services' | 'clients' | 'projects' | 'testimonials' | 'blog' | 'contact' | 'admin' | 'blog-post' | 'service-detail'
 
 interface RouterState {
   page: PageName
@@ -49,7 +49,7 @@ export function RouterProvider({ children }: { children: React.ReactNode }) {
         setRouter({ page: 'service-detail', params: { slug } })
         return
       }
-      if (['home', 'about', 'team', 'sectors', 'careers', 'products', 'services', 'clients', 'projects', 'testimonials', 'blog', 'contact', 'admin', 'blog-post', 'service-detail'].includes(hash)) {
+      if (['home', 'about', 'team', 'sectors', 'careers', 'products', 'manufacturing', 'services', 'clients', 'projects', 'testimonials', 'blog', 'contact', 'admin', 'blog-post', 'service-detail'].includes(hash)) {
         setRouter({ page: hash as PageName, params: {} })
       }
     }

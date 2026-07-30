@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, RefreshCw, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban } from 'lucide-react'
+import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, RefreshCw, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 import { useRouter, type PageName } from '@/components/Router'
@@ -23,6 +23,7 @@ const serviceDropdownItems = [
   { label: 'Liasion with CEIG', slug: 'liasion-ceig', icon: FileCheck, desc: 'Liaison with Chief Electrical Inspector for statutory approvals' },
   { label: 'Liasion with TNEB/KPTCL/APTRANSCO/TSTRANSCO', slug: 'liasion-utilities', icon: Building2, desc: 'Liaison with state electricity utilities for approvals' },
   { label: 'Solar Works', slug: 'solar-works', icon: Sun, desc: 'Complete solar EPC solutions from design to commissioning' },
+  { label: 'HT & LT Panel Manufacturing', slug: 'manufacturing', icon: Factory, desc: 'Custom-built HT/LT panels and bus duct systems' },
 ]
 
 const companyDropdownItems = [
@@ -41,6 +42,7 @@ const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
   { label: 'Home', page: 'home' },
   { label: 'Company', page: 'about', hasDropdown: true },
   { label: 'Products', page: 'products' },
+  { label: 'Manufacturing', page: 'manufacturing' },
   { label: 'Services', page: 'services' },
   { label: 'Clients', page: 'clients', hasDropdown: true },
   { label: 'Testimonials', page: 'testimonials' },
@@ -121,10 +123,15 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
   }
 
   const handleServiceClick = (slug: string) => {
+    // Manufacturing has its own dedicated page, not a service-detail page
+    if (slug === 'manufacturing') {
+      handleNavigate('manufacturing')
+      return
+    }
     handleNavigate('service-detail', { slug })
   }
 
-  const isServicesActive = router.page === 'services' || router.page === 'service-detail'
+  const isServicesActive = router.page === 'services' || router.page === 'service-detail' || router.page === 'manufacturing'
   const isCompanyActive = router.page === 'about' || router.page === 'team' || router.page === 'sectors' || router.page === 'careers'
   const isClientsActive = router.page === 'clients' || router.page === 'projects'
 
