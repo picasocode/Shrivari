@@ -324,72 +324,123 @@ export default function AboutPage() {
       />
 
       {/* ═══════════════════════════════════════════════════════
-          MISSION & VISION — Two accent cards
+          MISSION & VISION — Image-forward dual cards
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+        {/* Subtle ambient glow */}
+        <div className="absolute top-0 right-1/4 w-[24rem] h-[24rem] bg-[#E8751A]/[0.04] blur-[140px] rounded-full pointer-events-none" />
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                What Drives Us
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Our Mission &amp; Vision</h2>
-              <div className="section-bar mx-auto" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">What Drives Us</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A2E] mb-3 leading-tight tracking-tight">
+                Our Mission &amp; <span className="text-[#E8751A]">Vision</span>
+              </h2>
+              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                The principles that guide our engineering practice and the future we are building together.
+              </p>
             </div>
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {/* Mission — Navy accent with bullet points */}
+            {/* Mission — Image-forward with bullet points */}
             <FadeIn delay={0}>
-              <div className="relative group h-full">
-                <div className="absolute -top-3 -left-3 w-24 h-24 rounded-2xl bg-[#1F2937] -z-10 opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300" />
-                <Card className="bg-white rounded-2xl border-l-4 border-l-[#1F2937] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
-                  <CardContent className="p-6 md:p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-xl bg-[#1F2937]/8 flex items-center justify-center">
-                        <Target className="w-7 h-7 text-[#1F2937]" />
-                      </div>
-                      <h3 className="text-xl font-bold text-[#1A1A2E]">Our Mission</h3>
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#1F2937]/30 shadow-sm hover:shadow-2xl hover:shadow-[#1F2937]/10 transition-all duration-500"
+              >
+                {/* Image header */}
+                <div className="relative overflow-hidden h-52 md:h-56">
+                  <motion.img
+                    src="/images/mission-vision/mission.png"
+                    alt="Our Mission — Engineering team collaboration"
+                    className="w-full h-full object-cover"
+                    initial={false}
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+                  />
+                  {/* Navy gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1F2937]/70 via-[#1F2937]/20 to-transparent" />
+                  {/* Navy accent line */}
+                  <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#1F2937] group-hover:w-full transition-all duration-500 ease-out" />
+                  {/* Icon + title overlay on image */}
+                  <div className="absolute bottom-4 left-5 right-5 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg flex-shrink-0">
+                      <Target className="w-6 h-6 text-[#1F2937]" />
                     </div>
-                    <ul className="space-y-3.5">
-                      {MISSION_POINTS.map((point, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <div className="w-5 h-5 rounded-full bg-[#1F2937]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle2 className="w-3 h-3 text-[#1F2937]" />
-                          </div>
-                          <span className="text-[#374151] text-sm leading-relaxed">{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
+                    <div>
+                      <span className="block text-[10px] font-bold tracking-[0.2em] text-white/80 uppercase">Our Direction</span>
+                      <h3 className="text-xl md:text-2xl font-bold text-white leading-tight tracking-tight">Our Mission</h3>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-5 md:p-6">
+                  <ul className="space-y-3">
+                    {MISSION_POINTS.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-[#1F2937]/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#1F2937]/15 transition-colors">
+                          <CheckCircle2 className="w-3 h-3 text-[#1F2937]" />
+                        </div>
+                        <span className="text-[#374151] text-sm leading-relaxed">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
             </FadeIn>
 
-            {/* Vision — Orange accent */}
+            {/* Vision — Image-forward with statement */}
             <FadeIn delay={0.1}>
-              <div className="relative group h-full">
-                <div className="absolute -top-3 -right-3 w-24 h-24 rounded-2xl bg-[#E8751A] -z-10 opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-300" />
-                <Card className="bg-white rounded-2xl border-l-4 border-l-[#E8751A] border-y border-r border-y-[#E5E7EB] border-r-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow duration-300 h-full">
-                  <CardContent className="p-6 md:p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-xl bg-[#E8751A]/8 flex items-center justify-center">
-                        <Eye className="w-7 h-7 text-[#E8751A]" />
-                      </div>
-                      <h3 className="text-xl font-bold text-[#1A1A2E]">Our Vision</h3>
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
+              >
+                {/* Image header */}
+                <div className="relative overflow-hidden h-52 md:h-56">
+                  <motion.img
+                    src="/images/mission-vision/vision.png"
+                    alt="Our Vision — Looking toward the future"
+                    className="w-full h-full object-cover"
+                    initial={false}
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+                  />
+                  {/* Coral gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#E8751A]/60 via-black/20 to-transparent" />
+                  {/* Coral accent line */}
+                  <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
+                  {/* Icon + title overlay on image */}
+                  <div className="absolute bottom-4 left-5 right-5 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-lg flex-shrink-0">
+                      <Eye className="w-6 h-6 text-[#E8751A]" />
                     </div>
-                    <p className="text-[#374151] text-base leading-relaxed">
-                      {vision}
-                    </p>
-                    <div className="mt-8 pt-6 border-t border-[#E5E7EB]">
-                      <div className="flex items-center gap-2 text-[#E8751A]">
-                        <BadgeCheck className="w-5 h-5" />
-                        <span className="text-sm font-semibold uppercase tracking-wider">Engineering Excellence</span>
-                      </div>
+                    <div>
+                      <span className="block text-[10px] font-bold tracking-[0.2em] text-white/80 uppercase">Our Horizon</span>
+                      <h3 className="text-xl md:text-2xl font-bold text-white leading-tight tracking-tight">Our Vision</h3>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-5 md:p-6 flex flex-col h-[calc(100%-14rem)]">
+                  <p className="text-[#374151] text-base leading-relaxed flex-1">
+                    {vision}
+                  </p>
+                  <div className="mt-6 pt-5 border-t border-[#E5E7EB]">
+                    <div className="flex items-center gap-2 text-[#E8751A]">
+                      <BadgeCheck className="w-5 h-5" />
+                      <span className="text-sm font-semibold uppercase tracking-wider">Engineering Excellence</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </FadeIn>
           </div>
         </div>
