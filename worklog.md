@@ -135,3 +135,27 @@ Stage Summary:
 - Both sections share cohesive design language: real photography on top, coral number badges, coral accent line animation on hover, spring-based card lift, image zoom on hover.
 - 9 new photorealistic images generated and saved under /public/images/values/ and /public/images/infra/.
 - Produced artifacts: rewritten sections in /home/z/my-project/src/components/pages/AboutPage.tsx, 9 new images.
+
+---
+Task ID: 5
+Agent: main (Z.ai Code)
+Task: Remove the dark theme from the Core Values section and merge it with the same light theme as the rest of the About page.
+
+Work Log:
+- Rewrote the Core Values section in /home/z/my-project/src/components/pages/AboutPage.tsx to use a light theme matching the Infrastructure section:
+  - Section background: changed from bg-[#0B0F17] (dark) → bg-[#F8FAFC] (light gray), removed text-white.
+  - Ambient glows: reduced opacity from /10 and /[0.06] → /[0.05] and /[0.04] for subtlety on light bg. Added subtle grid pattern.
+  - Header: "Our Principles" pill changed from bg-[#E8751A]/15 → bg-[#E8751A]/10. Heading changed from text-white → text-[#1A1A2E]. Description from text-slate-400 → text-[#6B7280].
+  - Cards: changed from bg-[#141A24] (dark) → bg-white with border-slate-200, added shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 (matching Infrastructure).
+  - Image overlay: replaced the always-on dark gradient (from-[#141A24]) with a hover-only dark sweep (from-black/60, opacity-0 group-hover:opacity-100) — matching Infrastructure.
+  - Number badge: changed from bg-black/40 border-white/10 → bg-white/90 border-white/40 shadow-md (matching Infrastructure).
+  - Content text: heading from text-white → text-[#1A1A2E], description from text-slate-400 → text-[#6B7280].
+  - Kept: image-forward bento layout (3+2), motion.img zoom on hover, spring-based card lift, coral accent line animation, single coral (#E8751A) accent.
+- Ran `bun run lint` — passed.
+- Verified with Agent Browser + VLM: Core Values now has a light gray background with white cards, dark text, real photographs on top, coral number badges. The transition from Core Values (light gray) into Infrastructure (white) is seamless and cohesive — both share the same light theme with single coral accent. No dark theme remaining.
+- Pushed to git.
+
+Stage Summary:
+- Core Values dark theme removed; now uses the same light theme as Infrastructure (and the rest of the About page).
+- Both Core Values and Infrastructure are now visually unified: light backgrounds, white image-forward cards, dark text, single coral accent, identical card styling and animations.
+- Produced artifacts: updated /home/z/my-project/src/components/pages/AboutPage.tsx.
