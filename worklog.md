@@ -190,3 +190,34 @@ Stage Summary:
 - Files modified: src/components/sections/Journey.tsx, src/components/pages/AboutPage.tsx
 - Files added: public/images/mission-vision/mission.png, public/images/mission-vision/vision.png
 - Git: pushed to origin/main (commit c2e1998)
+
+---
+Task ID: 6
+Agent: main
+Task: Add 4 new EPC services to Services page (Electrical EPC Solutions, EHV/HV Substations, Industrial Electrification, HT/LT Panel Manufacturing)
+
+Work Log:
+- Read current ServicesPage.tsx and ServiceDetailPage.tsx structure
+- Generated 4 photorealistic images at 1344x768 (2 retried after rate limit)
+- ServicesPage.tsx: added imports (Network, Factory, Boxes)
+- ServicesPage.tsx: added 4 services (s9-s12) with full scope/capabilities
+- ServicesPage.tsx: added iconMap entries (Network, Zap, Factory, Boxes)
+- ServicesPage.tsx: added accentMap entries (navy, slate-700, amber-600, teal-700)
+- ServicesPage.tsx: added 'EPC' and 'Manufacturing' to CategoryKey + categories array
+- ServiceDetailPage.tsx: added imports (Network, Factory, Boxes)
+- ServiceDetailPage.tsx: added 4 detail entries with name, slug, shortName, description, tagline, capabilities, processSteps, highlights, relatedProjects, image
+- ServiceDetailPage.tsx: added iconMap + slugToName entries for 4 new services
+- Verified with Agent Browser: 12 services total, 7 category tabs (All 12, Engineering 4, EPC 3, Manufacturing 1, Maintenance 1, Liaison 2, Renewable 1)
+- Verified EPC filter shows exactly 3 cards
+- Verified detail page for Electrical EPC Solutions renders with full content (scope items, process steps, highlights all present in DOM)
+- Lint passed clean, no app errors
+- Committed (eedcb65) and pushed to origin/main
+
+Stage Summary:
+- 4 new EPC services added to Services page: Electrical EPC Solutions, EHV/HV Substations, Industrial Electrification (category EPC), HT & LT Panel Manufacturing (category Manufacturing)
+- 2 new category filter tabs: EPC (3), Manufacturing (1)
+- Total services now: 12 (was 8)
+- Each new service has: card on Services grid + full detail page with process steps, capabilities, highlights, related projects
+- 4 new photorealistic images generated
+- Git: pushed to origin/main (commit eedcb65)
+- NOTE: Credorafin deploy error (jspdf, jspdf-autotable, xlsx missing) is on a SEPARATE server (/home/ubuntu/credorafin) — not this project. Fix provided to user.
