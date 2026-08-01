@@ -6,8 +6,8 @@ import Image from 'next/image'
 import {
   ChevronRight, ArrowRight, ArrowUpRight, PenTool, Hammer, FlaskConical,
   BarChart3, ShieldCheck, FileCheck, Building2, Sun,
-  Zap, Wrench, Shield, Network, Factory, Boxes, Search, X,
-  Sparkles, Layers, Workflow, Gauge, CheckCircle2, Phone,
+  Zap, Wrench, Network, Factory, Boxes, Plus, Minus,
+  Cpu, Award, ScrollText, Layers,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useRouter } from '@/components/Router'
@@ -24,7 +24,7 @@ interface StaticService {
   capabilities: string[]
   category: string
   image: string
-  featured?: boolean
+  tagline: string
 }
 
 const services: StaticService[] = [
@@ -45,7 +45,7 @@ const services: StaticService[] = [
     ],
     category: 'Engineering',
     image: '/images/services/design-engineering.png',
-    featured: true,
+    tagline: 'From concept to commissioning — engineered to standard.',
   },
   {
     id: 's2',
@@ -65,6 +65,7 @@ const services: StaticService[] = [
     ],
     category: 'Engineering',
     image: '/images/services/project-execution.png',
+    tagline: 'On schedule. On budget. On standard.',
   },
   {
     id: 's3',
@@ -81,6 +82,7 @@ const services: StaticService[] = [
     ],
     category: 'Engineering',
     image: '/images/services/testing.png',
+    tagline: 'NABL-accredited. Every parameter verified.',
   },
   {
     id: 's4',
@@ -99,6 +101,7 @@ const services: StaticService[] = [
     ],
     category: 'Engineering',
     image: '/images/services/energy-audit.png',
+    tagline: 'Measure. Analyse. Optimise.',
   },
   {
     id: 's5',
@@ -115,6 +118,7 @@ const services: StaticService[] = [
     ],
     category: 'Maintenance',
     image: '/images/services/amc.png',
+    tagline: '150+ technicians. 16+ years. Zero downtime.',
   },
   {
     id: 's6',
@@ -130,6 +134,7 @@ const services: StaticService[] = [
     ],
     category: 'Liaison',
     image: '/images/services/ceig-liaison.png',
+    tagline: 'Statutory approvals, handled end-to-end.',
   },
   {
     id: 's7',
@@ -146,6 +151,7 @@ const services: StaticService[] = [
     ],
     category: 'Liaison',
     image: '/images/services/utility-liaison.png',
+    tagline: 'Grid connectivity across four state utilities.',
   },
   {
     id: 's8',
@@ -162,6 +168,7 @@ const services: StaticService[] = [
     ],
     category: 'Renewable',
     image: '/images/services/solar-works.png',
+    tagline: 'From 10 kW rooftops to 100 MW farms.',
   },
   {
     id: 's9',
@@ -180,6 +187,7 @@ const services: StaticService[] = [
     ],
     category: 'EPC',
     image: '/images/services/electrical-epc-solutions.png',
+    tagline: 'One contract. Full accountability.',
   },
   {
     id: 's10',
@@ -198,6 +206,7 @@ const services: StaticService[] = [
     ],
     category: 'EPC',
     image: '/images/services/ehv-hv-substations.png',
+    tagline: 'Up to 400 kV — AIS & GIS.',
   },
   {
     id: 's11',
@@ -216,6 +225,7 @@ const services: StaticService[] = [
     ],
     category: 'EPC',
     image: '/images/services/industrial-electrification.png',
+    tagline: 'Greenfield, brownfield, retrofit.',
   },
   {
     id: 's12',
@@ -235,6 +245,7 @@ const services: StaticService[] = [
     ],
     category: 'Manufacturing',
     image: '/images/services/ht-lt-panel-manufacturing.png',
+    tagline: 'In-house. IEC-61439 certified.',
   },
 ]
 
@@ -254,754 +265,524 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'HT & LT Panel Manufacturing': Boxes,
 }
 
-/* ─── Category config: vertical sidebar ─── */
+/* ─── Category config ─── */
 type CategoryKey = 'All' | 'Engineering' | 'EPC' | 'Manufacturing' | 'Maintenance' | 'Liaison' | 'Renewable'
 
-const categoryConfig: { key: CategoryKey; label: string; icon: React.ComponentType<{ className?: string }>; desc: string }[] = [
-  { key: 'All',           label: 'All Services', icon: Layers,    desc: 'Everything we offer' },
-  { key: 'Engineering',   label: 'Engineering',  icon: PenTool,   desc: 'Design & analysis' },
-  { key: 'EPC',            label: 'EPC',          icon: Network,   desc: 'Turnkey execution' },
-  { key: 'Manufacturing', label: 'Manufacturing', icon: Boxes,   desc: 'Panels & bus ducts' },
-  { key: 'Maintenance',   label: 'Maintenance',  icon: Wrench,   desc: 'AMC & upkeep' },
-  { key: 'Liaison',       label: 'Liaison',      icon: FileCheck, desc: 'Statutory approvals' },
-  { key: 'Renewable',     label: 'Renewable',    icon: Sun,       desc: 'Solar & green energy' },
+const categoryConfig: { key: CategoryKey; label: string; short: string }[] = [
+  { key: 'All',           label: 'All Services', short: 'All' },
+  { key: 'Engineering',   label: 'Engineering',  short: 'ENG' },
+  { key: 'EPC',            label: 'EPC',          short: 'EPC' },
+  { key: 'Manufacturing', label: 'Manufacturing', short: 'MFG' },
+  { key: 'Maintenance',   label: 'Maintenance',  short: 'AMC' },
+  { key: 'Liaison',       label: 'Liaison',      short: 'LIA' },
+  { key: 'Renewable',     label: 'Renewable',    short: 'SOL' },
 ]
 
-/* ─── Process steps ─── */
-const processSteps = [
-  { n: '01', title: 'Discover', desc: 'Understand scope, site, statutory needs & client objectives', icon: Search },
-  { n: '02', title: 'Design',   desc: 'Engineering, SLD, earth mat, lightning & protection design', icon: PenTool },
-  { n: '03', title: 'Execute',   desc: 'Procurement, installation, testing & commissioning on schedule', icon: Hammer },
-  { n: '04', title: 'Sustain',  desc: 'AMC, audits, condition monitoring & statutory renewals', icon: ShieldCheck },
-]
-
-/* ─── Industries served ─── */
-const industries = [
-  'Cement', 'Steel', 'Petrochemical', 'Power Utility', 'Automotive',
-  'Data Center', 'Pharma', 'Textile', 'Food & Beverage', 'Infrastructure',
-  'Renewable IPP', 'Commercial Real Estate',
+/* ─── Standards strip ─── */
+const standards = [
+  { code: 'IEEE-80',    label: 'Earth Mat Design' },
+  { code: 'IS-2309',    label: 'Lightning System' },
+  { code: 'NABL',       label: 'Accredited Testing' },
+  { code: 'IEC-61439',  label: 'Panel Manufacturing' },
+  { code: 'IS-3427',    label: 'HT Switchgear' },
+  { code: '400 kV',     label: 'Voltage Class' },
 ]
 
 export default function ServicesPage() {
   const { navigate } = useRouter()
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('All')
-  const [query, setQuery] = useState('')
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [activeId, setActiveId] = useState<string>(services[0].id)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   const filteredServices = useMemo(() => {
-    let list = activeCategory === 'All'
-      ? services
-      : services.filter(s => s.category === activeCategory)
-    if (query.trim()) {
-      const q = query.toLowerCase()
-      list = list.filter(s =>
-        s.name.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q) ||
-        s.capabilities.some(c => c.toLowerCase().includes(q))
-      )
-    }
-    return list
-  }, [activeCategory, query])
+    if (activeCategory === 'All') return services
+    return services.filter(s => s.category === activeCategory)
+  }, [activeCategory])
 
-  const totalCount = services.length
-  const activeCount = filteredServices.length
+  // Ensure activeId is valid within the filtered list
+  const activeService = useMemo(() => {
+    const found = filteredServices.find(s => s.id === activeId)
+    return found || filteredServices[0] || services[0]
+  }, [filteredServices, activeId])
+
+  // Reset activeId when category changes
+  const handleCategoryChange = (cat: CategoryKey) => {
+    setActiveCategory(cat)
+    const newFiltered = cat === 'All' ? services : services.filter(s => s.category === cat)
+    if (newFiltered.length > 0) setActiveId(newFiltered[0].id)
+  }
+
+  const ActiveIcon = iconMap[activeService.name] || PenTool
+  const activeIndex = filteredServices.findIndex(s => s.id === activeService.id)
 
   return (
     <>
       {/* ════════════════════════════════════════════════════════════
-          HERO — Light editorial split layout (NO navy gradient)
+          HERO — Cinematic full-bleed with manifesto
           ════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#F7F9FC]">
-        {/* Decorative coral arc — top right */}
-        <div className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full pointer-events-none opacity-[0.07]"
+      <section className="relative overflow-hidden bg-[#0D1D3A]">
+        {/* Background image with heavy overlay */}
+        <div className="absolute inset-0">
+          <Image
+            src={services[0].image}
+            alt=""
+            fill
+            className="object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0D1D3A] via-[#0D1D3A]/85 to-[#152D4F]/90" />
+        </div>
+
+        {/* Decorative coral glow */}
+        <div className="absolute top-1/4 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-10"
           style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }} />
-        {/* Decorative navy arc — bottom left */}
-        <div className="absolute -bottom-40 -left-40 w-[480px] h-[480px] rounded-full pointer-events-none opacity-[0.05]"
-          style={{ background: 'radial-gradient(circle, #1B3A5C 0%, transparent 65%)' }} />
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: 'linear-gradient(#1B3A5C 1px, transparent 1px), linear-gradient(90deg, #1B3A5C 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }} />
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[110px] pb-16 lg:pb-20">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            {/* LEFT — Editorial copy */}
-            <div className="lg:col-span-7">
-              {/* Breadcrumb */}
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[110px] pb-20 lg:pb-28">
+          {/* Breadcrumb */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-2 text-sm mb-12"
+          >
+            <button onClick={() => navigate('home')} className="text-white/40 hover:text-white/70 transition-colors">
+              Home
+            </button>
+            <ChevronRight className="w-4 h-4 text-white/20" />
+            <span className="text-[#E8751A] font-semibold">Services</span>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            {/* Left — Big manifesto */}
+            <div className="lg:col-span-8">
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="flex items-center gap-2 text-sm mb-6"
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex items-center gap-3 mb-6"
               >
-                <button onClick={() => navigate('home')} className="text-gray-400 hover:text-[#1B3A5C] transition-colors">
-                  Home
-                </button>
-                <ChevronRight className="w-4 h-4 text-gray-300" />
-                <span className="text-[#E8751A] font-semibold">Services</span>
+                <span className="h-px w-12 bg-[#E8751A]" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#E8751A]">Capabilities</span>
               </motion.div>
 
-              {/* Eyebrow */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.05 }}
-                className="inline-flex items-center gap-2 mb-5"
-              >
-                <span className="w-8 h-px bg-[#E8751A]" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">What We Do</span>
-              </motion.div>
-
-              {/* Heading */}
               <motion.h1
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.1 }}
-                className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold leading-[1.05] text-[#152D4F] mb-5 tracking-tight"
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-4xl sm:text-5xl lg:text-[4.5rem] font-bold text-white leading-[1.02] tracking-tight mb-6"
               >
-                One partner.{' '}
-                <span className="relative inline-block text-[#E8751A]">
-                  Twelve services.
-                  <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none" preserveAspectRatio="none">
-                    <motion.path
-                      d="M2 8 Q 150 2, 298 7"
-                      stroke="#E8751A"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.9, delay: 0.6, ease: 'easeOut' }}
-                    />
-                  </svg>
-                </span>
+                We engineer power.
                 <br />
-                Zero hand-offs.
+                <span className="text-[#E8751A]">You stay switched on.</span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg text-gray-500 leading-relaxed max-w-xl mb-8"
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="text-lg text-white/55 leading-relaxed max-w-2xl"
               >
-                From 400 kV switchyard design to rooftop solar — every capability you need to energise, protect and maintain your plant sits under one roof. No fragmentation, no finger-pointing.
+                Twelve specialised services — from 400 kV switchyard design to rooftop solar — delivered by a single, accountable partner. Hover any service in the index to bring it into focus.
               </motion.p>
-
-              {/* Stats row */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="grid grid-cols-3 gap-4 max-w-lg"
-              >
-                {[
-                  { v: '400', u: 'kV', l: 'Up to' },
-                  { v: '12', u: '', l: 'Service lines' },
-                  { v: '2000+', u: '', l: 'Projects delivered' },
-                ].map((s, i) => (
-                  <div key={i} className="border-l-2 border-[#E8751A]/40 pl-4">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl lg:text-3xl font-bold text-[#152D4F]">{s.v}</span>
-                      {s.u && <span className="text-sm font-semibold text-[#E8751A]">{s.u}</span>}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-0.5">{s.l}</div>
-                  </div>
-                ))}
-              </motion.div>
             </div>
 
-            {/* RIGHT — Category cluster card */}
+            {/* Right — counter */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="lg:col-span-5 relative"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="lg:col-span-4 lg:text-right"
             >
-              <div className="relative bg-white rounded-2xl shadow-xl shadow-gray-200/60 p-6 lg:p-7 border border-gray-100">
-                {/* Coral corner accent */}
-                <div className="absolute -top-3 -right-3 w-16 h-16 bg-[#E8751A] rounded-tr-2xl rounded-bl-2xl opacity-10" />
-
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#E8751A]" />
-                    <span className="text-sm font-bold text-[#152D4F]">Service Universe</span>
-                  </div>
-                  <span className="text-xs font-semibold text-gray-400">{totalCount} total</span>
+              <div className="inline-block">
+                <div className="text-[7rem] lg:text-[9rem] font-bold leading-none text-[#E8751A]/15">
+                  {String(services.length).padStart(2, '0')}
                 </div>
-
-                {/* Category mini-grid */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  {categoryConfig.filter(c => c.key !== 'All').map((cat, i) => {
-                    const Icon = cat.icon
-                    const count = services.filter(s => s.category === cat.key).length
-                    const isActive = activeCategory === cat.key
-                    return (
-                      <motion.button
-                        key={cat.key}
-                        onClick={() => {
-                          setActiveCategory(cat.key)
-                          document.getElementById('service-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                        }}
-                        whileHover={{ y: -2 }}
-                        className={`relative text-left p-3 rounded-xl border transition-all duration-300 ${
-                          isActive
-                            ? 'bg-[#152D4F] border-[#152D4F] text-white'
-                            : 'bg-[#F7F9FC] border-gray-200 hover:border-[#E8751A]/40 hover:bg-white'
-                        }`}
-                      >
-                        <Icon className={`w-5 h-5 mb-2 ${isActive ? 'text-[#E8751A]' : 'text-[#152D4F]'}`} />
-                        <div className={`text-xs font-bold ${isActive ? 'text-white' : 'text-[#152D4F]'}`}>
-                          {cat.label}
-                        </div>
-                        <div className={`text-[10px] mt-0.5 ${isActive ? 'text-white/60' : 'text-gray-400'}`}>
-                          {count} {count === 1 ? 'service' : 'services'}
-                        </div>
-                      </motion.button>
-                    )
-                  })}
+                <div className="text-sm font-semibold text-white/60 -mt-4 lg:-mt-6">
+                  services under one roof
                 </div>
-
-                {/* Bottom CTA strip */}
-                <button
-                  onClick={() => navigate('contact')}
-                  className="mt-5 w-full flex items-center justify-between px-4 py-3 rounded-xl bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold text-sm transition-colors group"
-                >
-                  <span>Not sure what you need?</span>
-                  <span className="flex items-center gap-1">
-                    Ask an expert
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </button>
               </div>
-
-              {/* Floating badge */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="absolute -bottom-4 -left-4 lg:-left-8 bg-white rounded-xl shadow-lg shadow-gray-200/60 px-4 py-2.5 border border-gray-100 flex items-center gap-2"
-              >
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-xs font-semibold text-[#152D4F]">ISO-certified delivery</span>
-              </motion.div>
             </motion.div>
           </div>
         </div>
-      </section>
 
-      {/* ════════════════════════════════════════════════════════════
-          MAIN — Sticky sidebar + bento grid
-          ════════════════════════════════════════════════════════════ */}
-      <section id="service-grid" className="py-14 lg:py-20 bg-white scroll-mt-20">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10">
-            {/* ─── LEFT: Sticky sidebar ─── */}
-            <aside className="lg:col-span-3">
-              <div className="lg:sticky lg:top-24 space-y-6">
-                {/* Search */}
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 block">Search</label>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Try 'solar' or 'substation'..."
-                      className="w-full pl-9 pr-9 py-2.5 text-sm rounded-lg border border-gray-200 bg-[#F7F9FC] focus:bg-white focus:border-[#E8751A] focus:outline-none focus:ring-2 focus:ring-[#E8751A]/15 transition-all"
-                    />
-                    {query && (
-                      <button
-                        onClick={() => setQuery('')}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3 text-gray-600" />
-                      </button>
-                    )}
-                  </div>
+        {/* Standards strip at bottom of hero */}
+        <div className="relative border-t border-white/10 bg-[#0A1730]/60 backdrop-blur-sm">
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-4">
+            <div className="flex items-center gap-4 lg:gap-6 overflow-x-auto no-scrollbar">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 flex-shrink-0">
+                Built to
+              </span>
+              {standards.map((s, i) => (
+                <div key={i} className="flex items-center gap-2 flex-shrink-0">
+                  <span className="text-sm font-bold text-[#E8751A]">{s.code}</span>
+                  <span className="text-xs text-white/50 hidden sm:inline">{s.label}</span>
+                  {i < standards.length - 1 && <span className="text-white/15 ml-2">/</span>}
                 </div>
-
-                {/* Category list */}
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 block">Categories</label>
-                  <div className="space-y-1">
-                    {categoryConfig.map(cat => {
-                      const Icon = cat.icon
-                      const isActive = activeCategory === cat.key
-                      const count = cat.key === 'All'
-                        ? services.length
-                        : services.filter(s => s.category === cat.key).length
-                      return (
-                        <button
-                          key={cat.key}
-                          onClick={() => setActiveCategory(cat.key)}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-300 group ${
-                            isActive
-                              ? 'bg-[#152D4F] text-white shadow-md shadow-[#152D4F]/15'
-                              : 'hover:bg-[#F7F9FC] text-gray-600'
-                          }`}
-                        >
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            isActive ? 'bg-[#E8751A]' : 'bg-gray-100 group-hover:bg-gray-200'
-                          }`}>
-                            <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#152D4F]'}`} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className={`text-sm font-semibold ${isActive ? 'text-white' : 'text-[#152D4F]'}`}>
-                              {cat.label}
-                            </div>
-                            <div className={`text-[11px] truncate ${isActive ? 'text-white/60' : 'text-gray-400'}`}>
-                              {cat.desc}
-                            </div>
-                          </div>
-                          <span className={`text-xs font-bold ${isActive ? 'text-[#E8751A]' : 'text-gray-300'}`}>
-                            {count}
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* Help card */}
-                <div className="rounded-xl p-4 bg-gradient-to-br from-[#152D4F] to-[#1B3A5C] text-white">
-                  <Phone className="w-5 h-5 text-[#E8751A] mb-2" />
-                  <div className="text-sm font-bold mb-1">Need a custom scope?</div>
-                  <div className="text-xs text-white/60 mb-3 leading-relaxed">
-                    Our engineers will assemble the right combination of services for your plant.
-                  </div>
-                  <button
-                    onClick={() => navigate('contact')}
-                    className="text-xs font-semibold text-[#E8751A] hover:underline inline-flex items-center gap-1"
-                  >
-                    Talk to engineering <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-            </aside>
-
-            {/* ─── RIGHT: Bento grid ─── */}
-            <div className="lg:col-span-9">
-              {/* Result bar */}
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-bold text-[#152D4F]">
-                    {activeCategory === 'All' ? 'All Services' : activeCategory}
-                  </h2>
-                  <Badge className="bg-[#E8751A]/10 text-[#E8751A] border border-[#E8751A]/20 text-xs font-bold rounded-md">
-                    {activeCount} {activeCount === 1 ? 'result' : 'results'}
-                  </Badge>
-                </div>
-                {query && (
-                  <button
-                    onClick={() => setQuery('')}
-                    className="text-xs text-gray-500 hover:text-[#E8751A] inline-flex items-center gap-1"
-                  >
-                    Clear search <X className="w-3 h-3" />
-                  </button>
-                )}
-              </div>
-
-              {/* Bento grid */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${activeCategory}-${query}`}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-[minmax(260px,auto)]"
-                >
-                  {filteredServices.map((s, i) => {
-                    const Icon = iconMap[s.name] || PenTool
-                    const isFeatured = Boolean(s.featured) && activeCategory === 'All' && !query
-                    return (
-                      <ServiceBentoCard
-                        key={s.id}
-                        service={s}
-                        icon={Icon}
-                        index={i}
-                        isFeatured={isFeatured}
-                        isHovered={hoveredId === s.id}
-                        onHover={(h) => setHoveredId(h ? s.id : null)}
-                        onClick={() => navigate('service-detail', { slug: s.slug })}
-                      />
-                    )
-                  })}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Empty state */}
-              {filteredServices.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center py-20"
-                >
-                  <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-7 h-7 text-gray-400" />
-                  </div>
-                  <p className="text-[#152D4F] text-lg font-semibold mb-1">No services match your search</p>
-                  <p className="text-gray-500 text-sm mb-4">Try a different keyword or clear the filter.</p>
-                  <button
-                    onClick={() => { setQuery(''); setActiveCategory('All') }}
-                    className="text-[#E8751A] text-sm font-semibold hover:underline inline-flex items-center gap-1"
-                  >
-                    Reset filters <X className="w-3 h-3" />
-                  </button>
-                </motion.div>
-              )}
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════
-          PROCESS — How we deliver
+          MAIN — Magazine Menu + Spotlight (interactive two-panel)
           ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#F7F9FC] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{
-            backgroundImage: 'linear-gradient(#1B3A5C 1px, transparent 1px), linear-gradient(90deg, #1B3A5C 1px, transparent 1px)',
-            backgroundSize: '64px 64px',
-          }} />
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-8 mb-10 items-end">
+      <section className="py-16 lg:py-24 bg-[#F7F9FC]">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          {/* Section heading */}
+          <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <span className="w-8 h-px bg-[#E8751A]" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">Delivery Model</span>
+              <div className="flex items-center gap-3 mb-3">
+                <Layers className="w-4 h-4 text-[#E8751A]" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">The Index</span>
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold text-[#152D4F] leading-tight">
-                Four moves from <span className="text-[#E8751A]">scope</span> to <span className="text-[#E8751A]">sustain</span>.
+                Every capability, in focus.
               </h2>
             </div>
             <div className="lg:col-span-5">
-              <p className="text-gray-500 leading-relaxed">
-                Every service we offer follows the same disciplined delivery arc — so whether you engage us for a single audit or a 400 kV greenfield switchyard, you get predictability, traceability and accountability.
+              <p className="text-gray-500 leading-relaxed text-sm">
+                Hover a service on the left to bring it into the spotlight on the right. Click through for full capabilities, standards, and case notes.
               </p>
             </div>
           </div>
 
-          {/* Process steps */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {processSteps.map((step, i) => {
-              const Icon = step.icon
+          {/* Category filter row */}
+          <div className="flex flex-wrap items-center gap-2 mb-8 pb-6 border-b border-gray-200">
+            {categoryConfig.map(cat => {
+              const isActive = activeCategory === cat.key
+              const count = cat.key === 'All'
+                ? services.length
+                : services.filter(s => s.category === cat.key).length
               return (
-                <motion.div
-                  key={step.n}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.45, delay: i * 0.1 }}
-                  className="relative bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#E8751A]/30 hover:shadow-lg hover:shadow-gray-200/50 transition-all group"
+                <button
+                  key={cat.key}
+                  onClick={() => handleCategoryChange(cat.key)}
+                  className={`group flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                    isActive
+                      ? 'bg-[#152D4F] text-white shadow-md shadow-[#152D4F]/15'
+                      : 'bg-white text-gray-600 border border-gray-200 hover:border-[#E8751A]/40 hover:text-[#152D4F]'
+                  }`}
                 >
-                  {/* Big faded number */}
-                  <div className="absolute top-4 right-5 text-5xl font-bold text-gray-100 group-hover:text-[#E8751A]/10 transition-colors">
-                    {step.n}
-                  </div>
-                  {/* Icon */}
-                  <div className="w-12 h-12 rounded-xl bg-[#152D4F] flex items-center justify-center mb-4 group-hover:bg-[#E8751A] transition-colors">
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#152D4F] mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
-
-                  {/* Connector arrow */}
-                  {i < processSteps.length - 1 && (
-                    <div className="hidden lg:flex absolute top-1/2 -right-3 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-white border border-gray-200 items-center justify-center">
-                      <ArrowRight className="w-3 h-3 text-[#E8751A]" />
-                    </div>
-                  )}
-                </motion.div>
+                  <span className={`text-[10px] font-bold ${isActive ? 'text-[#E8751A]' : 'text-gray-400'}`}>
+                    {cat.short}
+                  </span>
+                  <span>{cat.label}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                    isActive ? 'bg-white/15 text-white/80' : 'bg-gray-100 text-gray-500'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
               )
             })}
+          </div>
+
+          {/* Two-panel: index list + spotlight */}
+          <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
+            {/* ─── LEFT: Numbered index list ─── */}
+            <div className="lg:col-span-5">
+              <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                {/* List header */}
+                <div className="flex items-center justify-between px-5 py-3.5 bg-[#152D4F]">
+                  <div className="flex items-center gap-2">
+                    <ScrollText className="w-4 h-4 text-[#E8751A]" />
+                    <span className="text-sm font-bold text-white">Service Index</span>
+                  </div>
+                  <span className="text-xs text-white/50">
+                    {String(filteredServices.length).padStart(2, '0')} listed
+                  </span>
+                </div>
+
+                {/* The list */}
+                <div className="divide-y divide-gray-100">
+                  {filteredServices.map((s, i) => {
+                    const Icon = iconMap[s.name] || PenTool
+                    const isActive = s.id === activeService.id
+                    const num = String(i + 1).padStart(2, '0')
+                    return (
+                      <button
+                        key={s.id}
+                        onMouseEnter={() => setActiveId(s.id)}
+                        onClick={() => navigate('service-detail', { slug: s.slug })}
+                        className={`group w-full flex items-center gap-4 px-5 py-4 text-left transition-all duration-300 ${
+                          isActive
+                            ? 'bg-[#F0F4F8] border-l-4 border-l-[#E8751A]'
+                            : 'border-l-4 border-l-transparent hover:bg-gray-50'
+                        }`}
+                      >
+                        {/* Number */}
+                        <span className={`text-2xl font-bold tabular-nums transition-colors ${
+                          isActive ? 'text-[#E8751A]' : 'text-gray-300 group-hover:text-gray-400'
+                        }`}>
+                          {num}
+                        </span>
+
+                        {/* Icon */}
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
+                          isActive
+                            ? 'bg-[#152D4F]'
+                            : 'bg-gray-100 group-hover:bg-gray-200'
+                        }`}>
+                          <Icon className={`w-4 h-4 transition-colors ${
+                            isActive ? 'text-white' : 'text-[#152D4F]'
+                          }`} />
+                        </div>
+
+                        {/* Name + category */}
+                        <div className="flex-1 min-w-0">
+                          <div className={`text-sm font-bold leading-tight transition-colors ${
+                            isActive ? 'text-[#152D4F]' : 'text-[#152D4F] group-hover:text-[#E8751A]'
+                          }`}>
+                            {s.name}
+                          </div>
+                          <div className="text-[11px] text-gray-400 mt-0.5">
+                            {s.category} · {s.capabilities.length} capabilities
+                          </div>
+                        </div>
+
+                        {/* Arrow */}
+                        <ArrowUpRight className={`w-4 h-4 transition-all ${
+                          isActive
+                            ? 'text-[#E8751A] opacity-100 translate-x-0'
+                            : 'text-gray-300 opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0'
+                        }`} />
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* List footer */}
+                <div className="px-5 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-xs text-gray-400">Hover to preview · Click to explore</span>
+                  <button
+                    onClick={() => navigate('contact')}
+                    className="text-xs font-semibold text-[#E8751A] hover:underline inline-flex items-center gap-1"
+                  >
+                    Need help choosing? <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── RIGHT: Spotlight detail panel ─── */}
+            <div className="lg:col-span-7">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeService.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35 }}
+                  className="bg-white rounded-2xl border border-gray-200 overflow-hidden sticky top-6"
+                >
+                  {/* Big image header */}
+                  <div className="relative h-64 lg:h-72 overflow-hidden">
+                    <Image
+                      src={activeService.image}
+                      alt={activeService.name}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A] via-[#0D1D3A]/40 to-transparent" />
+
+                    {/* Category + index chip */}
+                    <div className="absolute top-4 left-4 flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md bg-[#E8751A] text-white text-[10px] font-bold uppercase tracking-wider">
+                        {activeService.category}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-md bg-white/15 backdrop-blur-sm text-white text-[10px] font-bold border border-white/20">
+                        {String(activeIndex + 1).padStart(2, '0')} / {String(filteredServices.length).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    {/* Big faded number */}
+                    <div className="absolute top-2 right-4 text-[7rem] lg:text-[9rem] font-bold text-white/10 leading-none pointer-events-none">
+                      {String(activeIndex + 1).padStart(2, '0')}
+                    </div>
+
+                    {/* Title overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
+                      <div className="w-12 h-12 rounded-xl bg-[#E8751A] flex items-center justify-center mb-3 shadow-lg shadow-[#E8751A]/30">
+                        <ActiveIcon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-white leading-tight mb-1">
+                        {activeService.name}
+                      </h3>
+                      <p className="text-sm text-[#E8751A] font-semibold">
+                        {activeService.tagline}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-5 lg:p-6">
+                    {/* Description */}
+                    <p className="text-sm text-gray-600 leading-relaxed mb-5">
+                      {activeService.description}
+                    </p>
+
+                    {/* Capabilities — expandable accordion */}
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Cpu className="w-4 h-4 text-[#152D4F]" />
+                          <span className="text-sm font-bold text-[#152D4F]">
+                            Capabilities
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            ({activeService.capabilities.length})
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setExpandedId(expandedId === activeService.id ? null : activeService.id)}
+                          className="text-xs font-semibold text-[#E8751A] hover:underline inline-flex items-center gap-1"
+                        >
+                          {expandedId === activeService.id ? (
+                            <>Collapse <Minus className="w-3 h-3" /></>
+                          ) : (
+                            <>Expand all <Plus className="w-3 h-3" /></>
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {activeService.capabilities.slice(0, expandedId === activeService.id ? undefined : 4).map((c, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.25, delay: i * 0.04 }}
+                            className="flex items-start gap-2 p-2.5 rounded-lg bg-[#F7F9FC] border border-gray-100"
+                          >
+                            <span className="w-5 h-5 rounded flex items-center justify-center bg-[#152D4C] text-white text-[10px] font-bold flex-shrink-0 mt-0.5">
+                              {String(i + 1).padStart(2, '0')}
+                            </span>
+                            <span className="text-xs text-gray-700 leading-snug">{c}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      {activeService.capabilities.length > 4 && expandedId !== activeService.id && (
+                        <div className="mt-2 text-xs text-gray-400 text-center">
+                          + {activeService.capabilities.length - 4} more capabilities
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA */}
+                    <div className="mt-6 pt-5 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => navigate('service-detail', { slug: activeService.slug })}
+                        className="flex-1 inline-flex items-center justify-center gap-2 bg-[#152D4F] hover:bg-[#0D1D3A] text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm group"
+                      >
+                        Explore full service
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                      </button>
+                      <button
+                        onClick={() => navigate('contact')}
+                        className="flex-1 inline-flex items-center justify-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+                      >
+                        Request a quote
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════
-          INDUSTRIES MARQUEE
+          STANDARDS & CERTIFICATIONS BAND
           ════════════════════════════════════════════════════════════ */}
-      <section className="py-14 bg-white border-y border-gray-100">
+      <section className="py-16 bg-white border-y border-gray-100">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="w-8 h-px bg-[#E8751A]" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">Industries We Power</span>
-              <span className="w-8 h-px bg-[#E8751A]" />
+          <div className="grid lg:grid-cols-12 gap-8 items-center mb-8">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Award className="w-4 h-4 text-[#E8751A]" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">Compliance & Standards</span>
+              </div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#152D4F] leading-tight">
+                Every service is engineered to a standard you can audit.
+              </h2>
             </div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-[#152D4F]">
-              Trusted across {industries.length} verticals
-            </h2>
+            <div className="lg:col-span-6">
+              <p className="text-gray-500 leading-relaxed text-sm">
+                We don&apos;t just deliver — we document. Every design, test, and install is traceable to a recognised national or international standard, signed off by accredited engineers.
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {industries.map((ind, i) => (
-              <motion.span
-                key={ind}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="px-4 py-2 rounded-full bg-[#F7F9FC] border border-gray-200 text-sm font-semibold text-[#152D4F] hover:border-[#E8751A]/40 hover:bg-white hover:text-[#E8751A] transition-all cursor-default"
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {standards.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="group relative bg-[#F7F9FC] border border-gray-200 rounded-xl p-4 hover:border-[#E8751A]/40 hover:bg-white transition-all text-center"
               >
-                {ind}
-              </motion.span>
+                <div className="text-base font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors">
+                  {s.code}
+                </div>
+                <div className="text-[11px] text-gray-500 mt-1 leading-snug">
+                  {s.label}
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════
-          CTA — Split with stats
+          CTA — Minimal dark
           ════════════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden bg-[#152D4F]">
-        {/* Decorative coral arc */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-10 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full opacity-5 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 70%)' }} />
+        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] rounded-full opacity-10 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }} />
+        <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-5 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }} />
 
         <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-16 lg:py-20">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            {/* Left — copy + CTA */}
-            <div className="lg:col-span-7">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="inline-flex items-center gap-2 mb-5">
-                  <span className="w-8 h-px bg-[#E8751A]" />
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">Get Started</span>
-                </div>
-                <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight mb-4">
-                  Tell us your scope.<br />
-                  <span className="text-[#E8751A]">We&apos;ll bring the rest.</span>
-                </h2>
-                <p className="text-white/60 leading-relaxed max-w-lg mb-7">
-                  Share your site, voltage class and timeline. Within 48 hours, you&apos;ll receive a capability-mapped proposal — no obligation, no jargon.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    onClick={() => navigate('contact')}
-                    className="inline-flex items-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-6 py-3 rounded-full transition-colors shadow-lg shadow-[#E8751A]/25 group"
-                  >
-                    Request a proposal
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </button>
-                  <button
-                    onClick={() => navigate('projects')}
-                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white font-semibold px-6 py-3 rounded-full transition-colors border border-white/15"
-                  >
-                    View past projects
-                  </button>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right — trust stats */}
-            <div className="lg:col-span-5">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="grid grid-cols-2 gap-4"
-              >
-                {[
-                  { icon: Gauge,    v: '28+',  l: 'Years in business' },
-                  { icon: Workflow, v: '2000+', l: 'Projects delivered' },
-                  { icon: CheckCircle2, v: '>90%', l: 'Industrial clients' },
-                  { icon: Building2,    v: '11',   l: 'States served' },
-                ].map((s, i) => {
-                  const Icon = s.icon
-                  return (
-                    <div key={i} className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                      <Icon className="w-5 h-5 text-[#E8751A] mb-3" />
-                      <div className="text-2xl font-bold text-white">{s.v}</div>
-                      <div className="text-xs text-white/50 mt-0.5">{s.l}</div>
-                    </div>
-                  )
-                })}
-              </motion.div>
-            </div>
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <span className="h-px w-12 bg-[#E8751A]" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#E8751A]">Ready When You Are</span>
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight mb-5">
+                One conversation away from a single-source electrical partner.
+              </h2>
+              <p className="text-white/55 leading-relaxed mb-8 max-w-lg">
+                Tell us your voltage class, site, and timeline. Within 48 hours, you&apos;ll get a capability-mapped proposal — engineered, costed, and accountable.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => navigate('contact')}
+                  className="inline-flex items-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-7 py-3 rounded-full transition-colors shadow-lg shadow-[#E8751A]/25 group"
+                >
+                  Start a conversation
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <button
+                  onClick={() => navigate('projects')}
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white font-semibold px-7 py-3 rounded-full transition-colors border border-white/15"
+                >
+                  See delivered projects
+                </button>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
     </>
-  )
-}
-
-/* ════════════════════════════════════════════════════════════
-   BENTO CARD — supports featured (large) + regular variants
-   ════════════════════════════════════════════════════════════ */
-function ServiceBentoCard({
-  service, icon: Icon, index, isFeatured, isHovered, onHover, onClick,
-}: {
-  service: StaticService
-  icon: React.ComponentType<{ className?: string }>
-  index: number
-  isFeatured: boolean
-  isHovered: boolean
-  onHover: (hovered: boolean) => void
-  onClick: () => void
-}) {
-  // Featured card: spans 2 cols + 2 rows on lg, shows big image + overlay
-  if (isFeatured) {
-    return (
-      <motion.button
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.45, delay: index * 0.05 }}
-        onMouseEnter={() => onHover(true)}
-        onMouseLeave={() => onHover(false)}
-        onClick={onClick}
-        className="group relative sm:col-span-2 lg:col-span-2 lg:row-span-2 text-left overflow-hidden rounded-2xl bg-[#152D4F] cursor-pointer min-h-[300px] lg:min-h-[540px]"
-      >
-        {/* Image */}
-        <Image
-          src={service.image}
-          alt={service.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A] via-[#0D1D3A]/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1D3A]/70 via-transparent to-transparent" />
-
-        {/* Coral corner accent */}
-        <div className="absolute top-5 right-5 flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded-full bg-[#E8751A] text-white text-[11px] font-bold uppercase tracking-wider">
-            Featured
-          </span>
-        </div>
-
-        {/* Top-left: category */}
-        <div className="absolute top-5 left-5">
-          <span className="px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white text-[11px] font-semibold border border-white/20">
-            {service.category}
-          </span>
-        </div>
-
-        {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-          <div className="w-14 h-14 rounded-2xl bg-[#E8751A] flex items-center justify-center mb-4 shadow-lg shadow-[#E8751A]/30">
-            <Icon className="w-7 h-7 text-white" />
-          </div>
-          <h3 className="text-2xl lg:text-3xl font-bold text-white mb-3 leading-tight">
-            {service.name}
-          </h3>
-          <p className="text-white/70 leading-relaxed mb-5 max-w-md line-clamp-3">
-            {service.description}
-          </p>
-
-          {/* Capabilities preview */}
-          <div className="flex flex-wrap gap-1.5 mb-5 max-h-20 overflow-hidden">
-            {service.capabilities.slice(0, 4).map((c, i) => (
-              <span key={i} className="px-2 py-0.5 rounded-md bg-white/10 backdrop-blur-sm text-white/80 text-[11px] border border-white/10">
-                {c.length > 28 ? c.slice(0, 28) + '…' : c}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-white/15">
-            <span className="text-sm text-white/60">
-              {service.capabilities.length} capabilities
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#E8751A] group-hover:gap-2.5 transition-all">
-              Explore service
-              <ArrowUpRight className="w-4 h-4" />
-            </span>
-          </div>
-        </div>
-      </motion.button>
-    )
-  }
-
-  // Regular card: image-top with hover overlay showing capabilities preview
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
-      onClick={onClick}
-      whileHover={{ y: -4 }}
-      className="group relative bg-white rounded-2xl border border-gray-200 hover:border-[#E8751A]/40 hover:shadow-xl hover:shadow-gray-200/60 transition-all cursor-pointer overflow-hidden flex flex-col"
-    >
-      {/* Image with overlay */}
-      <div className="relative h-40 overflow-hidden">
-        <Image
-          src={service.image}
-          alt={service.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/80 via-[#0D1D3A]/20 to-transparent" />
-
-        {/* Category chip */}
-        <div className="absolute top-3 left-3">
-          <span className="px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-[#152D4F] text-[10px] font-bold uppercase tracking-wider">
-            {service.category}
-          </span>
-        </div>
-
-        {/* Icon badge */}
-        <div className="absolute -bottom-5 right-4 w-10 h-10 rounded-xl bg-[#E8751A] flex items-center justify-center shadow-lg shadow-[#E8751A]/30 group-hover:scale-110 transition-transform">
-          <Icon className="w-5 h-5 text-white" />
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-5 pt-7 flex-1 flex flex-col">
-        <h3 className="text-base font-bold text-[#152D4F] mb-2 leading-snug group-hover:text-[#E8751A] transition-colors">
-          {service.name}
-        </h3>
-        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2 flex-1">
-          {service.description}
-        </p>
-
-        {/* Capabilities hover preview */}
-        <div className="overflow-hidden transition-all duration-300"
-          style={{ maxHeight: isHovered ? '120px' : '0px' }}
-        >
-          <div className="pt-3 border-t border-gray-100 space-y-1.5">
-            {service.capabilities.slice(0, 3).map((c, i) => (
-              <div key={i} className="flex items-start gap-1.5 text-[11px] text-gray-500">
-                <CheckCircle2 className="w-3 h-3 text-[#E8751A] mt-0.5 flex-shrink-0" />
-                <span className="line-clamp-1">{c}</span>
-              </div>
-            ))}
-            {service.capabilities.length > 3 && (
-              <div className="text-[11px] font-semibold text-[#E8751A] pl-4">
-                +{service.capabilities.length - 3} more
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Default footer (when not hovered) */}
-        <div className="overflow-hidden transition-all duration-300"
-          style={{ maxHeight: isHovered ? '0px' : '60px', opacity: isHovered ? 0 : 1 }}
-        >
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-            <span className="text-xs font-semibold text-gray-400">
-              {service.capabilities.length} capabilities
-            </span>
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#152D4F] group-hover:text-[#E8751A] transition-colors">
-              View
-              <ArrowUpRight className="w-3 h-3" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
   )
 }
