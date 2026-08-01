@@ -4,17 +4,12 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import {
-  ChevronRight, CheckCircle, ArrowRight, Phone,
+  ChevronRight, ArrowRight, Phone, Check, ArrowUpRight,
   PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck,
-  FileCheck, Building2, Sun, Zap, Clock, Award,
-  Cpu, Wrench, Shield, FileText, Lightbulb, Users,
-  ClipboardCheck, Settings, HardHat, TrendingUp,
-  BadgeCheck, Stamp, Globe, Sparkles,
-  Network, Factory, Boxes,
+  FileCheck, Building2, Sun, Zap, MapPin, Mail, Sparkles,
+  Award, Globe, Users, Clock, ClipboardCheck, HardHat,
+  Network, Factory, Boxes, Layers,
 } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { useRouter } from '@/components/Router'
 
 /* ═══════════════════════════════════════════════════════════
@@ -225,7 +220,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { text: 'Liaison with Non-conventional energy department for getting approvals for SOLAR, WIND and others' },
       { text: 'Liaison with Operations team for getting approvals' },
       { text: 'Liaison with SS Erection department for getting approvals for drawings and specifications' },
-      { text: 'Liaison with TLC department (Transmission line construction) for getting approvals for line works' },
+      { text: 'Liaison with TLC department (Transmission line construction) for line works' },
     ],
     processSteps: [
       { title: 'Requirement Assessment', desc: 'Analysis of power requirements and utility options available' },
@@ -479,6 +474,14 @@ const slugToName: Record<string, string> = {
   'ht-lt-panel-manufacturing': 'HT & LT Panel Manufacturing',
 }
 
+/* ─── Phone helper ─── */
+function telLink(phone: string): string {
+  const cleaned = phone.replace(/[\s\-]/g, '')
+  if (cleaned.startsWith('+')) return `tel:${cleaned}`
+  if (cleaned.length === 10) return `tel:+91${cleaned}`
+  return `tel:${cleaned}`
+}
+
 /* ─── Animation helper ─── */
 function FadeIn({ children, delay = 0, className = '' }: {
   children: React.ReactNode; delay?: number; className?: string
@@ -493,10 +496,17 @@ function FadeIn({ children, delay = 0, className = '' }: {
   )
 }
 
+/* ─── Quick stats for sidebar ─── */
+const quickStats = [
+  { icon: Award,    label: '28+ Years Experience',     color: 'text-[#152D4F]' },
+  { icon: Users,    label: '150+ Expert Employees',    color: 'text-[#E8751A]' },
+  { icon: Globe,    label: 'Pan-India Presence',       color: 'text-[#152D4F]' },
+  { icon: ShieldCheck, label: 'ISO Certified Processes', color: 'text-[#E8751A]' },
+]
+
 /* ═══════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════ */
-
 export default function ServiceDetailPage({ slug }: { slug: string }) {
   const { navigate } = useRouter()
   const data = serviceData[slug]
@@ -504,311 +514,313 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
   if (!data) {
     return (
       <section className="py-20 text-center">
-        <h2 className="text-2xl font-bold text-[#1A1A2E] mb-4">Service Not Found</h2>
-        <Button onClick={() => navigate('services')} className="bg-[#1B3A5C] hover:bg-[#152D4F] text-white">
-          Back to Services
-        </Button>
+        <h2 className="text-2xl font-bold text-[#152D4F] mb-4">Service Not Found</h2>
+        <button
+          onClick={() => navigate('services')}
+          className="inline-flex items-center gap-2 bg-[#152D4F] hover:bg-[#0D1D3A] text-white font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Back to Services <ArrowRight className="w-4 h-4" />
+        </button>
       </section>
     )
   }
 
   const Icon = iconMap[data.name] || PenTool
 
+  // Get next service for navigation
+  const slugKeys = Object.keys(serviceData)
+  const currentIndex = slugKeys.indexOf(slug)
+  const nextSlug = slugKeys[(currentIndex + 1) % slugKeys.length]
+  const nextData = serviceData[nextSlug]
+
   return (
     <>
-      {/* ══════════════════════════════════════════════
-          HERO SECTION — Navy gradient with image overlay
-          ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
-        {/* Background pattern */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(232,117,26,0.08) 0%, transparent 40%)',
-        }} />
+      {/* ════════════════════════════════════════════════════════════
+          HERO — Spacious split, light bg, with image
+          ════════════════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden bg-[#F7F9FC]">
+        {/* Subtle dot pattern */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-40"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #1B3A5C 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
+        {/* Coral glow */}
+        <div
+          className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none opacity-10"
+          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
+        />
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-12 md:pb-16">
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[110px] pb-14 lg:pb-16">
           {/* Breadcrumb */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="flex items-center gap-2 text-sm mb-6"
+            className="flex items-center gap-2 text-sm mb-10"
           >
-            <button onClick={() => navigate('home')} className="text-white/60 hover:text-white transition-colors">
+            <button onClick={() => navigate('home')} className="text-gray-400 hover:text-[#152D4F] transition-colors">
               Home
             </button>
-            <ChevronRight className="w-4 h-4 text-white/30" />
-            <button onClick={() => navigate('services')} className="text-white/60 hover:text-white transition-colors">
-              Service
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+            <button onClick={() => navigate('services')} className="text-gray-400 hover:text-[#152D4F] transition-colors">
+              Services
             </button>
-            <ChevronRight className="w-4 h-4 text-white/30" />
-            <span className="text-[#E8751A] font-medium">{data.shortName}</span>
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+            <span className="text-[#E8751A] font-semibold">{data.shortName}</span>
           </motion.div>
 
-          {/* Hero content */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex items-start gap-4 mb-4"
-          >
-            <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 bg-white/10 backdrop-blur-sm border border-white/20">
-              <Icon className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+          {/* Split — left text, right image */}
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-center">
+            {/* LEFT — Text content */}
+            <div className="lg:col-span-3">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex items-center gap-3 mb-5"
+              >
+                <div className="w-9 h-9 rounded-lg bg-[#152D4F] flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
+                  Service · {data.highlights[0] || 'Capability'}
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#152D4F] leading-[1.05] tracking-tight mb-3"
+              >
                 {data.name}
-              </h1>
-              <p className="text-[#7A9CC6] text-lg mt-1 font-light">{data.tagline}</p>
-            </div>
-          </motion.div>
+              </motion.h1>
 
-          {/* Highlights badges */}
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-lg text-[#E8751A] font-semibold italic mb-5"
+              >
+                {data.tagline}
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="text-gray-600 leading-relaxed mb-7 max-w-xl"
+              >
+                {data.description}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="flex flex-wrap items-center gap-3"
+              >
+                <button
+                  onClick={() => navigate('contact')}
+                  className="inline-flex items-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-6 py-3 rounded-full transition-colors shadow-lg shadow-[#E8751A]/25 group"
+                >
+                  Get a quote
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <a
+                  href={telLink('9941905833')}
+                  className="inline-flex items-center gap-2 text-[#152D4F] hover:text-[#E8751A] font-semibold text-sm transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  +91 99419 05833
+                </a>
+              </motion.div>
+            </div>
+
+            {/* RIGHT — Tall image with overlay */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="lg:col-span-2 relative"
+            >
+              <div className="relative aspect-[4/3] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-[#152D4F]/15">
+                <Image
+                  src={data.image}
+                  alt={data.name}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A] via-[#0D1D3A]/20 to-transparent" />
+
+                {/* Top floating badge */}
+                <div className="absolute top-4 left-4 right-4 flex items-start justify-between">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/95 backdrop-blur-sm text-[#152D4F] text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                    <Icon className="w-3 h-3 text-[#E8751A]" />
+                    {data.shortName}
+                  </span>
+                </div>
+
+                {/* Bottom overlay — tagline */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <p className="text-[#E8751A] text-xs font-bold uppercase tracking-wider mb-1">
+                    {data.highlights[0]}
+                  </p>
+                  <p className="text-white text-lg font-bold leading-tight">
+                    {data.name}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Highlights strip */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="flex flex-wrap gap-2 mt-4"
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-10 pt-6 border-t border-gray-200"
           >
-            {data.highlights.map((h, i) => (
-              <Badge key={i} className="bg-white/10 text-white border border-white/20 px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm">
-                {h}
-              </Badge>
-            ))}
+            <div className="flex flex-wrap gap-2">
+              {data.highlights.map((h, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-semibold text-[#152D4F]"
+                >
+                  <Check className="w-3 h-3 text-[#E8751A]" />
+                  {h}
+                </span>
+              ))}
+            </div>
           </motion.div>
-        </div>
-
-        {/* Bottom wave separator */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 0 1440 20V60H0Z" fill="white" />
-          </svg>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════
-          MAIN CONTENT — Two-column layout like original site
-          Left: Capabilities list | Right: Image + Sidebar
-          ══════════════════════════════════════════════ */}
-      <section className="py-12 md:py-16 bg-white">
+      {/* ════════════════════════════════════════════════════════════
+          MAIN CONTENT — Capabilities grid + sticky sidebar
+          ════════════════════════════════════════════════════════════ */}
+      <section className="bg-white py-14 lg:py-20">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
 
-            {/* LEFT PART — Service Description & Capabilities */}
-            <div className="flex-1 min-w-0">
-              {/* Description */}
+            {/* LEFT — Capabilities grid */}
+            <div className="lg:col-span-8 min-w-0">
               <FadeIn>
-                <p className="text-[#374151] leading-relaxed text-base md:text-lg mb-8">
-                  {data.description}
+                <div className="flex items-center gap-3 mb-3">
+                  <Layers className="w-4 h-4 text-[#E8751A]" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">
+                    Capabilities
+                  </span>
+                </div>
+                <h2 className="text-2xl lg:text-3xl font-bold text-[#152D4F] leading-tight mb-3">
+                  What this service delivers.
+                </h2>
+                <p className="text-gray-500 leading-relaxed text-sm mb-8 max-w-2xl">
+                  Each capability below is delivered by an in-house team — no sub-contracted scope, no finger-pointing. Every line item is auditable to a recognised national or international standard.
                 </p>
               </FadeIn>
 
-              {/* Capabilities List */}
-              <FadeIn delay={0.1}>
-                <div className="bg-[#F0F4F8] rounded-xl p-6 md:p-8 border border-gray-100">
-                  <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-[#1B3A5C]" />
-                    </div>
-                    Service Capabilities
-                  </h2>
-                  <ul className="space-y-3">
-                    {data.capabilities.map((cap, i) => (
-                      <li key={i}>
-                        <motion.div
-                          initial={{ opacity: 0, x: -16 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.4, delay: i * 0.06 }}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-[#1B3A5C]/10 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle className="w-3.5 h-3.5 text-[#1B3A5C]" />
-                            </div>
-                            <div>
-                              <span className="text-[#374151] text-sm md:text-base leading-relaxed">{cap.text}</span>
-                              {cap.subItems && cap.subItems.length > 0 && (
-                                <ul className="mt-2 ml-2 space-y-1.5">
-                                  {cap.subItems.map((sub, j) => (
-                                    <li key={j} className="flex items-center gap-2 text-[#6B7280] text-sm">
-                                      <div className="w-1.5 h-1.5 rounded-full bg-[#4A90D9] shrink-0" />
-                                      {sub}
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </FadeIn>
-
-              {/* Process Steps */}
-              {data.processSteps.length > 0 && (
-                <FadeIn delay={0.15}>
-                  <div className="mt-8">
-                    <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#E8751A]/10 flex items-center justify-center">
-                        <ClipboardCheck className="w-4 h-4 text-[#E8751A]" />
+              {/* Capabilities grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {data.capabilities.map((cap, i) => (
+                  <FadeIn key={i} delay={i * 0.05}>
+                    <div className="group h-full bg-[#F7F9FC] border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:bg-white hover:shadow-lg hover:shadow-[#152D4F]/5 transition-all">
+                      <div className="flex items-start gap-3 mb-2">
+                        <span className="w-7 h-7 rounded-lg bg-[#152D4F] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <h3 className="text-sm font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors leading-snug pt-1">
+                          {cap.text}
+                        </h3>
                       </div>
-                      Our Process
-                    </h2>
-                    <div className="space-y-4">
-                      {data.processSteps.map((step, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 16 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.4, delay: i * 0.08 }}
-                          className="flex gap-4 items-start"
-                        >
-                          <div className="w-10 h-10 rounded-full bg-[#1B3A5C] text-white flex items-center justify-center shrink-0 font-bold text-sm shadow-md">
-                            {i + 1}
-                          </div>
-                          <div className="flex-1 pt-1">
-                            <h4 className="font-semibold text-[#1A1A2E] text-base">{step.title}</h4>
-                            <p className="text-[#6B7280] text-sm mt-0.5">{step.desc}</p>
-                          </div>
-                          {i < data.processSteps.length - 1 && (
-                            <div className="hidden lg:block absolute left-5 mt-10 w-0.5 h-6 bg-[#5A7EA8]" />
-                          )}
-                        </motion.div>
-                      ))}
+                      {cap.subItems && cap.subItems.length > 0 && (
+                        <ul className="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                          {cap.subItems.map((sub, j) => (
+                            <li key={j} className="flex items-start gap-2 text-xs text-gray-600 leading-relaxed">
+                              <Check className="w-3 h-3 text-[#E8751A] flex-shrink-0 mt-0.5" />
+                              {sub}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                  </div>
-                </FadeIn>
-              )}
-
-              {/* Solar References */}
-              {data.solarReferences && data.solarReferences.length > 0 && (
-                <FadeIn delay={0.2}>
-                  <div className="mt-8">
-                    <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                        <Sun className="w-4 h-4 text-[#E8751A]" />
-                      </div>
-                      Our Solar Projects
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {data.solarReferences.map((ref, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: i * 0.06 }}
-                          className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow"
-                        >
-                          <div className="w-8 h-8 rounded-full bg-[#1B3A5C]/10 flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4 text-[#1B3A5C]" />
-                          </div>
-                          <span className="text-[#374151] text-sm font-medium">{ref}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </FadeIn>
-              )}
-
-              {/* Related Projects */}
-              {data.relatedProjects.length > 0 && !data.solarReferences && (
-                <FadeIn delay={0.2}>
-                  <div className="mt-8">
-                    <h2 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#1B3A5C]/10 flex items-center justify-center">
-                        <HardHat className="w-4 h-4 text-[#1B3A5C]" />
-                      </div>
-                      Related Projects
-                    </h2>
-                    <div className="space-y-3">
-                      {data.relatedProjects.map((proj, i) => (
-                        <div key={i} className="flex items-center gap-4 bg-[#F0F4F8] rounded-lg p-4 border border-gray-100">
-                          <div className="w-10 h-10 rounded-full bg-[#1B3A5C] text-white flex items-center justify-center shrink-0 font-bold text-sm">
-                            {i + 1}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-[#1A1A2E] text-sm">{proj.name}</h4>
-                            <p className="text-[#6B7280] text-xs">{proj.client} — {proj.location}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </FadeIn>
-              )}
+                  </FadeIn>
+                ))}
+              </div>
             </div>
 
-            {/* RIGHT PART — Image + Sidebar */}
-            <div className="lg:w-[400px] xl:w-[440px] shrink-0">
-              <div className="lg:sticky lg:top-24 space-y-6">
-                {/* Service Image */}
-                <FadeIn delay={0.1} className="relative rounded-xl overflow-hidden shadow-lg">
-                  <Image
-                    src={data.image}
-                    alt={data.name}
-                    width={440}
-                    height={252}
-                    className="w-full h-auto object-cover"
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-[#1B3A5C] text-white border-0 px-3 py-1 text-xs font-medium">
-                      <Icon className="w-3.5 h-3.5 mr-1.5" />
-                      {data.name}
-                    </Badge>
+            {/* RIGHT — Sticky sidebar */}
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-32 space-y-5">
+                {/* Contact card */}
+                <FadeIn delay={0.1}>
+                  <div className="bg-[#152D4F] rounded-2xl p-6 relative overflow-hidden">
+                    <div
+                      className="absolute -top-16 -right-16 w-40 h-40 rounded-full pointer-events-none opacity-10"
+                      style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
+                    />
+                    <div className="relative">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Sparkles className="w-4 h-4 text-[#E8751A]" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#E8751A]">
+                          Get a quote
+                        </span>
+                      </div>
+                      <h3 className="text-white text-lg font-bold leading-tight mb-2">
+                        Talk to an engineer about {data.shortName}.
+                      </h3>
+                      <p className="text-white/60 text-xs leading-relaxed mb-5">
+                        Within 48 hours, you&apos;ll get a capability-mapped proposal — engineered, costed, accountable.
+                      </p>
+                      <button
+                        onClick={() => navigate('contact')}
+                        className="w-full inline-flex items-center justify-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-5 py-3 rounded-lg transition-colors text-sm mb-3 group"
+                      >
+                        Request a quote
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                      </button>
+                      <a
+                        href={telLink('9941905833')}
+                        className="w-full inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white font-semibold px-5 py-3 rounded-lg transition-colors text-sm border border-white/15"
+                      >
+                        <Phone className="w-4 h-4" />
+                        +91 99419 05833
+                      </a>
+                    </div>
                   </div>
                 </FadeIn>
 
-                {/* Contact Card */}
+                {/* Quick stats */}
                 <FadeIn delay={0.15}>
-                  <Card className="border-2 border-[#1B3A5C]/10 shadow-lg overflow-hidden">
-                    <div className="h-1.5 bg-gradient-to-r from-[#1B3A5C] to-[#2A5A8A]" />
-                    <CardContent className="p-5">
-                      <div className="text-center mb-4">
-                        <div className="w-14 h-14 rounded-xl bg-[#1B3A5C]/10 flex items-center justify-center mx-auto mb-3">
-                          <Icon className="w-7 h-7 text-[#1B3A5C]" />
+                  <div className="bg-[#F7F9FC] border border-gray-200 rounded-2xl p-6">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
+                      Why choose SVEPL
+                    </h4>
+                    <div className="space-y-3">
+                      {quickStats.map((item, i) => (
+                        <div key={i} className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
+                            <item.icon className={`w-4 h-4 ${item.color}`} />
+                          </div>
+                          <span className="text-sm text-[#152D4F] font-medium">{item.label}</span>
                         </div>
-                        <h3 className="font-bold text-[#1A1A2E] text-base">{data.name}</h3>
-                        <p className="text-xs text-[#6B7280] mt-1">{data.tagline}</p>
-                      </div>
-                      <Button onClick={() => navigate('contact')}
-                        className="w-full bg-[#1B3A5C] hover:bg-[#152D4F] text-white rounded-lg h-11 font-semibold text-sm mb-3 transition-colors">
-                        Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                      <a href="tel:+919941905833"
-                        className="w-full flex items-center justify-center gap-2 text-[#1B3A5C] font-semibold text-sm h-10 rounded-lg border border-[#1B3A5C]/20 hover:bg-[#1B3A5C]/5 transition-colors">
-                        <Phone className="w-4 h-4" /> +91 9941905833
-                      </a>
-                    </CardContent>
-                  </Card>
+                      ))}
+                    </div>
+                  </div>
                 </FadeIn>
 
-                {/* Quick Stats */}
+                {/* Back to all services */}
                 <FadeIn delay={0.2}>
-                  <Card className="border border-gray-200 shadow-sm">
-                    <CardContent className="p-5">
-                      <h4 className="font-bold text-[#1A1A2E] text-sm mb-4">Why Choose SVEPL?</h4>
-                      <div className="space-y-3">
-                        {[
-                          { icon: Award, label: '20+ Years Experience', color: 'text-[#1B3A5C]' },
-                          { icon: Users, label: '150+ Expert Employees', color: 'text-[#E8751A]' },
-                          { icon: Globe, label: 'Pan-India Presence', color: 'text-[#1B3A5C]' },
-                          { icon: Shield, label: 'ISO Certified Processes', color: 'text-[#E8751A]' },
-                        ].map((item, i) => (
-                          <div key={i} className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] flex items-center justify-center shrink-0">
-                              <item.icon className={`w-4 h-4 ${item.color}`} />
-                            </div>
-                            <span className="text-[#374151] text-sm">{item.label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <button
+                    onClick={() => navigate('services')}
+                    className="w-full inline-flex items-center justify-center gap-2 text-[#152D4F] hover:text-[#E8751A] font-semibold text-sm transition-colors py-3"
+                  >
+                    <ChevronRight className="w-4 h-4 rotate-180" />
+                    Back to all services
+                  </button>
                 </FadeIn>
               </div>
             </div>
@@ -816,34 +828,302 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════
-          CTA BANNER
-          ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-white/5" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-white/5" />
-        </div>
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-14 md:py-16 text-center">
-          <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Ready to Get Started?
-            </h2>
-            <p className="text-white/80 mb-6 max-w-xl mx-auto text-sm md:text-base">
-              Let our expert team help you with your next {data.name.toLowerCase()} project. Get in touch today for a free consultation.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button onClick={() => navigate('contact')}
-                className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-lg px-8 h-12 font-semibold text-sm transition-colors shadow-lg shadow-[#E8751A]/25">
-                Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 hover:border-white rounded-lg px-8 h-12 font-semibold text-sm transition-colors"
-                asChild>
-                <a href="tel:+919941905833"><Phone className="mr-2 w-4 h-4" />Call Us</a>
-              </Button>
+      {/* ════════════════════════════════════════════════════════════
+          PROCESS — Vertical numbered timeline
+          ════════════════════════════════════════════════════════════ */}
+      {data.processSteps.length > 0 && (
+        <section className="bg-[#F7F9FC] py-14 lg:py-20 border-t border-gray-100">
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+            <FadeIn>
+              <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
+                <div className="lg:col-span-7">
+                  <div className="flex items-center gap-3 mb-3">
+                    <ClipboardCheck className="w-4 h-4 text-[#E8751A]" />
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">
+                      How we deliver
+                    </span>
+                  </div>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-[#152D4F] leading-tight">
+                    A process you can audit step-by-step.
+                  </h2>
+                </div>
+                <div className="lg:col-span-5">
+                  <p className="text-gray-500 leading-relaxed text-sm">
+                    Every milestone is signed off, documented, and traceable to a recognised standard.
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+
+            <div className="relative pl-4 lg:pl-8">
+              {/* Vertical connector line */}
+              <div className="absolute left-[7px] lg:left-[15px] top-3 bottom-3 w-px bg-gradient-to-b from-[#E8751A] via-gray-200 to-transparent" />
+
+              {data.processSteps.map((step, i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <div className="relative flex gap-5 lg:gap-7 pb-8 last:pb-0">
+                    {/* Number node */}
+                    <div className="relative z-10 flex-shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-[#E8751A] ring-4 ring-[#F7F9FC] mt-1.5" />
+                    </div>
+                    {/* Content */}
+                    <div className="flex-1 min-w-0 bg-white border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:shadow-md hover:shadow-[#152D4F]/5 transition-all">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="text-3xl font-bold text-[#152D4F]/15 tabular-nums">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <h3 className="text-base font-bold text-[#152D4F]">
+                          {step.title}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
             </div>
-          </FadeIn>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          RELATED PROJECTS / SOLAR REFERENCES
+          ════════════════════════════════════════════════════════════ */}
+      {data.solarReferences && data.solarReferences.length > 0 && (
+        <section className="bg-white py-14 lg:py-20 border-t border-gray-100">
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+            <FadeIn>
+              <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
+                <div className="lg:col-span-7">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Sun className="w-4 h-4 text-[#E8751A]" />
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">
+                      Solar references
+                    </span>
+                  </div>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-[#152D4F] leading-tight">
+                    Solar projects we&apos;ve delivered.
+                  </h2>
+                </div>
+                <div className="lg:col-span-5">
+                  <p className="text-gray-500 leading-relaxed text-sm">
+                    A snapshot of rooftops, ground-mounts, and utility-scale plants we&apos;ve commissioned across India.
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data.solarReferences.map((ref, i) => (
+                <FadeIn key={i} delay={i * 0.05}>
+                  <div className="group bg-[#F7F9FC] border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:bg-white hover:shadow-md transition-all">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#E8751A]/10 flex items-center justify-center flex-shrink-0">
+                        <Zap className="w-5 h-5 text-[#E8751A]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors">
+                          {ref}
+                        </p>
+                        <p className="text-[11px] text-gray-400 uppercase tracking-wider">
+                          Solar reference
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {data.relatedProjects.length > 0 && !data.solarReferences && (
+        <section className="bg-white py-14 lg:py-20 border-t border-gray-100">
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+            <FadeIn>
+              <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
+                <div className="lg:col-span-7">
+                  <div className="flex items-center gap-3 mb-3">
+                    <HardHat className="w-4 h-4 text-[#E8751A]" />
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">
+                      Related projects
+                    </span>
+                  </div>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-[#152D4F] leading-tight">
+                    Delivered work that uses this service.
+                  </h2>
+                </div>
+                <div className="lg:col-span-5">
+                  <p className="text-gray-500 leading-relaxed text-sm">
+                    A snapshot of recent commissions where this capability was a core scope item.
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {data.relatedProjects.map((proj, i) => (
+                <FadeIn key={i} delay={i * 0.06}>
+                  <div className="group bg-[#F7F9FC] border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:bg-white hover:shadow-md transition-all">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-[#152D4F] flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-base font-bold tabular-nums">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors">
+                          {proj.name}
+                        </h4>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {proj.client}
+                        </p>
+                        <p className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {proj.location}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          NEXT SERVICE — Inline CTA
+          ════════════════════════════════════════════════════════════ */}
+      {nextData && nextData.slug !== slug && (
+        <section className="bg-[#0D1D3A] py-12 relative overflow-hidden">
+          <div
+            className="absolute top-1/2 -translate-y-1/2 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none opacity-10"
+            style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
+          />
+          <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8">
+            <button
+              onClick={() => navigate('service-detail', { slug: nextData.slug })}
+              className="group w-full flex flex-col md:flex-row md:items-center justify-between gap-4 text-left"
+            >
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A] mb-2">
+                  Next service · {String(currentIndex + 2 > slugKeys.length ? 1 : currentIndex + 2).padStart(2, '0')} / 12
+                </p>
+                <h3 className="text-2xl lg:text-3xl font-bold text-white group-hover:text-[#E8751A] transition-colors">
+                  {nextData.name}
+                </h3>
+                <p className="text-white/50 text-sm mt-1 italic">
+                  {nextData.tagline}
+                </p>
+              </div>
+              <div className="flex-shrink-0 w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-[#E8751A] group-hover:border-[#E8751A] transition-colors">
+                <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          FINAL CTA — Spacious split
+          ════════════════════════════════════════════════════════════ */}
+      <section className="bg-[#152D4F] relative overflow-hidden">
+        <div
+          className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-10"
+          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
+        />
+        <div
+          className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none opacity-5"
+          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
+        />
+
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-16 lg:py-20">
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            {/* Left */}
+            <div className="lg:col-span-7">
+              <FadeIn>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="h-px w-12 bg-[#E8751A]" />
+                  <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#E8751A]">
+                    Ready when you are
+                  </span>
+                </div>
+                <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight mb-5">
+                  One conversation away from a single-source electrical partner.
+                </h2>
+                <p className="text-white/55 leading-relaxed mb-7 max-w-xl">
+                  Tell us your voltage class, site, and timeline. Within 48 hours, you&apos;ll get a capability-mapped proposal — engineered, costed, accountable.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => navigate('contact')}
+                    className="inline-flex items-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-7 py-3 rounded-full transition-colors shadow-lg shadow-[#E8751A]/25 group"
+                  >
+                    Start a conversation
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                  <button
+                    onClick={() => navigate('projects')}
+                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white font-semibold px-7 py-3 rounded-full transition-colors border border-white/15"
+                  >
+                    See delivered projects
+                  </button>
+                </div>
+              </FadeIn>
+            </div>
+
+            {/* Right — Direct contact card */}
+            <FadeIn delay={0.15} className="lg:col-span-5">
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 lg:p-7">
+                <p className="text-xs font-bold uppercase tracking-wider text-[#E8751A] mb-4">
+                  Talk directly
+                </p>
+                <a
+                  href={telLink('9941905833')}
+                  className="flex items-center gap-3 mb-4 group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-[#E8751A] flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/50">Call our engineers</p>
+                    <p className="text-white font-semibold group-hover:text-[#E8751A] transition-colors">
+                      +91 99419 05833
+                    </p>
+                  </div>
+                </a>
+                <a
+                  href="mailto:info@shri_vaari_electricals.com"
+                  className="flex items-center gap-3 mb-5 group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/50">Email a brief</p>
+                    <p className="text-white font-semibold group-hover:text-[#E8751A] transition-colors break-all">
+                      info@shri_vaari_electricals.com
+                    </p>
+                  </div>
+                </a>
+                <div className="pt-4 border-t border-white/10">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 text-[#E8751A] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs text-white/50 mb-0.5">Corporate office</p>
+                      <p className="text-xs text-white/80 leading-relaxed">
+                        Plot No. 120, SIDCO Industrial Estate, Guindy, Chennai — 600032
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
     </>

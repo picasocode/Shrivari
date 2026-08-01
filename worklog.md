@@ -406,3 +406,63 @@ Stage Summary:
 - Products: now has a 3-category menu — navbar dropdown (LT Panels / HT Panels / Busducts) + 3-tab Products page with a Busducts tab, plus a 3-way comparison grid, a 4-column spec table, and static fallback data so all 3 tabs render content.
 - Files changed: src/components/pages/ServicesPage.tsx (full rewrite), src/components/pages/ProductsPage.tsx (3-tab upgrade + fallback data), src/components/sections/Navbar.tsx (Products dropdown), src/app/api/seed/route.ts (busduct category + 4 new products), prisma/seed.ts (synced with API seed).
 - Lint clean, TypeScript clean for all changed files.
+
+---
+Task ID: services-redesign-v4-all-pages
+Agent: main (Z.ai Code)
+Task: User asked for "some different design for the service page FOR ALL PAGES IN SERVICE" — meaning a brand new design for BOTH the ServicesPage (main listing) and the ServiceDetailPage (individual service). This is the 4th design iteration (v3 magazine-spotlight was rejected).
+
+Work Log:
+- Read current ServicesPage.tsx (789 lines, v3 magazine-menu + spotlight design) and ServiceDetailPage.tsx (852 lines, navy-gradient hero + 2-col layout with capabilities + sidebar).
+- Confirmed the previous designs (v1 navy-grid, v2 editorial-bento, v3 magazine-spotlight) were all rejected. Designed a 4th totally different style: "Spacious Magazine + Alternating Showcase".
+
+SERVICES PAGE — v4 "Spacious Magazine + Alternating Showcase" design (totally different from prior):
+- Rewrote /home/z/my-project/src/components/pages/ServicesPage.tsx with a new layout:
+  1. SPACIOUS HERO (light bg #F7F9FC with dot pattern + coral glow): asymmetric 3:2 split — LEFT has breadcrumb, coral eyebrow, big editorial H1 "One partner. / Twelve services. / Zero hand-offs.", description, 3-stat inline strip (400 kV / 2000+ Projects / 28+ Years), and 2 CTAs. RIGHT has tall portrait image with overlay showing "ISO-certified delivery" badge + big faded "12" + "services under one roof" tagline.
+  2. STICKY CATEGORY FILTER STRIP (top-[72px] z-30): segmented pill bar with 7 categories (All/Engineering/EPC/Manufacturing/Maintenance/Liaison/Renewable) each showing short code + label + count. Active state is solid navy #152D4F with coral short code; inactive is light bg with hover-coral border.
+  3. ALTERNATING SHOWCASE SECTIONS (the new core idea): each of the 12 services gets a FULL-WIDTH row that alternates image left/right. Each row has: big faded background number, image card with hover-zoom + category chip + "01/12" position chip + tagline overlay, eyebrow with icon tile + "Service 01 · Engineering", H3 service name, description, 4 capability chips (with "+N more" if >4), "Explore service" + "Get a quote" CTAs.
+  4. STANDARDS & COMPLIANCE: "Engineered to standards you can audit." — 6 standards cards (IEEE-80, IS-2309, NABL, IEC-61439, IS-3427, 400 kV), each showing code, label, description, and which services use it (as small chips).
+  5. PROCESS TIMELINE: "Four moves from scope to sustain." — horizontal 4-step flow (Discover → Design → Execute → Sustain) each as a circle icon with number badge + heading + description, connected by a horizontal gradient line on desktop.
+  6. INDUSTRIES MARQUEE: navy #0D1D3A bg with coral glows, "Trusted across 12 verticals." with 12 industry pills.
+  7. CTA — Spacious split: navy #152D4F bg with coral arcs, LEFT has "One conversation away from a single-source electrical partner." + 2 buttons, RIGHT has a glassmorphic direct-contact card with phone + email + Guindy office address.
+- Same 12 services data preserved verbatim; same coral #E8751A + navy #152D4F/#0D1D3A palette. Added `ServiceShowcase` sub-component for the alternating rows. Added helper arrays: standardsDetail (with services-applied mapping), processSteps, industries.
+
+SERVICE DETAIL PAGE — v4 "Spacious Editorial + Numbered Capability Cards + Vertical Timeline" design (matching v4 style):
+- Rewrote /home/z/my-project/src/components/pages/ServiceDetailPage.tsx — preserved the entire `serviceData` record (12 service entries) verbatim, but rewrote imports, FadeIn helper, and main component with new layout:
+  1. SPACIOUS HERO (light bg #F7F9FC with dot pattern + coral glow): asymmetric 3:2 split — LEFT has breadcrumb, icon tile + "Service · {first highlight}" eyebrow, large H1, italic coral tagline, description paragraph, "Get a quote" CTA + phone link. RIGHT has tall portrait image with overlay showing shortName badge + first-highlight + service name. Below the split: highlights strip showing all 4 highlights as chips.
+  2. MAIN — Capabilities grid + sticky sidebar (12-col layout): LEFT (8 cols) has "What this service delivers." heading + 2-col grid of numbered capability cards — each card has a navy numbered badge + capability text + (if subItems exist) a checkmark sub-list. RIGHT (4 cols) sticky sidebar has: navy contact card "Talk to an engineer about {shortName}." with Request-a-quote button + phone link, a "Why Choose SVEPL" quick-stats card (4 stats), and a "Back to all services" link.
+  3. PROCESS TIMELINE: "A process you can audit step-by-step." — vertical timeline with a gradient connector line, each step has a coral dot + a white card showing big faded number + title + description.
+  4. RELATED PROJECTS / SOLAR REFERENCES: conditionally rendered — if solarReferences exists, shows a 3-col grid of solar project cards; otherwise shows related projects as numbered cards with client + location.
+  5. NEXT SERVICE NAVIGATION: navy #0D1D3A band with "NEXT SERVICE · 02 / 12" + next service name + tagline + an arrow button — clicking navigates to the next service detail page.
+  6. FINAL CTA — Spacious split: navy bg with coral arcs + glassmorphic contact card (phone + email + Guindy office address) matching the ServicesPage CTA style.
+- All 12 service entries' data preserved; same iconMap and slugToName preserved; FadeIn helper preserved.
+
+VERIFICATION (Agent Browser end-to-end check):
+- `bun run lint` — passes cleanly (no errors, no warnings).
+- `npx tsc --noEmit` — no errors in ServicesPage or ServiceDetailPage.
+- Dev server compiled successfully (Ready in 660ms; home route HTTP 200 in 328ms).
+- Used Agent Browser to navigate Home → click Services nav → verified all v4 sections render correctly:
+  · Hero with "One partner. Twelve services. Zero hand-offs." H1 + Talk to an engineer + See delivered projects CTAs
+  · Category filter strip: ALL(12) / ENG(4) / EPC(3) / MFG(1) / AMC(1) / LIA(2) / SOL(1) — all visible with counts
+  · All 12 service showcase sections visible with H3 names + Explore service + Get a quote buttons
+  · Standards section: "Engineered to standards you can audit."
+  · Process timeline: "Four moves from scope to sustain" with Discover, Design, Execute, Sustain
+  · Industries marquee: "Trusted across 12 verticals."
+  · Final CTA: "One conversation away from a single-source electrical partner." + phone + email
+- Then clicked "Explore service" for Design & Engineering → ServiceDetailPage loaded with all v4 sections visible:
+  · H1 "Design & Engineering" + Get a quote CTA + phone link
+  · "What this service delivers." heading + all 8 capability cards as numbered H3s
+  · Sticky sidebar: "Talk to an engineer about Design & Engg." + Request a quote + phone
+  · "Why Choose SVEPL" stats card
+  · Process timeline: "A process you can audit step-by-step." with all 5 steps
+  · Related projects: 110KV/11KV Switchyard + 132KV/11KV Switchyard
+  · Next service navigation: "NEXT SERVICE · 02 / 12 Project Execution"
+  · Final CTA: "One conversation away from a single-source electrical partner." + phone + email + Guindy office
+- No runtime errors in dev.log related to ServicesPage or ServiceDetailPage (only pre-existing supabase config errors for testimonials/settings/blogs APIs).
+
+Stage Summary:
+- ServicesPage completely redesigned v4 — spacious magazine hero + sticky category filter + alternating full-width image-content showcase rows + standards detail cards + horizontal process timeline + industries marquee + spacious CTA with contact card. Genuinely different from v1 (navy grid), v2 (editorial bento + sticky sidebar), and v3 (magazine menu + spotlight).
+- ServiceDetailPage completely redesigned to match v4 style — spacious magazine hero with image + highlights strip + capabilities numbered-card grid + sticky sidebar with contact card + vertical process timeline + related projects/ solar references + next-service navigation + final CTA.
+- Same 12 services data preserved across both pages; same coral #E8751A + navy #152D4F/#0D1D3A palette maintained for brand consistency.
+- Files changed: src/components/pages/ServicesPage.tsx (full rewrite, 789 → ~750 lines), src/components/pages/ServiceDetailPage.tsx (full rewrite, 852 → ~770 lines).
+- Lint clean, TypeScript clean, Agent Browser visual verification PASSED for both pages.
