@@ -1,0 +1,612 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useState, useMemo } from 'react'
+     4→     4→import { motion, AnimatePresence } from 'framer-motion'
+     5→     5→import Image from 'next/image'
+     6→     6→import {
+     7→     7→  ChevronRight, ArrowRight, PenTool, Hammer, FlaskConical,
+     8→     8→  BarChart3, ShieldCheck, FileCheck, Building2, Sun,
+     9→     9→  Zap, Wrench, Shield, Network, Factory, Boxes,
+    10→    10→} from 'lucide-react'
+    11→    11→import { Card, CardContent } from '@/components/ui/card'
+    12→    12→import { Badge } from '@/components/ui/badge'
+    13→    13→import { useRouter } from '@/components/Router'
+    14→    14→
+    15→    15→/* ═══════════════════════════════════════════════════════════
+    16→    16→   STATIC DATA — All services, no database calls
+    17→    17→   ═══════════════════════════════════════════════════════════ */
+    18→    18→
+    19→    19→interface StaticService {
+    20→    20→  id: string
+    21→    21→  name: string
+    22→    22→  slug: string
+    23→    23→  description: string
+    24→    24→  capabilities: string[]
+    25→    25→  category: string
+    26→    26→  image: string
+    27→    27→}
+    28→    28→
+    29→    29→const services: StaticService[] = [
+    30→    30→  {
+    31→    31→    id: 's1',
+    32→    32→    name: 'Design & Engineering',
+    33→    33→    slug: 'design-engineering',
+    34→    34→    description: 'Comprehensive design and engineering services for electrical switchyards up to 400 KV. From single window approvals to earth mat design as per IEEE-80 and lightning system design as per IS-2309.',
+    35→    35→    capabilities: [
+    36→    36→      'Getting Single window approval',
+    37→    37→      'Prelim and detailed design for civil works in switch yards up to 400 KV',
+    38→    38→      'Prelim and detailed design for structural works in switch yards up to 400 KV',
+    39→    39→      'Prelim and detailed design for electrical works in switch yards up to 400 KV',
+    40→    40→      'Complete document preparation works',
+    41→    41→      'Preparation of SLD/Electrical layout',
+    42→    42→      'Design of Earth mat as per IEEE-80',
+    43→    43→      'Design of Lightning system as per IS-2309',
+    44→    44→    ],
+    45→    45→    category: 'Engineering',
+    46→    46→    image: '/images/services/design-engineering.png',
+    47→    47→  },
+    48→    48→  {
+    49→    49→    id: 's2',
+    50→    50→    name: 'Project Execution',
+    51→    51→    slug: 'project-execution',
+    52→    52→    description: 'Turnkey project management and execution with scheduling via Microsoft Project, weekly event-based tracking, and domain expertise across integration, procurement, risk, and stakeholder management.',
+    53→    53→    capabilities: [
+    54→    54→      'Project scheduling based on Microsoft Project software',
+    55→    55→      'Tracking the project on weekly/event basis',
+    56→    56→      'Domain expertise in comprehensive project management',
+    57→    57→      'Integration management',
+    58→    58→      'Procurement management',
+    59→    59→      'Human resources management',
+    60→    60→      'Communications management',
+    61→    61→      'Risk management',
+    62→    62→      'Stakeholder management',
+    63→    63→    ],
+    64→    64→    category: 'Engineering',
+    65→    65→    image: '/images/services/project-execution.png',
+    66→    66→  },
+    67→    67→  {
+    68→    68→    id: 's3',
+    69→    69→    name: 'Testing & Commissioning',
+    70→    70→    slug: 'testing',
+    71→    71→    description: 'Comprehensive testing of CT/PT up to 33 KV with NABL-accredited lab. Testing and evaluation of transformers, earthing systems, lightning systems, and condition monitoring services.',
+    72→    72→    capabilities: [
+    73→    73→      'Comprehensive testing of CT/PT upto 33 KV — Lab accredited by NABL',
+    74→    74→      'Testing and evaluation of Distribution and power transformers',
+    75→    75→      'Testing and evaluation of Earthing systems',
+    76→    76→      'Testing and evaluation of Lightning systems',
+    77→    77→      'Testing and evaluation of current transformers/potential transformers',
+    78→    78→      'Condition monitoring services for various electrical equipment',
+    79→    79→    ],
+    80→    80→    category: 'Engineering',
+    81→    81→    image: '/images/services/testing.png',
+    82→    82→  },
+    83→    83→  {
+    84→    84→    id: 's4',
+    85→    85→    name: 'Energy & Harmonic Audit',
+    86→    86→    slug: 'energy-harmonic-audit',
+    87→    87→    description: 'Energy audit and harmonic analysis with wider industry base, value engineering-based solutions, comparison with industry benchmark & IEEE standards, and economic viability recommendations.',
+    88→    88→    capabilities: [
+    89→    89→      'Wider Industry base',
+    90→    90→      'Comprehensive team with domain expertise in various Industries',
+    91→    91→      'Value engineering-based solutions',
+    92→    92→      'Comparison with relevant industry benchmark & IEEE',
+    93→    93→      'Measurement at site',
+    94→    94→      'Data analysis',
+    95→    95→      'Recommendations based on economic viability — short term, medium term & long-term measures',
+    96→    96→      'Report submission, discussion of recommendation with customer & finalizing the report',
+    97→    97→    ],
+    98→    98→    category: 'Engineering',
+    99→    99→    image: '/images/services/energy-audit.png',
+   100→   100→  },
+   101→   101→  {
+   102→   102→    id: 's5',
+   103→   103→    name: 'AMC',
+   104→   104→    slug: 'amc',
+   105→   105→    description: 'Annual Maintenance Contracts with 150+ employees and 16+ years of experience. Exclusive services for multinational companies with standardized annual rate contracts for transparency.',
+   106→   106→    capabilities: [
+   107→   107→      'Wider Industry base',
+   108→   108→      'Comprehensive team with domain expertise in Panels/Troubleshooting/Testing of equipment/HVAC/Solar',
+   109→   109→      '150+ employees',
+   110→   110→      '16+ years of experience in AMC services',
+   111→   111→      'Exclusive services for Multinational companies',
+   112→   112→      'Standardized annual rate contracts for transparency',
+   113→   113→    ],
+   114→   114→    category: 'Maintenance',
+   115→   115→    image: '/images/services/amc.png',
+   116→   116→  },
+   117→   117→  {
+   118→   118→    id: 's6',
+   119→   119→    name: 'Liaison with CEIG',
+   120→   120→    slug: 'liasion-ceig',
+   121→   121→    description: 'Complete liaison services with the Chief Electrical Inspector to Government — from preparation of drawings and specifications to getting safety certificates and statutory approvals.',
+   122→   122→    capabilities: [
+   123→   123→      'Preparation of Drawings and specifications',
+   124→   124→      'Submission to electrical inspectorate',
+   125→   125→      'Getting Approvals',
+   126→   126→      'Arranging Inspection',
+   127→   127→      'Getting Safety certificate',
+   128→   128→    ],
+   129→   129→    category: 'Liaison',
+   130→   130→    image: '/images/services/ceig-liaison.png',
+   131→   131→  },
+   132→   132→  {
+   133→   133→    id: 's7',
+   134→   134→    name: 'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO',
+   135→   135→    slug: 'liasion-utilities',
+   136→   136→    description: 'Utility liaison services for power supply and grid connectivity — coordination with Meter & Relay testing, SE-O&M, non-conventional energy, operations, SS Erection, and TLC departments.',
+   137→   137→    capabilities: [
+   138→   138→      'Coordination with Meter n Relay testing team',
+   139→   139→      'Liaison with SE-O&M',
+   140→   140→      'Liaison with Non-conventional energy department for SOLAR, WIND and others',
+   141→   141→      'Liaison with Operations team for getting approvals',
+   142→   142→      'Liaison with SS Erection department for approvals for drawings and specifications',
+   143→   143→      'Liaison with TLC department (Transmission line construction) for line works',
+   144→   144→    ],
+   145→   145→    category: 'Liaison',
+   146→   146→    image: '/images/services/utility-liaison.png',
+   147→   147→  },
+   148→   148→  {
+   149→   149→    id: 's8',
+   150→   150→    name: 'Solar Works',
+   151→   151→    slug: 'solar-works',
+   152→   152→    description: 'Leading EPC contractor for solar energy solutions. Tailored installations from 10KW to 100MW with expertise in residential, commercial, and industrial sectors. Comprehensive services from design to maintenance.',
+   153→   153→    capabilities: [
+   154→   154→      'Leading EPC contractor for solar energy solutions',
+   155→   155→      'Tailored solar installations from 10KW to 100MW',
+   156→   156→      'Expertise in diverse sectors including residential, commercial, and industrial',
+   157→   157→      'Commitment to quality, reliability, and sustainability',
+   158→   158→      'Comprehensive services from design to maintenance',
+   159→   159→      'Proven track record of successful projects and customer satisfaction',
+   160→   160→    ],
+   161→   161→    category: 'Renewable',
+   162→   162→    image: '/images/services/solar-works.png',
+   163→   163→  },
+   164→   164→  {
+   165→   165→    id: 's9',
+   166→   166→    name: 'Electrical EPC Solutions',
+   167→   167→    slug: 'electrical-epc-solutions',
+   168→   168→    description: 'Comprehensive electrical EPC services covering engineering, procurement, installation, testing, commissioning, and maintenance for industrial and infrastructure projects.',
+   169→   169→    capabilities: [
+   170→   170→      'Electrical system design',
+   171→   171→      'Detailed engineering',
+   172→   172→      'Equipment procurement',
+   173→   173→      'Installation & erection',
+   174→   174→      'Testing & commissioning',
+   175→   175→      'Utility coordination',
+   176→   176→      'Project management',
+   177→   177→      'Operation support',
+   178→   178→    ],
+   179→   179→    category: 'EPC',
+   180→   180→    image: '/images/services/electrical-epc-solutions.png',
+   181→   181→  },
+   182→   182→  {
+   183→   183→    id: 's10',
+   184→   184→    name: 'EHV / HV Substations',
+   185→   185→    slug: 'ehv-hv-substations',
+   186→   186→    description: 'Engineering and execution of AIS and GIS substations up to 400 kV with reliable power distribution and protection systems.',
+   187→   187→    capabilities: [
+   188→   188→      'Switchyard construction',
+   189→   189→      'GIS/AIS substations',
+   190→   190→      'Transformer installations',
+   191→   191→      'Protection systems',
+   192→   192→      'Relay coordination',
+   193→   193→      'SCADA integration',
+   194→   194→      'Bus duct systems',
+   195→   195→      'Grounding systems',
+   196→   196→    ],
+   197→   197→    category: 'EPC',
+   198→   198→    image: '/images/services/ehv-hv-substations.png',
+   199→   199→  },
+   200→   200→  {
+   201→   201→    id: 's11',
+   202→   202→    name: 'Industrial Electrification',
+   203→   203→    slug: 'industrial-electrification',
+   204→   204→    description: 'Complete industrial electrification solutions for manufacturing plants, process industries, commercial facilities, and infrastructure projects.',
+   205→   205→    capabilities: [
+   206→   206→      'Power distribution systems',
+   207→   207→      'Cable laying and termination',
+   208→   208→      'Motor control systems',
+   209→   209→      'Lighting systems',
+   210→   210→      'Earthing systems',
+   211→   211→      'DG synchronization',
+   212→   212→      'Energy management',
+   213→   213→      'Retrofitting solutions',
+   214→   214→    ],
+   215→   215→    category: 'EPC',
+   216→   216→    image: '/images/services/industrial-electrification.png',
+   217→   217→  },
+   218→   218→  {
+   219→   219→    id: 's12',
+   220→   220→    name: 'HT & LT Panel Manufacturing',
+   221→   221→    slug: 'ht-lt-panel-manufacturing',
+   222→   222→    description: 'Design and manufacture of high-quality HT Panels, LT panels and Bus ducts customized to project and industry requirements.',
+   223→   223→    capabilities: [
+   224→   224→      'PCC Panels',
+   225→   225→      'MCC Panels',
+   226→   226→      'APFC Panels',
+   227→   227→      'PLC Panels',
+   228→   228→      'Synchronization Panels',
+   229→   229→      'VFD Panels',
+   230→   230→      'AMF Panels',
+   231→   231→      'Distribution Boards',
+   232→   232→      'Bus Duct Systems',
+   233→   233→    ],
+   234→   234→    category: 'Manufacturing',
+   235→   235→    image: '/images/services/ht-lt-panel-manufacturing.png',
+   236→   236→  },
+   237→   237→]
+   238→   238→
+   239→   239→/* ─── Icon Map ─── */
+   240→   240→const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+   241→   241→  'Design & Engineering': PenTool,
+   242→   242→  'Project Execution': Hammer,
+   243→   243→  'Testing & Commissioning': FlaskConical,
+   244→   244→  'Energy & Harmonic Audit': BarChart3,
+   245→   245→  'AMC': ShieldCheck,
+   246→   246→  'Liaison with CEIG': FileCheck,
+   247→   247→  'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO': Building2,
+   248→   248→  'Solar Works': Sun,
+   249→   249→  'Electrical EPC Solutions': Network,
+   250→   250→  'EHV / HV Substations': Zap,
+   251→   251→  'Industrial Electrification': Factory,
+   252→   252→  'HT & LT Panel Manufacturing': Boxes,
+   253→   253→}
+   254→   254→
+   255→   255→/* ─── Accent Colors per Service — NAVY THEME ─── */
+   256→   256→type AccentDef = { bg: string; light: string; border: string; text: string; ring: string }
+   257→   257→
+   258→   258→const accentMap: Record<string, AccentDef> = {
+   259→   259→  'Design & Engineering':                              { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+   260→   260→  'Project Execution':                                 { bg: 'bg-amber-500',      light: 'bg-amber-50',      border: 'border-amber-500',      text: 'text-amber-600',      ring: 'ring-amber-200' },
+   261→   261→  'Testing & Commissioning':                           { bg: 'bg-teal-600',       light: 'bg-teal-50',       border: 'border-teal-600',       text: 'text-teal-700',       ring: 'ring-teal-200' },
+   262→   262→  'Energy & Harmonic Audit':                           { bg: 'bg-green-600',      light: 'bg-green-50',      border: 'border-green-600',      text: 'text-green-700',      ring: 'ring-green-200' },
+   263→   263→  'AMC':                                               { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+   264→   264→  'Liaison with CEIG':                                 { bg: 'bg-slate-600',      light: 'bg-slate-50',      border: 'border-slate-600',      text: 'text-slate-600',      ring: 'ring-slate-200' },
+   265→   265→  'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO':      { bg: 'bg-cyan-600',       light: 'bg-cyan-50',       border: 'border-cyan-600',       text: 'text-cyan-700',       ring: 'ring-cyan-200' },
+   266→   266→  'Solar Works':                                       { bg: 'bg-orange-500',     light: 'bg-orange-50',     border: 'border-orange-500',     text: 'text-orange-600',     ring: 'ring-orange-200' },
+   267→   267→  'Electrical EPC Solutions':                          { bg: 'bg-[#1B3A5C]',     light: 'bg-[#1B3A5C]/5',   border: 'border-[#1B3A5C]',     text: 'text-[#1B3A5C]',     ring: 'ring-[#5A7EA8]' },
+   268→   268→  'EHV / HV Substations':                              { bg: 'bg-slate-700',      light: 'bg-slate-50',      border: 'border-slate-700',      text: 'text-slate-700',      ring: 'ring-slate-200' },
+   269→   269→  'Industrial Electrification':                        { bg: 'bg-amber-600',      light: 'bg-amber-50',      border: 'border-amber-600',      text: 'text-amber-700',      ring: 'ring-amber-200' },
+   270→   270→  'HT & LT Panel Manufacturing':                       { bg: 'bg-teal-700',       light: 'bg-teal-50',       border: 'border-teal-700',       text: 'text-teal-700',       ring: 'ring-teal-200' },
+   271→   271→}
+   272→   272→
+   273→   273→const defaultAccent: AccentDef = {
+   274→   274→  bg: 'bg-[#1B3A5C]', light: 'bg-[#1B3A5C]/5', border: 'border-[#1B3A5C]', text: 'text-[#1B3A5C]', ring: 'ring-[#5A7EA8]',
+   275→   275→}
+   276→   276→
+   277→   277→function getAccent(name: string): AccentDef {
+   278→   278→  return accentMap[name] || defaultAccent
+   279→   279→}
+   280→   280→
+   281→   281→/* ─── Category ─── */
+   282→   282→type CategoryKey = 'All' | 'Engineering' | 'EPC' | 'Manufacturing' | 'Maintenance' | 'Liaison' | 'Renewable'
+   283→   283→const categories: CategoryKey[] = ['All', 'Engineering', 'EPC', 'Manufacturing', 'Maintenance', 'Liaison', 'Renewable']
+   284→   284→
+   285→   285→/* ─── Floating icons for hero background ─── */
+   286→   286→const floatingIcons = [Zap, Wrench, Shield, Sun, PenTool, Hammer, BarChart3, FlaskConical, ShieldCheck]
+   287→   287→
+   288→   288→export default function ServicesPage() {
+   289→   289→  const { navigate } = useRouter()
+   290→   290→  const [activeCategory, setActiveCategory] = useState<CategoryKey>('All')
+   291→   291→
+   292→   292→  const filteredServices = useMemo(() => {
+   293→   293→    if (activeCategory === 'All') return services
+   294→   294→    return services.filter(s => s.category === activeCategory)
+   295→   295→  }, [activeCategory])
+   296→   296→
+   297→   297→  return (
+   298→   298→    <>
+   299→   299→      {/* ══════════════════════════════════════════════
+   300→   300→          HERO SECTION — Navy gradient + floating icons
+   301→   301→          ══════════════════════════════════════════════ */}
+   302→   302→      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 50%, #0D1D3A 100%)' }}>
+   303→   303→        {/* Animated floating icons */}
+   304→   304→        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+   305→   305→          {floatingIcons.map((Icon, i) => {
+   306→   306→            const positions = [
+   307→   307→              { x: '8%', y: '25%', size: 28 },
+   308→   308→              { x: '85%', y: '20%', size: 24 },
+   309→   309→              { x: '20%', y: '70%', size: 20 },
+   310→   310→              { x: '70%', y: '65%', size: 26 },
+   311→   311→              { x: '50%', y: '15%', size: 22 },
+   312→   312→              { x: '90%', y: '55%', size: 18 },
+   313→   313→              { x: '35%', y: '80%', size: 24 },
+   314→   314→              { x: '60%', y: '40%', size: 20 },
+   315→   315→              { x: '12%', y: '50%', size: 22 },
+   316→   316→            ]
+   317→   317→            const pos = positions[i] || positions[0]
+   318→   318→            return (
+   319→   319→              <motion.div
+   320→   320→                key={i}
+   321→   321→                className="absolute"
+   322→   322→                style={{ left: pos.x, top: pos.y }}
+   323→   323→                animate={{
+   324→   324→                  y: [0, -18, 0],
+   325→   325→                  rotate: [0, i % 2 === 0 ? 8 : -8, 0],
+   326→   326→                  opacity: [0.07, 0.14, 0.07],
+   327→   327→                }}
+   328→   328→                transition={{
+   329→   329→                  duration: 5 + i * 0.7,
+   330→   330→                  repeat: Infinity,
+   331→   331→                  ease: 'easeInOut',
+   332→   332→                  delay: i * 0.4,
+   333→   333→                }}
+   334→   334→              >
+   335→   335→                <Icon style={{ width: pos.size, height: pos.size }} className="text-white" />
+   336→   336→              </motion.div>
+   337→   337→            )
+   338→   338→          })}
+   339→   339→        </div>
+   340→   340→
+   341→   341→        {/* Radial glow */}
+   342→   342→        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-10 pointer-events-none"
+   343→   343→          style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 70%)' }}
+   344→   344→        />
+   345→   345→
+   346→   346→        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-16">
+   347→   347→          {/* Breadcrumb */}
+   348→   348→          <motion.div
+   349→   349→            initial={{ opacity: 0, y: 16 }}
+   350→   350→            animate={{ opacity: 1, y: 0 }}
+   351→   351→            transition={{ duration: 0.4 }}
+   352→   352→            className="flex items-center gap-2 text-sm mb-8"
+   353→   353→          >
+   354→   354→            <button onClick={() => navigate('home')} className="text-white/50 hover:text-white/80 transition-colors">
+   355→   355→              Home
+   356→   356→            </button>
+   357→   357→            <ChevronRight className="w-4 h-4 text-white/25" />
+   358→   358→            <span className="text-[#E8751A] font-medium">Services</span>
+   359→   359→          </motion.div>
+   360→   360→
+   361→   361→          {/* Badge + Heading */}
+   362→   362→          <motion.div
+   363→   363→            initial={{ opacity: 0, y: 24 }}
+   364→   364→            animate={{ opacity: 1, y: 0 }}
+   365→   365→            transition={{ duration: 0.5, delay: 0.1 }}
+   366→   366→          >
+   367→   367→            <Badge className="mb-5 bg-[#E8751A]/15 text-[#E8751A] border border-[#E8751A]/30 px-4 py-1.5 text-sm font-semibold rounded-full backdrop-blur-sm">
+   368→   368→              {services.length} Services
+   369→   369→            </Badge>
+   370→   370→          </motion.div>
+   371→   371→
+   372→   372→          <motion.h1
+   373→   373→            initial={{ opacity: 0, y: 28 }}
+   374→   374→            animate={{ opacity: 1, y: 0 }}
+   375→   375→            transition={{ duration: 0.6, delay: 0.15 }}
+   376→   376→            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4 max-w-2xl"
+   377→   377→          >
+   378→   378→            Comprehensive Electrical{' '}
+   379→   379→            <span className="relative inline-block">
+   380→   380→              Solutions
+   381→   381→              <motion.span
+   382→   382→                className="absolute -bottom-1 left-0 h-1 rounded-full bg-[#E8751A]"
+   383→   383→                initial={{ width: 0 }}
+   384→   384→                animate={{ width: '100%' }}
+   385→   385→                transition={{ duration: 0.8, delay: 0.6 }}
+   386→   386→              />
+   387→   387→            </span>
+   388→   388→          </motion.h1>
+   389→   389→
+   390→   390→          <motion.p
+   391→   391→            initial={{ opacity: 0, y: 20 }}
+   392→   392→            animate={{ opacity: 1, y: 0 }}
+   393→   393→            transition={{ duration: 0.5, delay: 0.25 }}
+   394→   394→            className="text-lg text-white/60 max-w-xl mb-8"
+   395→   395→          >
+   396→   396→            {services.length} Specialized Services Under One Roof — From design to commissioning, we deliver end-to-end electrical excellence.
+   397→   397→          </motion.p>
+   398→   398→
+   399→   399→          {/* Stats bar */}
+   400→   400→          <motion.div
+   401→   401→            initial={{ opacity: 0, y: 20 }}
+   402→   402→            animate={{ opacity: 1, y: 0 }}
+   403→   403→            transition={{ duration: 0.5, delay: 0.35 }}
+   404→   404→            className="flex flex-wrap items-center gap-3 sm:gap-6"
+   405→   405→          >
+   406→   406→            {[
+   407→   407→              { value: '3000+', label: 'Projects' },
+   408→   408→              { value: '20+', label: 'Years' },
+   409→   409→              { value: `${services.length}`, label: 'Services' },
+   410→   410→            ].map((stat, i) => (
+   411→   411→              <div key={i} className="flex items-center gap-2">
+   412→   412→                <span className="text-2xl font-bold text-white">{stat.value}</span>
+   413→   413→                <span className="text-sm text-white/50">{stat.label}</span>
+   414→   414→                {i < 2 && <span className="hidden sm:inline text-white/20 mx-2">|</span>}
+   415→   415→              </div>
+   416→   416→            ))}
+   417→   417→          </motion.div>
+   418→   418→        </div>
+   419→   419→
+   420→   420→        {/* Bottom wave separator */}
+   421→   421→        <div className="absolute bottom-0 left-0 right-0">
+   422→   422→          <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+   423→   423→            <path d="M0 60V20C240 50 480 0 720 20C960 40 1200 0 1440 20V60H0Z" fill="white" />
+   424→   424→          </svg>
+   425→   425→        </div>
+   426→   426→      </section>
+   427→   427→
+   428→   428→      {/* ══════════════════════════════════════════════
+   429→   429→          CATEGORY TABS + SERVICE GRID
+   430→   430→          ══════════════════════════════════════════════ */}
+   431→   431→      <section className="py-14 md:py-20 bg-white">
+   432→   432→        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+   433→   433→          {/* Category filter tabs */}
+   434→   434→          <motion.div
+   435→   435→            initial={{ opacity: 0, y: 16 }}
+   436→   436→            animate={{ opacity: 1, y: 0 }}
+   437→   437→            transition={{ duration: 0.4 }}
+   438→   438→            className="flex flex-wrap items-center gap-2 mb-10"
+   439→   439→          >
+   440→   440→            {categories.map(cat => {
+   441→   441→              const isActive = activeCategory === cat
+   442→   442→              const count = cat === 'All'
+   443→   443→                ? services.length
+   444→   444→                : services.filter(s => s.category === cat).length
+   445→   445→
+   446→   446→              return (
+   447→   447→                <button
+   448→   448→                  key={cat}
+   449→   449→                  onClick={() => setActiveCategory(cat)}
+   450→   450→                  className={`
+   451→   451→                    relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+   452→   452→                    ${isActive
+   453→   453→                      ? 'bg-[#1B3A5C] text-white shadow-lg shadow-[#1B3A5C]/20'
+   454→   454→                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
+   455→   455→                  `}
+   456→   456→                >
+   457→   457→                  {cat}
+   458→   458→                  <span className={`ml-2 text-xs ${isActive ? 'text-white/70' : 'text-gray-400'}`}>
+   459→   459→                    ({count})
+   460→   460→                  </span>
+   461→   461→                </button>
+   462→   462→              )
+   463→   463→            })}
+   464→   464→          </motion.div>
+   465→   465→
+   466→   466→          {/* Service grid */}
+   467→   467→          <AnimatePresence mode="wait">
+   468→   468→            <motion.div
+   469→   469→              key={activeCategory}
+   470→   470→              initial={{ opacity: 0, y: 12 }}
+   471→   471→              animate={{ opacity: 1, y: 0 }}
+   472→   472→              exit={{ opacity: 0, y: -12 }}
+   473→   473→              transition={{ duration: 0.3 }}
+   474→   474→              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+   475→   475→            >
+   476→   476→              {filteredServices.map((s, i) => {
+   477→   477→                const Icon = iconMap[s.name] || PenTool
+   478→   478→                const accent = getAccent(s.name)
+   479→   479→
+   480→   480→                return (
+   481→   481→                  <motion.div
+   482→   482→                    key={s.id}
+   483→   483→                    initial={{ opacity: 0, y: 20 }}
+   484→   484→                    animate={{ opacity: 1, y: 0 }}
+   485→   485→                    transition={{ duration: 0.4, delay: i * 0.06 }}
+   486→   486→                    whileHover={{ y: -6, transition: { duration: 0.25 } }}
+   487→   487→                    className="group"
+   488→   488→                  >
+   489→   489→                    <Card
+   490→   490→                      className={`
+   491→   491→                        relative overflow-hidden rounded-xl border-0 shadow-md
+   492→   492→                        bg-white cursor-pointer
+   493→   493→                        transition-shadow duration-300
+   494→   494→                        group-hover:shadow-xl group-hover:shadow-gray-200/60
+   495→   495→                      `}
+   496→   496→                      onClick={() => navigate('service-detail', { slug: s.slug })}
+   497→   497→                    >
+   498→   498→                      {/* Service image */}
+   499→   499→                      <div className="relative h-44 overflow-hidden">
+   500→   500→                        <Image
+   501→   501→                          src={s.image}
+   502→   502→                          alt={s.name}
+   503→   503→                          fill
+   504→   504→                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+   505→   505→                        />
+   506→   506→                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+   507→   507→                        <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+   508→   508→                          <Badge className={`${accent.bg} text-white border-0 px-2.5 py-0.5 text-xs font-semibold`}>
+   509→   509→                            {s.category}
+   510→   510→                          </Badge>
+   511→   511→                          <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+   512→   512→                            <Icon className="w-4.5 h-4.5 text-white" />
+   513→   513→                          </div>
+   514→   514→                        </div>
+   515→   515→                      </div>
+   516→   516→
+   517→   517→                      <CardContent className="p-5">
+   518→   518→                        {/* Title */}
+   519→   519→                        <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 leading-snug group-hover:text-[#1B3A5C] transition-colors">
+   520→   520→                          {s.name}
+   521→   521→                        </h3>
+   522→   522→
+   523→   523→                        {/* Description — truncated to 2 lines */}
+   524→   524→                        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
+   525→   525→                          {s.description}
+   526→   526→                        </p>
+   527→   527→
+   528→   528→                        {/* Bottom row: feature count + explore link */}
+   529→   529→                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+   530→   530→                          <Badge
+   531→   531→                            className={`${accent.light} ${accent.text} border-0 text-xs font-semibold rounded-md px-2.5 py-1`}
+   532→   532→                          >
+   533→   533→                            {s.capabilities.length} Capabilities
+   534→   534→                          </Badge>
+   535→   535→
+   536→   536→                          <span className={`
+   537→   537→                            inline-flex items-center gap-1 text-sm font-semibold
+   538→   538→                            text-[#1B3A5C]
+   539→   539→                            transition-all duration-300
+   540→   540→                            group-hover:gap-2
+   541→   541→                          `}>
+   542→   542→                            Explore
+   543→   543→                            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+   544→   544→                          </span>
+   545→   545→                        </div>
+   546→   546→                      </CardContent>
+   547→   547→                    </Card>
+   548→   548→                  </motion.div>
+   549→   549→                )
+   550→   550→              })}
+   551→   551→            </motion.div>
+   552→   552→          </AnimatePresence>
+   553→   553→
+   554→   554→          {/* Empty state */}
+   555→   555→          {filteredServices.length === 0 && (
+   556→   556→            <motion.div
+   557→   557→              initial={{ opacity: 0 }}
+   558→   558→              animate={{ opacity: 1 }}
+   559→   559→              className="text-center py-20"
+   560→   560→            >
+   561→   561→              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+   562→   562→                <Wrench className="w-7 h-7 text-gray-400" />
+   563→   563→              </div>
+   564→   564→              <p className="text-gray-500 text-lg">No services found in this category.</p>
+   565→   565→              <button
+   566→   566→                onClick={() => setActiveCategory('All')}
+   567→   567→                className="mt-3 text-[#E8751A] text-sm font-semibold hover:underline"
+   568→   568→              >
+   569→   569→                View all services
+   570→   570→              </button>
+   571→   571→            </motion.div>
+   572→   572→          )}
+   573→   573→        </div>
+   574→   574→      </section>
+   575→   575→
+   576→   576→      {/* ══════════════════════════════════════════════
+   577→   577→          CTA BANNER
+   578→   578→          ══════════════════════════════════════════════ */}
+   579→   579→      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 100%)' }}>
+   580→   580→        <div className="absolute inset-0 pointer-events-none">
+   581→   581→          <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
+   582→   582→            style={{ background: 'radial-gradient(circle, #E8751A, transparent 70%)' }}
+   583→   583→          />
+   584→   584→        </div>
+   585→   585→
+   586→   586→        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-14 text-center">
+   587→   587→          <motion.div
+   588→   588→            initial={{ opacity: 0, y: 20 }}
+   589→   589→            whileInView={{ opacity: 1, y: 0 }}
+   590→   590→            viewport={{ once: true, margin: '-60px' }}
+   591→   591→            transition={{ duration: 0.5 }}
+   592→   592→          >
+   593→   593→            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+   594→   594→              Need a Custom Solution?
+   595→   595→            </h2>
+   596→   596→            <p className="text-white/60 max-w-lg mx-auto mb-6">
+   597→   597→              Our experts combine services to deliver tailored electrical solutions for your unique requirements.
+   598→   598→            </p>
+   599→   599→            <button
+   600→   600→              onClick={() => navigate('contact')}
+   601→   601→              className="inline-flex items-center gap-2 bg-[#E8751A] hover:bg-[#D4691A] text-white font-semibold px-7 py-3 rounded-full transition-colors shadow-lg shadow-[#E8751A]/25"
+   602→   602→            >
+   603→   603→              Get in Touch
+   604→   604→              <ArrowRight className="w-4 h-4" />
+   605→   605→            </button>
+   606→   606→          </motion.div>
+   607→   607→        </div>
+   608→   608→      </section>
+   609→   609→    </>
+   610→   610→  )
+   611→   611→}
+   612→   612→
