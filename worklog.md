@@ -340,3 +340,29 @@ Stage Summary:
 - All existing sections preserved across all pages
 - Single coral (#E8751A) + navy (#1B3A5C/#0D1D3A) color system maintained
 - Produced artifacts: updated ManufacturingPage.tsx, Footer.tsx, HomePage.tsx, ServiceDetailPage.tsx
+
+---
+Task ID: services-redesign
+Agent: main (Z.ai Code)
+Task: Give a different design for the Services page (user request: "give some different design for the service page")
+
+Work Log:
+- Read the existing ServicesPage.tsx (612 lines) to understand the current design: navy gradient hero with floating icons, horizontal category pill tabs, uniform 3-column card grid with image-top cards, and a navy CTA banner.
+- Designed a completely different "Editorial Bento + Sticky Sidebar" layout with the same 12 services data and same single coral (#E8751A) + navy (#152D4F) accent palette.
+- Rewrote /home/z/my-project/src/components/pages/ServicesPage.tsx (1008 lines) with these new sections:
+  1. LIGHT EDITORIAL HERO (replaces navy gradient): cream #F7F9FC background with subtle grid pattern, asymmetric split — left column has breadcrumb + coral eyebrow + big editorial heading "One partner. Twelve services. Zero hand-offs." with an animated SVG underline on "Twelve services", description, and a 3-stat strip (400 kV / 12 service lines / 2000+ projects). Right column has a "Service Universe" white card with a 2x3 mini-grid of category buttons (Engineering, EPC, Manufacturing, Maintenance, Liaison, Renewable) plus a coral "Ask an expert" CTA. A floating "ISO-certified delivery" badge sits at the bottom-left.
+  2. STICKY SIDEBAR + BENTO GRID (replaces horizontal pill tabs + uniform grid): left sticky sidebar (lg:col-span-3) with a search input (filters by name/description/capabilities), a vertical category list with icon tiles + descriptions + counts, and a navy gradient "Need a custom scope?" help card. Right side (lg:col-span-9) is a bento grid with mixed card sizes — the featured Design & Engineering service is a large 2x2 card with big image + overlay + capabilities preview chips, all other services are regular image-top cards that expand on hover to show a 3-item capabilities preview with "+N more".
+  3. PROCESS / DELIVERY MODEL section (new): light bg with grid pattern, "Four moves from scope to sustain" heading, 4-step horizontal flow (Discover → Design → Execute → Sustain) each as a white card with big faded background number, navy icon tile that turns coral on hover, and a connector arrow between cards.
+  4. INDUSTRIES MARQUEE (new): "Trusted across 12 verticals" with 12 industry pills (Cement, Steel, Petrochemical, Power Utility, Automotive, Data Center, Pharma, Textile, Food & Beverage, Infrastructure, Renewable IPP, Commercial Real Estate).
+  5. SPLIT CTA (replaces navy CTA banner): navy #152D4F bg with coral arcs, left column has "Tell us your scope. We'll bring the rest." with two buttons (Request a proposal / View past projects), right column has a 2x2 glassmorphic stat grid (28+ Years, 2000+ Projects, >90% Industrial clients, 11 States).
+- Added a ServiceBentoCard sub-component with two variants: featured (2x2 large card with image overlay + capabilities chips) and regular (image-top card with hover-expand capabilities preview). Both variants navigate to service-detail/{slug} on click.
+- Added search functionality with live filtering and a clear button, plus an empty state with reset-filters action.
+- Fixed one TypeScript error: `isFeatured` was `boolean | undefined` because `s.featured` is optional — wrapped with `Boolean(s.featured)` to coerce to boolean.
+- Verified: `bun run lint` passes cleanly (no errors), `npx tsc --noEmit` shows no errors for ServicesPage.tsx (pre-existing errors in other files like ProductsPage/Journey/Products/supabase/examples/skills are unrelated and not introduced by this change), dev server compiled the home route successfully (HTTP 200, compile 8.4s) confirming the statically-imported ServicesPage bundle has no syntax/import errors.
+
+Stage Summary:
+- Completely redesigned ServicesPage from a navy-gradient + uniform-card-grid layout to a light editorial hero + sticky sidebar + bento grid + process flow + industries marquee + split CTA.
+- Same 12 services data preserved; same coral #E8751A + navy #152D4F palette maintained for brand consistency.
+- New interactive features: live search filter, sticky vertical category navigation, hover-expand capability previews, featured large bento card.
+- Lint clean, TypeScript clean for ServicesPage, bundle compiles successfully.
+- Files changed: /home/z/my-project/src/components/pages/ServicesPage.tsx (full rewrite, 612 → 1008 lines).
