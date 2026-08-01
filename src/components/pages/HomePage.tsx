@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ArrowRight, Star, MapPin } from 'lucide-react'
+import {
+  ArrowRight, Star, MapPin, Award, TrendingUp, Zap, Users,
+  MapPinned, Factory, Settings, ShieldCheck, Layers, Network,
+  HardHat, Cpu, Target,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -61,6 +65,66 @@ export default function HomePage() {
       {/* ─── Hero ─── */}
       <Hero />
 
+      {/* ─── Key Statistics ─── */}
+      <section className="py-14 md:py-20 bg-white relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #1B3A5C 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Key Statistics</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
+                Our Performance in <span className="text-[#E8751A]">Numbers</span>
+              </h2>
+              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto">
+                Delivering excellence at scale with proven expertise across India&apos;s electrical infrastructure landscape.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Stats grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              { icon: Award, value: '2000+', label: 'Projects Executed', desc: 'Successfully delivered across India' },
+              { icon: TrendingUp, value: '28+', label: 'Years of Industry Experience', desc: 'Since 1998, trusted engineering partner' },
+              { icon: Zap, value: '400 kV', label: 'Voltage Expertise', desc: 'EHV, HV, MV & LV systems' },
+              { icon: Users, value: '>90%', label: 'Industrial Customers Served', desc: 'Of total projects executed' },
+              { icon: MapPinned, value: 'Pan-India', label: 'Execution Capability', desc: 'AP, Telangana, Goa, Karnataka, UP, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' },
+              { icon: Factory, value: 'In-house', label: 'Engineering & Manufacturing', desc: 'No outsourcing — full control' },
+            ].map((stat, i) => {
+              const Icon = stat.icon
+              return (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                    className="group relative h-full p-6 rounded-2xl bg-white border border-[#E5E7EB] hover:border-[#E8751A]/40 shadow-sm hover:shadow-xl hover:shadow-[#E8751A]/5 transition-all duration-500 overflow-hidden"
+                  >
+                    {/* Coral accent bar on hover */}
+                    <div className="absolute top-0 left-0 h-1 w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500" />
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-[#E8751A]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E8751A] transition-colors duration-300">
+                        <Icon className="w-6 h-6 text-[#E8751A] group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-2xl md:text-3xl font-bold text-[#1A1A2E] tracking-tight leading-tight">
+                          {stat.value}
+                        </div>
+                        <p className="text-sm font-bold text-[#1A1A2E] mt-0.5 mb-1">{stat.label}</p>
+                        <p className="text-xs text-[#6B7280] leading-relaxed">{stat.desc}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </FadeIn>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ─── About Preview ─── */}
       <section className="py-14 md:py-20 bg-[#F0F4F8]">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
@@ -84,6 +148,67 @@ export default function HomePage() {
                 className="rounded-lg shadow w-full object-cover"
               />
             </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Why Choose Us ─── */}
+      <section className="py-14 md:py-20 bg-[#0D1D3A] relative overflow-hidden">
+        {/* Ambient coral glow */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-10 pointer-events-none" style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 70%)' }} />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none" style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 70%)' }} />
+        {/* Decorative grid */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/15 border border-[#E8751A]/30 mb-4">
+                <Target className="w-3.5 h-3.5 text-[#E8751A]" />
+                <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Why Choose Us</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                Engineering <span className="text-[#E8751A]">Excellence</span>
+              </h2>
+              <p className="text-white/60 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                <span className="text-[#E8751A] font-semibold">VALUE ENGINEERING</span> is in the DNA of the Management and that results a <span className="text-white font-semibold">WIN-WIN</span> for customers and us.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Why Choose Us grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              { icon: Cpu, title: 'Engineering Excellence', desc: 'Comprehensive engineering expertise across EHV, HV, MV, and LV electrical systems with a focus on reliability, safety, and operational efficiency.' },
+              { icon: Network, title: 'End-to-End EPC Capability', desc: 'Single-point responsibility from concept design to commissioning and utility approvals. We offer pre-ordering stage consultancy also.' },
+              { icon: Layers, title: 'Industry-Focused Solutions', desc: 'Customized electrical infrastructure solutions tailored to industry-specific operational requirements across various industries, states, countries, and electricity boards.' },
+              { icon: HardHat, title: 'Experienced Project Execution', desc: 'Dedicated hardcore project management and site execution teams ensuring timely project delivery across diverse environments.' },
+              { icon: ShieldCheck, title: 'Safety & Quality Compliance', desc: 'Strict adherence to electrical safety standards, quality assurance procedures, and statutory regulations including CEA/CEIG requirements.' },
+              { icon: Settings, title: 'Integrated Manufacturing', desc: 'In-house panel manufacturing and system integration capabilities for optimized project control and quality assurance.' },
+            ].map((item, i) => {
+              const Icon = item.icon
+              return (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                    className="group relative h-full p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#E8751A]/40 transition-all duration-500 overflow-hidden"
+                  >
+                    {/* Coral accent line on hover */}
+                    <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500" />
+                    <div className="w-12 h-12 rounded-xl bg-[#E8751A]/15 flex items-center justify-center mb-4 group-hover:bg-[#E8751A] transition-colors duration-300">
+                      <Icon className="w-6 h-6 text-[#E8751A] group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </motion.div>
+                </FadeIn>
+              )
+            })}
           </div>
         </div>
       </section>

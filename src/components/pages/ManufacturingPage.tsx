@@ -386,12 +386,6 @@ export default function ManufacturingPage() {
                       <div className="absolute top-4 right-4 w-11 h-11 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
                         <Icon className="w-5 h-5 text-[#E8751A]" />
                       </div>
-                      {/* Number badge */}
-                      <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
-                        <span className="text-sm font-bold text-[#E8751A] tabular-nums">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Content */}
@@ -455,10 +449,6 @@ export default function ManufacturingPage() {
                     transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                     className="group relative h-full p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-xl hover:shadow-[#E8751A]/5 transition-all duration-500"
                   >
-                    {/* Number watermark */}
-                    <span className="absolute top-4 right-5 text-5xl font-bold text-[#E8751A]/[0.06] group-hover:text-[#E8751A]/10 transition-colors tabular-nums">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
                     <div className="relative z-10">
                       <div className="w-12 h-12 rounded-xl bg-[#E8751A]/10 flex items-center justify-center mb-4 group-hover:bg-[#E8751A] transition-colors duration-300">
                         <Icon className="w-6 h-6 text-[#E8751A] group-hover:text-white transition-colors duration-300" />
