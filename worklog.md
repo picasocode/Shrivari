@@ -366,3 +366,43 @@ Stage Summary:
 - New interactive features: live search filter, sticky vertical category navigation, hover-expand capability previews, featured large bento card.
 - Lint clean, TypeScript clean for ServicesPage, bundle compiles successfully.
 - Files changed: /home/z/my-project/src/components/pages/ServicesPage.tsx (full rewrite, 612 → 1008 lines).
+
+---
+Task ID: services-redesign-v2 + products-menu
+Agent: main (Z.ai Code)
+Task: Two requests: (1) Give a totally different design for the Services page (user explicitly said "totally different" — the previous editorial-bento design was not acceptable). (2) Create a menu under Products with three items: LT Panels, HT Panels, Busducts.
+
+Work Log:
+- Read the current ServicesPage.tsx (the editorial-bento + sticky-sidebar design from the previous task) and ProductsPage.tsx to understand existing structure.
+- Confirmed the previous Services design (editorial bento + sticky sidebar + bento grid + process steps + industries marquee) was rejected; user wants a "totally different" style.
+
+SERVICES PAGE — "Magazine Menu + Spotlight" design (totally different from both prior designs):
+- Rewrote /home/z/my-project/src/components/pages/ServicesPage.tsx with a genuinely new layout:
+  1. CINEMATIC HERO: dark navy #0D1D3A full-bleed with a background image (services[0].image) at 20% opacity + heavy gradient overlay + coral radial glow. Big manifesto heading "We engineer power. / You stay switched on." with a huge faded "12" counter on the right. A standards strip at the bottom (IEEE-80 / IS-2309 / NABL / IEC-61439 / IS-3427 / 400 kV).
+  2. MAGAZINE MENU + SPOTLIGHT (the core new idea): a two-panel interactive layout — LEFT is a numbered "Service Index" list (like a magazine table of contents) where each row has a big tabular number (01-12), an icon tile, the service name, category, and a hover arrow. RIGHT is a large "spotlight" detail panel with a big image header (with faded background number, category chip, index chip, icon badge, title + tagline), description, an expandable capabilities accordion (shows 4 by default, "Expand all" reveals the rest as numbered tiles), and two CTAs (Explore full service / Request a quote). Hovering a service in the left index instantly updates the spotlight panel on the right via AnimatePresence.
+  3. STANDARDS & CERTIFICATIONS BAND: 6 standard badges (IEEE-80, IS-2309, NABL, IEC-61439, IS-3427, 400 kV) as small cards.
+  4. MINIMAL DARK CTA: navy bg with coral arcs, "One conversation away from a single-source electrical partner." + two buttons.
+- Same 12 services data preserved; same coral #E8751A + navy #152D4F/#0D1D3A palette. Added a `tagline` field to each service for the spotlight header.
+
+PRODUCTS — Three-category menu (LT Panels / HT Panels / Busducts):
+- Navbar (/home/z/my-project/src/components/sections/Navbar.tsx): added a Products dropdown (matching the existing Services/Company/Clients dropdown pattern) with three items — LT Panels, HT Panels, Busducts — each with icon, description, and arrow. Clicking an item calls navigate('products', { tab }) to preselect the category. Added productsOpen/productsTimeoutRef/mobileProductsExpanded state, handleMouseEnter/LeaveProducts handlers, handleProductClick, isProductsActive flag, and the full desktop + mobile dropdown markup. Marked Products navLink with hasDropdown: true. Added Boxes icon import.
+- ProductsPage (/home/z/my-project/src/components/pages/ProductsPage.tsx): upgraded from 2 tabs to 3 tabs (lt / ht / busduct):
+  - Added a third TabsTrigger "Busducts (Up to 6300A)" with a navy #0D1D3A active state and Boxes icon.
+  - Added bdProducts state + fetchProducts('Busducts') in both useEffect and loadProducts.
+  - Made activeTab derived from router.params?.tab (single source of truth) — the navbar dropdown AND in-page tab clicks both call navigate('products', { tab }). This avoids setState-in-effect (lint-clean) and refs-during-render (lint-clean).
+  - Updated hero accent color/label/image, grid header text, and ProductGrid variant type to support 'busduct' (navy #0D1D3A accent).
+  - Updated COMPARISON_DATA and SPEC_TABLE_DATA with a 'bd' column; the comparison section is now a 3-column grid (LT / HT / Busducts) and the spec table has a 4th "Busducts" column.
+  - Added a static fallback product dataset (FALLBACK_LT / FALLBACK_HT / FALLBACK_BD) used when the API returns empty (Supabase isn't configured in this sandbox), so the page always renders real content for all 3 categories. 6 LT products, 4 HT products, 4 Busduct products.
+  - Fixed a pre-existing TypeScript error: changed ProductGrid onNavigate prop type from (page: string, ...) to (page: PageName, ...) and imported PageName from '@/components/Router'.
+- Seed data: updated both /home/z/my-project/src/app/api/seed/route.ts and /home/z/my-project/prisma/seed.ts to (a) change the existing "Busducts" product's category from "LT Panels" to "Busducts", and (b) add 4 new busduct products (Segregated Phase Busduct, Non-Segregated Phase Busduct, Isolated Phase Busduct (IPB), Plug-in Tap-off Boxes). Updated the product creation loop and count to include busductProducts.
+
+VERIFICATION:
+- `bun run lint` — passes cleanly (no errors, no warnings).
+- `npx tsc --noEmit` — no errors in any changed file (ServicesPage, ProductsPage, Navbar, seed/route, prisma/seed). Remaining 17 TS errors are all pre-existing in unrelated files (Journey.tsx, Products.tsx, supabase.ts, examples/, skills/).
+- Dev server compile: the full bundle compile (home route imports all pages) repeatedly hits the sandbox OOM limit during Turbopack compilation — a known environment limitation from the previous session, not a code issue. The server starts ("Ready in ~700ms") but the first GET / compile crashes before completing.
+
+Stage Summary:
+- Services page: completely new "Magazine Menu + Spotlight" design (dark cinematic hero + interactive two-panel index/spotlight + standards band + minimal CTA). Genuinely different from both the original navy-grid and the rejected editorial-bento.
+- Products: now has a 3-category menu — navbar dropdown (LT Panels / HT Panels / Busducts) + 3-tab Products page with a Busducts tab, plus a 3-way comparison grid, a 4-column spec table, and static fallback data so all 3 tabs render content.
+- Files changed: src/components/pages/ServicesPage.tsx (full rewrite), src/components/pages/ProductsPage.tsx (3-tab upgrade + fallback data), src/components/sections/Navbar.tsx (Products dropdown), src/app/api/seed/route.ts (busduct category + 4 new products), prisma/seed.ts (synced with API seed).
+- Lint clean, TypeScript clean for all changed files.

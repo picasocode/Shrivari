@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, RefreshCw, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory } from 'lucide-react'
+import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, RefreshCw, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 import { useRouter, type PageName } from '@/components/Router'
@@ -33,6 +33,12 @@ const companyDropdownItems = [
   { label: 'Careers', slug: 'careers', icon: Briefcase, desc: 'Join our 364+ strong team and grow with us' },
 ]
 
+const productDropdownItems = [
+  { label: 'LT Panels', tab: 'lt', icon: Zap, desc: 'Low tension panels rated up to 415V — PCC, MCC, APFC, PLC & more' },
+  { label: 'HT Panels', tab: 'ht', icon: Shield, desc: 'High tension switchgear rated 11kV–33kV for industrial & utility use' },
+  { label: 'Busducts', tab: 'busduct', icon: Boxes, desc: 'Enclosed busbar systems for high-current power distribution' },
+]
+
 const clientsDropdownItems = [
   { label: 'Our Clients', slug: 'clients', icon: Users, desc: 'Trusted by leading industries across India' },
   { label: 'Projects', slug: 'projects', icon: FolderKanban, desc: 'Browse 150+ executed projects with full details' },
@@ -41,7 +47,7 @@ const clientsDropdownItems = [
 const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
   { label: 'Home', page: 'home' },
   { label: 'Company', page: 'about', hasDropdown: true },
-  { label: 'Products', page: 'products' },
+  { label: 'Products', page: 'products', hasDropdown: true },
   { label: 'Manufacturing', page: 'manufacturing' },
   { label: 'Services', page: 'services' },
   { label: 'Clients', page: 'clients', hasDropdown: true },
@@ -57,12 +63,15 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
   const [servicesOpen, setServicesOpen] = useState(false)
   const [companyOpen, setCompanyOpen] = useState(false)
   const [clientsOpen, setClientsOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
   const [mobileServicesExpanded, setMobileServicesExpanded] = useState(false)
   const [mobileCompanyExpanded, setMobileCompanyExpanded] = useState(false)
   const [mobileClientsExpanded, setMobileClientsExpanded] = useState(false)
+  const [mobileProductsExpanded, setMobileProductsExpanded] = useState(false)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const companyTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const clientsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const productsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -74,9 +83,11 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
     setServicesOpen(false)
     setCompanyOpen(false)
     setClientsOpen(false)
+    setProductsOpen(false)
     setMobileServicesExpanded(false)
     setMobileCompanyExpanded(false)
     setMobileClientsExpanded(false)
+    setMobileProductsExpanded(false)
     navigate(page, params)
   }
 
@@ -122,6 +133,24 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
     }, 150)
   }
 
+  const handleMouseEnterProducts = () => {
+    if (productsTimeoutRef.current) {
+      clearTimeout(productsTimeoutRef.current)
+      productsTimeoutRef.current = null
+    }
+    setProductsOpen(true)
+  }
+
+  const handleMouseLeaveProducts = () => {
+    productsTimeoutRef.current = setTimeout(() => {
+      setProductsOpen(false)
+    }, 150)
+  }
+
+  const handleProductClick = (tab: string) => {
+    handleNavigate('products', { tab })
+  }
+
   const handleServiceClick = (slug: string) => {
     // Manufacturing has its own dedicated page, not a service-detail page
     if (slug === 'manufacturing') {
@@ -134,6 +163,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
   const isServicesActive = router.page === 'services' || router.page === 'service-detail' || router.page === 'manufacturing'
   const isCompanyActive = router.page === 'about' || router.page === 'team' || router.page === 'sectors' || router.page === 'careers'
   const isClientsActive = router.page === 'clients' || router.page === 'projects'
+  const isProductsActive = router.page === 'products'
 
   return (
     <header
@@ -365,6 +395,77 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                     )}
                   </AnimatePresence>
                 </div>
+              ) : link.hasDropdown && link.page === 'products' ? (
+                /* Products dropdown */
+                <div
+                  key={link.page}
+                  className="relative"
+                  onMouseEnter={handleMouseEnterProducts}
+                  onMouseLeave={handleMouseLeaveProducts}
+                >
+                  <button
+                    onClick={() => handleNavigate('products')}
+                    className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                      isProductsActive
+                        ? 'text-[#E8751A] bg-[#E8751A]/5'
+                        : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
+                    }`}
+                  >
+                    {link.label}
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${productsOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {productsOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-2"
+                        onMouseEnter={handleMouseEnterProducts}
+                        onMouseLeave={handleMouseLeaveProducts}
+                      >
+                        <div className="bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 w-[420px] p-4">
+                          <div className="space-y-1">
+                            {productDropdownItems.map((item) => {
+                              const IconComponent = item.icon
+                              return (
+                                <button
+                                  key={item.tab}
+                                  onClick={() => handleProductClick(item.tab)}
+                                  className="w-full flex items-start gap-3 p-3 rounded-lg text-left transition-all duration-150 hover:bg-[#F0F4F8] group"
+                                >
+                                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#1B3A5C]/[0.07] flex items-center justify-center group-hover:bg-[#E8751A]/10 transition-colors">
+                                    <IconComponent className="w-4 h-4 text-[#1B3A5C] group-hover:text-[#E8751A] transition-colors" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="text-[13px] font-semibold text-[#1B3A5C] group-hover:text-[#E8751A] transition-colors leading-tight">
+                                      {item.label}
+                                    </div>
+                                    <div className="text-[11px] text-[#6B7280] mt-0.5 leading-snug line-clamp-2">
+                                      {item.desc}
+                                    </div>
+                                  </div>
+                                  <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#E8751A] group-hover:translate-x-0.5 transition-all" />
+                                </button>
+                              )
+                            })}
+                          </div>
+                          <div className="mt-3 pt-3 border-t border-gray-100 flex justify-center">
+                            <button
+                              onClick={() => handleNavigate('products')}
+                              className="flex items-center gap-1.5 text-[13px] font-semibold text-[#E8751A] hover:text-[#D4691A] transition-colors"
+                            >
+                              View All Products
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
                 <button
                   key={link.page}
@@ -584,6 +685,63 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                                     </SheetClose>
                                   )
                                 })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : link.hasDropdown && link.page === 'products' ? (
+                      <div key={link.page}>
+                        <button
+                          onClick={() => setMobileProductsExpanded(!mobileProductsExpanded)}
+                          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
+                            isProductsActive
+                              ? 'text-[#E8751A] bg-[#E8751A]/5'
+                              : 'text-[#374151] hover:bg-gray-50'
+                          }`}
+                        >
+                          {link.label}
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileProductsExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {mobileProductsExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2, ease: 'easeOut' }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pl-3 py-1 space-y-0.5">
+                                {productDropdownItems.map((item) => {
+                                  const IconComponent = item.icon
+                                  return (
+                                    <SheetClose asChild key={item.tab}>
+                                      <button
+                                        onClick={() => {
+                                          setMobileProductsExpanded(false)
+                                          handleProductClick(item.tab)
+                                        }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
+                                      >
+                                        <IconComponent className="w-4 h-4 text-[#1B3A5C] flex-shrink-0" />
+                                        <span className="font-medium">{item.label}</span>
+                                      </button>
+                                    </SheetClose>
+                                  )
+                                })}
+                                <SheetClose asChild>
+                                  <button
+                                    onClick={() => {
+                                      setMobileProductsExpanded(false)
+                                      handleNavigate('products')
+                                    }}
+                                    className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-semibold text-[#E8751A] hover:bg-[#E8751A]/5 transition-colors"
+                                  >
+                                    View All Products
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                  </button>
+                                </SheetClose>
                               </div>
                             </motion.div>
                           )}

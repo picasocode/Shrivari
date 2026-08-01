@@ -155,7 +155,7 @@ async function main() {
     {
       name: "Busducts",
       slug: "busducts",
-      category: "LT Panels",
+      category: "Busducts",
       description:
         "Busducts are enclosed busbar systems used for high-current power distribution between transformers, panels, and loads. Our busducts are manufactured with high-conductivity copper or aluminum busbars, insulated and enclosed for safe, reliable, and efficient power transmission across industrial facilities.",
       features: JSON.stringify([
@@ -168,6 +168,77 @@ async function main() {
       ]),
       imageUrl: "https://shrivaarielectricals.com/img/portfolio/630x400.jpg",
       order: 9,
+    },
+  ];
+
+  const busductProducts = [
+    {
+      name: "Segregated Phase Busduct",
+      slug: "segregated-phase-busduct",
+      category: "Busducts",
+      description:
+        "Segregated phase busducts feature each phase conductor in its own grounded metallic enclosure, reducing electromagnetic forces and improving short-circuit withstand. Ideal for high-current generator connections and large industrial power distribution.",
+      features: JSON.stringify([
+        "Each phase in separate metallic enclosure",
+        "Reduced electromagnetic forces between phases",
+        "Ratings up to 6300A",
+        "High short-circuit withstand capability",
+        "Forced-air or natural cooling options",
+        "Suitable for generator and transformer connections",
+      ]),
+      imageUrl: "https://shrivaarielectricals.com/img/portfolio/630x400.jpg",
+      order: 10,
+    },
+    {
+      name: "Non-Segregated Phase Busduct",
+      slug: "non-segregated-phase-busduct",
+      category: "Busducts",
+      description:
+        "Non-segregated phase busducts house all phase conductors in a common metallic enclosure, offering a compact and economical solution for medium-current distribution between transformers, switchgear, and loads.",
+      features: JSON.stringify([
+        "All phases in a common enclosure",
+        "Compact footprint for space-constrained installations",
+        "Ratings up to 4000A",
+        "Copper or aluminum busbar options",
+        "Indoor and outdoor configurations",
+        "Lower cost alternative for medium-current applications",
+      ]),
+      imageUrl: "https://shrivaarielectricals.com/img/portfolio/630x400.jpg",
+      order: 11,
+    },
+    {
+      name: "Isolated Phase Busduct (IPB)",
+      slug: "isolated-phase-busduct",
+      category: "Busducts",
+      description:
+        "Isolated Phase Busducts enclose each phase conductor in its own individual housing, typically used for very high-current generator outputs in power plants. Provides maximum safety, minimal electromagnetic interference, and reliable power transmission.",
+      features: JSON.stringify([
+        "Individual phase enclosures for maximum safety",
+        "Ratings from 4000A to 25000A",
+        "Minimal electromagnetic field emissions",
+        "Forced-air cooling for high-current ratings",
+        "Generator and transformer terminal connections",
+        "Power plant grade construction",
+      ]),
+      imageUrl: "https://shrivaarielectricals.com/img/portfolio/630x400.jpg",
+      order: 12,
+    },
+    {
+      name: "Plug-in Tap-off Boxes",
+      slug: "plug-in-tap-off-boxes",
+      category: "Busducts",
+      description:
+        "Plug-in tap-off boxes provide flexible power take-off points along a busduct run, enabling easy connection of loads or distribution panels without disrupting the main busbar. Available in various ratings with integrated protection.",
+      features: JSON.stringify([
+        "Hot-pluggable tap-off points",
+        "Integrated MCCB or fuse protection",
+        "Ratings from 100A to 630A",
+        "Lockable safety interlocks",
+        "Quick disconnect for maintenance",
+        "Compatible with segregated and non-segregated busducts",
+      ]),
+      imageUrl: "https://shrivaarielectricals.com/img/portfolio/630x400.jpg",
+      order: 13,
     },
   ];
 
@@ -225,10 +296,10 @@ async function main() {
     },
   ];
 
-  for (const product of [...ltProducts, ...htProducts]) {
+  for (const product of [...ltProducts, ...htProducts, ...busductProducts]) {
     await prisma.product.create({ data: product });
   }
-  console.log(`Created ${ltProducts.length + htProducts.length} products`);
+  console.log(`Created ${ltProducts.length + htProducts.length + busductProducts.length} products`);
 
   // ==================== SERVICES ====================
   console.log("Creating services...");
