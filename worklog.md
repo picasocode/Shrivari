@@ -302,3 +302,41 @@ Stage Summary:
 - All phone numbers and emails are clickable (tel: and mailto: links)
 - Responsive: 1-col mobile, 2-col tablet, 4-col desktop
 - Produced artifacts: rewritten /home/z/my-project/src/components/pages/ContactPage.tsx
+
+---
+Task ID: 9
+Agent: main (Z.ai Code)
+Task: Update Services page with docx content, remove 1/2/3 numbers from Manufacturing cards (keep design), update Footer with new content, update Home Page with missing sections (Key Statistics + Why Choose Us), enrich Solar Works detail page with comprehensive solar docx content.
+
+Work Log:
+- Read both uploaded docx files via pandoc:
+  - Shivari_Services_Electricals.docx — confirmed all 12 services already match existing ServicesPage content
+  - SHRI VAARI - SOLAR WORKS(2).docx — extracted comprehensive solar EPC content (Engineering 8 items, Procurement 8 items, Construction 8 items, 7 Solar Solutions, BESS 7 items, 9-step Process, O&M 8 items)
+- Manufacturing page (ManufacturingPage.tsx): removed the "01/02/03" number badge from product cards (kept the icon badge) and removed the large faded number watermark from advantage cards — design layout unchanged, only numbers removed
+- Footer (Footer.tsx): complete rewrite with 4-column layout:
+  - Column 1: "Trusted By" section with SCHNEIDER ELECTRIC mention + company logo
+  - Column 2: Quick Links (Home, About Us, Services, Products, Projects, Manufacturing, Careers, Contact)
+  - Column 3: Contact Information (full Guindy address, 3 phone numbers, email, website, business hours)
+  - Column 4: Social Links (LinkedIn, YouTube, Facebook, Instagram, Twitter) with hover-scale icon buttons + "Get in Touch" CTA
+  - Bottom bar: copyright + About/Services/Contact links
+- Home Page (HomePage.tsx): added 2 new sections:
+  - KEY STATISTICS section (Section 3): light theme, 6 metric cards (2000+ Projects, 28+ Years, 400 kV Voltage, >90% Industrial Customers, Pan-India Execution with 11 states listed, In-house Engineering & Manufacturing No Outsourcing), each with icon badge that fills coral on hover + coral accent bar
+  - WHY CHOOSE US section (Section 4): navy dark theme with ambient coral glows, 6 cards (Engineering Excellence, End-to-End EPC Capability, Industry-Focused Solutions, Experienced Project Execution, Safety & Quality Compliance, Integrated Manufacturing), intro text with "VALUE ENGINEERING is in the DNA" tagline, glassmorphic cards with coral icon tiles
+  - Existing sections (Hero slider, About Preview, Ongoing Projects, Client Testimonials, Blog & Insights) all preserved
+- Solar Works detail page (ServiceDetailPage.tsx): enriched 'solar-works' entry with comprehensive content from solar docx:
+  - Expanded description to full EPC overview
+  - 6 capability categories with subItems: Engineering (8), Procurement (8), Construction (8), Solar Solutions We Deliver (7), BESS (7), O&M Services (8)
+  - 9-step process (Site Survey → System Design → Technical Proposal → Procurement → Installation → Testing → Grid Sync → Performance Verification → O&M Support)
+  - Updated highlights: 10KW to 100MW, Rooftop & Ground-Mounted, BESS Integration, O&M Support
+- Ran `bun run lint` — passed with no errors
+- Dev server compiles successfully (HTTP 200, no compile errors in dev.log)
+- Agent Browser visual verification could NOT complete (same OOM issue — chromium launch crashes the Next.js dev server). Verified via lint + compile + HTTP checks.
+
+Stage Summary:
+- Manufacturing page: number badges (01-07 on products, 01-06 on advantages) REMOVED — design layout unchanged
+- Footer: completely rewritten with Trusted By / Quick Links / Contact Info / Social Links 4-column layout + SCHNEIDER ELECTRIC mention + 5 social media icon buttons
+- Home Page: 2 new sections added — Key Statistics (6 metric cards, light theme) + Why Choose Us (6 cards, navy theme with coral glows)
+- Solar Works detail page: enriched with 6 capability categories (48 total sub-items), 9-step process, from the solar docx
+- All existing sections preserved across all pages
+- Single coral (#E8751A) + navy (#1B3A5C/#0D1D3A) color system maintained
+- Produced artifacts: updated ManufacturingPage.tsx, Footer.tsx, HomePage.tsx, ServiceDetailPage.tsx
