@@ -191,8 +191,8 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
       {/* Main nav */}
       <nav className="max-w-[1280px] mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo — shown on the LEFT only on mobile/tablet (desktop logo is at the right end corner) */}
-          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5 lg:hidden">
+          {/* Logo — on the LEFT for all viewports */}
+          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5">
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
@@ -517,15 +517,6 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
             >
               Get a Quote
             </Button>
-
-            {/* Logo — at the RIGHT end corner (desktop only) */}
-            <button onClick={() => handleNavigate('home')} className="hidden lg:flex items-center gap-2.5 pl-2 ml-1 border-l border-gray-200/70">
-              <img
-                src="/images/logo.png"
-                alt="Shri Vaari Electricals"
-                className="h-8 w-auto object-contain"
-              />
-            </button>
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>

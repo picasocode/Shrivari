@@ -677,25 +677,6 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
             </motion.div>
           </div>
 
-          {/* Highlights strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-10 pt-6 border-t border-gray-200"
-          >
-            <div className="flex flex-wrap gap-2">
-              {data.highlights.map((h, i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-semibold text-[#152D4F]"
-                >
-                  <Check className="w-3 h-3 text-[#E8751A]" />
-                  {h}
-                </span>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </section>
 

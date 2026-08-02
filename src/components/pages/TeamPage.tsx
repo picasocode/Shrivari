@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import {
   UserCircle, Linkedin, Mail, ChevronRight, ArrowRight, Users, Award,
-  Target, Briefcase, Zap, Shield, Sun, Cpu, Wrench, FileCheck,
+  Briefcase, Zap, Shield, Sun, Cpu, Wrench, FileCheck,
   Building2, Network, LayoutGrid, Clock, TrendingUp, Globe,
   Lightbulb, Handshake, ChevronDown, CheckCircle2, Sparkles, Star,
   PenTool, Hammer, FlaskConical, BarChart3, Factory, RefreshCw,
@@ -626,22 +626,6 @@ export default function TeamPage() {
         </svg>
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                <Target className="w-3 h-3 mr-1" />
-                Capabilities
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
-                End-to-End <span className="text-[#1B3A5C]">Under One Roof</span>
-              </h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                From design engineering to CEIG approvals, our comprehensive capabilities ensure seamless project delivery — no outsourcing, no gaps.
-              </p>
-            </div>
-          </FadeIn>
-
           {/* Capabilities hexagonal grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
             {capabilities.map((cap, i) => (
