@@ -501,12 +501,6 @@ export default function AboutPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       {/* Coral accent line on hover */}
                       <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
-                      {/* Number badge */}
-                      <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
-                        <span className="text-sm font-bold text-[#E8751A] tabular-nums">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Content */}
@@ -571,12 +565,6 @@ export default function AboutPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     {/* Coral accent line on hover */}
                     <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
-                    {/* Number badge */}
-                    <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
-                      <span className="text-sm font-bold text-[#E8751A] tabular-nums">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                    </div>
                   </div>
 
                   {/* Content */}

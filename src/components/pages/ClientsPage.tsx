@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import {
   ChevronRight,
-  MapPin,
   Building2,
   Factory,
   Car,
@@ -441,13 +440,6 @@ export default function ClientsPage() {
                               {c.name}
                             </h3>
 
-                            {/* Location */}
-                            {c.location && (
-                              <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                                <MapPin className="w-3.5 h-3.5" style={{ color: ORANGE }} />
-                                <span>{c.location}</span>
-                              </div>
-                            )}
                           </CardContent>
                         </Card>
                       </motion.div>
@@ -508,13 +500,6 @@ export default function ClientsPage() {
                             {c.name}
                           </h3>
 
-                          {/* Location */}
-                          {c.location && (
-                            <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                              <MapPin className="w-3.5 h-3.5" style={{ color: ORANGE }} />
-                              <span>{c.location}</span>
-                            </div>
-                          )}
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -535,67 +520,6 @@ export default function ClientsPage() {
           )}
         </div>
       </section>
-
-      {/* ════════════════ INDUSTRIES WE SERVE ════════════════ */}
-      {!loading && industries.length > 0 && (
-        <section style={{ background: LIGHT_BG }}>
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-16 md:py-24">
-            <FadeIn>
-              <div className="text-center mb-12">
-                <h2
-                  className="text-3xl md:text-4xl font-extrabold mb-3"
-                  style={{ color: '#1A1A2E' }}
-                >
-                  Industries We Serve
-                </h2>
-                <div className="section-bar mx-auto mb-4" />
-                <p className="text-gray-500 max-w-lg mx-auto">
-                  Deep expertise across diverse sectors — delivering tailored solutions
-                  for every industry challenge.
-                </p>
-              </div>
-            </FadeIn>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {industries.map((ind, i) => {
-                const meta = getIndustryMeta(ind)
-                const Icon = meta.icon
-                const count = clients.filter(c => c.industry === ind).length
-                return (
-                  <FadeIn key={ind} delay={i * 0.06}>
-                    <div className="group relative bg-white rounded-2xl border border-[#E5E7EB] p-5 text-center card-hover cursor-default overflow-hidden">
-                      {/* Hover gradient overlay */}
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-br ${meta.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                      />
-                      <div className="relative z-10">
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors duration-500"
-                          style={{ background: `${NAVY}0A` }}
-                        >
-                          <Icon
-                            className="w-6 h-6 transition-colors duration-500"
-                            style={{ color: NAVY }}
-                          />
-                        </div>
-                        <h4
-                          className="text-sm font-bold mb-1 transition-colors duration-500"
-                          style={{ color: '#1A1A2E' }}
-                        >
-                          {ind}
-                        </h4>
-                        <span className="text-xs text-gray-400 group-hover:text-white/80 transition-colors duration-500">
-                          {count} partner{count !== 1 ? 's' : ''}
-                        </span>
-                      </div>
-                    </div>
-                  </FadeIn>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ════════════════ CTA ════════════════ */}
       <section

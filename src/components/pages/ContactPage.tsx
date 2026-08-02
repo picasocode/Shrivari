@@ -94,42 +94,6 @@ function telLink(phone: string): string {
   return `tel:${cleaned}`
 }
 
-/* ─── Quick Contact Cards ─── */
-const quickContacts = [
-  {
-    icon: Phone,
-    label: 'Call Us',
-    value: '044 2250 0241',
-    sub: '044 4357 5635',
-    href: 'tel:+914422500241',
-    accent: 'bg-[#1B3A5C]/10 text-[#1B3A5C]',
-  },
-  {
-    icon: Mail,
-    label: 'Email Us',
-    value: 'enquiries@',
-    sub: 'shrivaarielectricals.com',
-    href: 'mailto:enquiries@shrivaarielectricals.com',
-    accent: 'bg-[#E8751A]/10 text-[#E8751A]',
-  },
-  {
-    icon: Globe,
-    label: 'Website',
-    value: 'www.shrivaari',
-    sub: 'electricals.com',
-    href: 'https://www.shrivaarielectricals.com',
-    accent: 'bg-[#1B3A5C]/10 text-[#1B3A5C]',
-  },
-  {
-    icon: Clock,
-    label: 'Business Hours',
-    value: 'Mon – Sat',
-    sub: '9:30 AM – 6:30 PM',
-    href: null,
-    accent: 'bg-[#E8751A]/10 text-[#E8751A]',
-  },
-]
-
 /* ─── Contact Info (sidebar) ─── */
 const contactInfo = [
   { icon: Phone, label: 'Phone', value: '+91 99419 05833', href: 'tel:+919941905833', color: 'bg-[#1B3A5C]/10 text-[#1B3A5C]' },
@@ -386,49 +350,6 @@ export default function ContactPage() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════
-          QUICK CONTACT CARDS
-      ════════════════════════════════════════════ */}
-      <section className="bg-[#F7F9FC] py-10 md:py-12">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickContacts.map((item, i) => (
-              <FadeIn key={item.label} delay={i * 0.08}>
-                {item.href ? (
-                  <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="block">
-                    <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
-                      <CardContent className="p-5 flex flex-col items-start gap-3">
-                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${item.accent} group-hover:scale-110 transition-transform duration-300`}>
-                          <item.icon className="w-5 h-5" />
-                        </div>
-                        <div className="w-full">
-                          <p className="text-xs text-[#9CA3AF] mb-1 font-medium uppercase tracking-wider">{item.label}</p>
-                          <p className="text-[#1A1A2E] font-bold text-sm leading-tight">{item.value}</p>
-                          <p className="text-[#1A1A2E] font-bold text-sm leading-tight">{item.sub}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </a>
-                ) : (
-                  <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm h-full">
-                    <CardContent className="p-5 flex flex-col items-start gap-3">
-                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${item.accent}`}>
-                        <item.icon className="w-5 h-5" />
-                      </div>
-                      <div className="w-full">
-                        <p className="text-xs text-[#9CA3AF] mb-1 font-medium uppercase tracking-wider">{item.label}</p>
-                        <p className="text-[#1A1A2E] font-bold text-sm leading-tight">{item.value}</p>
-                        <p className="text-[#1A1A2E] font-bold text-sm leading-tight">{item.sub}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </FadeIn>
-            ))}
           </div>
         </div>
       </section>

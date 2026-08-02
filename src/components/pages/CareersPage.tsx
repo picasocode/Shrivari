@@ -5,8 +5,8 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import {
   Briefcase, MapPin, Clock, ChevronRight, ArrowRight, Users, TrendingUp,
   GraduationCap, Heart, Zap, Building2, Globe, Award, Target, Send,
-  Shield, ChevronDown, Phone, Mail, Sparkles, Rocket, Lightbulb,
-  Hammer, FlaskConical, LayoutGrid, Handshake, Crown, Star,
+  Shield, ChevronDown, Phone, Mail, Sparkles, Lightbulb,
+  Hammer, FlaskConical, LayoutGrid,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -90,33 +90,6 @@ const whyJoinData = [
     bgAccent: '#FFFBEB',
     stat: '180+',
     statLabel: 'Yrs Combined Exp',
-  },
-]
-
-const lifePillars = [
-  {
-    title: 'Professional Growth',
-    desc: 'Structured training programs, industry certifications, and skill development workshops. We invest in your expertise.',
-    icon: Rocket,
-    color: '#1B3A5C',
-    bgColor: '#EFF6FF',
-    items: ['Technical Training Programs', 'Industry Certifications', 'Leadership Development', 'Cross-Department Exposure'],
-  },
-  {
-    title: 'Collaborative Culture',
-    desc: 'Cross-functional teams working on complex projects. Your voice matters, and teamwork drives every solution.',
-    icon: Handshake,
-    color: '#E8751A',
-    bgColor: '#FFF7ED',
-    items: ['Cross-Functional Teams', 'Open Communication', 'Knowledge Sharing', 'Team Celebrations'],
-  },
-  {
-    title: 'Impact-Driven Work',
-    desc: 'Projects that power nations — from substations to solar farms. Every day, your work makes a tangible difference.',
-    icon: Target,
-    color: '#0D9488',
-    bgColor: '#F0FDFA',
-    items: ['Nation-Building Projects', 'Sustainable Energy', 'Community Impact', 'Legacy Infrastructure'],
   },
 ]
 
@@ -204,15 +177,6 @@ const departments: { label: string; value: Department }[] = [
   { label: 'Operations', value: 'Operations' },
   { label: 'Design', value: 'Design' },
   { label: 'Service', value: 'Service' },
-]
-
-const careerPath = [
-  { title: 'Graduate Trainee', years: '0-2 yrs', icon: GraduationCap, color: '#6B7280' },
-  { title: 'Engineer', years: '2-5 yrs', icon: Briefcase, color: '#1B3A5C' },
-  { title: 'Senior Engineer', years: '5-8 yrs', icon: Zap, color: '#0D9488' },
-  { title: 'Lead Engineer', years: '8-12 yrs', icon: Star, color: '#E8751A' },
-  { title: 'Manager', years: '12-18 yrs', icon: Crown, color: '#7C3AED' },
-  { title: 'Director', years: '18+ yrs', icon: Award, color: '#B45309' },
 ]
 
 const departmentColorMap: Record<string, string> = {
@@ -474,84 +438,6 @@ export default function CareersPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 3: LIFE AT SVEPL — Three pillars with connectors
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
-        {/* Subtle dot pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #1B3A5C 1px, transparent 0)',
-          backgroundSize: '28px 28px',
-        }} />
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#1B3A5C]/20 text-[#1B3A5C] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Our Culture
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Life at SVEPL</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-xl mx-auto text-sm">
-                Three pillars define the SVEPL experience — where professional growth, collaboration, and impact converge.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Three pillars with connecting lines */}
-          <div className="relative">
-            {/* Connecting lines between pillars (desktop only) */}
-            <div className="hidden lg:block absolute top-[50%] left-[16.67%] right-[16.67%] h-px">
-              <div className="w-full h-full border-t-2 border-dashed border-[#1B3A5C]/15" />
-              {/* Center dot */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E8751A] border-2 border-white shadow-md" />
-              {/* Side dots */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#1B3A5C]/20 border-2 border-white" />
-              <div className="absolute top-1/2 right-0 -translate-y-1/2 w-3 h-3 rounded-full bg-[#0D9488]/20 border-2 border-white" />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {lifePillars.map((pillar, i) => (
-                <FadeIn key={pillar.title} delay={i * 0.12}>
-                  <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
-                    {/* Colored top bar */}
-                    <div className="h-2" style={{ backgroundColor: pillar.color }} />
-
-                    <CardContent className="p-6">
-                      {/* Icon */}
-                      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: pillar.bgColor }}>
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <pillar.icon className="w-8 h-8" style={{ color: pillar.color }} />
-                        </motion.div>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-xl font-bold text-[#1A1A2E] mb-2">{pillar.title}</h3>
-                      <p className="text-[#6B7280] text-sm leading-relaxed mb-5">{pillar.desc}</p>
-
-                      {/* Items list */}
-                      <div className="space-y-2.5">
-                        {pillar.items.map((item) => (
-                          <div key={item} className="flex items-center gap-2.5">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${pillar.color}12` }}>
-                              <ChevronRight className="w-3 h-3" style={{ color: pillar.color }} />
-                            </div>
-                            <span className="text-sm text-[#374151]">{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
           SECTION 4: CURRENT OPENINGS — Filterable job cards
           ═══════════════════════════════════════════════════════ */}
       <section id="current-openings" className="py-16 md:py-24 bg-white relative overflow-hidden">
@@ -668,93 +554,6 @@ export default function CareersPage() {
               <p className="text-[#9CA3AF] text-sm">No openings in this department right now. Check back soon!</p>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          SECTION 5: GROWTH PATH — Career progression ladder
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #0C2340 0%, #1B3A5C 50%, #152D4F 100%)' }}>
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
-          backgroundSize: '24px 24px',
-        }} />
-        <div className="absolute top-[5%] right-[-5%] w-80 h-80 rounded-full bg-[#E8751A]/[0.04] blur-3xl" />
-        <div className="absolute bottom-[5%] left-[-5%] w-72 h-72 rounded-full bg-[#0D9488]/[0.03] blur-3xl" />
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <Badge className="bg-white/10 text-white/70 border border-white/10 rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                Career Progression
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Your Growth Path at SVEPL</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-white/50 max-w-xl mx-auto text-sm">
-                From graduate trainee to director — your career trajectory is limited only by your ambition. Here&apos;s the typical path.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Career ladder — Horizontal on desktop, vertical on mobile */}
-          <div className="relative">
-            {/* Desktop: Horizontal stepping stones */}
-            <div className="hidden md:flex items-end justify-center gap-0 relative">
-              {/* Connecting line */}
-              <div className="absolute bottom-[42px] left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-white/10 via-[#E8751A]/30 to-white/10" />
-
-              {careerPath.map((step, i) => (
-                <FadeIn key={step.title} delay={i * 0.1}>
-                  <div className="flex flex-col items-center relative" style={{ width: `${100 / careerPath.length}%` }}>
-                    {/* Stepping stone offset for visual interest */}
-                    <motion.div
-                      whileHover={{ y: -8, scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative z-10"
-                      style={{ marginBottom: `${i % 2 === 0 ? 20 : 40}px` }}
-                    >
-                      {/* Circle */}
-                      <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 flex items-center justify-center mb-4 mx-auto shadow-lg" style={{ borderColor: step.color }}>
-                        <step.icon className="w-8 h-8" style={{ color: step.color }} />
-                      </div>
-                      {/* Title */}
-                      <p className="text-white text-sm font-bold text-center mb-1">{step.title}</p>
-                      {/* Years */}
-                      <p className="text-white/40 text-xs text-center">{step.years}</p>
-                      {/* Accent dot */}
-                      <div className="w-2.5 h-2.5 rounded-full mx-auto mt-3" style={{ backgroundColor: step.color }} />
-                    </motion.div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-
-            {/* Mobile: Vertical ladder */}
-            <div className="md:hidden relative">
-              {/* Vertical connecting line */}
-              <div className="absolute left-[30px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-white/10 via-[#E8751A]/30 to-white/10" />
-
-              <div className="space-y-6">
-                {careerPath.map((step, i) => (
-                  <FadeIn key={step.title} delay={i * 0.08}>
-                    <div className="flex items-center gap-5 relative">
-                      {/* Node */}
-                      <div className="w-[60px] h-[60px] rounded-full bg-white/10 backdrop-blur-sm border-2 flex items-center justify-center flex-shrink-0 z-10 shadow-lg" style={{ borderColor: step.color }}>
-                        <step.icon className="w-6 h-6" style={{ color: step.color }} />
-                      </div>
-                      {/* Card */}
-                      <div className="flex-1 bg-white/[0.06] backdrop-blur-sm rounded-xl border border-white/10 p-4">
-                        <p className="text-white font-bold text-sm mb-0.5">{step.title}</p>
-                        <p className="text-white/40 text-xs">{step.years}</p>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

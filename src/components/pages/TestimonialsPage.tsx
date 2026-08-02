@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Star, Quote, Play, MessageSquare } from 'lucide-react'
+import { ChevronRight, Quote, Play, MessageSquare } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,21 +24,6 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
     >
       {children}
     </motion.div>
-  )
-}
-
-/* ── Star Rating component ── */
-function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md' | 'lg' }) {
-  const sizeMap = { sm: 'w-4 h-4', md: 'w-5 h-5', lg: 'w-7 h-7' }
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`${sizeMap[size]} ${i < rating ? 'text-[#E8751A] fill-[#E8751A]' : 'text-gray-200 fill-gray-200'}`}
-        />
-      ))}
-    </div>
   )
 }
 
@@ -76,40 +61,35 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null
 }
 
-/* ── Rating pill filter ── */
-function RatingPill({
-  label,
-  count,
-  active,
-  onClick,
-}: {
-  label: string
-  count: number
-  active: boolean
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
-        active
-          ? 'bg-[#1B3A5C] text-white border-[#1B3A5C] shadow-md'
-          : 'bg-white text-[#1B3A5C] border-[#D1D9E6] hover:border-[#1B3A5C] hover:bg-[#F0F4F8]'
-      }`}
-    >
-      <Star className={`w-3.5 h-3.5 ${active ? 'text-[#E8751A] fill-[#E8751A]' : 'text-[#E8751A] fill-[#E8751A]'}`} />
-      {label}
-      <span className={`text-xs ${active ? 'text-white/70' : 'text-gray-400'}`}>({count})</span>
-    </button>
-  )
-}
+/* ────────────────────────────────────────────────
+   Featured video testimonials from the old website
+   (https://www.shrivaarielectricals.com/index.html)
+   Sourced from Shri Vaari Electricals YouTube channel
+   ──────────────────────────────────────────────── */
+const featuredVideoTestimonials = [
+  {
+    id: 'yt-1',
+    name: 'Customer Review',
+    designation: 'Client Testimonial',
+    company: 'Shri Vaari Electricals',
+    videoUrl: 'https://www.youtube.com/watch?v=AVWLt5b7Pfc',
+    title: 'SHRI VAARI ELECTRICAL CUSTOMER REVIEW',
+  },
+  {
+    id: 'yt-2',
+    name: 'Saveetha',
+    designation: 'Client Testimonial',
+    company: 'Saveetha School of Engineering',
+    videoUrl: 'https://www.youtube.com/watch?v=oI_m-MDctaI',
+    title: 'Saveetha — Testimonial',
+  },
+]
 
 /* ──────────────────────────────────────────────── */
 export default function TestimonialsPage() {
   const { navigate } = useRouter()
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeFilter, setActiveFilter] = useState<number | null>(null) // null = all
   const [playingVideo, setPlayingVideo] = useState<string | null>(null)
 
   useEffect(() => {
@@ -121,31 +101,8 @@ export default function TestimonialsPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  /* ── Derived data ── */
-  const videoTestimonials = useMemo(() => testimonials.filter(t => t.videoUrl), [testimonials])
-
-  const filteredTestimonials = useMemo(
-    () => (activeFilter === null ? testimonials : testimonials.filter(t => t.rating === activeFilter)),
-    [testimonials, activeFilter]
-  )
-
-  const ratingCounts = useMemo(() => {
-    const counts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
-    testimonials.forEach(t => { if (counts[t.rating] !== undefined) counts[t.rating]++ })
-    return counts
-  }, [testimonials])
-
-  const avgRating = useMemo(() => {
-    if (testimonials.length === 0) return 0
-    const sum = testimonials.reduce((acc, t) => acc + t.rating, 0)
-    return Math.round((sum / testimonials.length) * 10) / 10
-  }, [testimonials])
-
-  /* Featured testimonial = highest rating, then first */
-  const featured = useMemo(() => {
-    if (testimonials.length === 0) return null
-    return testimonials.reduce((best, t) => (t.rating >= best.rating ? t : best), testimonials[0])
-  }, [testimonials])
+  /* Featured text testimonial = first one */
+  const featured = testimonials[0] || null
 
   /* ── Render ── */
   return (
@@ -239,9 +196,6 @@ export default function TestimonialsPage() {
                         {featured.company}
                       </Badge>
                     </div>
-                    <div className="mt-3">
-                      <StarRating rating={featured.rating} size="lg" />
-                    </div>
                   </div>
 
                   {/* Quote content */}
@@ -251,84 +205,6 @@ export default function TestimonialsPage() {
                     </p>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      )}
-
-      {/* ════════════════════════════════════════════
-          RATING SUMMARY BAR
-          ════════════════════════════════════════════ */}
-      {!loading && testimonials.length > 0 && (
-        <section className="pb-10 md:pb-14">
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-            <FadeIn>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-6 px-8 rounded-2xl bg-[#F8FAFB] border border-[#E2E8F0]">
-                {/* Average rating */}
-                <div className="flex items-center gap-3">
-                  <span className="text-4xl md:text-5xl font-bold text-[#1B3A5C]">{avgRating}</span>
-                  <div>
-                    <StarRating rating={Math.round(avgRating)} size="md" />
-                    <p className="text-sm text-[#6B7280] mt-0.5">{testimonials.length} review{testimonials.length !== 1 ? 's' : ''}</p>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="hidden sm:block w-px h-12 bg-[#D1D9E6]" />
-                <div className="sm:hidden w-24 h-px bg-[#D1D9E6]" />
-
-                {/* Rating breakdown bars */}
-                <div className="flex flex-col gap-1.5 w-full sm:w-auto sm:min-w-[200px]">
-                  {[5, 4, 3, 2, 1].map(r => {
-                    const pct = testimonials.length > 0 ? (ratingCounts[r] / testimonials.length) * 100 : 0
-                    return (
-                      <div key={r} className="flex items-center gap-2 text-sm">
-                        <span className="w-3 text-[#1B3A5C] font-medium">{r}</span>
-                        <Star className="w-3 h-3 text-[#E8751A] fill-[#E8751A]" />
-                        <div className="flex-1 h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full rounded-full bg-gradient-to-r from-[#E8751A] to-[#F0A050]"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${pct}%` }}
-                            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                          />
-                        </div>
-                        <span className="w-6 text-right text-[#6B7280] text-xs">{ratingCounts[r]}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      )}
-
-      {/* ════════════════════════════════════════════
-          FILTER BY RATING
-          ════════════════════════════════════════════ */}
-      {!loading && testimonials.length > 0 && (
-        <section className="pb-8 md:pb-10">
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-            <FadeIn>
-              <div className="flex flex-wrap items-center gap-3 justify-center">
-                <span className="text-sm font-medium text-[#6B7280] mr-1">Filter:</span>
-                <RatingPill
-                  label="All"
-                  count={testimonials.length}
-                  active={activeFilter === null}
-                  onClick={() => setActiveFilter(null)}
-                />
-                {[5, 4, 3, 2, 1].map(r => (
-                  <RatingPill
-                    key={r}
-                    label={`${r}-Star`}
-                    count={ratingCounts[r]}
-                    active={activeFilter === r}
-                    onClick={() => setActiveFilter(activeFilter === r ? null : r)}
-                  />
-                ))}
               </div>
             </FadeIn>
           </div>
@@ -357,35 +233,24 @@ export default function TestimonialsPage() {
                 <Skeleton key={i} className="h-64 rounded-xl" />
               ))}
             </div>
-          ) : filteredTestimonials.length === 0 ? (
+          ) : testimonials.length === 0 ? (
             <div className="text-center py-16">
               <MessageSquare className="w-12 h-12 text-[#D1D9E6] mx-auto mb-4" />
               <p className="text-[#6B7280] text-lg">
-                {activeFilter !== null
-                  ? `No ${activeFilter}-star testimonials found.`
-                  : 'No testimonials yet.'}
+                No testimonials yet.
               </p>
-              {activeFilter !== null && (
-                <Button
-                  variant="outline"
-                  className="mt-4 border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white"
-                  onClick={() => setActiveFilter(null)}
-                >
-                  Show All
-                </Button>
-              )}
             </div>
           ) : (
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeFilter ?? 'all'}
+                key="all"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.35 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
-                {filteredTestimonials.map((t, i) => (
+                {testimonials.map((t, i) => (
                   <FadeIn key={t.id} delay={i * 0.06}>
                     <Card className="group relative rounded-xl border border-[#E2E8F0] overflow-hidden h-full card-hover">
                       {/* Subtle gradient background on card */}
@@ -406,11 +271,6 @@ export default function TestimonialsPage() {
                         {/* Decorative small quote */}
                         <Quote className="absolute top-3 right-4 w-8 h-8 text-[#1B3A5C]/[0.07] fill-[#1B3A5C]/[0.07]" strokeWidth={1} />
 
-                        {/* Star rating */}
-                        <div className="mb-4">
-                          <StarRating rating={t.rating} />
-                        </div>
-
                         {/* Quote text */}
                         <p className="text-[#1A1A2E]/80 text-sm leading-relaxed mb-6 italic min-h-[4.5rem]">
                           &ldquo;{t.content}&rdquo;
@@ -425,11 +285,6 @@ export default function TestimonialsPage() {
                               {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                             </p>
                           </div>
-                          <Badge
-                            className="ml-auto shrink-0 bg-[#E8751A]/10 text-[#E8751A] border-0 text-[10px] px-2 py-0.5"
-                          >
-                            {t.rating}★
-                          </Badge>
                         </div>
                       </CardContent>
                     </Card>
@@ -442,85 +297,84 @@ export default function TestimonialsPage() {
       </section>
 
       {/* ════════════════════════════════════════════
-          VIDEO TESTIMONIALS
+          VIDEO TESTIMONIALS — From the old website
+          (https://www.shrivaarielectricals.com/index.html)
           ════════════════════════════════════════════ */}
-      {videoTestimonials.length > 0 && (
-        <section className="py-14 md:py-20 bg-[#F8FAFB]">
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-            <FadeIn>
-              <div className="text-center mb-10 md:mb-14">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <Play className="w-5 h-5 text-[#E8751A]" />
-                  <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Video Stories</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1B3A5C] mb-3">Hear It From Them</h2>
-                <div className="section-bar mx-auto" />
+      <section className="py-14 md:py-20 bg-[#F8FAFB]">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="text-center mb-10 md:mb-14">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Play className="w-5 h-5 text-[#E8751A]" />
+                <span className="text-sm font-semibold text-[#E8751A] uppercase tracking-wider">Video Stories</span>
               </div>
-            </FadeIn>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3A5C] mb-3">Hear It From Them</h2>
+              <div className="section-bar mx-auto" />
+              <p className="text-[#6B7280] text-sm max-w-xl mx-auto mt-4">
+                Real clients, real stories — watch what they have to say about working with Shri Vaari Electricals.
+              </p>
+            </div>
+          </FadeIn>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {videoTestimonials.map((t, i) => {
-                const ytId = getYouTubeId(t.videoUrl)
-                const isPlaying = playingVideo === t.id
-                const thumbnailUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : ''
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {featuredVideoTestimonials.map((t, i) => {
+              const ytId = getYouTubeId(t.videoUrl)
+              const isPlaying = playingVideo === t.id
+              const thumbnailUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : ''
 
-                return (
-                  <FadeIn key={t.id} delay={i * 0.1}>
-                    <div className="rounded-xl overflow-hidden shadow-lg border border-[#E2E8F0] bg-white">
-                      {/* Video embed area */}
-                      <div className="relative aspect-video bg-[#1B3A5C]">
-                        {isPlaying && ytId ? (
-                          <iframe
-                            src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
-                            title={`${t.name} testimonial`}
-                            className="w-full h-full"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : (
-                          <>
-                            {/* Thumbnail */}
-                            {thumbnailUrl && (
-                              <img
-                                src={thumbnailUrl}
-                                alt={`${t.name} video testimonial`}
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                            {/* Play overlay */}
-                            <button
-                              onClick={() => setPlayingVideo(t.id)}
-                              className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group/play"
-                            >
-                              <div className="w-16 h-16 rounded-full bg-[#E8751A] flex items-center justify-center shadow-lg group-hover/play:scale-110 transition-transform">
-                                <Play className="w-7 h-7 text-white fill-white ml-1" />
-                              </div>
-                            </button>
-                          </>
-                        )}
-                      </div>
+              return (
+                <FadeIn key={t.id} delay={i * 0.1}>
+                  <div className="rounded-xl overflow-hidden shadow-lg border border-[#E2E8F0] bg-white">
+                    {/* Video embed area */}
+                    <div className="relative aspect-video bg-[#1B3A5C]">
+                      {isPlaying && ytId ? (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
+                          title={`${t.name} testimonial`}
+                          className="w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <>
+                          {/* Thumbnail */}
+                          {thumbnailUrl && (
+                            <img
+                              src={thumbnailUrl}
+                              alt={`${t.name} video testimonial`}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                          {/* Play overlay */}
+                          <button
+                            onClick={() => setPlayingVideo(t.id)}
+                            className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group/play"
+                          >
+                            <div className="w-16 h-16 rounded-full bg-[#E8751A] flex items-center justify-center shadow-lg group-hover/play:scale-110 transition-transform">
+                              <Play className="w-7 h-7 text-white fill-white ml-1" />
+                            </div>
+                          </button>
+                        </>
+                      )}
+                    </div>
 
-                      {/* Person info */}
-                      <div className="p-5 flex items-center gap-3">
-                        <InitialsAvatar name={t.name} size="sm" />
-                        <div>
-                          <p className="font-semibold text-[#1B3A5C] text-sm">{t.name}</p>
-                          <p className="text-[#6B7280] text-xs">
-                            {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
-                          </p>
-                        </div>
-                        <div className="ml-auto">
-                          <StarRating rating={t.rating} size="sm" />
-                        </div>
+                    {/* Person info */}
+                    <div className="p-5 flex items-center gap-3">
+                      <InitialsAvatar name={t.name} size="sm" />
+                      <div>
+                        <p className="font-semibold text-[#1B3A5C] text-sm">{t.name}</p>
+                        <p className="text-[#6B7280] text-xs">
+                          {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
+                        </p>
                       </div>
                     </div>
-                  </FadeIn>
-                )
-              })}
-            </div>
+                  </div>
+                </FadeIn>
+              )
+            })}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* ════════════════════════════════════════════
           CTA SECTION
