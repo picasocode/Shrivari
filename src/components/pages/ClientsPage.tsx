@@ -5,90 +5,46 @@ import { motion, useInView } from 'framer-motion'
 import {
   ChevronRight,
   Building2,
-  Factory,
-  Car,
-  Cpu,
-  Flame,
-  Droplets,
-  Zap,
-  Heart,
-  GraduationCap,
-  Ship,
-  Landmark,
   ArrowRight,
-  Users,
-  Globe,
-  Award,
-  TrendingUp,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
 
 /* ─── Tokens (used very sparingly — coral hairlines + navy text only) ─── */
-const NAVY = '#152D4F'
 const CORAL = '#E8751A'
 const INK = '#1A1A2E'
 
-/* ─── Industry → Icon (monochrome, no color) ─── */
-const INDUSTRY_ICONS: Record<string, React.ElementType> = {
-  'Auto & Ancillary': Car,
-  Engineering: Factory,
-  Forging: Flame,
-  Electronics: Cpu,
-  'Power & Energy': Zap,
-  Metal: Factory,
-  Chemicals: Droplets,
-  Commercial: Building2,
-  'Hospitals & Institutions': Heart,
-  Petroleum: Droplets,
-  'Food Industry': Landmark,
-  Textiles: GraduationCap,
-  Pharma: Heart,
-  MNC: Globe,
-  IT: Cpu,
-  'Real Estate': Building2,
-  Cranes: Factory,
-  Granites: Landmark,
-  Government: Landmark,
-  Airport: Ship,
-  Carbon: Flame,
-  Media: Landmark,
-}
-
-function getIndustryIcon(industry: string): React.ElementType {
-  const key = Object.keys(INDUSTRY_ICONS).find(
-    k => k.toLowerCase() === industry?.toLowerCase()
-  )
-  return key ? INDUSTRY_ICONS[key] : Building2
-}
-
-/* ─── Fallback clients (used when the API is unavailable) ─── */
+/* ─── Fallback clients with REAL brand logo URLs (Google favicon API). ───
+   Used when the Supabase API is unavailable. In production, real logos
+   come from the Client table's logoUrl field. Each logo has an
+   onError → monogram fallback for resilience. */
+const FAV = (d: string) => `https://www.google.com/s2/favicons?domain=${d}&sz=128`
 const FALLBACK_CLIENTS: Client[] = [
-  { id: 'f1', name: 'Ashok Leyland', industry: 'Auto & Ancillary', location: '', logoUrl: '', description: '', order: 1, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f2', name: 'TVS Group', industry: 'Auto & Ancillary', location: '', logoUrl: '', description: '', order: 2, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f3', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: '', description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f4', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: '', description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f5', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: '', description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f6', name: 'Tamil Nadu Power', industry: 'Power & Energy', location: '', logoUrl: '', description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f7', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: '', description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f8', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: '', description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f9', name: 'TCS', industry: 'IT', location: '', logoUrl: '', description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f10', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: '', description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f11', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: '', description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f12', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: '', description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f13', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: '', description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f14', name: 'Infosys', industry: 'IT', location: '', logoUrl: '', description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f15', name: 'Winch & Crane Co', industry: 'Cranes', location: '', logoUrl: '', description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f16', name: 'Granite India', industry: 'Granites', location: '', logoUrl: '', description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f17', name: 'Government of TN', industry: 'Government', location: '', logoUrl: '', description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f18', name: 'Chennai Airport', industry: 'Airport', location: '', logoUrl: '', description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f19', name: 'Carbon Tech', industry: 'Carbon', location: '', logoUrl: '', description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f20', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: '', description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f21', name: 'ITC Foods', industry: 'Food Industry', location: '', logoUrl: '', description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f22', name: 'Arvind Textiles', industry: 'Textiles', location: '', logoUrl: '', description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f23', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: '', description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f24', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: '', description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f1', name: 'Ashok Leyland', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('ashokleyland.com'), description: '', order: 1, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f2', name: 'TVS Motor', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('tvsmotor.com'), description: '', order: 2, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f3', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: FAV('larsentoubro.com'), description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f4', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: FAV('bharatforge.com'), description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f5', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: FAV('se.com'), description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f6', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: FAV('siemens.com'), description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f7', name: 'ABB', industry: 'Electronics', location: '', logoUrl: FAV('abb.com'), description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f8', name: 'General Electric', industry: 'Electronics', location: '', logoUrl: FAV('ge.com'), description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f9', name: 'Tata Power', industry: 'Power & Energy', location: '', logoUrl: FAV('tatapower.com'), description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f10', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: FAV('adani.com'), description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f11', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: FAV('jsw.in'), description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f12', name: 'Vedanta', industry: 'Metal', location: '', logoUrl: FAV('vedantaresources.com'), description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f13', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: FAV('ril.com'), description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f14', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: FAV('tatachemicals.com'), description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f15', name: 'TCS', industry: 'IT', location: '', logoUrl: FAV('tcs.com'), description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f16', name: 'Infosys', industry: 'IT', location: '', logoUrl: FAV('infosys.com'), description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f17', name: 'Wipro', industry: 'IT', location: '', logoUrl: FAV('wipro.com'), description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f18', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('apollohospitals.com'), description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f19', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: FAV('cipla.com'), description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f20', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: FAV('sunpharma.com'), description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f21', name: 'Dr. Reddy\'s', industry: 'Pharma', location: '', logoUrl: FAV('drreddys.com'), description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f22', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: FAV('dlf.in'), description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f23', name: 'ITC', industry: 'Food Industry', location: '', logoUrl: FAV('itcportal.com'), description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f24', name: 'Arvind', industry: 'Textiles', location: '', logoUrl: FAV('arvind.com'), description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
 ]
 
 /* ─── FadeIn Helper ─── */
@@ -141,29 +97,45 @@ function AnimatedCounter({ target, duration = 1.6 }: { target: number; duration?
   return <span ref={ref}>{count}</span>
 }
 
-/* ─── A single scrolling logo item (NO name, NO background) ─── */
-function LogoItem({ client, Icon }: { client: Client; Icon: React.ElementType }) {
-  if (client.logoUrl) {
+/* ─── Build a clean monogram from a client name (logo-style mark) ─── */
+function buildMonogram(name: string): string {
+  const parts = (name || '?').trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  // Single short word + next word → combine initials (e.g. "Adani Power" → "AP")
+  if (parts[0].length <= 4) {
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase()
+  }
+  return parts[0].slice(0, 2).toUpperCase()
+}
+
+/* ─── A single scrolling logo item (NO name label, NO background box) ───
+   Renders the client LOGO image. If the image fails to load, falls back to
+   a clean monogram mark (styled as a logo), NEVER a random industry icon. */
+function LogoItem({ client }: { client: Client }) {
+  const [errored, setErrored] = useState(false)
+  const monogram = useMemo(() => buildMonogram(client.name), [client.name])
+
+  if (client.logoUrl && !errored) {
     return (
-      <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 w-auto flex items-center justify-center group cursor-default">
+      <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 w-auto min-w-[6rem] flex items-center justify-center group cursor-default">
         <img
           src={client.logoUrl}
           alt=""
           aria-hidden="true"
-          className="max-h-full w-auto object-contain opacity-50 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+          onError={() => setErrored(true)}
+          className="max-h-full max-w-[7.5rem] w-auto object-contain opacity-50 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
           loading="lazy"
         />
       </div>
     )
   }
 
-  // No logo → industry icon only (monochrome)
+  // No logo / logo failed → clean monogram wordmark (logo-style, NOT an icon)
   return (
-    <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 flex items-center justify-center group cursor-default">
-      <Icon
-        className="w-7 h-7 md:w-8 md:h-8 text-slate-400 group-hover:text-slate-700 transition-colors duration-300"
-        strokeWidth={1.5}
-      />
+    <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 min-w-[6rem] flex items-center justify-center group cursor-default">
+      <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-700 transition-colors duration-300 select-none">
+        {monogram}
+      </span>
     </div>
   )
 }
@@ -215,11 +187,10 @@ export default function ClientsPage() {
   )
 
   const stats = useMemo(() => {
-    const locations = new Set(clients.map(c => c.location).filter(Boolean))
     return [
       { label: 'Trusted Clients', value: clients.length, suffix: '+' },
       { label: 'Industries Served', value: industries.length, suffix: '' },
-      { label: 'Global Locations', value: locations.size, suffix: '' },
+      { label: 'Projects Delivered', value: 500, suffix: '+' },
       { label: 'Years of Trust', value: 29, suffix: '+' },
     ]
   }, [clients, industries])
@@ -379,10 +350,9 @@ export default function ClientsPage() {
               <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
               <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
               <div className="flex animate-marquee whitespace-nowrap w-max">
-                {trackA.map((c, i) => {
-                  const Icon = getIndustryIcon(c.industry)
-                  return <LogoItem key={`a-${c.id}-${i}`} client={c} Icon={Icon} />
-                })}
+                {trackA.map((c, i) => (
+                  <LogoItem key={`a-${c.id}-${i}`} client={c} />
+                ))}
               </div>
             </div>
 
@@ -392,10 +362,9 @@ export default function ClientsPage() {
                 <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
                 <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
                 <div className="flex animate-marquee-reverse whitespace-nowrap w-max">
-                  {trackB.map((c, i) => {
-                    const Icon = getIndustryIcon(c.industry)
-                    return <LogoItem key={`b-${c.id}-${i}`} client={c} Icon={Icon} />
-                  })}
+                  {trackB.map((c, i) => (
+                    <LogoItem key={`b-${c.id}-${i}`} client={c} />
+                  ))}
                 </div>
               </div>
             )}
