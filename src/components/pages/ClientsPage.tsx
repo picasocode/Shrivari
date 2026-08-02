@@ -264,20 +264,9 @@ export default function ClientsPage() {
               return (
                 <FadeIn key={stat.label} delay={i * 0.1}>
                   <div
-                    className="relative rounded-2xl p-5 md:p-6 text-center backdrop-blur-xl border border-white/20 overflow-hidden"
-                    style={{
-                      background: 'rgba(255,255,255,0.78)',
-                      boxShadow: '0 8px 32px rgba(27,58,92,0.10)',
-                    }}
+                    className="relative rounded-2xl p-5 md:p-6 text-center border-2 border-slate-200 bg-white transition-all duration-300 hover:border-slate-300 hover:shadow-md"
                   >
-                    {/* Coral top accent bar */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 rounded-b-full" style={{ background: CORAL }} />
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
-                      style={{ background: 'rgba(232,117,26,0.12)' }}
-                    >
-                      <Icon className="w-5 h-5" style={{ color: CORAL }} />
-                    </div>
+                    <Icon className="w-5 h-5 mx-auto mb-3 text-slate-400" />
                     <div
                       className="text-3xl md:text-4xl font-extrabold"
                       style={{ color: NAVY_DARK }}
@@ -285,7 +274,7 @@ export default function ClientsPage() {
                       <AnimatedCounter target={stat.value} />
                       {stat.label === 'Years of Trust' && '+'}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 font-medium">
+                    <div className="text-xs text-slate-500 mt-1 font-medium">
                       {stat.label}
                     </div>
                   </div>
@@ -392,7 +381,7 @@ export default function ClientsPage() {
                   const Icon = getIndustryIcon(c.industry)
                   const initial = c.name?.charAt(0)?.toUpperCase() || '?'
 
-                  // Logo card variant
+                  // Logo card variant — Journey-style neutral box
                   if (c.logoUrl) {
                     return (
                       <motion.div
@@ -403,16 +392,15 @@ export default function ClientsPage() {
                         exit={{ opacity: 0, scale: 0.92 }}
                         transition={{ duration: 0.35, delay: i * 0.04 }}
                       >
-                        <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
-                          {/* Coral left border (uniform) */}
-                          <div
-                            className="absolute left-0 top-0 bottom-0 w-1.5"
-                            style={{ background: CORAL }}
-                          />
+                        <Card className="relative overflow-hidden bg-white rounded-2xl border-2 border-slate-200 shadow-sm card-hover h-full group transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
+                          {/* Faded index number (like Journey) */}
+                          <span className="absolute top-3 right-4 text-2xl font-extrabold leading-none select-none text-slate-100">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
 
-                          <CardContent className="p-5 pl-7 flex flex-col items-center text-center">
-                            {/* Client Logo - prominently displayed */}
-                            <div className="w-full h-24 flex items-center justify-center mb-3 bg-[#FAFBFC] rounded-xl p-3">
+                          <CardContent className="p-5 flex flex-col items-center text-center">
+                            {/* Client Logo — clean white box */}
+                            <div className="w-full h-24 flex items-center justify-center mb-3 bg-[#FAFBFC] rounded-xl p-3 border border-slate-100">
                               <img
                                 src={c.logoUrl}
                                 alt={c.name}
@@ -421,34 +409,27 @@ export default function ClientsPage() {
                               />
                             </div>
 
-                            {/* Industry badge */}
+                            {/* Industry — gray uppercase text (no colored badge) */}
                             {c.industry && (
-                              <Badge
-                                className="text-[10px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-md border-0 mb-2"
-                                style={{
-                                  background: 'rgba(232,117,26,0.10)',
-                                  color: CORAL,
-                                }}
-                              >
+                              <p className="text-[10px] font-semibold tracking-[0.15em] text-slate-400 uppercase mb-1.5">
                                 {c.industry}
-                              </Badge>
+                              </p>
                             )}
 
                             {/* Name */}
                             <h3
-                              className="text-sm font-bold mb-1 group-hover:translate-x-0.5 transition-transform duration-200"
+                              className="text-sm font-bold group-hover:translate-x-0.5 transition-transform duration-200"
                               style={{ color: '#1A1A2E' }}
                             >
                               {c.name}
                             </h3>
-
                           </CardContent>
                         </Card>
                       </motion.div>
                     )
                   }
 
-                  // Fallback: text-based card with initial letter + icon
+                  // Fallback: text-based card with initial letter — Journey-style neutral box
                   return (
                     <motion.div
                       key={c.id}
@@ -458,51 +439,40 @@ export default function ClientsPage() {
                       exit={{ opacity: 0, scale: 0.92 }}
                       transition={{ duration: 0.35, delay: i * 0.04 }}
                     >
-                      <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
-                        {/* Coral left border (uniform) */}
-                        <div
-                          className="absolute left-0 top-0 bottom-0 w-1.5"
-                          style={{ background: CORAL }}
-                        />
+                      <Card className="relative overflow-hidden bg-white rounded-2xl border-2 border-slate-200 shadow-sm card-hover h-full group transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
+                        {/* Faded index number (like Journey) */}
+                        <span className="absolute top-3 right-4 text-2xl font-extrabold leading-none select-none text-slate-100">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
 
-                        <CardContent className="p-5 pl-7 flex flex-col items-center text-center">
-                          {/* Decorative initial + icon */}
-                          <div className="relative mb-3">
+                        <CardContent className="p-5 flex flex-col items-center text-center">
+                          {/* Decorative initial + icon (neutral) */}
+                          <div className="relative mb-3 w-full h-24 flex items-center justify-center bg-[#FAFBFC] rounded-xl p-3 border border-slate-100">
                             <span
-                              className="text-4xl font-black leading-none select-none"
-                              style={{ color: `${NAVY}08` }}
+                              className="text-5xl font-black leading-none select-none"
+                              style={{ color: `${NAVY}0A` }}
                             >
                               {initial}
                             </span>
-                            <div
-                              className="absolute -bottom-0.5 -right-1 w-5 h-5 rounded-md flex items-center justify-center"
-                              style={{ background: 'rgba(232,117,26,0.12)' }}
-                            >
-                              <Icon className="w-3 h-3" style={{ color: CORAL }} />
+                            <div className="absolute bottom-2 right-2 w-5 h-5 rounded-md flex items-center justify-center bg-white border border-slate-200">
+                              <Icon className="w-3 h-3 text-slate-400" />
                             </div>
                           </div>
 
-                          {/* Industry badge */}
+                          {/* Industry — gray uppercase text (no colored badge) */}
                           {c.industry && (
-                            <Badge
-                              className="text-[10px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-md border-0 mb-2"
-                              style={{
-                                background: 'rgba(232,117,26,0.10)',
-                                color: CORAL,
-                              }}
-                            >
+                            <p className="text-[10px] font-semibold tracking-[0.15em] text-slate-400 uppercase mb-1.5">
                               {c.industry}
-                            </Badge>
+                            </p>
                           )}
 
                           {/* Name */}
                           <h3
-                            className="text-sm font-bold mb-1 group-hover:translate-x-0.5 transition-transform duration-200"
+                            className="text-sm font-bold group-hover:translate-x-0.5 transition-transform duration-200"
                             style={{ color: '#1A1A2E' }}
                           >
                             {c.name}
                           </h3>
-
                         </CardContent>
                       </Card>
                     </motion.div>
