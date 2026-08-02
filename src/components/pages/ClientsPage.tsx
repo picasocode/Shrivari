@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import {
   ChevronRight,
   Building2,
@@ -10,7 +10,6 @@ import {
   Cpu,
   Flame,
   Droplets,
-  Wind,
   Zap,
   Heart,
   GraduationCap,
@@ -22,21 +21,16 @@ import {
   Award,
   TrendingUp,
 } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
 
-/* ─── Brand Tokens (single coral + navy palette) ─── */
-const NAVY = '#1B3A5C'
-const NAVY_DARK = '#152D4F'
-const NAVY_DEEP = '#0C2340'
+/* ─── Tokens (used very sparingly — coral hairlines + navy text only) ─── */
+const NAVY = '#152D4F'
 const CORAL = '#E8751A'
-const LIGHT_BG = '#F0F4F8'
+const INK = '#1A1A2E'
 
-/* ─── Industry → Icon Map (NO per-industry colour — single coral accent) ─── */
+/* ─── Industry → Icon (monochrome, no color) ─── */
 const INDUSTRY_ICONS: Record<string, React.ElementType> = {
   'Auto & Ancillary': Car,
   Engineering: Factory,
@@ -68,6 +62,34 @@ function getIndustryIcon(industry: string): React.ElementType {
   )
   return key ? INDUSTRY_ICONS[key] : Building2
 }
+
+/* ─── Fallback clients (used when the API is unavailable) ─── */
+const FALLBACK_CLIENTS: Client[] = [
+  { id: 'f1', name: 'Ashok Leyland', industry: 'Auto & Ancillary', location: '', logoUrl: '', description: '', order: 1, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f2', name: 'TVS Group', industry: 'Auto & Ancillary', location: '', logoUrl: '', description: '', order: 2, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f3', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: '', description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f4', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: '', description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f5', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: '', description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f6', name: 'Tamil Nadu Power', industry: 'Power & Energy', location: '', logoUrl: '', description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f7', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: '', description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f8', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: '', description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f9', name: 'TCS', industry: 'IT', location: '', logoUrl: '', description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f10', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: '', description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f11', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: '', description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f12', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: '', description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f13', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: '', description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f14', name: 'Infosys', industry: 'IT', location: '', logoUrl: '', description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f15', name: 'Winch & Crane Co', industry: 'Cranes', location: '', logoUrl: '', description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f16', name: 'Granite India', industry: 'Granites', location: '', logoUrl: '', description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f17', name: 'Government of TN', industry: 'Government', location: '', logoUrl: '', description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f18', name: 'Chennai Airport', industry: 'Airport', location: '', logoUrl: '', description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f19', name: 'Carbon Tech', industry: 'Carbon', location: '', logoUrl: '', description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f20', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: '', description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f21', name: 'ITC Foods', industry: 'Food Industry', location: '', logoUrl: '', description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f22', name: 'Arvind Textiles', industry: 'Textiles', location: '', logoUrl: '', description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f23', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: '', description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f24', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: '', description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
+]
 
 /* ─── FadeIn Helper ─── */
 function FadeIn({
@@ -119,44 +141,39 @@ function AnimatedCounter({ target, duration = 1.6 }: { target: number; duration?
   return <span ref={ref}>{count}</span>
 }
 
-/* ─── Floating Particles ─── */
-function FloatingParticles({ names }: { names: string[] }) {
-  const particles = useMemo(() => {
-    if (!names.length) return []
-    return names.slice(0, 12).map((name, i) => ({
-      id: i,
-      name,
-      x: 5 + (i * 37) % 90,
-      y: 10 + (i * 23) % 75,
-      size: 10 + (i * 7) % 14,
-      delay: i * 0.7,
-      duration: 4 + (i % 4) * 1.5,
-    }))
-  }, [names])
+/* ─── A single scrolling logo item (NO name, NO background) ─── */
+function LogoItem({ client, Icon }: { client: Client; Icon: React.ElementType }) {
+  if (client.logoUrl) {
+    return (
+      <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 w-auto flex items-center justify-center group cursor-default">
+        <img
+          src={client.logoUrl}
+          alt=""
+          aria-hidden="true"
+          className="max-h-full w-auto object-contain opacity-50 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
 
+  // No logo → industry icon only (monochrome)
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-      {particles.map(p => (
-        <motion.span
-          key={p.id}
-          className="absolute text-white/[0.06] font-bold whitespace-nowrap"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, fontSize: p.size }}
-          animate={{
-            y: [0, -18, 0, 12, 0],
-            opacity: [0.04, 0.09, 0.04, 0.07, 0.04],
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        >
-          {p.name}
-        </motion.span>
-      ))}
+    <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 flex items-center justify-center group cursor-default">
+      <Icon
+        className="w-7 h-7 md:w-8 md:h-8 text-slate-400 group-hover:text-slate-700 transition-colors duration-300"
+        strokeWidth={1.5}
+      />
     </div>
   )
+}
+
+/* ─── Build a marquee track that is always long enough to loop seamlessly ─── */
+function buildTrack(items: Client[], minCount = 12): Client[] {
+  if (!items.length) return []
+  const out: Client[] = []
+  while (out.length < minCount) out.push(...items)
+  return out
 }
 
 /* ─── Main Component ─── */
@@ -167,12 +184,21 @@ export default function ClientsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
 
   useEffect(() => {
+    let mounted = true
     fetchClients(true)
       .then(data => {
-        setClients(data)
+        if (!mounted) return
+        setClients(data && data.length ? data : FALLBACK_CLIENTS)
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        if (!mounted) return
+        setClients(FALLBACK_CLIENTS)
+        setLoading(false)
+      })
+    return () => {
+      mounted = false
+    }
   }, [])
 
   const industries = useMemo(
@@ -191,25 +217,33 @@ export default function ClientsPage() {
   const stats = useMemo(() => {
     const locations = new Set(clients.map(c => c.location).filter(Boolean))
     return [
-      { label: 'Trusted Clients', value: clients.length, icon: Users },
-      { label: 'Industries Served', value: industries.length, icon: Award },
-      { label: 'Global Locations', value: locations.size, icon: Globe },
-      { label: 'Years of Trust', value: 15, icon: TrendingUp },
+      { label: 'Trusted Clients', value: clients.length, suffix: '+' },
+      { label: 'Industries Served', value: industries.length, suffix: '' },
+      { label: 'Global Locations', value: locations.size, suffix: '' },
+      { label: 'Years of Trust', value: 29, suffix: '+' },
     ]
   }, [clients, industries])
 
+  // Two rows for opposite-direction marquees
+  const { rowA, rowB } = useMemo(() => {
+    const half = Math.ceil(filteredClients.length / 2)
+    const a = filteredClients.slice(0, half)
+    const b = filteredClients.slice(half)
+    return {
+      rowA: buildTrack(a, 14),
+      rowB: buildTrack(b, 14),
+    }
+  }, [filteredClients])
+
+  // For seamless -50% translate, duplicate the track once
+  const trackA = rowA.length ? [...rowA, ...rowA] : []
+  const trackB = rowB.length ? [...rowB, ...rowB] : []
+
   return (
-    <>
-      {/* ════════════════ HERO ════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${NAVY_DEEP} 0%, ${NAVY} 45%, ${NAVY_DARK} 100%)` }}>
-        <FloatingParticles names={clients.map(c => c.name)} />
-
-        {/* Decorative circles */}
-        <div className="absolute -top-32 -right-32 w-[420px] h-[420px] rounded-full border border-white/[0.04]" />
-        <div className="absolute -bottom-20 -left-20 w-[300px] h-[300px] rounded-full border border-white/[0.04]" />
-        <div className="absolute top-1/2 right-[15%] w-[160px] h-[160px] rounded-full border border-white/[0.03]" />
-
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-20 md:pb-28">
+    <div className="bg-white min-h-screen">
+      {/* ════════════════ HERO — minimal, white, no background fill ════════════════ */}
+      <section className="bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-14 md:pb-20">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -219,12 +253,12 @@ export default function ClientsPage() {
           >
             <button
               onClick={() => navigate('home')}
-              className="text-white/50 hover:text-white transition-colors"
+              className="text-slate-400 hover:text-slate-700 transition-colors"
             >
               Home
             </button>
-            <ChevronRight className="w-4 h-4 text-white/25" />
-            <span style={{ color: CORAL }}>Clients</span>
+            <ChevronRight className="w-4 h-4 text-slate-300" />
+            <span className="text-slate-700 font-medium">Clients</span>
           </motion.div>
 
           {/* Headline */}
@@ -232,298 +266,179 @@ export default function ClientsPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
+            className="max-w-3xl"
           >
-            <Badge
-              className="mb-6 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
-              style={{ background: 'rgba(232,117,26,0.15)', color: CORAL }}
-            >
-              Partnership Showcase
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-5">
+            {/* Coral hairline label */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-10 h-[2px]" style={{ background: CORAL }} />
+              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500">
+                Partnership Showcase
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] mb-5" style={{ color: INK }}>
               Trusted By
               <br />
-              <span style={{ color: CORAL }}>Industry Leaders</span>
+              Industry Leaders
             </h1>
-            <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed">
-              We build lasting partnerships with companies that shape the future.
-              Discover the organizations that rely on us to power their success.
+
+            <p className="text-slate-500 text-lg md:text-xl max-w-2xl leading-relaxed">
+              We build lasting partnerships with companies that shape the
+              future. A growing network of organizations across every major
+              industry that rely on us to power their success.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ════════════════ STATS BAR ════════════════ */}
-      <section
-        className="relative -mt-10 z-10"
-        style={{ background: 'transparent' }}
-      >
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map((stat, i) => {
-              const Icon = stat.icon
-              return (
-                <FadeIn key={stat.label} delay={i * 0.1}>
+      {/* ════════════════ STATS — inline, no cards, no background ════════════════ */}
+      <section className="border-y border-slate-100">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-10 md:py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            {stats.map((stat, i) => (
+              <FadeIn key={stat.label} delay={i * 0.08}>
+                <div className="text-center md:px-4 md:border-l md:first:border-l-0 border-slate-100">
                   <div
-                    className="relative rounded-2xl p-5 md:p-6 text-center border-2 border-slate-200 bg-white transition-all duration-300 hover:border-slate-300 hover:shadow-md"
+                    className="text-4xl md:text-5xl font-extrabold mb-1"
+                    style={{ color: INK }}
                   >
-                    <Icon className="w-5 h-5 mx-auto mb-3 text-slate-400" />
-                    <div
-                      className="text-3xl md:text-4xl font-extrabold"
-                      style={{ color: NAVY_DARK }}
-                    >
-                      <AnimatedCounter target={stat.value} />
-                      {stat.label === 'Years of Trust' && '+'}
-                    </div>
-                    <div className="text-xs text-slate-500 mt-1 font-medium">
-                      {stat.label}
-                    </div>
+                    <AnimatedCounter target={stat.value} />
+                    {stat.suffix}
                   </div>
-                </FadeIn>
-              )
-            })}
+                  <div className="text-xs md:text-sm text-slate-500 font-medium tracking-wide">
+                    {stat.label}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ════════════════ MARQUEE ════════════════ */}
-      {!loading && clients.length > 0 && (
-        <section
-          className="py-6 overflow-hidden border-b"
-          style={{ background: LIGHT_BG, borderColor: '#E5E7EB' }}
-        >
-          <div className="flex animate-marquee whitespace-nowrap">
-            {[...clients, ...clients, ...clients, ...clients].map((c, i) => (
-              <span
-                key={`mq-${c.id}-${i}`}
-                className="flex items-center mx-5 text-sm font-semibold select-none gap-2"
-                style={{ color: `${NAVY}18` }}
-              >
-                {c.logoUrl ? (
-                  <img
-                    src={c.logoUrl}
-                    alt={c.name}
-                    className="w-5 h-5 object-contain rounded-sm"
-                    loading="lazy"
-                  />
-                ) : null}
-                {c.name}
-                <span className="ml-5 w-1.5 h-1.5 rounded-full inline-block" style={{ background: `${NAVY}12` }} />
-              </span>
-            ))}
+      {/* ════════════════ FILTER — minimal pills, no background fill ════════════════ */}
+      {!loading && industries.length > 0 && (
+        <section className="bg-white">
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-10">
+            <FadeIn>
+              <div className="flex flex-wrap justify-center gap-2">
+                {['All', ...industries].map(ind => {
+                  const active = activeFilter === ind
+                  return (
+                    <button
+                      key={ind}
+                      onClick={() => setActiveFilter(ind)}
+                      className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border"
+                      style={{
+                        background: active ? INK : 'transparent',
+                        color: active ? '#FFFFFF' : '#6B7280',
+                        borderColor: active ? INK : '#E5E7EB',
+                      }}
+                    >
+                      {ind}
+                    </button>
+                  )
+                })}
+              </div>
+            </FadeIn>
           </div>
         </section>
       )}
 
-      {/* ════════════════ CLIENT GRID ════════════════ */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-10">
-              <h2
-                className="text-3xl md:text-4xl font-extrabold mb-3"
-                style={{ color: '#1A1A2E' }}
-              >
-                Companies That Trust Us
-              </h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-gray-500 max-w-lg mx-auto">
-                Explore our growing network of partners across every major industry.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Industry Filter Pills */}
-          {!loading && industries.length > 0 && (
-            <FadeIn>
-              <div className="flex flex-wrap justify-center gap-2 mb-10">
-                {['All', ...industries].map(ind => (
-                  <button
-                    key={ind}
-                    onClick={() => setActiveFilter(ind)}
-                    className="relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-300"
-                    style={{
-                      background:
-                        activeFilter === ind ? NAVY : 'transparent',
-                      color:
-                        activeFilter === ind ? '#FFFFFF' : '#6B7280',
-                      border: `1.5px solid ${activeFilter === ind ? NAVY : '#D1D5DB'}`,
-                    }}
-                  >
-                    {ind}
-                    {activeFilter === ind && (
-                      <motion.div
-                        layoutId="activePill"
-                        className="absolute inset-0 rounded-full"
-                        style={{ background: NAVY, zIndex: -1 }}
-                        transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </FadeIn>
-          )}
-
-          {/* Cards Grid */}
-          {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton key={i} className="h-48 rounded-2xl" />
+      {/* ════════════════ SCROLLING LOGOS — MAIN FEATURE ════════════════ */}
+      {/* Only logos/icons. No names. No background boxes. No section background fill. */}
+      <section className="bg-white py-6 md:py-10">
+        {loading ? (
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+            <div className="flex justify-center gap-10 mb-8">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-12 w-24 bg-slate-100 rounded-md animate-pulse"
+                />
               ))}
             </div>
-          ) : (
-            <motion.div
-              layout
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredClients.map((c, i) => {
-                  const Icon = getIndustryIcon(c.industry)
-                  const initial = c.name?.charAt(0)?.toUpperCase() || '?'
-
-                  // Logo card variant — Journey-style neutral box
-                  if (c.logoUrl) {
-                    return (
-                      <motion.div
-                        key={c.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.92 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.92 }}
-                        transition={{ duration: 0.35, delay: i * 0.04 }}
-                      >
-                        <Card className="relative overflow-hidden bg-white rounded-2xl border-2 border-slate-200 shadow-sm card-hover h-full group transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
-                          {/* Faded index number (like Journey) */}
-                          <span className="absolute top-3 right-4 text-2xl font-extrabold leading-none select-none text-slate-100">
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-
-                          <CardContent className="p-5 flex flex-col items-center text-center">
-                            {/* Client Logo — clean white box */}
-                            <div className="w-full h-24 flex items-center justify-center mb-3 bg-[#FAFBFC] rounded-xl p-3 border border-slate-100">
-                              <img
-                                src={c.logoUrl}
-                                alt={c.name}
-                                className="max-w-full max-h-full object-contain"
-                                loading="lazy"
-                              />
-                            </div>
-
-                            {/* Industry — gray uppercase text (no colored badge) */}
-                            {c.industry && (
-                              <p className="text-[10px] font-semibold tracking-[0.15em] text-slate-400 uppercase mb-1.5">
-                                {c.industry}
-                              </p>
-                            )}
-
-                            {/* Name */}
-                            <h3
-                              className="text-sm font-bold group-hover:translate-x-0.5 transition-transform duration-200"
-                              style={{ color: '#1A1A2E' }}
-                            >
-                              {c.name}
-                            </h3>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    )
-                  }
-
-                  // Fallback: text-based card with initial letter — Journey-style neutral box
-                  return (
-                    <motion.div
-                      key={c.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.92 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.92 }}
-                      transition={{ duration: 0.35, delay: i * 0.04 }}
-                    >
-                      <Card className="relative overflow-hidden bg-white rounded-2xl border-2 border-slate-200 shadow-sm card-hover h-full group transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
-                        {/* Faded index number (like Journey) */}
-                        <span className="absolute top-3 right-4 text-2xl font-extrabold leading-none select-none text-slate-100">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-
-                        <CardContent className="p-5 flex flex-col items-center text-center">
-                          {/* Decorative initial + icon (neutral) */}
-                          <div className="relative mb-3 w-full h-24 flex items-center justify-center bg-[#FAFBFC] rounded-xl p-3 border border-slate-100">
-                            <span
-                              className="text-5xl font-black leading-none select-none"
-                              style={{ color: `${NAVY}0A` }}
-                            >
-                              {initial}
-                            </span>
-                            <div className="absolute bottom-2 right-2 w-5 h-5 rounded-md flex items-center justify-center bg-white border border-slate-200">
-                              <Icon className="w-3 h-3 text-slate-400" />
-                            </div>
-                          </div>
-
-                          {/* Industry — gray uppercase text (no colored badge) */}
-                          {c.industry && (
-                            <p className="text-[10px] font-semibold tracking-[0.15em] text-slate-400 uppercase mb-1.5">
-                              {c.industry}
-                            </p>
-                          )}
-
-                          {/* Name */}
-                          <h3
-                            className="text-sm font-bold group-hover:translate-x-0.5 transition-transform duration-200"
-                            style={{ color: '#1A1A2E' }}
-                          >
-                            {c.name}
-                          </h3>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  )
-                })}
-              </AnimatePresence>
-            </motion.div>
-          )}
-
-          {/* Empty state */}
-          {!loading && filteredClients.length === 0 && (
-            <div className="text-center py-20">
-              <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p className="text-gray-500 text-lg">
-                No clients found for this industry.
-              </p>
+            <div className="flex justify-center gap-10">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-12 w-24 bg-slate-100 rounded-md animate-pulse"
+                />
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        ) : trackA.length === 0 ? (
+          <div className="text-center py-20">
+            <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+            <p className="text-slate-500 text-lg">No clients found.</p>
+          </div>
+        ) : (
+          <div className="space-y-8 md:space-y-10">
+            {/* Row 1 — scrolls left */}
+            <div className="relative overflow-hidden">
+              {/* edge fade masks */}
+              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
+              <div className="flex animate-marquee whitespace-nowrap w-max">
+                {trackA.map((c, i) => {
+                  const Icon = getIndustryIcon(c.industry)
+                  return <LogoItem key={`a-${c.id}-${i}`} client={c} Icon={Icon} />
+                })}
+              </div>
+            </div>
+
+            {/* Row 2 — scrolls right (reverse), only if there's a second row */}
+            {trackB.length > 0 && (
+              <div className="relative overflow-hidden">
+                <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
+                <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
+                <div className="flex animate-marquee-reverse whitespace-nowrap w-max">
+                  {trackB.map((c, i) => {
+                    const Icon = getIndustryIcon(c.industry)
+                    return <LogoItem key={`b-${c.id}-${i}`} client={c} Icon={Icon} />
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
-      {/* ════════════════ CTA ════════════════ */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${NAVY_DARK} 0%, ${NAVY} 100%)` }}
-      >
-        <div className="absolute -top-20 -right-20 w-[350px] h-[350px] rounded-full border border-white/[0.04]" />
-        <div className="absolute -bottom-16 -left-16 w-[250px] h-[250px] rounded-full border border-white/[0.04]" />
-
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-20 md:py-28 text-center">
+      {/* ════════════════ CTA — minimal, white, no background fill ════════════════ */}
+      <section className="bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-20 md:py-28 text-center">
           <FadeIn>
-            <Badge
-              className="mb-5 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
-              style={{ background: 'rgba(232,117,26,0.15)', color: CORAL }}
-            >
-              Become a Partner
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+            {/* Coral hairlines flanking label */}
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <span className="w-8 h-[2px]" style={{ background: CORAL }} />
+              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500">
+                Become a Partner
+              </span>
+              <span className="w-8 h-[2px]" style={{ background: CORAL }} />
+            </div>
+
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-5 leading-tight" style={{ color: INK }}>
               Ready to Join Our
               <br />
-              <span style={{ color: CORAL }}>Network of Leaders?</span>
+              Network of Leaders?
             </h2>
-            <p className="text-white/55 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-              Partner with us and gain access to world-class solutions, dedicated
-              support, and a community of industry pioneers.
+
+            <p className="text-slate-500 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+              Partner with us and gain access to world-class solutions,
+              dedicated support, and a community of industry pioneers.
             </p>
+
             <Button
               size="lg"
-              className="rounded-full px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-              style={{ background: CORAL, color: '#FFFFFF' }}
+              variant="outline"
+              className="rounded-full px-8 py-6 text-base font-semibold border-2 transition-all duration-300 group hover:text-white"
+              style={{ borderColor: CORAL, color: CORAL }}
               onClick={() => navigate('contact')}
+              onMouseEnter={e => {
+                ;(e.currentTarget as HTMLButtonElement).style.background = CORAL
+              }}
+              onMouseLeave={e => {
+                ;(e.currentTarget as HTMLButtonElement).style.background = 'transparent'
+              }}
             >
               Get In Touch
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -531,6 +446,6 @@ export default function ClientsPage() {
           </FadeIn>
         </div>
       </section>
-    </>
+    </div>
   )
 }
