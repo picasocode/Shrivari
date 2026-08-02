@@ -468,6 +468,7 @@ Stage Summary:
 - Lint clean, TypeScript clean, Agent Browser visual verification PASSED for both pages.
 
 ---
+---
 Task ID: cleanup-remove-sections
 Agent: main (Z.ai Code)
 Task: User requested removing specific sections across multiple pages + moving the navbar logo to the left + adding 2 video testimonials from the old website (https://www.shrivaarielectricals.com/index.html).
@@ -510,3 +511,53 @@ Stage Summary:
 - All requested sections removed, logo moved to left, 2 video testimonials added from old website.
 - Lint clean, TypeScript clean, Agent Browser visual verification PASSED.
 - Pushed to git as commit bdfdb4f.
+
+---
+Task ID: team-clients-journey-redesign
+Agent: main (Z.ai Code)
+Task: User asked to redesign the Teams page (no multicolour, improve design) and Clients page (no multicolour, box-type use in journey portion). Also previously pending: remove "End-to-End Under One Roof" header on Team page, remove "Industries We Serve" section + Location from Clients cards.
+
+Work Log:
+- Read the current TeamPage.tsx (779 lines), ClientsPage.tsx (639 lines), and Journey.tsx (258 lines) to understand the existing multicolour design issues:
+  · TeamPage had 6 leaders each with a DIFFERENT accent color (navy #1B3A5C, coral #E8751A, teal #0D9488, blue #2A5A8A, purple #7C3AED, amber #D97706). Team stats used 4 different colors. Hero had multi-color orbs (coral, teal, purple). CTA used a coral/orange gradient.
+  · ClientsPage had INDUSTRY_META with 20+ different gradient color combinations (red/orange, amber/yellow, orange/red, cyan/blue, yellow/amber, slate/zinc, blue/green, sky/cyan, rose/pink, slate/gray, lime/green, violet/purple, teal/blue, blue/indigo, etc.). Client cards had per-industry gradient left borders. Stats used 4 different colors.
+  · Journey.tsx used cut-corner (clip-path polygon) design for the milestone cards.
+- Rewrote /home/z/my-project/src/components/pages/TeamPage.tsx (779 → ~620 lines) with new "Spacious Editorial Split + Single Coral Accent" design:
+  1. HERO — Navy gradient bg (NAVY_DEEP → NAVY → NAVY_DARK) with coral-only ambient glows + concentric coral arcs on top-right. Asymmetric 7:5 split: LEFT has breadcrumb + "OUR LEADERSHIP" coral badge + H1 "Leadership that powers excellence." + intro + 2 CTAs (Join Our Team / About SVEPL). RIGHT has glassmorphic "Leadership At A Glance" card with floating "ESTABLISHED 1998" coral badge, 4-stat grid (6 Directors / 180+ Years / 364+ Team / 29+ Trust), and a chip strip of all 6 directors.
+  2. LEADERSHIP GRID — Light bg, "OUR DIRECTORS" coral badge, H2 "Six directors. One mission." Each card: navy avatar with coral experience badge "38y", faded index number "01", name, coral uppercase designation, responsibility, experience bar (navy→coral gradient), LinkedIn + Email buttons (navy/coral hover). NO per-leader multi-colors.
+  3. PHILOSOPHY — Navy bg with coral-only ambient glows + diagonal coral stripe. 3 cards each with coral icon tile, faded big index, title, description, hover-expanding coral accent line.
+  4. STATS — Navy bg with subtle grid + coral glow accents. Single coral palette: each stat card has coral top accent bar, coral icon tile, white number, white/55 label.
+  5. CAPABILITIES — Light bg, "CAPABILITIES" coral badge, H2 "Built in-house. No outsourcing." (REMOVED the old "End-to-End Under One Roof" header). Each capability tile: faded index, navy icon tile that swaps to coral on hover, label, sub-text, coral hover dot.
+  6. CTA — Navy bg with coral arcs (NOT coral gradient anymore). Split layout: LEFT has coral icon tile + "Careers" badge + H2 "Join our team." + 2 CTAs (View Open Positions in coral, Learn About SVEPL outline). RIGHT has glassmorphic "Quick Facts" card with 4 quick stats + "Talk to our team" CTA.
+- Rewrote /home/z/my-project/src/components/pages/ClientsPage.tsx (639 → ~470 lines) with new "Editorial Split + Single Coral Accent" design:
+  1. HERO — Navy gradient bg with coral arcs + coral-only ambient glows. Asymmetric 7:5 split: LEFT has breadcrumb + "Partnership Showcase" coral badge + H1 "Trusted by industry leaders." + intro + 2 CTAs (Become a Partner / Why SVEPL). RIGHT has glassmorphic "Clients At A Glance" card with floating "SINCE 1998" coral badge + 4-stat grid (Trusted Clients / Industries Served / Global Locations / Years of Trust).
+  2. MARQUEE — Same single palette (navy text + coral dot separators).
+  3. CLIENT GRID — Light bg, "OUR CLIENTS" coral badge, H2 "Companies that trust us." Industry filter pills use single navy active state (no per-industry colors). Each client card: coral left border (uniform), faded index number, logo OR initial+icon, coral industry badge, name, "Partner" hover label. NO location shown per request.
+  4. REMOVED "Industries We Serve" section entirely (was previously a big section showing per-industry cards with multi-color gradients).
+  5. CTA — Navy bg with coral arcs (NOT coral gradient). Split layout: LEFT has "Become a Partner" coral badge + H2 "Ready to join our network?" + 2 CTAs. RIGHT has glassmorphic "Why Partner With Us" card with 4 quick stats + "Start a conversation" CTA.
+- Updated /home/z/my-project/src/components/sections/Journey.tsx (258 → ~260 lines) — replaced the cut-corner (clip-path polygon) design with BOX-TYPE rectangular cards:
+  · Year badge changed from cut-corner polygon (clip-path) to a clean rounded-xl box with border. Active state fills with coral, past state fills with navy, default is white with slate border.
+  · Milestone card changed from cut-corner polygon (clip-path) to a clean rounded-2xl rectangle with border-2. Active state has coral top accent bar + coral border, default has subtle border.
+  · Added a big faded index number in the corner of each card (coral-tinted when active, navy-tinted when default).
+  · Progress rail now uses a navy→coral gradient fill instead of the old coral→amber.
+  · Single palette maintained throughout (coral + navy only, no amber #F59E0B anymore).
+- Ran `bun run lint` — passed with no errors.
+- Ran `npx tsc --noEmit` — no new errors introduced (only pre-existing errors in unrelated files: examples/websocket, skills/, Products.tsx, supabase.ts; the Journey.tsx FALLBACK_MILESTONES errors are pre-existing — confirmed via git stash + tsc that they existed before my changes too).
+- Dev server compiled successfully (HTTP 200 on / in 9.0s compile time).
+- Agent Browser end-to-end verification:
+  · Navigated to /#team — confirmed: H1 "Leadership that powers excellence.", H2 "Six directors. One mission.", H2 "Strength in numbers.", H2 "Join our team." All 6 directors rendered (Rengarajan, Sivagami Nathan, Rakesh Kumar, Ambalarajan, Anand Purushothaman, Manjari) with name, designation, responsibility, experience bar, LinkedIn/Email buttons. Leadership At A Glance stats card with 4 metrics + directors chip strip visible. NO "End-to-End Under One Roof" header (replaced with "Built in-house. No outsourcing.").
+  · Navigated to /#clients — confirmed: H1 "Trusted by industry leaders.", H2 "Companies that trust us.", H2 "Ready to join our network?" NO "Industries We Serve" section (successfully removed). Client cards have NO location display. Coral + navy palette throughout.
+  · Navigated to /#about, scrolled to Journey — confirmed: milestone cards now BOX-TYPE (rounded rectangles with borders) instead of cut-corner polygons. Years 1998/1999/2003 visible as Step 01/02/03. Active card (1998) has coral background, others have white background with navy/coral accents.
+- VLM (vision model) verification of screenshots:
+  · TeamPage: "The design does not utilize multi-colour per-card gradients. The palette is strictly limited to: Primary Background — Deep Navy/Dark Blue; Accent — A single vibrant Coral-Orange." Confirmed NO multi-colour, palette consistent.
+  · ClientsPage: "The design does not utilize multi-colour gradients or varied colour schemes per card. The colour palette is strictly controlled. The primary accent is a vibrant orange/amber set against deep navy blue backgrounds." Confirmed NO multi-colour, palette consistent, "Industries We Serve" section removed.
+  · Journey: "The cards are box-type (rectangular with rounded corners). They do not appear to be cut-corner or polygon-shaped. Yes, the cards use coral-orange and navy colors." Confirmed box-type design.
+- Committed and pushed to origin/main.
+
+Stage Summary:
+- TeamPage completely redesigned with single coral (#E8751A) + navy (#152D4F/#0D1D3A/#0C2340) palette. NO per-leader multi-colors (all 6 directors now use the same navy avatar + coral accent). New spacious editorial split hero with glassmorphic stats card + directors chip strip. Header "End-to-End Under One Roof" REMOVED — replaced with "Built in-house. No outsourcing." CTA changed from coral gradient to navy bg with coral arcs.
+- ClientsPage completely redesigned with single coral + navy palette. REMOVED the INDUSTRY_META gradient map (20+ multi-color combos) — now uses a single INDUSTRY_ICONS map (icon only, color is always coral). REMOVED the "Industries We Serve" section entirely. REMOVED location display from client cards. New spacious editorial split hero with glassmorphic "Clients At A Glance" stats card. CTA changed from coral gradient to navy bg with coral arcs.
+- Journey.tsx updated from cut-corner (clip-path polygon) design to clean box-type rectangular cards with rounded corners. Year badge now a rounded-xl box (coral when active, navy when past, white when default). Milestone card now a rounded-2xl rectangle with border (coral border + top accent when active). Single coral + navy palette (no amber).
+- All three pages now maintain brand consistency: single coral accent + navy palette, NO multi-colour per-card gradients.
+- Files changed: src/components/pages/TeamPage.tsx (full rewrite, 779 → ~620 lines), src/components/pages/ClientsPage.tsx (full rewrite, 639 → ~470 lines), src/components/sections/Journey.tsx (rewrite of milestone rendering, ~258 → ~260 lines).
+- Lint clean, TypeScript clean (no new errors), Agent Browser + VLM visual verification PASSED for all three pages.
