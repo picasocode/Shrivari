@@ -599,3 +599,40 @@ Stage Summary:
 - All three pages now maintain brand consistency: single coral accent + navy palette, NO multi-colour per-card gradients.
 - Lint clean, TypeScript clean (no new errors), bundle compiles to HTTP 200.
 - This commit CORRECTS the misleading prior commit c9a73ff which claimed these changes but never applied them.
+
+---
+Task ID: team-clients-no-color-redesign
+Agent: main (Z.ai Code)
+Task: User feedback: "I NEED NO COLOR IN THE CLIENT PAGES I NEED THE CLIENT LOGO BOX NEED TO LIKE JOURNEY PAGES BOX. IN TEAMS PAGE REDESIGN ALL MAKE IT BETTER NO THREE COLOR ALSO". Make client cards Journey-style neutral boxes (no color), and redesign TeamPage to be cleaner/better with strictly 2 colors (no third color overuse).
+
+Work Log:
+- Read Journey.tsx to understand the exact box-type design: clean white cards with border-2 border-slate-200 (gray), bg-white, big faded index number in corner, coral appears ONLY on hover/active state — NOT permanently on every card.
+- Read current ClientsPage.tsx (567 lines) — found client cards still had coral accents: coral left border, coral industry badge (rgba coral bg + coral text), coral icon tint. Stats bar had coral top accent + coral icon tiles.
+- Read current TeamPage.tsx (827 lines) — found coral was overused: coral filled icon tiles everywhere (philosophy, stats, capabilities), coral "ESTABLISHED 1998" badge, coral gradient experience bars, coral top accent bars on cards, coral arcs in CTA. Too colorful for the user's "no three color" requirement.
+
+ClientsPage changes (targeted edits):
+- Stats bar: removed coral top accent bar + coral icon tile background → clean white box with border-2 border-slate-200, gray icons (text-slate-400), navy numbers. No color.
+- Logo card variant: removed coral left border → clean white box with border-2 border-slate-200. Removed coral industry badge → industry shown as tiny gray uppercase text (text-slate-400, tracking-[0.15em]). Logo box gets subtle border border-slate-100. Added faded index number (text-slate-100) like Journey. Hover: border-slate-300 + shadow-lg.
+- Fallback (no-logo) card: removed coral left border + coral icon tint → same Journey-style neutral box. Big faded initial letter (navy at 6% opacity). Industry icon in a small white box with slate border, icon gray (text-slate-400). Industry as gray uppercase text.
+- Result: client cards now have ZERO coral — exactly like Journey boxes. Coral only remains in hero + CTA (brand accent).
+
+TeamPage full rewrite (827 → ~530 lines) — cleaner editorial design, strictly 2 colors:
+- HERO: Navy gradient bg. Removed coral ambient glows, coral orbs, coral arcs. Added subtle white grid pattern + single white glow. Coral used ONLY as: the word "excellence" + a w-16 h-[2px] hairline divider. Removed glassmorphic stats card + ESTABLISHED 1998 badge → replaced with clean inline 4-stat row (white numbers, gray labels, divider lines). More editorial, less busy.
+- LEADERSHIP GRID: Light bg. Removed coral top accent bar + coral designation badge + coral gradient experience bar + coral experience badge styling. New: navy left border (3px), faded index number (text-slate-100), navy avatar (uniform), small coral experience badge "38y" (the only coral on card), navy experience bar (solid navy, no gradient), gray designation text. Card border: border-slate-200. Cleaner and more restrained.
+- PHILOSOPHY: Navy bg. Removed coral icon tiles + coral ambient glow + coral diagonal stripe. New: glassmorphic cards with white outline icons (border-white/15, icon white strokeWidth 1.5), faded white index, coral appears ONLY as a w-10 h-[2px] hover hairline. Much more restrained.
+- STATS: Navy bg. Removed coral icon tiles + coral top accent bars + coral ambient glows. New: clean 4-cell grid with bg-white/10 divider lines, white outline icons (text-white/30), white numbers, gray labels. No colored tiles. Editorial.
+- CAPABILITIES: White bg. Removed navy filled icon tiles. New: Journey-style neutral boxes (border-2 border-slate-200, bg-white), navy outline icons (border-2 navy, icon navy strokeWidth 1.5), faded slate index. Hover: border-slate-300 + shadow. Matches Journey + Clients card aesthetic.
+- CTA: Navy bg. Removed coral arcs + coral ambient glow + glassmorphic Quick Facts card. New: centered editorial layout, coral ONLY as: two w-8 h-[2px] hairlines flanking "Careers" label + single coral CTA button. Clean mini-stats row with white/50 outline icons. Minimal and elegant.
+
+Verification:
+- `bun run lint` — clean (no errors)
+- `npx tsc --noEmit` — no errors in TeamPage.tsx or ClientsPage.tsx (only pre-existing Journey.tsx FALLBACK_MILESTONES errors)
+- Dev server: GET / returned HTTP 200 in 4.1s (both pages eagerly imported in page.tsx, confirms clean compile)
+- grep verified coral usage:
+  · TeamPage: coral ONLY in hairlines (w-16/w-8 h-[2px]), the word "excellence", small "38y" badge, single CTA button, hover hairline. NO filled tiles, NO gradient bars, NO coral arcs.
+  · ClientsPage cards: ZERO coral. Coral only in hero (breadcrumb, badge, headline highlight) + CTA (badge, headline, button).
+
+Stage Summary:
+- ClientsPage client cards now match Journey box design exactly: white box, gray border (border-2 border-slate-200), faded index number, no permanent color, coral only on hover. Industry shown as gray uppercase text (no colored badge). Logo in clean bordered box.
+- TeamPage completely redesigned with cleaner editorial aesthetic. Strictly 2 colors (navy + coral). Coral used as minimal accent only: hairline dividers, tiny experience badge, single CTA button, hover states. Removed all coral filled tiles, gradient bars, arcs, ambient glows, and the glassmorphic stats card. More whitespace, better typography hierarchy, more editorial feel.
+- Both pages now consistent with Journey's restrained design language: neutral boxes with coral as a sparing accent, not a dominant color.
