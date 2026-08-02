@@ -29,44 +29,44 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
 
-/* ─── Brand Tokens ─── */
+/* ─── Brand Tokens (single coral + navy palette) ─── */
 const NAVY = '#1B3A5C'
-const NAVY_DARK = '#1B3A5C'
-const ORANGE = '#E8751A'
+const NAVY_DARK = '#152D4F'
+const NAVY_DEEP = '#0C2340'
+const CORAL = '#E8751A'
 const LIGHT_BG = '#F0F4F8'
 
-/* ─── Industry → Color & Icon Map ─── */
-const INDUSTRY_META: Record<string, { gradient: string; icon: React.ElementType }> = {
-  'Auto & Ancillary': { gradient: 'from-red-500 to-orange-500', icon: Car },
-  Engineering: { gradient: 'from-amber-500 to-yellow-500', icon: Factory },
-  Forging: { gradient: 'from-orange-600 to-red-600', icon: Flame },
-  Electronics: { gradient: 'from-cyan-500 to-blue-500', icon: Cpu },
-  'Power & Energy': { gradient: 'from-yellow-400 to-amber-500', icon: Zap },
-  Metal: { gradient: 'from-slate-500 to-zinc-600', icon: Factory },
-  Chemicals: { gradient: 'from-[#4A90D9] to-green-500', icon: Droplets },
-  Commercial: { gradient: 'from-sky-400 to-cyan-500', icon: Building2 },
-  'Hospitals & Institutions': { gradient: 'from-rose-400 to-pink-500', icon: Heart },
-  Petroleum: { gradient: 'from-slate-600 to-gray-700', icon: Droplets },
-  'Food Industry': { gradient: 'from-lime-400 to-green-500', icon: Landmark },
-  Textiles: { gradient: 'from-violet-400 to-purple-500', icon: GraduationCap },
-  Pharma: { gradient: 'from-teal-400 to-[#2A5A8A]', icon: Heart },
-  MNC: { gradient: 'from-blue-500 to-indigo-500', icon: Globe },
-  IT: { gradient: 'from-cyan-400 to-sky-500', icon: Cpu },
-  'Real Estate': { gradient: 'from-amber-400 to-orange-500', icon: Building2 },
-  Cranes: { gradient: 'from-orange-500 to-amber-500', icon: Factory },
-  Granites: { gradient: 'from-stone-400 to-stone-600', icon: Landmark },
-  Government: { gradient: 'from-[#1B3A5C] to-teal-600', icon: Landmark },
-  Airport: { gradient: 'from-sky-500 to-blue-500', icon: Ship },
-  Carbon: { gradient: 'from-gray-500 to-gray-700', icon: Flame },
-  Media: { gradient: 'from-pink-400 to-rose-500', icon: Landmark },
-  default: { gradient: `from-[#1B3A5C] to-[#152D4F]`, icon: Building2 },
+/* ─── Industry → Icon Map (NO per-industry colour — single coral accent) ─── */
+const INDUSTRY_ICONS: Record<string, React.ElementType> = {
+  'Auto & Ancillary': Car,
+  Engineering: Factory,
+  Forging: Flame,
+  Electronics: Cpu,
+  'Power & Energy': Zap,
+  Metal: Factory,
+  Chemicals: Droplets,
+  Commercial: Building2,
+  'Hospitals & Institutions': Heart,
+  Petroleum: Droplets,
+  'Food Industry': Landmark,
+  Textiles: GraduationCap,
+  Pharma: Heart,
+  MNC: Globe,
+  IT: Cpu,
+  'Real Estate': Building2,
+  Cranes: Factory,
+  Granites: Landmark,
+  Government: Landmark,
+  Airport: Ship,
+  Carbon: Flame,
+  Media: Landmark,
 }
 
-function getIndustryMeta(industry: string) {
-  const key = Object.keys(INDUSTRY_META).find(
+function getIndustryIcon(industry: string): React.ElementType {
+  const key = Object.keys(INDUSTRY_ICONS).find(
     k => k.toLowerCase() === industry?.toLowerCase()
   )
-  return key ? INDUSTRY_META[key] : INDUSTRY_META.default
+  return key ? INDUSTRY_ICONS[key] : Building2
 }
 
 /* ─── FadeIn Helper ─── */
@@ -191,17 +191,17 @@ export default function ClientsPage() {
   const stats = useMemo(() => {
     const locations = new Set(clients.map(c => c.location).filter(Boolean))
     return [
-      { label: 'Trusted Clients', value: clients.length, icon: Users, color: NAVY },
-      { label: 'Industries Served', value: industries.length, icon: Award, color: ORANGE },
-      { label: 'Global Locations', value: locations.size, icon: Globe, color: '#2A5A8A' },
-      { label: 'Years of Trust', value: 15, icon: TrendingUp, color: '#7C3AED' },
+      { label: 'Trusted Clients', value: clients.length, icon: Users },
+      { label: 'Industries Served', value: industries.length, icon: Award },
+      { label: 'Global Locations', value: locations.size, icon: Globe },
+      { label: 'Years of Trust', value: 15, icon: TrendingUp },
     ]
   }, [clients, industries])
 
   return (
     <>
       {/* ════════════════ HERO ════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${NAVY_DARK} 0%, ${NAVY} 40%, #2A5F8A 100%)` }}>
+      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${NAVY_DEEP} 0%, ${NAVY} 45%, ${NAVY_DARK} 100%)` }}>
         <FloatingParticles names={clients.map(c => c.name)} />
 
         {/* Decorative circles */}
@@ -224,7 +224,7 @@ export default function ClientsPage() {
               Home
             </button>
             <ChevronRight className="w-4 h-4 text-white/25" />
-            <span style={{ color: ORANGE }}>Clients</span>
+            <span style={{ color: CORAL }}>Clients</span>
           </motion.div>
 
           {/* Headline */}
@@ -235,14 +235,14 @@ export default function ClientsPage() {
           >
             <Badge
               className="mb-6 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
-              style={{ background: 'rgba(232,117,26,0.15)', color: ORANGE }}
+              style={{ background: 'rgba(232,117,26,0.15)', color: CORAL }}
             >
               Partnership Showcase
             </Badge>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-5">
               Trusted By
               <br />
-              <span style={{ color: ORANGE }}>Industry Leaders</span>
+              <span style={{ color: CORAL }}>Industry Leaders</span>
             </h1>
             <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed">
               We build lasting partnerships with companies that shape the future.
@@ -264,21 +264,23 @@ export default function ClientsPage() {
               return (
                 <FadeIn key={stat.label} delay={i * 0.1}>
                   <div
-                    className="rounded-2xl p-5 md:p-6 text-center backdrop-blur-xl border border-white/20"
+                    className="relative rounded-2xl p-5 md:p-6 text-center backdrop-blur-xl border border-white/20 overflow-hidden"
                     style={{
                       background: 'rgba(255,255,255,0.78)',
                       boxShadow: '0 8px 32px rgba(27,58,92,0.10)',
                     }}
                   >
+                    {/* Coral top accent bar */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 rounded-b-full" style={{ background: CORAL }} />
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
-                      style={{ background: `${stat.color}12` }}
+                      style={{ background: 'rgba(232,117,26,0.12)' }}
                     >
-                      <Icon className="w-5 h-5" style={{ color: stat.color }} />
+                      <Icon className="w-5 h-5" style={{ color: CORAL }} />
                     </div>
                     <div
                       className="text-3xl md:text-4xl font-extrabold"
-                      style={{ color: stat.color }}
+                      style={{ color: NAVY_DARK }}
                     >
                       <AnimatedCounter target={stat.value} />
                       {stat.label === 'Years of Trust' && '+'}
@@ -387,8 +389,7 @@ export default function ClientsPage() {
             >
               <AnimatePresence mode="popLayout">
                 {filteredClients.map((c, i) => {
-                  const meta = getIndustryMeta(c.industry)
-                  const Icon = meta.icon
+                  const Icon = getIndustryIcon(c.industry)
                   const initial = c.name?.charAt(0)?.toUpperCase() || '?'
 
                   // Logo card variant
@@ -403,9 +404,10 @@ export default function ClientsPage() {
                         transition={{ duration: 0.35, delay: i * 0.04 }}
                       >
                         <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
-                          {/* Gradient left border */}
+                          {/* Coral left border (uniform) */}
                           <div
-                            className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
+                            className="absolute left-0 top-0 bottom-0 w-1.5"
+                            style={{ background: CORAL }}
                           />
 
                           <CardContent className="p-5 pl-7 flex flex-col items-center text-center">
@@ -425,7 +427,7 @@ export default function ClientsPage() {
                                 className="text-[10px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-md border-0 mb-2"
                                 style={{
                                   background: 'rgba(232,117,26,0.10)',
-                                  color: ORANGE,
+                                  color: CORAL,
                                 }}
                               >
                                 {c.industry}
@@ -457,9 +459,10 @@ export default function ClientsPage() {
                       transition={{ duration: 0.35, delay: i * 0.04 }}
                     >
                       <Card className="relative overflow-hidden bg-white rounded-2xl border border-[#E5E7EB] shadow-sm card-hover h-full group">
-                        {/* Gradient left border */}
+                        {/* Coral left border (uniform) */}
                         <div
-                          className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${meta.gradient}`}
+                          className="absolute left-0 top-0 bottom-0 w-1.5"
+                          style={{ background: CORAL }}
                         />
 
                         <CardContent className="p-5 pl-7 flex flex-col items-center text-center">
@@ -473,9 +476,9 @@ export default function ClientsPage() {
                             </span>
                             <div
                               className="absolute -bottom-0.5 -right-1 w-5 h-5 rounded-md flex items-center justify-center"
-                              style={{ background: `${NAVY}0A` }}
+                              style={{ background: 'rgba(232,117,26,0.12)' }}
                             >
-                              <Icon className="w-3 h-3" style={{ color: NAVY }} />
+                              <Icon className="w-3 h-3" style={{ color: CORAL }} />
                             </div>
                           </div>
 
@@ -485,7 +488,7 @@ export default function ClientsPage() {
                               className="text-[10px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-md border-0 mb-2"
                               style={{
                                 background: 'rgba(232,117,26,0.10)',
-                                color: ORANGE,
+                                color: CORAL,
                               }}
                             >
                               {c.industry}
@@ -533,14 +536,14 @@ export default function ClientsPage() {
           <FadeIn>
             <Badge
               className="mb-5 text-xs font-medium tracking-wider uppercase px-4 py-1.5 rounded-full border-0"
-              style={{ background: 'rgba(232,117,26,0.15)', color: ORANGE }}
+              style={{ background: 'rgba(232,117,26,0.15)', color: CORAL }}
             >
               Become a Partner
             </Badge>
             <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
               Ready to Join Our
               <br />
-              <span style={{ color: ORANGE }}>Network of Leaders?</span>
+              <span style={{ color: CORAL }}>Network of Leaders?</span>
             </h2>
             <p className="text-white/55 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
               Partner with us and gain access to world-class solutions, dedicated
@@ -549,7 +552,7 @@ export default function ClientsPage() {
             <Button
               size="lg"
               className="rounded-full px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-              style={{ background: ORANGE, color: '#FFFFFF' }}
+              style={{ background: CORAL, color: '#FFFFFF' }}
               onClick={() => navigate('contact')}
             >
               Get In Touch
