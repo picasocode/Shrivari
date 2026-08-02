@@ -466,3 +466,47 @@ Stage Summary:
 - Same 12 services data preserved across both pages; same coral #E8751A + navy #152D4F/#0D1D3A palette maintained for brand consistency.
 - Files changed: src/components/pages/ServicesPage.tsx (full rewrite, 789 → ~750 lines), src/components/pages/ServiceDetailPage.tsx (full rewrite, 852 → ~770 lines).
 - Lint clean, TypeScript clean, Agent Browser visual verification PASSED for both pages.
+
+---
+Task ID: cleanup-remove-sections
+Agent: main (Z.ai Code)
+Task: User requested removing specific sections across multiple pages + moving the navbar logo to the left + adding 2 video testimonials from the old website (https://www.shrivaarielectricals.com/index.html).
+
+Work Log:
+- Used the Explore agent to find exact JSX snippets + line numbers for all sections to be removed across 9 files (AboutPage, TeamPage, SectorsPage, CareersPage, ClientsPage, TestimonialsPage, ContactPage, Navbar, ServiceDetailPage).
+- Used the web-reader skill (z-ai page_reader function) to fetch the old website (https://www.shrivaarielectricals.com/index.html) and the Shri Vaari YouTube channel page to find video testimonial IDs.
+- Found 4 YouTube video IDs on the channel: 43O7M0qWgng (manufacturing facility), AVWLt5b7Pfc (SHRI VAARI ELECTRICAL CUSTOMER REVIEW), oI_m-MDctaI (Saveetha), PMmcF3lzoKk (channel trailer). Selected AVWLt5b7Pfc and oI_m-MDctaI as the 2 video testimonials.
+
+REMOVALS (per user request):
+1. AboutPage.tsx — Removed 2 number badges (small white pill showing 01/02/etc.) on CORE_VALUES cards (top-left) and INFRASTRUCTURE cards (top-right). Each badge had `{String(i + 1).padStart(2, '0')}`.
+2. TeamPage.tsx — Removed the "End-to-End Under One Roof" heading + its container (Badge, h2, section-bar, intro paragraph). Also removed unused `Target` import.
+3. SectorsPage.tsx — Removed the entire "Consultant Partners" section (badge row with consultant monograms) and the entire "Geographic Reach" section (South India map SVG + branch list + international presence). Also removed unused `consultants`, `branches`, `internationalOffices` data arrays and `Handshake` import.
+4. CareersPage.tsx — Removed the entire "Life at SVEPL" section (3 pillars with connectors) and the entire "Your Growth Path at SVEPL" section (career progression ladder). Also removed unused `lifePillars`, `careerPath` data arrays, restored `type Department` and `interface JobOpening` definitions that were accidentally deleted, and cleaned up unused imports (Crown, Star, Handshake, Rocket).
+5. ServiceDetailPage.tsx — Removed the hero "highlights strip" (chip row showing highlights like "Up to 400 KV Design", "IEEE-80 Compliant", etc.) for all 12 services. The `data.highlights[0]` usage in the hero image overlay was preserved.
+6. ClientsPage.tsx — Removed the "Industries We Serve" section (industry icon grid) and both client Location displays (logo card variant + fallback text card variant). Also removed unused `MapPin` import.
+7. TestimonialsPage.tsx — Complete rewrite: removed `StarRating` component, `RatingPill` component, `Star` import, all star rating UI (featured spotlight, rating summary bar, filter by rating section, grid card star rating, video card star rating, numeric ★ badge), `activeFilter` state, `ratingCounts`/`avgRating` derived data. Added 2 hardcoded video testimonials (`featuredVideoTestimonials` array) with YouTube IDs AVWLt5b7Pfc and oI_m-MDctaI from the old website.
+8. ContactPage.tsx — Removed the "Quick Contact Cards" first section (4-card grid with Call Us/Email Us/Website/Business Hours) and the unused `quickContacts` data array. The Contact Form + Info section (with Phone/Email/Head Office sidebar) was preserved.
+9. Navbar.tsx — Moved the logo to the LEFT for all viewports: changed the left logo button from `lg:hidden` to always visible, and removed the right-side desktop logo button (`hidden lg:flex` with `border-l`). The logo is now the first element in the navbar on all screen sizes.
+
+VERIFICATION (Agent Browser end-to-end):
+- `bun run lint` — passes cleanly (no errors, no warnings).
+- `npx tsc --noEmit` — no errors in any changed file.
+- Dev server compiles successfully (HTTP 200 on home route).
+- Agent Browser visual verification confirmed ALL changes:
+  · Navbar: logo button (e20) is now the FIRST element, before Home/Company/Products
+  · Testimonials: "Voices of Trust" hero + "What Our Clients Say" grid (no star ratings) + "Hear It From Them" video section (2 video play buttons) + CTA. NO rating summary bar, NO filter by rating.
+  · Sectors: "Powering Every Sector" + "Key Sectors We Serve" + "Utility & Board Approvals" + "Project Showcase by Sector" + CTA. NO "Consultant Partners", NO "Geographic Reach".
+  · Careers: "Build Your Career" + "Why Join" + "Current Openings" + "Ready to Power Your Future" + "At a Glance". NO "Life at SVEPL", NO "Your Growth Path at SVEPL".
+  · Contact: "Let's Build Together" + "Send Us a Message" form + sidebar + "Pan-India Presence". NO Quick Contact Cards section.
+  · Clients: "Trusted By Industry Leaders" + "Companies That Trust Us" + CTA. NO "Industries We Serve", no location text on client cards.
+  · Service Detail (design-engineering): H1 + "Get a quote" + "What this service delivers." capabilities. NO highlights tagline chip strip.
+  · Team: "Leadership That Powers Excellence" + "Meet the Leadership" + "How We Lead" + "Strength in Numbers" + "Join Our Team". NO "End-to-End Under One Roof".
+  · About: All sections present, cards have no number badges.
+- No runtime errors in dev.log (only pre-existing supabase config errors).
+
+Stage Summary:
+- 9 files modified: AboutPage, TeamPage, SectorsPage, CareersPage, ClientsPage, TestimonialsPage, ContactPage, ServiceDetailPage, Navbar.
+- Net code change: +108 / -922 lines (significant cleanup).
+- All requested sections removed, logo moved to left, 2 video testimonials added from old website.
+- Lint clean, TypeScript clean, Agent Browser visual verification PASSED.
+- Pushed to git as commit bdfdb4f.
