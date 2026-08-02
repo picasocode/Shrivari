@@ -8,6 +8,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from '@/components/Router'
 import { fetchMilestones, type Milestone } from '@/lib/api'
 
+/* ─── Brand tokens ─── */
+const NAVY = '#152D4F'
+const CORAL = '#E8751A'
+
 /* ─── Content Data ─── */
 const FALLBACK_MILESTONES: Milestone[] = [
   { id: 'm1', year: '1998', title: 'Inception', description: 'Shri Vaari Electricals established as a premier electrical firm in Chennai.', order: 1, active: true, createdAt: '', updatedAt: '' },
@@ -138,21 +142,25 @@ export default function HorizontalInfographicJourney({
           </div>
         </div>
 
-        {/* Horizontal Track Layout — Small Cut Design */}
+        {/* BOX-TYPE horizontal track layout */}
         {loading ? (
           <div className="flex gap-5 overflow-hidden">
             {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-44 min-w-[280px] rounded-2xl bg-white" />
+              <Skeleton key={i} className="h-48 min-w-[280px] rounded-2xl bg-white" />
             ))}
           </div>
         ) : (
           <div className="relative">
-            {/* Main Progress Rail — thin coral line */}
-            <div className="absolute top-[22px] left-0 right-0 h-px bg-slate-200 z-0" />
+            {/* Main Progress Rail — thin line */}
+            <div className="absolute top-[34px] left-0 right-0 h-px bg-slate-200 z-0" />
             {/* Animated progress fill */}
             <div
-              className="absolute top-[22px] left-0 h-px bg-gradient-to-r from-[#E8751A] to-[#F59E0B] z-0 transition-all duration-500"
-              style={{ width: `${((activeIndex + 1) / milestones.length) * 100}%`, maxWidth: '100%' }}
+              className="absolute top-[34px] left-0 h-[2px] z-0 transition-all duration-500"
+              style={{
+                width: `${((activeIndex + 1) / milestones.length) * 100}%`,
+                maxWidth: '100%',
+                background: `linear-gradient(90deg, ${CORAL} 0%, ${NAVY} 100%)`,
+              }}
             />
 
             {/* Scrollable Container */}
@@ -175,19 +183,20 @@ export default function HorizontalInfographicJourney({
                     onClick={() => setActiveIndex(i)}
                     className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 cursor-pointer group"
                   >
-                    {/* Top Connection Node — Small cut design */}
+                    {/* Top Connection Node — BOX TYPE (square) */}
                     <div className="flex items-center mb-4 relative">
-                      {/* Cut-corner year badge */}
                       <div
-                        className={`relative w-12 h-12 flex items-center justify-center font-bold text-xs transition-all duration-300 z-10 ${
+                        className={`relative w-12 h-12 flex items-center justify-center font-bold text-xs transition-all duration-300 z-10 rounded-xl border-2 ${
                           isActive
-                            ? 'bg-[#E8751A] text-white scale-110 shadow-lg shadow-[#E8751A]/30'
+                            ? 'text-white scale-110 shadow-lg'
                             : isPast
-                              ? 'bg-[#1F2937] text-white'
-                              : 'bg-white text-[#1F2937] border border-slate-200 group-hover:border-[#E8751A]/40'
+                              ? 'text-white border-transparent'
+                              : 'bg-white text-[#1F2937] border-slate-200 group-hover:border-[#E8751A]/40'
                         }`}
                         style={{
-                          clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)',
+                          backgroundColor: isActive ? CORAL : isPast ? NAVY : '#FFFFFF',
+                          boxShadow: isActive ? `0 8px 20px ${CORAL}40` : isPast ? 'none' : undefined,
+                          borderColor: isActive ? CORAL : isPast ? NAVY : undefined,
                         }}
                       >
                         {m.year}
@@ -197,51 +206,52 @@ export default function HorizontalInfographicJourney({
                       </div>
                     </div>
 
-                    {/* Small Cut Card — compact, with cut-corner accent */}
-                    <div className="relative">
-                      {/* Coral accent corner triangle — placed BEHIND card to show through the cut */}
+                    {/* BOX-TYPE Card — clean rectangular design with rounded corners */}
+                    <div
+                      className={`relative rounded-2xl p-5 border-2 transition-all duration-300 h-[160px] flex flex-col justify-between overflow-hidden ${
+                        isActive
+                          ? 'bg-white shadow-xl'
+                          : 'bg-white/80 group-hover:bg-white group-hover:shadow-md'
+                      }`}
+                      style={{
+                        borderColor: isActive ? `${CORAL}55` : isPast ? `${NAVY}30` : '#E5E7EB',
+                      }}
+                    >
+                      {/* Coral top accent bar (only when active) */}
                       <div
-                        className={`absolute z-0 transition-colors duration-300 ${
-                          isActive ? 'bg-[#E8751A]' : 'bg-[#E8751A]/55 group-hover:bg-[#E8751A]/80'
-                        }`}
+                        className="absolute top-0 left-0 right-0 h-1 transition-opacity duration-300"
                         style={{
-                          bottom: '0',
-                          right: '0',
-                          width: '20px',
-                          height: '20px',
-                          clipPath: 'polygon(100% 0, 100% 100%, 0 100%)',
+                          background: `linear-gradient(90deg, ${CORAL} 0%, ${NAVY} 100%)`,
+                          opacity: isActive ? 1 : 0,
                         }}
                       />
-                      <div
-                        className={`relative z-10 p-5 border transition-all duration-300 h-[150px] flex flex-col justify-between ${
-                          isActive
-                            ? 'bg-white border-[#E8751A]/50 shadow-xl shadow-[#E8751A]/10'
-                            : 'bg-white/80 border-slate-200 group-hover:border-[#E8751A]/30 hover:bg-white hover:shadow-md'
-                        }`}
-                        style={{
-                          clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%)',
-                        }}
+                      {/* Big faded index in corner */}
+                      <span
+                        className="absolute top-3 right-4 text-3xl font-extrabold leading-none transition-colors duration-300"
+                        style={{ color: isActive ? `${CORAL}15` : `${NAVY}08` }}
                       >
-                        <div className="relative z-10">
-                          <h3
-                            className={`text-base font-bold mb-1.5 transition-colors leading-tight ${
-                              isActive ? 'text-[#1A1A2E]' : 'text-[#1A1A2E] group-hover:text-[#E8751A]'
-                            }`}
-                          >
-                            {m.title}
-                          </h3>
-                          <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-2">
-                            {m.description}
-                          </p>
-                        </div>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
 
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] font-medium relative z-10">
-                          <span className={`flex items-center gap-1 ${isActive ? 'text-[#E8751A]' : 'text-[#9CA3AF]'}`}>
-                            <CheckCircle2 className="w-3 h-3" />
-                            Verified
-                          </span>
-                          <span className="text-[#9CA3AF] uppercase tracking-wider">Phase {i + 1}</span>
-                        </div>
+                      <div className="relative z-10">
+                        <h3
+                          className={`text-base font-bold mb-1.5 transition-colors leading-tight ${
+                            isActive ? 'text-[#1A1A2E]' : 'text-[#1A1A2E] group-hover:text-[#E8751A]'
+                          }`}
+                        >
+                          {m.title}
+                        </h3>
+                        <p className="text-xs text-[#6B7280] leading-relaxed line-clamp-2">
+                          {m.description}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] font-medium relative z-10">
+                        <span className={`flex items-center gap-1 ${isActive ? 'text-[#E8751A]' : 'text-[#9CA3AF]'}`}>
+                          <CheckCircle2 className="w-3 h-3" />
+                          Verified
+                        </span>
+                        <span className="text-[#9CA3AF] uppercase tracking-wider">Phase {i + 1}</span>
                       </div>
                     </div>
                   </motion.div>
