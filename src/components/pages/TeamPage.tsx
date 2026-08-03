@@ -233,10 +233,6 @@ export default function TeamPage() {
                   <Card className="relative bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-shadow duration-400 h-full overflow-hidden">
                     {/* Navy left border (2px) — the only color accent on card */}
                     <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: NAVY_MID }} />
-                    {/* Faded index number */}
-                    <span className="absolute top-5 right-6 text-5xl font-black leading-none select-none text-slate-100">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
                     <CardContent className="p-6 pl-7">
                       {/* Top row: Avatar + Name/Designation */}
                       <div className="flex items-start gap-4 mb-5">
@@ -353,10 +349,6 @@ export default function TeamPage() {
                   className="h-full"
                 >
                   <div className="relative rounded-2xl border p-6 md:p-8 h-full group transition-colors duration-300" style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.10)' }}>
-                    {/* Faded big index */}
-                    <span className="absolute top-5 right-6 text-6xl font-black leading-none select-none text-white/[0.06]">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
                     {/* White outline icon — no colored tile */}
                     <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border border-white/15">
                       <item.icon className="w-7 h-7 text-white" strokeWidth={1.5} />
@@ -444,10 +436,6 @@ export default function TeamPage() {
                   className="h-full"
                 >
                   <div className="relative rounded-2xl p-5 md:p-6 h-full group transition-all duration-300 border-2 border-slate-200 bg-white hover:border-slate-300 hover:shadow-md">
-                    {/* Faded index */}
-                    <span className="absolute top-4 right-5 text-2xl font-extrabold leading-none select-none text-slate-100">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
                     {/* Navy outline icon */}
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 border-2" style={{ borderColor: NAVY_MID }}>
                       <cap.icon className="w-6 h-6" style={{ color: NAVY_MID }} strokeWidth={1.5} />
