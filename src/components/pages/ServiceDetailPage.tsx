@@ -7,7 +7,7 @@ import {
   ChevronRight, ArrowRight, Phone, Check, ArrowUpRight,
   PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck,
   FileCheck, Building2, Sun, Zap, MapPin, Mail, Sparkles,
-  Award, Globe, Users, Clock, ClipboardCheck, HardHat,
+  Award, Globe, Users, Clock, HardHat,
   Network, Factory, Boxes, Layers,
 } from 'lucide-react'
 import { useRouter } from '@/components/Router'
@@ -805,63 +805,6 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
           </div>
         </div>
       </section>
-
-      {/* ════════════════════════════════════════════════════════════
-          PROCESS — Vertical numbered timeline
-          ════════════════════════════════════════════════════════════ */}
-      {data.processSteps.length > 0 && (
-        <section className="bg-[#F7F9FC] py-14 lg:py-20 border-t border-gray-100">
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-            <FadeIn>
-              <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
-                <div className="lg:col-span-7">
-                  <div className="flex items-center gap-3 mb-3">
-                    <ClipboardCheck className="w-4 h-4 text-[#E8751A]" />
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A]">
-                      How we deliver
-                    </span>
-                  </div>
-                  <h2 className="text-3xl lg:text-4xl font-bold text-[#152D4F] leading-tight">
-                    A process you can audit step-by-step.
-                  </h2>
-                </div>
-                <div className="lg:col-span-5">
-                  <p className="text-gray-500 leading-relaxed text-sm">
-                    Every milestone is signed off, documented, and traceable to a recognised standard.
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-
-            <div className="relative pl-4 lg:pl-8">
-              {/* Vertical connector line */}
-              <div className="absolute left-[7px] lg:left-[15px] top-3 bottom-3 w-px bg-gradient-to-b from-[#E8751A] via-gray-200 to-transparent" />
-
-              {data.processSteps.map((step, i) => (
-                <FadeIn key={i} delay={i * 0.08}>
-                  <div className="relative flex gap-5 lg:gap-7 pb-8 last:pb-0">
-                    {/* Number node */}
-                    <div className="relative z-10 flex-shrink-0">
-                      <div className="w-4 h-4 rounded-full bg-[#E8751A] ring-4 ring-[#F7F9FC] mt-1.5" />
-                    </div>
-                    {/* Content */}
-                    <div className="flex-1 min-w-0 bg-white border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:shadow-md hover:shadow-[#152D4F]/5 transition-all">
-                      <div className="mb-2">
-                        <h3 className="text-base font-bold text-[#152D4F]">
-                          {step.title}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ════════════════════════════════════════════════════════════
           RELATED PROJECTS / SOLAR REFERENCES

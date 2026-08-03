@@ -710,3 +710,23 @@ Stage Summary:
 - Products page COMPLETELY redesigned with clean editorial aesthetic: white bg, Journey-style product cards (border-2 slate-200), large images, feature tag pills, subtle text-link CTAs. Comparison merged into one clean table. Specs table lightened. CTA minimal with single coral button.
 - "01/02/03" card-number patterns: verified ALL already removed from the entire codebase (grep confirmed zero matches). The user is seeing the old deployed version — this push will fix it.
 - Both pages (Products + Clients from prior task) now share the same minimal design language: pure white, coral hairline accents, ink text, Journey-style boxes.
+
+---
+Task ID: service-how-we-deliver-remove
+Agent: main (Z.ai Code)
+Task: Remove the "How we deliver / A process you can audit step-by-step / Every milestone is signed off, documented, and traceable to a recognised standard." portion from all the service pages.
+
+Work Log:
+- Grepped the codebase for "How we deliver" — found exactly one occurrence in `src/components/pages/ServiceDetailPage.tsx` (line ~821).
+- Read the surrounding section: it is the "PROCESS — Vertical numbered timeline" section (lines 809–864), gated by `{data.processSteps.length > 0 && (...)}`. This same component renders ALL individual service detail pages (HT Panels, LT Panels, Busducts, Solar, etc.), so removing it here removes it from every service detail page.
+- Deleted the entire PROCESS section block (heading chip "How we deliver", title "A process you can audit step-by-step.", description "Every milestone is signed off, documented, and traceable to a recognised standard.", and the vertical numbered timeline of processSteps).
+- Removed the now-unused `ClipboardCheck` icon from the lucide-react import (line 10) to keep imports clean.
+- Verified `ServicesPage.tsx` (the services listing page) uses a DIFFERENT "Delivery Model" section with text "Four moves from scope to sustain." — that is NOT the text the user quoted, so it was left untouched.
+- Ran `bun run lint` — passes cleanly with no warnings/errors.
+- Cleared `.next` cache and restarted the dev server. Confirmed HTTP 200 on `/` and no errors in `dev.log`.
+
+Stage Summary:
+- "How we deliver" PROCESS section removed from `ServiceDetailPage.tsx` → applies to all service detail pages.
+- `ClipboardCheck` import removed (no longer used).
+- Lint clean, dev server running on port 3000.
+- ServicesPage "Delivery Model" section left intact (different content, not in user's request).
