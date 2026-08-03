@@ -709,10 +709,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                 {data.capabilities.map((cap, i) => (
                   <FadeIn key={i} delay={i * 0.05}>
                     <div className="group h-full bg-[#F7F9FC] border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:bg-white hover:shadow-lg hover:shadow-[#152D4F]/5 transition-all">
-                      <div className="flex items-start gap-3 mb-2">
-                        <span className="w-7 h-7 rounded-lg bg-[#152D4F] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
+                      <div className="mb-2">
                         <h3 className="text-sm font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors leading-snug pt-1">
                           {cap.text}
                         </h3>
@@ -849,10 +846,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                     </div>
                     {/* Content */}
                     <div className="flex-1 min-w-0 bg-white border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:shadow-md hover:shadow-[#152D4F]/5 transition-all">
-                      <div className="flex items-baseline gap-3 mb-2">
-                        <span className="text-3xl font-bold text-[#152D4F]/15 tabular-nums">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
+                      <div className="mb-2">
                         <h3 className="text-base font-bold text-[#152D4F]">
                           {step.title}
                         </h3>
@@ -949,12 +943,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
               {data.relatedProjects.map((proj, i) => (
                 <FadeIn key={i} delay={i * 0.06}>
                   <div className="group bg-[#F7F9FC] border border-gray-200 rounded-xl p-5 hover:border-[#E8751A]/40 hover:bg-white hover:shadow-md transition-all">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#152D4F] flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-base font-bold tabular-nums">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                      </div>
+                    <div className="min-w-0">
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-bold text-[#152D4F] group-hover:text-[#E8751A] transition-colors">
                           {proj.name}
@@ -992,7 +981,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
             >
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E8751A] mb-2">
-                  Next service · {String(currentIndex + 2 > slugKeys.length ? 1 : currentIndex + 2).padStart(2, '0')} / 12
+                  Next service
                 </p>
                 <h3 className="text-2xl lg:text-3xl font-bold text-white group-hover:text-[#E8751A] transition-colors">
                   {nextData.name}

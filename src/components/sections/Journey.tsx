@@ -201,9 +201,6 @@ export default function HorizontalInfographicJourney({
                       >
                         {m.year}
                       </div>
-                      <div className="ml-3 text-[11px] font-semibold tracking-[0.15em] text-[#9CA3AF] uppercase">
-                        Step {String(i + 1).padStart(2, '0')}
-                      </div>
                     </div>
 
                     {/* BOX-TYPE Card — clean rectangular design with rounded corners */}
@@ -225,14 +222,6 @@ export default function HorizontalInfographicJourney({
                           opacity: isActive ? 1 : 0,
                         }}
                       />
-                      {/* Big faded index in corner */}
-                      <span
-                        className="absolute top-3 right-4 text-3xl font-extrabold leading-none transition-colors duration-300"
-                        style={{ color: isActive ? `${CORAL}15` : `${NAVY}08` }}
-                      >
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-
                       <div className="relative z-10">
                         <h3
                           className={`text-base font-bold mb-1.5 transition-colors leading-tight ${
@@ -251,7 +240,6 @@ export default function HorizontalInfographicJourney({
                           <CheckCircle2 className="w-3 h-3" />
                           Verified
                         </span>
-                        <span className="text-[#9CA3AF] uppercase tracking-wider">Phase {i + 1}</span>
                       </div>
                     </div>
                   </motion.div>

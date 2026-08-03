@@ -289,10 +289,10 @@ const standardsDetail = [
 
 /* ─── Process steps (horizontal flow) ─── */
 const processSteps = [
-  { step: '01', title: 'Discover',   desc: 'Site walk-down, scope alignment, statutory constraints',  icon: MapPin },
-  { step: '02', title: 'Design',     desc: 'SLDs, layouts, earth mat, protection coordination',       icon: PenTool },
-  { step: '03', title: 'Execute',    desc: 'Procurement, installation, testing, commissioning',       icon: Hammer },
-  { step: '04', title: 'Sustain',    desc: 'AMC, condition monitoring, audits, retrofits',            icon: ShieldCheck },
+  { title: 'Discover',   desc: 'Site walk-down, scope alignment, statutory constraints',  icon: MapPin },
+  { title: 'Design',     desc: 'SLDs, layouts, earth mat, protection coordination',       icon: PenTool },
+  { title: 'Execute',    desc: 'Procurement, installation, testing, commissioning',       icon: Hammer },
+  { title: 'Sustain',    desc: 'AMC, condition monitoring, audits, retrofits',            icon: ShieldCheck },
 ]
 
 /* ─── Industries served ─── */
@@ -326,7 +326,6 @@ function ServiceShowcase({
 }) {
   const Icon = iconMap[service.name] || PenTool
   const isEven = index % 2 === 0
-  const num = String(index + 1).padStart(2, '0')
 
   return (
     <motion.article
@@ -338,11 +337,6 @@ function ServiceShowcase({
     >
       {/* IMAGE — alternating side */}
       <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-        {/* Big faded number behind image */}
-        <div className="absolute -top-10 -left-2 lg:-top-12 lg:-left-6 text-[7rem] lg:text-[9rem] font-bold text-[#152D4F]/8 leading-none pointer-events-none select-none">
-          {num}
-        </div>
-
         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl shadow-[#152D4F]/8 group">
           <Image
             src={service.image}
@@ -361,13 +355,6 @@ function ServiceShowcase({
             </span>
           </div>
 
-          {/* Service count chip */}
-          <div className="absolute top-4 right-4">
-            <span className="px-2.5 py-1.5 rounded-md bg-[#152D4F]/90 backdrop-blur-sm text-white text-[10px] font-bold">
-              {num} / 12
-            </span>
-          </div>
-
           {/* Tagline at bottom of image */}
           <div className="absolute bottom-4 left-4 right-4">
             <p className="text-white text-sm font-semibold italic drop-shadow-md">
@@ -379,13 +366,13 @@ function ServiceShowcase({
 
       {/* CONTENT — alternating side */}
       <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-        {/* Eyebrow with icon + service number */}
+        {/* Eyebrow with icon */}
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-lg bg-[#152D4F] flex items-center justify-center">
             <Icon className="w-4 h-4 text-white" />
           </div>
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
-            Service {num} · {service.category}
+            {service.category}
           </span>
         </div>
 
@@ -834,9 +821,6 @@ export default function ServicesPage() {
                     <div className="w-16 h-16 mx-auto rounded-full bg-white border-2 border-gray-100 flex items-center justify-center group hover:border-[#E8751A] hover:bg-[#E8751A] transition-all duration-300">
                       <StepIcon className="w-6 h-6 text-[#152D4F] group-hover:text-white transition-colors" />
                     </div>
-                    <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#152D4F] text-white text-[10px] font-bold flex items-center justify-center">
-                      {step.step}
-                    </span>
                   </div>
 
                   {/* Card */}
