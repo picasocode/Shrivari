@@ -2114,3 +2114,22 @@ Stage Summary:
 - Pagination only renders if more than 50 clients exist (50 fallback clients fit on exactly 1 page)
 - Mobile fallback to 2 columns preserved
 - Ready to commit & push
+
+---
+Task ID: clients-logo-size-fix
+Agent: main
+Task: Fix inconsistent logo sizes on Clients page (all logos should be same size)
+
+Work Log:
+- Diagnosed root cause: logos used `max-h-full max-w-full w-auto` which rendered each favicon at its natural aspect ratio → different favicons (16x16, 32x32, 128x128) appeared at different visual sizes
+- Fix: wrapped each logo in a FIXED square box (`w-20 h-20 md:w-24 md:h-24` = 80px mobile / 96px desktop) and forced image to `w-full h-full object-contain`
+- All 50 logos now render at exactly 96x96px on desktop, 80x80px on mobile
+- Verified via agent-browser DOM check: first 10 images all report "96x96", all 5 boxes report "96x96", total 50 images
+- Verified via VLM: "all logos are contained within consistent, roughly equal-sized square boxes, 5-column grid, clean layout, no overlap or cut-off"
+- Lint passes cleanly
+
+Stage Summary:
+- Logo sizing inconsistency fixed — every logo now occupies an identical fixed square box
+- 5 columns × 10 rows layout preserved
+- Clean borderless look preserved
+- Ready to commit & push
