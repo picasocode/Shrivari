@@ -108,33 +108,29 @@ function buildMonogram(name: string): string {
   return parts[0].slice(0, 2).toUpperCase()
 }
 
-/* ─── A single logo cell for a static grid ───
-   Renders the client LOGO in a uniform single-color (monochrome) treatment
-   inside a bordered cell so the grid reads as a clean, listed catalog. */
-function LogoCell({ client, index }: { client: Client; index: number }) {
+/* ─── A single logo item for a clean listed grid ───
+   No box, no border, no animation. Logo renders in its OWN color (natural).
+   Falls back to a clean monogram if the image fails. */
+function LogoItem({ client }: { client: Client }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   return (
-    <FadeIn delay={Math.min(index * 0.03, 0.4)}>
-      <div className="group relative aspect-[4/3] flex items-center justify-center bg-white border border-slate-200 hover:border-slate-300 transition-colors">
-        {client.logoUrl && !errored ? (
-          <img
-            src={client.logoUrl}
-            alt=""
-            aria-hidden="true"
-            onError={() => setErrored(true)}
-            className="max-h-[60%] max-w-[70%] w-auto object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}
-            loading="lazy"
-          />
-        ) : (
-          <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-700 transition-colors duration-300 select-none">
-            {monogram}
-          </span>
-        )}
-      </div>
-    </FadeIn>
+    <div className="flex items-center justify-center h-24 md:h-28 lg:h-32 px-4">
+      {client.logoUrl && !errored ? (
+        <img
+          src={client.logoUrl}
+          alt={client.name}
+          onError={() => setErrored(true)}
+          className="max-h-full max-w-full w-auto object-contain"
+          loading="lazy"
+        />
+      ) : (
+        <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-700 select-none">
+          {monogram}
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -302,27 +298,25 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ CLIENT LOGOS — STATIC LISTED GRID ════════════════ */}
-      {/* Logos listed in a clean bordered grid. No scrolling, no marquee. */}
+      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, NO BOXES ════════════════ */}
+      {/* Logos in their own color. No borders, no animation. Simple grid. */}
       <section className="bg-white py-12 md:py-16">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           {/* Section label */}
-          <FadeIn>
-            <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
-              <span className="h-px w-8 bg-slate-300" />
-              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
-                Our Clients
-              </span>
-              <span className="h-px w-8 bg-slate-300" />
-            </div>
-          </FadeIn>
+          <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
+            <span className="h-px w-8 bg-slate-300" />
+            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
+              Our Clients
+            </span>
+            <span className="h-px w-8 bg-slate-300" />
+          </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-px bg-slate-200">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-8">
               {Array.from({ length: 18 }).map((_, i) => (
                 <div
                   key={i}
-                  className="aspect-[4/3] bg-white animate-pulse"
+                  className="h-24 md:h-28 mx-auto w-full max-w-[10rem] bg-slate-100 animate-pulse"
                 />
               ))}
             </div>
@@ -332,16 +326,16 @@ export default function ClientsPage() {
               <p className="text-slate-500 text-lg">No clients found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-px bg-slate-200 border border-slate-200">
-              {listedClients.map((c, i) => (
-                <LogoCell key={c.id} client={c} index={i} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-6">
+              {listedClients.map(c => (
+                <LogoItem key={c.id} client={c} />
               ))}
             </div>
           )}
 
           {/* Count footer */}
           {!loading && listedClients.length > 0 && (
-            <p className="text-center text-xs text-slate-400 mt-6 tracking-wide">
+            <p className="text-center text-xs text-slate-400 mt-10 tracking-wide">
               Showing {listedClients.length} clients
               {activeFilter !== 'All' ? ` in ${activeFilter}` : ' across all industries'}
             </p>
