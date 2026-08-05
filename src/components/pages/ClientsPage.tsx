@@ -24,28 +24,54 @@ const FAV = (d: string) => `https://www.google.com/s2/favicons?domain=${d}&sz=12
 const FALLBACK_CLIENTS: Client[] = [
   { id: 'f1', name: 'Ashok Leyland', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('ashokleyland.com'), description: '', order: 1, active: true, createdAt: '', updatedAt: '' },
   { id: 'f2', name: 'TVS Motor', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('tvsmotor.com'), description: '', order: 2, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f3', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: FAV('larsentoubro.com'), description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f4', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: FAV('bharatforge.com'), description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f5', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: FAV('se.com'), description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f6', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: FAV('siemens.com'), description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f7', name: 'ABB', industry: 'Electronics', location: '', logoUrl: FAV('abb.com'), description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f8', name: 'General Electric', industry: 'Electronics', location: '', logoUrl: FAV('ge.com'), description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f9', name: 'Tata Power', industry: 'Power & Energy', location: '', logoUrl: FAV('tatapower.com'), description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f10', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: FAV('adani.com'), description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f11', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: FAV('jsw.in'), description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f12', name: 'Vedanta', industry: 'Metal', location: '', logoUrl: FAV('vedantaresources.com'), description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f13', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: FAV('ril.com'), description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f14', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: FAV('tatachemicals.com'), description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f15', name: 'TCS', industry: 'IT', location: '', logoUrl: FAV('tcs.com'), description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f16', name: 'Infosys', industry: 'IT', location: '', logoUrl: FAV('infosys.com'), description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f17', name: 'Wipro', industry: 'IT', location: '', logoUrl: FAV('wipro.com'), description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f18', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('apollohospitals.com'), description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f19', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: FAV('cipla.com'), description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f20', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: FAV('sunpharma.com'), description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f21', name: 'Dr. Reddy\'s', industry: 'Pharma', location: '', logoUrl: FAV('drreddys.com'), description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f22', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: FAV('dlf.in'), description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f23', name: 'ITC', industry: 'Food Industry', location: '', logoUrl: FAV('itcportal.com'), description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f24', name: 'Arvind', industry: 'Textiles', location: '', logoUrl: FAV('arvind.com'), description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f3', name: 'Tata Motors', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('tatamotors.com'), description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f4', name: 'Mahindra', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('mahindra.com'), description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f5', name: 'Bajaj Auto', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('bajajauto.com'), description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f6', name: 'Hyundai Motor', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('hyundai.com'), description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f7', name: 'Maruti Suzuki', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('marutisuzuki.com'), description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f8', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: FAV('larsentoubro.com'), description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f9', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: FAV('bharatforge.com'), description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f10', name: 'Cummins India', industry: 'Engineering', location: '', logoUrl: FAV('cummins.com'), description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f11', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: FAV('se.com'), description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f12', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: FAV('siemens.com'), description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f13', name: 'ABB', industry: 'Electronics', location: '', logoUrl: FAV('abb.com'), description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f14', name: 'Havells', industry: 'Electronics', location: '', logoUrl: FAV('havells.com'), description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f15', name: 'Crompton', industry: 'Electronics', location: '', logoUrl: FAV('crompton.co.in'), description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f16', name: 'BHEL', industry: 'Power Equipment', location: '', logoUrl: FAV('bhel.in'), description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f17', name: 'Tata Power', industry: 'Power & Energy', location: '', logoUrl: FAV('tatapower.com'), description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f18', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: FAV('adani.com'), description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f19', name: 'NTPC', industry: 'Power & Energy', location: '', logoUrl: FAV('ntpc.co.in'), description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f20', name: 'Power Grid', industry: 'Power & Energy', location: '', logoUrl: FAV('powergrid.in'), description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f21', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: FAV('jsw.in'), description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f22', name: 'Tata Steel', industry: 'Metal', location: '', logoUrl: FAV('tatasteel.com'), description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f23', name: 'Vedanta', industry: 'Metal', location: '', logoUrl: FAV('vedantaresources.com'), description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f24', name: 'Hindalco', industry: 'Metal', location: '', logoUrl: FAV('hindalco.com'), description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f25', name: 'SAIL', industry: 'Metal', location: '', logoUrl: FAV('sail.co.in'), description: '', order: 25, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f26', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: FAV('ril.com'), description: '', order: 26, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f27', name: 'IOCL', industry: 'Petroleum', location: '', logoUrl: FAV('iocl.com'), description: '', order: 27, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f28', name: 'BPCL', industry: 'Petroleum', location: '', logoUrl: FAV('bharatpetroleum.com'), description: '', order: 28, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f29', name: 'HPCL', industry: 'Petroleum', location: '', logoUrl: FAV('hpcl.co.in'), description: '', order: 29, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f30', name: 'ONGC', industry: 'Petroleum', location: '', logoUrl: FAV('ongcindia.com'), description: '', order: 30, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f31', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: FAV('tatachemicals.com'), description: '', order: 31, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f32', name: 'UPL', industry: 'Chemicals', location: '', logoUrl: FAV('upl-ltd.com'), description: '', order: 32, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f33', name: 'Pidilite', industry: 'Chemicals', location: '', logoUrl: FAV('pidilite.com'), description: '', order: 33, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f34', name: 'TCS', industry: 'IT', location: '', logoUrl: FAV('tcs.com'), description: '', order: 34, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f35', name: 'Infosys', industry: 'IT', location: '', logoUrl: FAV('infosys.com'), description: '', order: 35, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f36', name: 'Wipro', industry: 'IT', location: '', logoUrl: FAV('wipro.com'), description: '', order: 36, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f37', name: 'HCL Tech', industry: 'IT', location: '', logoUrl: FAV('hcltech.com'), description: '', order: 37, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f38', name: 'Tech Mahindra', industry: 'IT', location: '', logoUrl: FAV('techmahindra.com'), description: '', order: 38, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f39', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('apollohospitals.com'), description: '', order: 39, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f40', name: 'Fortis Healthcare', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('fortishealthcare.com'), description: '', order: 40, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f41', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: FAV('cipla.com'), description: '', order: 41, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f42', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: FAV('sunpharma.com'), description: '', order: 42, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f43', name: 'Dr. Reddy\'s', industry: 'Pharma', location: '', logoUrl: FAV('drreddys.com'), description: '', order: 43, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f44', name: 'Lupin', industry: 'Pharma', location: '', logoUrl: FAV('lupin.com'), description: '', order: 44, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f45', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: FAV('dlf.in'), description: '', order: 45, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f46', name: 'Godrej Properties', industry: 'Real Estate', location: '', logoUrl: FAV('godrejproperties.com'), description: '', order: 46, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f47', name: 'ITC', industry: 'Food Industry', location: '', logoUrl: FAV('itcportal.com'), description: '', order: 47, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f48', name: 'Britannia', industry: 'Food Industry', location: '', logoUrl: FAV('britannia.co.in'), description: '', order: 48, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f49', name: 'UltraTech', industry: 'Cement', location: '', logoUrl: FAV('ultratechcement.com'), description: '', order: 49, active: true, createdAt: '', updatedAt: '' },
+  { id: 'f50', name: 'Ambuja', industry: 'Cement', location: '', logoUrl: FAV('ambujacement.com'), description: '', order: 50, active: true, createdAt: '', updatedAt: '' },
 ]
 
 /* ─── FadeIn Helper ─── */
@@ -117,7 +143,7 @@ function LogoItem({ client }: { client: Client }) {
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   return (
-    <div className="flex items-center justify-center h-24 md:h-28 lg:h-32 px-4">
+    <div className="flex items-center justify-center h-20 md:h-24 px-3">
       {client.logoUrl && !errored ? (
         <img
           src={client.logoUrl}
@@ -135,8 +161,8 @@ function LogoItem({ client }: { client: Client }) {
   )
 }
 
-/* ─── Pagination config: 4 logos per row, 3 rows per page = 12 per page ─── */
-const PAGE_SIZE = 12
+/* ─── Pagination config: 5 logos per row, 10 rows per page = 50 per page ─── */
+const PAGE_SIZE = 50
 
 /* ─── Main Component ─── */
 export default function ClientsPage() {
@@ -325,10 +351,10 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, 4 PER ROW, PAGINATED ════════════════ */}
-      {/* Logos in their own color. No borders, no animation. 4 per row. */}
+      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, 5 PER ROW, PAGINATED ════════════════ */}
+      {/* Logos in their own color. No borders, no animation. 5 per row × 10 rows = 50 per page. */}
       <section id="client-logos" className="bg-white py-12 md:py-16">
-        <div className="max-w-[1100px] mx-auto px-5 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-5 lg:px-8">
           {/* Section label */}
           <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
             <span className="h-px w-8 bg-slate-300" />
@@ -339,11 +365,11 @@ export default function ClientsPage() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8">
-              {Array.from({ length: 8 }).map((_, i) => (
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-y-6">
+              {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-24 md:h-28 mx-auto w-full max-w-[10rem] bg-slate-100 animate-pulse"
+                  className="h-20 md:h-24 mx-auto w-full max-w-[10rem] bg-slate-100 animate-pulse"
                 />
               ))}
             </div>
@@ -353,7 +379,7 @@ export default function ClientsPage() {
               <p className="text-slate-500 text-lg">No clients found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-y-4">
               {pageClients.map(c => (
                 <LogoItem key={c.id} client={c} />
               ))}

@@ -2087,3 +2087,30 @@ Stage Summary:
 - Responsive: 1 col mobile / 2 col sm / 3 col lg, gap-6.
 - Lint: 0 errors, 0 warnings.
 - Produced artifact: rewritten /home/z/my-project/src/components/pages/SectorsPage.tsx.
+
+---
+Task ID: clients-5x10
+Agent: main
+Task: Update Clients page to display logos in 5 columns × 10 rows (50 per page)
+
+Work Log:
+- Read existing ClientsPage.tsx to understand current 4×3 = 12-per-page layout
+- Expanded FALLBACK_CLIENTS from 24 → 50 real Indian/global brands with favicon URLs (across Auto, Engineering, Electronics, Power, Metal, Petroleum, Chemicals, IT, Hospitals, Pharma, Real Estate, Food, Cement sectors)
+- Changed PAGE_SIZE from 12 → 50
+- Changed main grid from `grid-cols-2 md:grid-cols-4` → `grid-cols-2 md:grid-cols-5`
+- Changed loading skeleton grid similarly (5 cols, 10 placeholders)
+- Widened container from `max-w-[1100px]` → `max-w-[1400px]` to fit 5 columns comfortably
+- Tightened LogoItem height from `h-24 md:h-28 lg:h-32` → `h-20 md:h-24` (compact for 10-row layout)
+- Updated pagination config comment to reflect new "5 per row × 10 rows = 50 per page"
+- Updated section header comment
+- Lint passed cleanly
+- Restarted dev server (cleared .next cache first)
+- Verified via agent-browser: DOM check confirms 50 items in grid with 5 columns (243px each)
+- Verified via VLM screenshot analysis: confirmed 5 columns, clean borderless layout, no overlaps/cut-offs
+
+Stage Summary:
+- Clients page now shows 50 logos per page in 5-column × 10-row grid
+- Maintains monochrome INK design, clean borderless look, natural logo colors
+- Pagination only renders if more than 50 clients exist (50 fallback clients fit on exactly 1 page)
+- Mobile fallback to 2 columns preserved
+- Ready to commit & push
