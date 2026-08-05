@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, useInView } from 'framer-motion'
 import {
   ChevronRight,
+  ChevronLeft,
   Building2,
   ArrowRight,
 } from 'lucide-react'
@@ -134,12 +135,16 @@ function LogoItem({ client }: { client: Client }) {
   )
 }
 
+/* ─── Pagination config: 4 logos per row, 3 rows per page = 12 per page ─── */
+const PAGE_SIZE = 12
+
 /* ─── Main Component ─── */
 export default function ClientsPage() {
   const { navigate } = useRouter()
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('All')
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     let mounted = true
@@ -181,8 +186,30 @@ export default function ClientsPage() {
     ]
   }, [clients, industries])
 
-  // Clients are listed in a static grid (no scrolling marquee).
+  // Clients are listed in a static grid — 4 per row, paginated.
   const listedClients = filteredClients
+
+  // Pagination: slice the filtered list to the current page
+  const totalPages = Math.max(1, Math.ceil(listedClients.length / PAGE_SIZE))
+  const safePage = Math.min(currentPage, totalPages)
+  const startIdx = (safePage - 1) * PAGE_SIZE
+  const endIdx = startIdx + PAGE_SIZE
+  const pageClients = listedClients.slice(startIdx, endIdx)
+
+  // Change filter AND reset to page 1 in the same handler (avoids effect-based setState)
+  const handleFilterChange = (ind: string) => {
+    setActiveFilter(ind)
+    setCurrentPage(1)
+  }
+
+  const goToPage = (p: number) => {
+    setCurrentPage(p)
+    // Scroll the logo grid into view so the user sees the new page
+    if (typeof window !== 'undefined') {
+      const el = document.getElementById('client-logos')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   return (
     <div className="bg-white min-h-screen">
@@ -280,7 +307,7 @@ export default function ClientsPage() {
                   return (
                     <button
                       key={ind}
-                      onClick={() => setActiveFilter(ind)}
+                      onClick={() => handleFilterChange(ind)}
                       className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border"
                       style={{
                         background: active ? INK : 'transparent',
@@ -298,10 +325,10 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, NO BOXES ════════════════ */}
-      {/* Logos in their own color. No borders, no animation. Simple grid. */}
-      <section className="bg-white py-12 md:py-16">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, 4 PER ROW, PAGINATED ════════════════ */}
+      {/* Logos in their own color. No borders, no animation. 4 per row. */}
+      <section id="client-logos" className="bg-white py-12 md:py-16">
+        <div className="max-w-[1100px] mx-auto px-5 lg:px-8">
           {/* Section label */}
           <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
             <span className="h-px w-8 bg-slate-300" />
@@ -312,33 +339,77 @@ export default function ClientsPage() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-8">
-              {Array.from({ length: 18 }).map((_, i) => (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8">
+              {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
                   className="h-24 md:h-28 mx-auto w-full max-w-[10rem] bg-slate-100 animate-pulse"
                 />
               ))}
             </div>
-          ) : listedClients.length === 0 ? (
+          ) : pageClients.length === 0 ? (
             <div className="text-center py-20">
               <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
               <p className="text-slate-500 text-lg">No clients found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-6">
-              {listedClients.map(c => (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6">
+              {pageClients.map(c => (
                 <LogoItem key={c.id} client={c} />
               ))}
             </div>
           )}
 
-          {/* Count footer */}
+          {/* Range + count footer */}
           {!loading && listedClients.length > 0 && (
             <p className="text-center text-xs text-slate-400 mt-10 tracking-wide">
-              Showing {listedClients.length} clients
+              Showing {startIdx + 1}–{Math.min(endIdx, listedClients.length)} of {listedClients.length} clients
               {activeFilter !== 'All' ? ` in ${activeFilter}` : ' across all industries'}
             </p>
+          )}
+
+          {/* Pagination controls — only if more than one page */}
+          {!loading && totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <button
+                onClick={() => goToPage(safePage - 1)}
+                disabled={safePage === 1}
+                aria-label="Previous page"
+                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const page = i + 1
+                const active = page === safePage
+                return (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    aria-label={`Page ${page}`}
+                    aria-current={active ? 'page' : undefined}
+                    className="w-10 h-10 rounded-full border text-sm font-semibold transition-colors"
+                    style={{
+                      background: active ? '#1A1A2E' : 'transparent',
+                      color: active ? '#FFFFFF' : '#475569',
+                      borderColor: active ? '#1A1A2E' : '#E5E7EB',
+                    }}
+                  >
+                    {page}
+                  </button>
+                )
+              })}
+
+              <button
+                onClick={() => goToPage(safePage + 1)}
+                disabled={safePage === totalPages}
+                aria-label="Next page"
+                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
       </section>
