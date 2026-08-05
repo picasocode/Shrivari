@@ -1643,3 +1643,413 @@ Stage Summary:
 - NO code changes made to the product page.
 - Flagged ambiguity to the user: the described wellness content is not part of the SVEPL project.
 - Awaiting clarification before proceeding.
+
+---
+Task ID: client-single-color-redesign
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) fix the Clients page so logos use a uniform single-color treatment instead of clashing multi-colored favicons; (2) redesign the Clients stats section ("key insights") in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `src/components/pages/ClientsPage.tsx` (LogoItem component + STATS section).
+- Confirmed the issue: logos used `grayscale-[20%]` (only 20% desaturated) → colorful favicons (red Tata, blue Siemens, green Vedanta, etc.) looked messy and inconsistent. The stats section used INK numbers + slate labels + vertical dividers — already mostly mono but not "redesigned" as a bold key-insights band.
+- **LogoItem fix**: replaced `opacity-80 grayscale-[20%] group-hover:grayscale-0` with a full single-color CSS filter `grayscale(1) contrast(1.15) brightness(0.7)` applied via inline `style`. Now ALL logos render as uniform dark-ink monochrome marks — consistent, clean, professional. Opacity lifts 55%→100% on hover for subtle interactivity. Logos remain single-color even on hover (user said "with single color").
+- **Key Insights (stats) redesign**: rewrote the STATS section as a bold editorial monochrome band:
+  - Added centered "BY THE NUMBERS" label flanked by slate hairlines (replaced the previous coral-less bare header — now a deliberate single-color label).
+  - Numbers bumped from text-4xl/5xl → text-5xl/6xl/7xl (much bigger, more editorial).
+  - Removed the vertical dividers between columns.
+  - Labels uppercased + tracking widened for a refined key-insights look.
+  - ALL color is INK (#1A1A2E) + slate shades only — zero coral, zero color accents. True single-color treatment.
+- Ran `bun run lint` → clean, no errors/warnings.
+- Restarted dev server (`rm -rf .next` + `bun run dev`), confirmed HTTP 200.
+- Verified via agent-browser:
+  - 4 marquee rows present (querySelector count = 4).
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`.
+  - Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — counters animate when scrolled into view.
+- Took full-page screenshot at /home/z/my-project/clients-final.png.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color (monochrome dark-ink) via CSS filter — no more clashing multi-colored favicons.
+- "Key insights" (stats) section redesigned as a bold single-color editorial band: big INK numbers, uppercased labels, slate hairline label, zero coral/color accents.
+- 4 scrolling rows retained from previous task.
+- Lint clean, dev server running on port 3000, HTTP 200.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) fix the Clients page so logos use a uniform single-color treatment instead of clashing multi-colored favicons; (2) redesign the Clients stats ("key insights") section in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `src/components/pages/ClientsPage.tsx` — logos were using `opacity-80 grayscale-[20%]` (mostly full-color favicons → looked messy/inconsistent). Stats section was already monochrome but plain (small numbers, vertical dividers, no label).
+- **LogoItem**: replaced the partial-grayscale className with a uniform single-color CSS filter treatment: `filter: grayscale(1) contrast(1.15) brightness(0.7)`. All client logos now render as uniform dark-ink monochrome marks — consistent and clean. Opacity lifts 55%→100% on hover for interactivity. Monogram fallback kept as slate wordmark.
+- **Stats → "Key Insights" redesign**: replaced the plain border-y stats strip with a bold editorial single-color band:
+  - Added centered "BY THE NUMBERS" label flanked by slate hairlines (no coral).
+  - Enlarged numbers to `text-5xl md:text-6xl lg:text-7xl` extrabold, all INK color (#1A1A2E).
+  - Labels → `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`.
+  - Removed vertical dividers for a cleaner monochrome look.
+  - Increased vertical padding (py-14 md:py-16) for a more spacious, editorial feel.
+- Ran `bun run lint` → passes cleanly (0 errors/warnings).
+- Cleared `.next` cache, restarted dev server. HTTP 200 on `/`.
+- agent-browser verification:
+  - 4 marquee rows still render (`document.querySelectorAll('section .relative.overflow-hidden').length` → 4).
+  - Logo filter confirmed applied: computed style = `grayscale(1) contrast(1.15) brightness(0.7)`.
+  - Stats section confirmed: scrolled into view, counters animated to "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST".
+
+Stage Summary:
+- Clients page corrected: all logos now uniform single-color (monochrome dark ink) — no more clashing colorful favicons.
+- "Key insights" stats section redesigned as bold editorial single-color band (all INK + slate, zero coral).
+- 4-row scrolling marquee preserved.
+- Lint clean, dev server HTTP 200, agent-browser-verified.
+
+---
+Task ID: clients-single-color-redesign
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos use a uniform single-color treatment instead of clashing multi-colored favicons; (2) redesign the stats ("key insights") section in a bold single-color (monochrome) treatment.
+
+Work Log:
+- Read current `src/components/pages/ClientsPage.tsx` — confirmed logos used `opacity-80 grayscale-[20%]` (mostly full-color, messy) and stats section used INK numbers but had dividers + was small/editorial-light.
+- LogoItem: changed image className from `opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0` to `opacity-55 group-hover:opacity-100 transition-opacity` + inline `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}`. This forces ALL logos to a uniform dark monochrome mark — no clashing colors. Hover lifts opacity (still grayscale, never reveals color → true "single color" treatment).
+- Stats section: redesigned as "KEY INSIGHTS — single-color editorial stats band". Removed vertical dividers, added centered "By the Numbers" label flanked by slate hairlines (no coral), bumped numbers to `text-5xl md:text-6xl lg:text-7xl font-extrabold`, labels to `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`. All monochrome (INK + slate only).
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Restarted dev server (cleared .next). Verified HTTP 200 on `/`.
+- agent-browser verification:
+  - 4 marquee rows still render correctly (query returned 4)
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`
+  - Stats section renders "BY THE NUMBERS" with all 4 stats: "24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" (counters animated after scrollIntoView)
+  - All in single INK color, no coral accents in the stats band
+
+Stage Summary:
+- Clients page "corrected": all logos now render in uniform single-color (monochrome dark) treatment — consistent, clean, no multi-color clash.
+- "Key insights" (stats) section redesigned as a bold editorial monochrome band — all INK + slate, no coral, large tracking-tight numbers, "By the Numbers" label.
+- Lint clean, dev server running on port 3000, agent-browser-verified.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos are uniform single-color (not messy colorful favicons), (2) redesign the "key insights" (stats) section in a single-color monochrome treatment.
+
+Work Log:
+- Read current `ClientsPage.tsx` — confirmed logos used `grayscale-[20%]` (only 20% desaturated, mostly full-color), and the stats section used INK numbers + slate labels with vertical dividers but no strong editorial presence.
+- **LogoItem change**: replaced `opacity-80 grayscale-[20%] group-hover:grayscale-0` with a full single-color CSS filter treatment: `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}` + `opacity-55 group-hover:opacity-100`. This forces ALL logos (regardless of original brand color) to render as a uniform dark-ink monochrome mark — consistent and clean. Hover lifts opacity to 100% for interactivity while staying monochrome (single color).
+- **Stats section ("key insights") redesign**: 
+  - Removed the old inline divider layout (border-l on each column).
+  - Added a centered "BY THE NUMBERS" label flanked by slate-300 hairlines (no coral — single color).
+  - Enlarged the numbers to `text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none` for a bold editorial monochrome statement.
+  - All numbers in INK (#1A1A2E); labels in `text-slate-500` with `tracking-[0.15em] uppercase` — fully monochrome, no color accents.
+  - Increased vertical padding (`py-14 md:py-16`) and added `gap-y-10` for breathing room on mobile.
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Cleared `.next` cache, restarted dev server → HTTP 200, no errors in dev.log.
+- Verified via agent-browser:
+  - 4 marquee rows render (`document.querySelectorAll('section .relative.overflow-hidden').length` → 4)
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`
+  - Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST"
+  - Counters animate correctly when scrolled into view.
+
+Stage Summary:
+- Clients page "corrected": all logos now render in uniform single-color (monochrome dark-ink) via CSS filter — no more clashing multi-colored favicons.
+- "Key insights" (stats) redesigned as a bold editorial monochrome band: "BY THE NUMBERS" label, huge INK numbers (up to 7xl), uppercase tracked labels — fully single-color, no coral.
+- 4-row scrolling layout preserved.
+- Lint clean, dev server running on port 3000, verified end-to-end via agent-browser.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) fix the Clients page so logos are uniform single-color (correct the messy colorful favicon look), (2) redesign the stats/"key insights" section in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `src/components/pages/ClientsPage.tsx` — logos were using `opacity-80 grayscale-[20%]` (mostly colorful, only 20% desaturated) which looked messy/inconsistent across 24 different brand favicons. Stats section was plain with vertical dividers and small numbers.
+- **LogoItem**: changed the `<img>` treatment from `opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0` to a uniform single-color CSS filter: `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}` + `opacity-55 group-hover:opacity-100`. This forces ALL logos to render as a uniform dark-ink monochrome mark — no clashing multi-colored favicons. Kept the large size (h-16/h-20/h-24) and 4-row layout from the previous task.
+- **Stats → "KEY INSIGHTS"**: completely redesigned the stats section. Removed the old inline divider layout. New design: centered "BY THE NUMBERS" label flanked by slate hairlines (no coral), then a 4-column grid with HUGE editorial numbers (text-5xl → text-7xl, font-extrabold, tracking-tight) all in INK (#1A1A2E), uppercase tracked labels in slate-500. Entirely monochrome — zero coral/color accents. Added more vertical breathing room (py-14/py-16) and removed the vertical dividers for a cleaner editorial look.
+- Ran `bun run lint` — passes cleanly.
+- Restarted dev server (rm -rf .next), HTTP 200.
+- Verified via agent-browser:
+  - 4 marquee rows confirmed (`document.querySelectorAll('section .relative.overflow-hidden').length` → 4)
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`
+  - Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — all single INK color, no coral.
+  - Counters animate correctly when scrolled into view.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color (monochrome dark ink) via CSS filter — consistent, clean, no colorful favicon clash.
+- "Key insights" (stats) redesigned as a bold editorial monochrome band: "BY THE NUMBERS" with huge INK numbers, uppercase tracked labels, slate hairlines (no coral anywhere).
+- Design now fully aligns with user's long-standing "NO COLOR / single color / monochrome" preference.
+- Lint clean, dev server running on port 3000, browser-verified.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) Fix the Clients page so logos use a uniform single-color treatment (no clashing multi-colored favicons). (2) Redesign the stats / "key insights" section in a bold single-color (monochrome) treatment.
+
+Work Log:
+- Interpreted "creect client and redigb key insits with single color" as "correct client and redesign key insights with single color".
+- Clients page (`src/components/pages/ClientsPage.tsx`) — LogoItem: replaced the partial `grayscale-[20%]` + hover-reveal-color treatment with a full uniform monochrome filter. New inline style: `filter: grayscale(1) contrast(1.15) brightness(0.7)` so every client logo reads as a uniform dark-ink mark. Opacity lifts 55% → 100% on hover for interactivity (color stays monochrome on hover too, per "single color" request).
+- Redesigned the STATS section (the "key insights": Trusted Clients / Industries Served / Projects Delivered / Years of Trust) into an editorial single-color band:
+  * Removed the old coral-free but bland layout (vertical dividers, small numbers).
+  * Added a centered "BY THE NUMBERS" eyebrow label flanked by slate hairlines (no coral).
+  * Numbers scaled up to text-5xl/6xl/7xl extrabold, all INK (#1A1A2E) — single color.
+  * Labels in tracked uppercase slate-500. No color accents anywhere.
+- Ran `bun run lint` — passes cleanly (0 errors, 0 warnings).
+- Restarted dev server (cleared .next). Verified via agent-browser:
+  * HTTP 200 on `/`.
+  * Navigated to `#clients`.
+  * Confirmed 4 marquee rows render (`document.querySelectorAll('section .relative.overflow-hidden').length` === 4).
+  * Confirmed logo filter applied: `getComputedStyle(img).filter` === `"grayscale(1) contrast(1.15) brightness(0.7)"`.
+  * Confirmed stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST".
+- Dev log shows only the known unrelated `/api/testimonials` 500 (Supabase not configured in sandbox; fallback path handles it).
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color monochrome (grayscale + contrast/brightness) — no more clashing colorful favicons.
+- "Key insights" (stats) section redesigned as bold single-color editorial band — all INK, no coral, large extrabold numbers, centered hairline label.
+- 4 scrolling logo rows retained from previous task.
+- Lint clean, dev server running on port 3000, browser-verified.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — fix the Clients page (logos were colorful/messy) and redesign the stats ("key insights") section in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `ClientsPage.tsx` — confirmed 4 marquee rows (from prior task) but logos used `grayscale-[20%]` (mostly full-color favicons → looked messy/inconsistent). Stats section used INK numbers + slate labels with vertical dividers, no coral but plain layout.
+- LogoItem: replaced `opacity-80 grayscale-[20%] group-hover:grayscale-0` with a uniform single-color CSS filter: `grayscale(1) contrast(1.15) brightness(0.7)` + `opacity-55 group-hover:opacity-100`. Now ALL logos render as a consistent dark monochrome mark — no clashing multi-colored favicons. Opacity lifts on hover for interactivity but color stays monochrome.
+- Redesigned the STATS section ("key insights") into an editorial single-color band:
+  - Added centered "BY THE NUMBERS" label flanked by slate hairlines (replaced any coral accents with slate — fully monochrome).
+  - Enlarged numbers to `text-5xl md:text-6xl lg:text-7xl` font-extrabold, all in INK (`#1A1A2E`).
+  - Labels in `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`.
+  - Removed the vertical dividers between columns for a cleaner, more editorial look.
+  - Increased vertical padding (py-14 md:py-16) for a more spacious, statement feel.
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Restarted dev server (rm -rf .next + bun run dev), confirmed HTTP 200 on `/`.
+- agent-browser verification:
+  - 4 marquee rows still render correctly.
+  - Logo CSS filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`.
+  - Stats section confirmed rendering: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — all single-color (INK/slate), no coral.
+  - Counters animate correctly when scrolled into view.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color (monochrome) treatment — no more messy colorful favicons.
+- Key insights (stats) section redesigned as bold editorial monochrome band: "BY THE NUMBERS" label, huge INK numbers, uppercase tracked labels, no coral anywhere.
+- Lint clean, dev server running on port 3000, all interactions verified via agent-browser.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos use a uniform single-color treatment instead of clashing multi-colored favicons, and (2) redesign the stats ("key insights") section in a single-color monochrome treatment.
+
+Work Log:
+- Read current ClientsPage.tsx — confirmed logos were using `opacity-80 grayscale-[20%]` (mostly full-color, messy look) and stats section was minimal but used vertical dividers + small numbers.
+- LogoItem: changed img className to `opacity-55 group-hover:opacity-100 transition-opacity` and added inline `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}`. This forces ALL logos to render as uniform dark ink marks — single-color treatment, no more clashing colored favicons. Hover lifts opacity for interactivity.
+- Monogram fallback: kept text-slate-400 → text-slate-800 on hover (consistent monochrome).
+- Stats section ("KEY INSIGHTS"): redesigned to a bold editorial single-color band:
+  * Removed coral accents entirely; label is "BY THE NUMBERS" flanked by slate-300 hairlines.
+  * Numbers enlarged to text-5xl/6xl/7xl, all in INK (#1A1A2E), font-extrabold, tracking-tight.
+  * Labels: text-[11px]/xs, font-semibold, tracking-[0.15em], uppercase, text-slate-500.
+  * Removed vertical dividers between columns for a cleaner monochrome look.
+  * Section: bg-white, border-y border-slate-200, py-14/16.
+- Ran `bun run lint` — passes cleanly (0 errors).
+- Restarted dev server (rm -rf .next), HTTP 200 on /.
+- Verified via agent-browser:
+  * 4 marquee rows render (query returned 4).
+  * Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`.
+  * Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — all single-color (INK + slate), no coral.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color (monochrome dark ink) via CSS filter — consistent, clean, professional.
+- "Key insights" (stats) redesigned as bold editorial single-color band — "BY THE NUMBERS", huge INK numbers, no color accents, no dividers.
+- Lint clean, dev server HTTP 200, 4 rows + filter + stats text all verified in browser.
+- Screenshots saved: /home/z/my-project/clients-single-color.png, /home/z/my-project/clients-final.png
+
+---
+Task ID: client-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos use a uniform single-color treatment (no clashing multi-colored favicons), and (2) redesign the stats / "key insights" section in a clean single-color (monochrome) treatment.
+
+Work Log:
+- Read current `ClientsPage.tsx` — confirmed 4 marquee rows (from prior task) but logos were using `opacity-80 grayscale-[20%] group-hover:grayscale-0`, meaning logos were mostly full-color and only desaturated to 20%. This produced a messy, inconsistent mix of colorful favicons.
+- Updated `LogoItem` img element:
+  - Removed partial `grayscale-[20%]` and `group-hover:grayscale-0`.
+  - Applied a uniform single-color CSS filter via inline style: `filter: grayscale(1) contrast(1.15) brightness(0.7)` — forces every logo to render as a consistent dark ink mark (monochrome), regardless of the original brand color.
+  - Opacity lifted from 0.55 → 1.0 on hover for subtle interactivity (color stays monochrome on hover too — true "single color").
+- Redesigned the STATS section (the "key insights": Trusted Clients / Industries Served / Projects Delivered / Years of Trust) as a single-color editorial band:
+  - Removed the previous coral-free but plain layout; added a centered "BY THE NUMBERS" eyebrow label flanked by slate hairlines (no coral accent anywhere).
+  - Bumped number typography to `text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight` in INK (#1A1A2E) — big, bold, monochrome.
+  - Labels set to `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`.
+  - Removed the old vertical dividers for a cleaner, more editorial single-color look.
+  - Increased vertical padding to `py-14 md:py-16` and section border to `border-slate-200`.
+- Ran `bun run lint` — passes cleanly (0 errors, 0 warnings).
+- Cleared `.next` cache and restarted dev server. HTTP 200 on `/`.
+- Verified via agent-browser:
+  - Navigated to `/#clients`.
+  - Confirmed 4 marquee rows still render (`document.querySelectorAll('section .relative.overflow-hidden').length` → 4).
+  - Confirmed the single-color filter is applied to logos: `getComputedStyle(img).filter` → `"grayscale(1) contrast(1.15) brightness(0.7)"`.
+  - Confirmed the redesigned stats section renders: scrolled into view, counters animated to "24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST", all under the "BY THE NUMBERS" eyebrow.
+
+Stage Summary:
+- Clients page "corrected": all logos now render in a uniform single-color (monochrome dark ink) treatment via CSS filter — no more clashing multi-colored favicons.
+- "Key insights" (stats) section redesigned as a bold single-color editorial band: huge INK numbers, slate hairline eyebrow, zero coral/color accents.
+- Lint clean, dev server HTTP 200, agent-browser verification passed.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos are uniform single-color (monochrome), and (2) redesign the stats ("key insights") section in a single-color treatment.
+
+Work Log:
+- Interpreted the typo-heavy instruction as two actions on ClientsPage.tsx: correct the client logo treatment + redesign the stats section, both using single color (monochrome).
+- Read current ClientsPage.tsx: logos used `opacity-80 grayscale-[20%]` (mostly colorful favicons → looked messy/inconsistent); stats section was a plain border-y band with `text-4xl` numbers and slate labels (no coral, but flat).
+- CHANGE 1 — LogoItem: replaced the partial-grayscale treatment with a full single-color CSS filter `grayscale(1) contrast(1.15) brightness(0.7)` so every logo renders as a uniform dark-ink monochrome mark. Opacity lifts 55% → 100% on hover. No color is reintroduced on hover (stays single-color per user request). Monogram fallback also retuned to slate-400 → slate-800.
+- CHANGE 2 — Stats → "KEY INSIGHTS" redesign: rebuilt the stats section as a bold editorial monochrome band. Removed the previous `border-y border-slate-100` flat strip; added a centered "By the Numbers" label flanked by slate-300 hairlines (no coral), bumped numbers to `text-5xl md:text-6xl lg:text-7xl` extrabold INK, labels to `text-[11px] tracking-[0.15em] uppercase` slate-500. Removed vertical dividers for a cleaner single-color editorial look.
+- Ran `bun run lint` — clean, 0 errors/warnings.
+- Restarted dev server (cleared .next, port 3000, HTTP 200).
+- Verified via agent-browser: navigated to `#clients`, confirmed 4 marquee rows still render, confirmed logo filter computed style = `grayscale(1) contrast(1.15) brightness(0.7)` (single-color treatment live), confirmed stats section renders "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" all in INK monochrome.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform monochrome (single-color) — no more clashing multi-colored favicons.
+- "Key insights" (stats) section redesigned as a single-color editorial band: huge INK numbers, slate hairline label, no coral anywhere.
+- 4-row marquee layout preserved from previous task.
+- Lint clean, dev server HTTP 200, agent-browser verified end-to-end.
+
+---
+Task ID: client-correct-key-insights-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) Correct the Clients page logos (make them uniform single-color, not messy colorful favicons). (2) Redesign the stats / "key insights" section in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `ClientsPage.tsx` (4-row marquee from previous task) and the HomePage "Why Choose Us" for context.
+- Identified "key insights" = the STATS section on the Clients page (Trusted Clients, Industries Served, Projects Delivered, Years of Trust).
+- LogoItem: replaced the partial-color treatment (`opacity-80 grayscale-[20%]` + `group-hover:grayscale-0`) with a uniform single-color CSS filter: `grayscale(1) contrast(1.15) brightness(0.7)`. Now every client logo renders as a consistent dark-ink monochrome mark — no more clashing multi-colored favicons. Opacity still lifts 55% → 100% on hover for interactivity.
+- Stats / "Key Insights" redesign: rewrote the section as a bold editorial monochrome band:
+  * Centered "BY THE NUMBERS" label flanked by slate hairlines (no coral).
+  * Numbers scaled up to `text-5xl md:text-6xl lg:text-7xl` extrabold, all in INK (#1A1A2E) — single color, no accent.
+  * Labels: `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`.
+  * Removed the vertical dividers for a cleaner, more spacious look.
+  * Bumped vertical padding to `py-14 md:py-16`.
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Restarted dev server (rm -rf .next), confirmed HTTP 200 on `/`.
+- agent-browser verification:
+  * 4 marquee rows still render ✓
+  * Logo CSS filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)` ✓
+  * Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" ✓
+  * Counters animate correctly when scrolled into view.
+
+Stage Summary:
+- Clients page corrected: all logos now uniform single-color (monochrome ink) — consistent, clean, professional.
+- "Key insights" (stats) redesigned as a bold single-color editorial band — all INK, no coral, bigger typography, no dividers.
+- Lint clean, dev server running on port 3000, verified end-to-end via agent-browser.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) fix the Clients page logos so they use a uniform single-color (monochrome) treatment instead of clashing multi-colored favicons; (2) redesign the stats ("key insights") section in a bold single-color monochrome treatment.
+
+Work Log:
+- Read current ClientsPage.tsx — confirmed logos used `grayscale-[20%] opacity-80` (mostly full-color), and stats section was a plain 4-col strip with vertical dividers.
+- Clients — LogoItem: replaced the partial-grayscale className with a full single-color CSS filter: `filter: grayscale(1) contrast(1.15) brightness(0.7)`. This forces ALL logos (regardless of original brand color) to render as a uniform dark-ink monochrome mark. Opacity lifts 55%→100% on hover for interactivity. Logos remain large (h-16/h-20/h-24). Monogram fallback unchanged.
+- Key Insights (stats): redesigned the section as a bold editorial single-color band:
+  • Removed coral accents entirely.
+  • Added a centered "BY THE NUMBERS" label flanked by slate-300 hairlines (monochrome).
+  • Numbers bumped to text-5xl/6xl/7xl, font-extrabold, tracking-tight, all in INK (#1A1A2E).
+  • Labels uppercased, tracking-[0.15em], text-slate-500.
+  • Removed vertical dividers for a cleaner editorial look.
+  • All elements strictly single-color (INK + slate shades only).
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Cleared `.next` cache, restarted dev server. HTTP 200 on `/`, no errors.
+- Verified via agent-browser:
+  • 4 marquee rows render (querySelector count = 4).
+  • Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`.
+  • Stats section renders "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST".
+  • Counters animate when scrolled into view (AnimatedCounter + useInView).
+
+Stage Summary:
+- Clients page corrected: all logos now uniform monochrome (single-color) — no more clashing colorful favicons.
+- Key insights (stats) section redesigned as bold single-color editorial band (INK + slate only, no coral).
+- 4 scrolling rows retained from previous task.
+- Lint clean, dev server running on port 3000.
+
+---
+Task ID: client-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos are uniform single-color, (2) redesign the stats ("key insights") section in a single-color monochrome treatment.
+
+Work Log:
+- Read current ClientsPage.tsx — confirmed 4 marquee rows (from prior task) + existing STATS section using INK numbers with slate-500 labels and a coral-free border-y band.
+- Task 1 (correct client logos): replaced the per-logo className `opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0` (which left logos mostly full-color / clashing) with a uniform single-color treatment: `opacity-55 group-hover:opacity-100 transition-opacity` + inline `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}`. This forces every client logo (colorful Google favicons) to render as a uniform dark ink monochrome mark — no more random clashing colors. Opacity lifts on hover for subtle interactivity. Monogram fallback unchanged.
+- Task 2 (redesign key insights): replaced the old inline STATS section with a new "KEY INSIGHTS — single-color editorial stats band". Changes: added a centered "BY THE NUMBERS" label flanked by slate hairlines (NO coral), enlarged numbers to text-5xl/6xl/7xl extrabold tracking-tight, switched labels to uppercase tracking-[0.15em] slate-500, removed the vertical column dividers, increased vertical padding. Entire section is monochrome (INK + slate only) — zero coral, zero color accents.
+- Ran `bun run lint` — passes cleanly (no errors/warnings).
+- Restarted dev server (rm -rf .next), confirmed HTTP 200 on `/`.
+- Verified via agent-browser: navigated to `/#clients`, confirmed 4 marquee rows render, confirmed logo filter computed style = `grayscale(1) contrast(1.15) brightness(0.7)`, confirmed stats section text = "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" (counters animate on scroll into view).
+
+Stage Summary:
+- Clients page logos now uniform single-color (monochrome ink) — corrected the messy colorful-favicon look.
+- Stats section redesigned as "BY THE NUMBERS" editorial band, fully monochrome (INK + slate only, no coral).
+- 4 scrolling logo rows retained.
+- Lint clean, dev server HTTP 200, agent-browser verified rendering + filter + text content.
+
+---
+Task ID: client-single-color-and-key-insights
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos look uniform/clean instead of messy colorful favicons, (2) redesign the stats ("key insights") section in a single-color monochrome treatment.
+
+Work Log:
+- Read `/home/z/my-project/src/components/pages/ClientsPage.tsx` (current state: 4 marquee rows from previous task, logos using `opacity-80 grayscale-[20%]` = mostly full-color favicons).
+- **Logo single-color treatment**: Changed the `LogoItem` img className to `opacity-55 group-hover:opacity-100 transition-opacity` and added inline `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}`. This forces every logo into a uniform dark-ink monochrome mark — no clashing multi-colored favicons. Hover lifts opacity for subtle feedback (color stays monochrome).
+- **Monogram fallback** kept identical (already monochrome slate).
+- **Key Insights (stats) redesign**: Replaced the old "STATS — inline, no cards" section with a new "KEY INSIGHTS — single-color editorial stats band":
+  - Removed coral hairlines; replaced with neutral slate-300 hairlines flanking a "BY THE NUMBERS" label.
+  - Numbers scaled up to `text-5xl md:text-6xl lg:text-7xl` extrabold tracking-tight, all INK color (no coral).
+  - Labels restyled to `text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500`.
+  - Removed the vertical dividers between columns for a cleaner editorial look; added `gap-y-10` for mobile spacing.
+  - Section padding increased to `py-14 md:py-16` for more presence.
+- Ran `bun run lint` — passes cleanly (0 errors, 0 warnings).
+- Restarted dev server (`rm -rf .next` + `bun run dev`), confirmed HTTP 200.
+- agent-browser verification:
+  - 4 marquee rows confirmed (`document.querySelectorAll('section .relative.overflow-hidden').length` = 4)
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`
+  - Stats section text confirmed: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — all single-color, no coral.
+
+Stage Summary:
+- Clients page "corrected": all logos now render in a single uniform monochrome (grayscale + ink tone) — consistent, clean, visible. No more messy colorful favicons.
+- "Key insights" (stats) section redesigned as a bold editorial single-color band: huge INK numbers, neutral slate labels, no coral accents, no dividers.
+- Both changes align with the user's long-standing monochrome / "NO COLOR / single color" design preference.
+- Lint clean, dev server running on port 3000, agent-browser verified.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: "correct client and redesign key insights with single color" — (1) correct the Clients page so logos are uniform single-color instead of clashing colorful favicons; (2) redesign the stats ("key insights") section in a single-color (monochrome) treatment.
+
+Work Log:
+- Read current `ClientsPage.tsx` — logos were using `opacity-80 grayscale-[20%]` (mostly full-color favicons), and stats section was a plain border-y band with INK numbers + slate labels + vertical dividers.
+- **LogoItem**: changed className from `opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0` to `opacity-55 group-hover:opacity-100` and added inline `style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}`. This forces ALL client logos (colorful Google favicons) into a uniform dark-ink monochrome mark — consistent single-color treatment, no more clashing multi-color mess. Opacity lifts on hover for subtle interactivity while keeping the monochrome treatment.
+- **Stats → "Key Insights" redesign**: rewrote the stats section as an editorial single-color band. Removed vertical dividers. Added a centered "BY THE NUMBERS" label flanked by slate hairlines (no coral). Numbers bumped to `text-5xl md:text-6xl lg:text-7xl` extrabold INK. Labels to `text-[11px] tracking-[0.15em] uppercase text-slate-500`. All monochrome (INK + slate shades only).
+- Ran `bun run lint` — clean (0 errors).
+- Cleared `.next`, restarted dev server → HTTP 200 on `/`.
+- Verified via agent-browser:
+  - 4 marquee rows render (query `section .relative.overflow-hidden` → 4)
+  - Logo filter confirmed applied: `grayscale(1) contrast(1.15) brightness(0.7)`
+  - Stats section renders: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST" — all single-color, counters animate on scroll into view.
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color monochrome (grayscale + contrast/brightness filter) — consistent, clean, no colorful favicon clash.
+- "Key insights" (stats) redesigned as bold editorial monochrome band: "BY THE NUMBERS" + huge INK numbers + uppercase slate labels. Zero coral, zero color accents.
+- Lint clean, dev server running on port 3000, verified via agent-browser.
+
+---
+Task ID: clients-single-color
+Agent: main (Z.ai Code)
+Task: User said "correct client and redesign key insights with single color". Interpreted as: (1) fix the Clients page logos to use a uniform single-color (monochrome) treatment so colorful favicons look consistent; (2) redesign the stats section ("key insights") in a clean single-color monochrome style.
+
+Work Log:
+- Read current ClientsPage.tsx — confirmed 4-row marquee (from prior task) with logos using `opacity-80 grayscale-[20%]` (mostly colorful, inconsistent look).
+- LogoItem: changed filter to `grayscale(1) contrast(1.15) brightness(0.7)` applied via inline style, opacity 0.55 → 1.0 on hover. All logos now render as uniform dark ink marks — single-color / monochrome treatment. No more clashing multi-colored favicons.
+- Stats ("key insights") section: completely redesigned. Removed the old inline border-divided stats strip. New design: centered "BY THE NUMBERS" label flanked by slate hairlines (no coral), 4 huge editorial numbers (text-5xl → text-7xl, all INK color), uppercase tracked labels in slate-500. Pure monochrome — zero color accents.
+- Ran `bun run lint` — passes cleanly (0 errors).
+- Restarted dev server (rm -rf .next; bun run dev) — HTTP 200 on /.
+- Verified via agent-browser:
+  * 4 marquee rows render (query returned 4)
+  * Logo filter computed style confirmed: `grayscale(1) contrast(1.15) brightness(0.7)`
+  * Stats section confirmed rendering: "BY THE NUMBERS | 24+ TRUSTED CLIENTS | 14 INDUSTRIES SERVED | 500+ PROJECTS DELIVERED | 29+ YEARS OF TRUST"
+  * Counters animate on scroll into view
+
+Stage Summary:
+- Clients page "corrected": all logos now uniform single-color (monochrome dark ink) — consistent, clean, visible.
+- "Key insights" (stats) redesigned as bold editorial monochrome band — all INK color, no coral, huge typography.
+- Lint clean. Dev server running on port 3000.
+- Screenshots saved: clients-single-color.png, clients-final.png

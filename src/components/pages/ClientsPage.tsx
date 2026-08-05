@@ -109,10 +109,9 @@ function buildMonogram(name: string): string {
 }
 
 /* ─── A single logo item (NO name label, NO background box) ───
-   Renders the client LOGO image larger and more visible (per user request:
-   "logos need to be much more visible — remove white background, make logos
-   fill the screen better, use a similar color treatment"). On image error,
-   falls back to a clean monogram wordmark — NEVER a random industry icon. */
+   Renders the client LOGO in a uniform single-color (monochrome) treatment
+   so all logos look consistent and clean — no clashing multi-colored favicons.
+   On image error, falls back to a clean monogram wordmark. */
 function LogoItem({ client }: { client: Client }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
@@ -125,7 +124,10 @@ function LogoItem({ client }: { client: Client }) {
           alt=""
           aria-hidden="true"
           onError={() => setErrored(true)}
-          className="max-h-full max-w-[9rem] w-auto object-contain opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+          /* Single-color treatment: full grayscale + contrast lift so every
+             logo reads as a uniform dark ink mark. Opacity lifts on hover. */
+          className="max-h-full max-w-[9rem] w-auto object-contain opacity-55 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}
           loading="lazy"
         />
       </div>
@@ -135,7 +137,7 @@ function LogoItem({ client }: { client: Client }) {
   // No logo / logo failed → clean monogram wordmark (logo-style, NOT an icon)
   return (
     <div className="flex-shrink-0 mx-5 md:mx-8 lg:mx-10 h-16 md:h-20 lg:h-24 min-w-[7rem] flex items-center justify-center group cursor-default">
-      <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-500 group-hover:text-slate-800 transition-colors duration-300 select-none">
+      <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-800 transition-colors duration-300 select-none">
         {monogram}
       </span>
     </div>
@@ -297,21 +299,30 @@ export default function ClientsPage() {
         </div>
       </section>
 
-      {/* ════════════════ STATS — inline, no cards, no background ════════════════ */}
-      <section className="border-y border-slate-100">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-10 md:py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4">
+      {/* ════════════════ KEY INSIGHTS — single-color editorial stats band ════════════════ */}
+      <section className="bg-white border-y border-slate-200">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-14 md:py-16">
+          {/* Single-color label (no coral) */}
+          <FadeIn>
+            <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
+              <span className="h-px w-8 bg-slate-300" />
+              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
+                By the Numbers
+              </span>
+              <span className="h-px w-8 bg-slate-300" />
+            </div>
+          </FadeIn>
+
+          {/* Monochrome stats — all INK, no color accents */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 md:gap-y-0">
             {stats.map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 0.08}>
-                <div className="text-center md:px-4 md:border-l md:first:border-l-0 border-slate-100">
-                  <div
-                    className="text-4xl md:text-5xl font-extrabold mb-1"
-                    style={{ color: INK }}
-                  >
+                <div className="text-center md:px-4">
+                  <div className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none mb-3" style={{ color: INK }}>
                     <AnimatedCounter target={stat.value} />
                     {stat.suffix}
                   </div>
-                  <div className="text-xs md:text-sm text-slate-500 font-medium tracking-wide">
+                  <div className="text-[11px] md:text-xs font-semibold tracking-[0.15em] uppercase text-slate-500">
                     {stat.label}
                   </div>
                 </div>
