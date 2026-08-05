@@ -108,22 +108,24 @@ function buildMonogram(name: string): string {
   return parts[0].slice(0, 2).toUpperCase()
 }
 
-/* ─── A single scrolling logo item (NO name label, NO background box) ───
-   Renders the client LOGO image. If the image fails to load, falls back to
-   a clean monogram mark (styled as a logo), NEVER a random industry icon. */
+/* ─── A single logo item (NO name label, NO background box) ───
+   Renders the client LOGO image larger and more visible (per user request:
+   "logos need to be much more visible — remove white background, make logos
+   fill the screen better, use a similar color treatment"). On image error,
+   falls back to a clean monogram wordmark — NEVER a random industry icon. */
 function LogoItem({ client }: { client: Client }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   if (client.logoUrl && !errored) {
     return (
-      <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 w-auto min-w-[6rem] flex items-center justify-center group cursor-default">
+      <div className="flex-shrink-0 mx-5 md:mx-8 lg:mx-10 h-16 md:h-20 lg:h-24 w-auto min-w-[7rem] flex items-center justify-center group cursor-default">
         <img
           src={client.logoUrl}
           alt=""
           aria-hidden="true"
           onError={() => setErrored(true)}
-          className="max-h-full max-w-[7.5rem] w-auto object-contain opacity-50 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+          className="max-h-full max-w-[9rem] w-auto object-contain opacity-80 grayscale-[20%] group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
           loading="lazy"
         />
       </div>
@@ -132,8 +134,8 @@ function LogoItem({ client }: { client: Client }) {
 
   // No logo / logo failed → clean monogram wordmark (logo-style, NOT an icon)
   return (
-    <div className="flex-shrink-0 mx-6 md:mx-10 h-12 md:h-14 min-w-[6rem] flex items-center justify-center group cursor-default">
-      <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-700 transition-colors duration-300 select-none">
+    <div className="flex-shrink-0 mx-5 md:mx-8 lg:mx-10 h-16 md:h-20 lg:h-24 min-w-[7rem] flex items-center justify-center group cursor-default">
+      <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-500 group-hover:text-slate-800 transition-colors duration-300 select-none">
         {monogram}
       </span>
     </div>
@@ -146,6 +148,31 @@ function buildTrack(items: Client[], minCount = 12): Client[] {
   const out: Client[] = []
   while (out.length < minCount) out.push(...items)
   return out
+}
+
+/* ─── Reusable marquee row renderer with edge fades ───
+   Defined at module scope to satisfy react-hooks/static-components. */
+function MarqueeRow({
+  track,
+  reverse,
+  rowKey,
+}: {
+  track: Client[]
+  reverse: boolean
+  rowKey: string
+}) {
+  if (!track.length) return null
+  return (
+    <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
+      <div className={`flex whitespace-nowrap w-max ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
+        {track.map((c, i) => (
+          <LogoItem key={`${rowKey}-${c.id}-${i}`} client={c} />
+        ))}
+      </div>
+    </div>
+  )
 }
 
 /* ─── Main Component ─── */
@@ -195,20 +222,28 @@ export default function ClientsPage() {
     ]
   }, [clients, industries])
 
-  // Two rows for opposite-direction marquees
-  const { rowA, rowB } = useMemo(() => {
-    const half = Math.ceil(filteredClients.length / 2)
-    const a = filteredClients.slice(0, half)
-    const b = filteredClients.slice(half)
+  // Four rows for alternating-direction marquees (row1 L→R scroll, row2 R→L,
+  // row3 L→R, row4 R→L). Distribute clients evenly across 4 rows.
+  const { row1, row2, row3, row4 } = useMemo(() => {
+    const n = filteredClients.length
+    const q = Math.ceil(n / 4)
+    const a = filteredClients.slice(0, q)
+    const b = filteredClients.slice(q, q * 2)
+    const c = filteredClients.slice(q * 2, q * 3)
+    const d = filteredClients.slice(q * 3)
     return {
-      rowA: buildTrack(a, 14),
-      rowB: buildTrack(b, 14),
+      row1: buildTrack(a, 10),
+      row2: buildTrack(b, 10),
+      row3: buildTrack(c, 10),
+      row4: buildTrack(d, 10),
     }
   }, [filteredClients])
 
-  // For seamless -50% translate, duplicate the track once
-  const trackA = rowA.length ? [...rowA, ...rowA] : []
-  const trackB = rowB.length ? [...rowB, ...rowB] : []
+  // For seamless -50% translate, duplicate each track once
+  const track1 = row1.length ? [...row1, ...row1] : []
+  const track2 = row2.length ? [...row2, ...row2] : []
+  const track3 = row3.length ? [...row3, ...row3] : []
+  const track4 = row4.length ? [...row4, ...row4] : []
 
   return (
     <div className="bg-white min-h-screen">
@@ -315,59 +350,38 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ SCROLLING LOGOS — MAIN FEATURE ════════════════ */}
-      {/* Only logos/icons. No names. No background boxes. No section background fill. */}
-      <section className="bg-white py-6 md:py-10">
+      {/* ════════════════ SCROLLING LOGOS — 4 ROWS, MAIN FEATURE ════════════════ */}
+      {/* Only logos/icons. No names. No background boxes. No section background fill.
+          Four rows alternating scroll direction for visual rhythm. */}
+      <section className="bg-white py-8 md:py-12">
         {loading ? (
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-            <div className="flex justify-center gap-10 mb-8">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-12 w-24 bg-slate-100 rounded-md animate-pulse"
-                />
-              ))}
-            </div>
-            <div className="flex justify-center gap-10">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-12 w-24 bg-slate-100 rounded-md animate-pulse"
-                />
-              ))}
-            </div>
+          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 space-y-8">
+            {[0, 1, 2, 3].map(row => (
+              <div key={row} className="flex justify-center gap-10">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-16 w-24 bg-slate-100 rounded-md animate-pulse"
+                  />
+                ))}
+              </div>
+            ))}
           </div>
-        ) : trackA.length === 0 ? (
+        ) : track1.length === 0 ? (
           <div className="text-center py-20">
             <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
             <p className="text-slate-500 text-lg">No clients found.</p>
           </div>
         ) : (
-          <div className="space-y-8 md:space-y-10">
+          <div className="space-y-6 md:space-y-8">
             {/* Row 1 — scrolls left */}
-            <div className="relative overflow-hidden">
-              {/* edge fade masks */}
-              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
-              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
-              <div className="flex animate-marquee whitespace-nowrap w-max">
-                {trackA.map((c, i) => (
-                  <LogoItem key={`a-${c.id}-${i}`} client={c} />
-                ))}
-              </div>
-            </div>
-
-            {/* Row 2 — scrolls right (reverse), only if there's a second row */}
-            {trackB.length > 0 && (
-              <div className="relative overflow-hidden">
-                <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
-                <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
-                <div className="flex animate-marquee-reverse whitespace-nowrap w-max">
-                  {trackB.map((c, i) => (
-                    <LogoItem key={`b-${c.id}-${i}`} client={c} />
-                  ))}
-                </div>
-              </div>
-            )}
+            <MarqueeRow track={track1} reverse={false} rowKey="r1" />
+            {/* Row 2 — scrolls right (reverse) */}
+            <MarqueeRow track={track2} reverse={true} rowKey="r2" />
+            {/* Row 3 — scrolls left */}
+            <MarqueeRow track={track3} reverse={false} rowKey="r3" />
+            {/* Row 4 — scrolls right (reverse) */}
+            <MarqueeRow track={track4} reverse={true} rowKey="r4" />
           </div>
         )}
       </section>
