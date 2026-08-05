@@ -137,26 +137,30 @@ function buildMonogram(name: string): string {
 
 /* ─── A single logo item for a clean listed grid ───
    No box, no border, no animation. Logo renders in its OWN color (natural).
+   Every logo is forced into a FIXED square box so all 50 appear at the
+   exact same visual size (no matter the source favicon's intrinsic size).
    Falls back to a clean monogram if the image fails. */
 function LogoItem({ client }: { client: Client }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   return (
-    <div className="flex items-center justify-center h-20 md:h-24 px-3">
-      {client.logoUrl && !errored ? (
-        <img
-          src={client.logoUrl}
-          alt={client.name}
-          onError={() => setErrored(true)}
-          className="max-h-full max-w-full w-auto object-contain"
-          loading="lazy"
-        />
-      ) : (
-        <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-700 select-none">
-          {monogram}
-        </span>
-      )}
+    <div className="flex items-center justify-center h-24 md:h-28 px-4">
+      <div className="relative flex items-center justify-center w-20 h-20 md:w-24 md:h-24">
+        {client.logoUrl && !errored ? (
+          <img
+            src={client.logoUrl}
+            alt={client.name}
+            onError={() => setErrored(true)}
+            className="w-full h-full object-contain"
+            loading="lazy"
+          />
+        ) : (
+          <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-700 select-none">
+            {monogram}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
