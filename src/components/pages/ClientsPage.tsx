@@ -108,72 +108,33 @@ function buildMonogram(name: string): string {
   return parts[0].slice(0, 2).toUpperCase()
 }
 
-/* ─── A single logo item (NO name label, NO background box) ───
+/* ─── A single logo cell for a static grid ───
    Renders the client LOGO in a uniform single-color (monochrome) treatment
-   so all logos look consistent and clean — no clashing multi-colored favicons.
-   On image error, falls back to a clean monogram wordmark. */
-function LogoItem({ client }: { client: Client }) {
+   inside a bordered cell so the grid reads as a clean, listed catalog. */
+function LogoCell({ client, index }: { client: Client; index: number }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
-  if (client.logoUrl && !errored) {
-    return (
-      <div className="flex-shrink-0 mx-5 md:mx-8 lg:mx-10 h-16 md:h-20 lg:h-24 w-auto min-w-[7rem] flex items-center justify-center group cursor-default">
-        <img
-          src={client.logoUrl}
-          alt=""
-          aria-hidden="true"
-          onError={() => setErrored(true)}
-          /* Single-color treatment: full grayscale + contrast lift so every
-             logo reads as a uniform dark ink mark. Opacity lifts on hover. */
-          className="max-h-full max-w-[9rem] w-auto object-contain opacity-55 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}
-          loading="lazy"
-        />
-      </div>
-    )
-  }
-
-  // No logo / logo failed → clean monogram wordmark (logo-style, NOT an icon)
   return (
-    <div className="flex-shrink-0 mx-5 md:mx-8 lg:mx-10 h-16 md:h-20 lg:h-24 min-w-[7rem] flex items-center justify-center group cursor-default">
-      <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-800 transition-colors duration-300 select-none">
-        {monogram}
-      </span>
-    </div>
-  )
-}
-
-/* ─── Build a marquee track that is always long enough to loop seamlessly ─── */
-function buildTrack(items: Client[], minCount = 12): Client[] {
-  if (!items.length) return []
-  const out: Client[] = []
-  while (out.length < minCount) out.push(...items)
-  return out
-}
-
-/* ─── Reusable marquee row renderer with edge fades ───
-   Defined at module scope to satisfy react-hooks/static-components. */
-function MarqueeRow({
-  track,
-  reverse,
-  rowKey,
-}: {
-  track: Client[]
-  reverse: boolean
-  rowKey: string
-}) {
-  if (!track.length) return null
-  return (
-    <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-white to-transparent z-10" />
-      <div className={`flex whitespace-nowrap w-max ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
-        {track.map((c, i) => (
-          <LogoItem key={`${rowKey}-${c.id}-${i}`} client={c} />
-        ))}
+    <FadeIn delay={Math.min(index * 0.03, 0.4)}>
+      <div className="group relative aspect-[4/3] flex items-center justify-center bg-white border border-slate-200 hover:border-slate-300 transition-colors">
+        {client.logoUrl && !errored ? (
+          <img
+            src={client.logoUrl}
+            alt=""
+            aria-hidden="true"
+            onError={() => setErrored(true)}
+            className="max-h-[60%] max-w-[70%] w-auto object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+            style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.7)' }}
+            loading="lazy"
+          />
+        ) : (
+          <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-400 group-hover:text-slate-700 transition-colors duration-300 select-none">
+            {monogram}
+          </span>
+        )}
       </div>
-    </div>
+    </FadeIn>
   )
 }
 
@@ -224,28 +185,8 @@ export default function ClientsPage() {
     ]
   }, [clients, industries])
 
-  // Four rows for alternating-direction marquees (row1 L→R scroll, row2 R→L,
-  // row3 L→R, row4 R→L). Distribute clients evenly across 4 rows.
-  const { row1, row2, row3, row4 } = useMemo(() => {
-    const n = filteredClients.length
-    const q = Math.ceil(n / 4)
-    const a = filteredClients.slice(0, q)
-    const b = filteredClients.slice(q, q * 2)
-    const c = filteredClients.slice(q * 2, q * 3)
-    const d = filteredClients.slice(q * 3)
-    return {
-      row1: buildTrack(a, 10),
-      row2: buildTrack(b, 10),
-      row3: buildTrack(c, 10),
-      row4: buildTrack(d, 10),
-    }
-  }, [filteredClients])
-
-  // For seamless -50% translate, duplicate each track once
-  const track1 = row1.length ? [...row1, ...row1] : []
-  const track2 = row2.length ? [...row2, ...row2] : []
-  const track3 = row3.length ? [...row3, ...row3] : []
-  const track4 = row4.length ? [...row4, ...row4] : []
+  // Clients are listed in a static grid (no scrolling marquee).
+  const listedClients = filteredClients
 
   return (
     <div className="bg-white min-h-screen">
@@ -361,40 +302,51 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ SCROLLING LOGOS — 4 ROWS, MAIN FEATURE ════════════════ */}
-      {/* Only logos/icons. No names. No background boxes. No section background fill.
-          Four rows alternating scroll direction for visual rhythm. */}
-      <section className="bg-white py-8 md:py-12">
-        {loading ? (
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 space-y-8">
-            {[0, 1, 2, 3].map(row => (
-              <div key={row} className="flex justify-center gap-10">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-16 w-24 bg-slate-100 rounded-md animate-pulse"
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-        ) : track1.length === 0 ? (
-          <div className="text-center py-20">
-            <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-            <p className="text-slate-500 text-lg">No clients found.</p>
-          </div>
-        ) : (
-          <div className="space-y-6 md:space-y-8">
-            {/* Row 1 — scrolls left */}
-            <MarqueeRow track={track1} reverse={false} rowKey="r1" />
-            {/* Row 2 — scrolls right (reverse) */}
-            <MarqueeRow track={track2} reverse={true} rowKey="r2" />
-            {/* Row 3 — scrolls left */}
-            <MarqueeRow track={track3} reverse={false} rowKey="r3" />
-            {/* Row 4 — scrolls right (reverse) */}
-            <MarqueeRow track={track4} reverse={true} rowKey="r4" />
-          </div>
-        )}
+      {/* ════════════════ CLIENT LOGOS — STATIC LISTED GRID ════════════════ */}
+      {/* Logos listed in a clean bordered grid. No scrolling, no marquee. */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          {/* Section label */}
+          <FadeIn>
+            <div className="flex items-center justify-center gap-3 mb-10 md:mb-12">
+              <span className="h-px w-8 bg-slate-300" />
+              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
+                Our Clients
+              </span>
+              <span className="h-px w-8 bg-slate-300" />
+            </div>
+          </FadeIn>
+
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-px bg-slate-200">
+              {Array.from({ length: 18 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="aspect-[4/3] bg-white animate-pulse"
+                />
+              ))}
+            </div>
+          ) : listedClients.length === 0 ? (
+            <div className="text-center py-20">
+              <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+              <p className="text-slate-500 text-lg">No clients found.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-px bg-slate-200 border border-slate-200">
+              {listedClients.map((c, i) => (
+                <LogoCell key={c.id} client={c} index={i} />
+              ))}
+            </div>
+          )}
+
+          {/* Count footer */}
+          {!loading && listedClients.length > 0 && (
+            <p className="text-center text-xs text-slate-400 mt-6 tracking-wide">
+              Showing {listedClients.length} clients
+              {activeFilter !== 'All' ? ` in ${activeFilter}` : ' across all industries'}
+            </p>
+          )}
+        </div>
       </section>
 
       {/* ════════════════ CTA — minimal, white, no background fill ════════════════ */}
