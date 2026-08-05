@@ -441,7 +441,7 @@ export default function SectorsPage() {
             className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-5 tracking-tight"
           >
             Powering Every{' '}
-            <span className="bg-gradient-to-r from-[#E8751A] to-[#F59E0B] bg-clip-text text-transparent">Sector</span>
+            <span className="text-white">Sector</span>
           </motion.h1>
 
           <motion.p
@@ -490,24 +490,22 @@ export default function SectorsPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          2. SECTOR GRID — 10 Sector Cards with Hover Expand
+          2. SECTOR GRID — 10 Sector Cards (single-color / monochrome)
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
-        {/* Decorative background */}
-        <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #1B3A5C 1px, transparent 0)',
-          backgroundSize: '32px 32px',
-        }} />
-
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-14">
-              <Badge variant="outline" className="border-[#E8751A]/30 text-[#E8751A] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Our Expertise
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">Key Sectors We Serve</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-[#6B7280] max-w-2xl mx-auto text-sm">
+              {/* Monochrome label — hairlines + tracked uppercase */}
+              <div className="flex items-center justify-center gap-3 mb-5">
+                <span className="h-px w-8 bg-slate-300" />
+                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
+                  Our Expertise
+                </span>
+                <span className="h-px w-8 bg-slate-300" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A2E] mb-3">Key Sectors We Serve</h2>
+              <p className="text-slate-500 max-w-2xl mx-auto text-sm">
                 Nearly three decades of experience across diverse industries, from power utilities to international projects —
                 every sector benefits from our integrated EPC approach.
               </p>
@@ -523,39 +521,39 @@ export default function SectorsPage() {
                   <motion.div
                     onMouseEnter={() => setHoveredSector(idx)}
                     onMouseLeave={() => setHoveredSector(null)}
-                    whileHover={{ y: -8, scale: 1.02 }}
+                    whileHover={{ y: -6 }}
                     transition={{ duration: 0.3 }}
                     className="relative h-full"
                   >
-                    <Card className="relative overflow-hidden rounded-xl border border-[#E5E7EB] shadow-sm h-full cursor-pointer group">
-                      {/* Top gradient bar */}
-                      <div className={`h-1.5 bg-gradient-to-r ${sector.gradient}`} />
+                    <Card className="relative overflow-hidden rounded-xl border border-slate-200 hover:border-slate-300 shadow-none h-full cursor-pointer group transition-colors">
+                      {/* Top bar — single INK */}
+                      <div className="h-1 bg-[#1A1A2E]" />
 
                       <CardContent className="p-5">
-                        {/* Icon with gradient background */}
-                        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${sector.gradient} flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                          <Icon className="w-7 h-7 text-white" />
+                        {/* Icon — solid INK background, white icon (single color) */}
+                        <div className="w-12 h-12 rounded-xl bg-[#1A1A2E] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                          <Icon className="w-6 h-6 text-white" strokeWidth={1.5} />
                         </div>
 
                         {/* Sector name */}
-                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 group-hover:text-[#1B3A5C] transition-colors">
+                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
                           {sector.name}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-[#6B7280] text-xs leading-relaxed mb-4 line-clamp-3">
+                        <p className="text-slate-500 text-xs leading-relaxed mb-4 line-clamp-3">
                           {sector.description}
                         </p>
 
-                        {/* Key stat */}
+                        {/* Key stat — single INK color */}
                         <div className="flex items-end justify-between">
                           <div>
-                            <p className="text-2xl font-bold" style={{ color: sector.accent }}>
+                            <p className="text-2xl font-extrabold text-[#1A1A2E] leading-none">
                               <AnimatedCounter value={parseInt(sector.stat) || 0} suffix={sector.stat.replace(/[0-9,]/g, '')} />
                             </p>
-                            <p className="text-[10px] text-[#9CA3AF] font-medium uppercase tracking-wider">{sector.statLabel}</p>
+                            <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">{sector.statLabel}</p>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-[#D1D5DB] group-hover:text-[#E8751A] group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#1A1A2E] group-hover:translate-x-1 transition-all" />
                         </div>
 
                         {/* Hover expanded details */}
@@ -568,11 +566,11 @@ export default function SectorsPage() {
                               transition={{ duration: 0.25 }}
                               className="overflow-hidden"
                             >
-                              <div className="mt-4 pt-4 border-t border-[#E5E7EB] space-y-2">
+                              <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
                                 {sector.details.map((detail, dIdx) => (
                                   <div key={dIdx} className="flex items-center gap-2">
-                                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: sector.accent }} />
-                                    <span className="text-[#374151] text-xs">{detail}</span>
+                                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 text-slate-400" strokeWidth={2} />
+                                    <span className="text-slate-600 text-xs">{detail}</span>
                                   </div>
                                 ))}
                               </div>
