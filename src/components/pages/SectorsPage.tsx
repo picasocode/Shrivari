@@ -1,17 +1,19 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import {
-  Zap, Factory, Droplets, Sun, Building2, Train, Hammer, FlaskConical, Heart, Globe,
-  ChevronRight, ArrowRight, Phone, ChevronDown, MapPin, Shield, Award, Users,
-  Clock, Target, Eye, CheckCircle2, Sparkles, Lightbulb, BadgeCheck, Wrench,
-  Network, Cpu, TrendingUp, FileCheck, Layers, Gauge,
-} from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { useState, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react'
 import { useRouter } from '@/components/Router'
+
+/* ═══════════════════════════════════════════════════════════
+   COLOR SYSTEM (STRICT MONOCHROME + SINGLE CORAL ACCENT)
+   INK: #1A1A2E
+   Slate grays: slate-200 → slate-700
+   Coral accent (hero badge + CTA only): #E8751A
+   ═══════════════════════════════════════════════════════════ */
+
+const INK = '#1A1A2E'
+const CORAL = '#E8751A'
 
 /* ═══════════════════════════════════════════════════════════
    ANIMATION HELPERS
@@ -39,7 +41,7 @@ function FadeIn({ children, delay = 0, className = '', direction = 'up' }: {
   )
 }
 
-function StaggerContainer({ children, className = '', staggerDelay = 0.08 }: {
+function StaggerContainer({ children, className = '', staggerDelay = 0.06 }: {
   children: React.ReactNode; className?: string; staggerDelay?: number
 }) {
   const ref = useRef(null)
@@ -64,813 +66,622 @@ function StaggerChild({ children, className = '' }: { children: React.ReactNode;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ANIMATED COUNTER
+   SECTOR DATA — 27 sectors, monochrome treatment (no per-sector color)
    ═══════════════════════════════════════════════════════════ */
 
-function AnimatedCounter({ value, suffix = '', prefix = '' }: { value: number; suffix?: string; prefix?: string }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-
-  useEffect(() => {
-    if (!isInView) return
-    const duration = 2000
-    let startTime: number | null = null
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(eased * value))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [isInView, value])
-
-  return <span ref={ref} className="tabular-nums">{prefix}{count}{suffix}</span>
+interface Sector {
+  name: string
+  description: string
+  image: string
+  clients: string[]
 }
 
+const SECTORS: Sector[] = [
+  {
+    name: 'Automotive & Auto Components',
+    description: 'Electrical infrastructure solutions for automobile manufacturing plants, EV facilities, assembly lines, paint shops, testing facilities, robotic manufacturing systems, and auto ancillary industries.',
+    image: '/images/sectors/automotive.png',
+    clients: [
+      'Ashok Leyland – Ennore and Hosur',
+      'AIA Engineering Ltd. - Trichy',
+      'Sundram Fastners Ltd – Gummidipoondi & Chennai',
+      'Hanon Automotive - Chennai',
+      'TVS Motors – Hosur',
+      'Caparo World class facility – Jamshedpur',
+      'Brakes Foundries – Solingar & Naidupet',
+      'TVS Tyres - Madurai',
+      'Exide Industries Limited - Hosur',
+      'Apollo Tyres – Oragadam',
+      'Royal Enfield – Thiruvottiyur',
+      'ATG – Gangaikondan',
+      'Allison Power Transformer – Oragadam',
+    ],
+  },
+  {
+    name: 'Manufacturing & Industrial Engineering',
+    description: 'Complete electrical EPC solutions for heavy engineering industries, machine manufacturing units, fabrication facilities, precision engineering plants, and industrial production facilities.',
+    image: '/images/sectors/manufacturing.png',
+    clients: [
+      'My Home Industries - Odisha',
+      'Ramakrishna Titagarh Rail Wheels Limited – Poduvoyal',
+      'Pou Chen Group – Ulundurpet',
+      'Anugraha Valve Castings Limited',
+      'Master Forging - Thiruvallur',
+      'Sree Rangaraj Isapt - Perundurai',
+      'Sooryadeva Street – Gummidipoondi',
+      'Nippon Paint – Sriperumbudur',
+      'Toaka Chemical – Tambaram',
+      'M.M Forging – Viralimalai',
+      'Balaji Action Buildwell Pvt Ltd - Vizag',
+      'Jotham Ferro Alloys',
+      'Roshil Decor - Vizag',
+    ],
+  },
+  {
+    name: 'Infrastructure & Urban Development',
+    description: 'Electrical systems for infrastructure projects including smart cities, transportation facilities, metro infrastructure, public utilities, integrated townships, and government infrastructure developments.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'Apollo infrastructure – Oragadam',
+      'Zelestra - Samayapuram',
+      'Aryan Granites – Hosur',
+    ],
+  },
+  {
+    name: 'Commercial Buildings & Real Estate',
+    description: 'Power distribution systems, substations, backup power systems, lighting systems, and energy-efficient electrical infrastructure for commercial complexes, IT parks, business centers, malls, hotels, and high-rise developments.',
+    image: '/images/sectors/commercial.png',
+    clients: [
+      'DLF – Chennai',
+      'DLF – Gachibowli – Hyderabad',
+      'Shanthi Builders – Chennai',
+      'Akshaya Homes – Chennai',
+      'Eversendai Constructions Pvt Ltd',
+      'Express Avanue – Chennai',
+      'Purvankara - Chennai',
+    ],
+  },
+  {
+    name: 'Renewable Energy & Solar Infrastructure',
+    description: 'Integrated electrical solutions for rooftop solar, ground-mounted solar plants, hybrid energy systems, renewable energy evacuation systems, and utility-connected renewable infrastructure.',
+    image: '/images/sectors/solar.png',
+    clients: [
+      'Solon India Pvt Ltd - Hyderabad',
+      'CtrlS Datacenters - Maharashtra',
+      'JSW Energy – Tuticorin',
+      'Radiance TN Sunrise one Pvt Ltd',
+      'Bondada Engineering Ltd – Vellalaviduthi & Thennampatti',
+      'Evolve Green Energies Pvt Ltd',
+      'Clean Max Enviro Energy Solutions – Bangalore',
+      'Vikram Solar',
+      'Tata Power Solar – Avadi, Ambattur',
+      'PV Solar - Bangalore',
+      'ENZEN GLOBAL SOLUTIONS - Trichy',
+      'Perniyx - Trichy',
+      'Kaval Power – Bangalore',
+      'Jiwi Solar – Bangalore',
+      'CAPSOL Energy Private Limited – Madurai',
+    ],
+  },
+  {
+    name: 'IT Parks, Technology Campuses & Data Centers',
+    description: 'Reliable power infrastructure solutions for IT campuses, software parks, R&D centers, data centers, server farms, colocation facilities, mission-critical power systems, UPS integration, redundancy systems, and backup power architecture.',
+    image: '/images/sectors/datacenter.png',
+    clients: [
+      'CtrlS Datacenters Limited – Maharashtra',
+      'Minerva Veritas Data Centre – Ambattur',
+      'Sycamore Properties Private Limited - Pallikkaranai',
+      'HCL',
+      'Robert Bosch – Coimbatore',
+      'IIT Madras Research Park – Chennai',
+      'L&T Realty – Ramavaram',
+      'CTS – 9 Locations',
+      'TCS – Chennai',
+    ],
+  },
+  {
+    name: 'Pharmaceuticals & Healthcare',
+    description: 'Electrical systems for pharmaceutical manufacturing facilities, formulation plants, clean-room environments, research laboratories, hospitals, diagnostic centers, and healthcare infrastructure.',
+    image: '/images/sectors/pharma.png',
+    clients: [
+      'Suriyan Pharma – Chennai',
+      'Orchid Pharma – Chennai',
+      'Shield Health Care – Chennai',
+      'Equitas Health Care Foundation – Selaiyur',
+      'Til Health Care - Sricity',
+      'IDBL Pharma – Ramavaram',
+      'HLL Biotech - Chengalpet',
+      'Delta Biopharma Pvt Ltd – Naidupet',
+      'Sri Ramachandra Hospital - Chennai',
+      'MIOT Hospital – Chennai',
+      'Rohini Hospital – Chennai',
+      'RELA Hospital – Chennai',
+      'Saveetha Dental Hospital',
+      'SRM – Chennai',
+    ],
+  },
+  {
+    name: 'Cement, Steel & Heavy Industries',
+    description: 'Robust electrical infrastructure for cement plants, steel rolling mills, foundries, metallurgical industries, mining operations, and other heavy industrial process facilities.',
+    image: '/images/sectors/cement-steel.png',
+    clients: [
+      'My Home Cements – Tamilnadu/Telangana/Odisha',
+      'Dhandapani Cements – Tamilnadu',
+      'Kobelco - Sricity',
+      'Terex – Hosur',
+      'Gimmco – Thiruvallur',
+      'Tata Blue Scope – Sriperumbudur',
+      'JSW Steel Limited – Salem',
+      'SBQ Steels – Gudur',
+      'Ramco Cements',
+    ],
+  },
+  {
+    name: 'Process Industries',
+    description: 'Electrical engineering solutions for chemical plants, process manufacturing units, industrial processing facilities, and continuous process industries requiring high operational reliability.',
+    image: '/images/sectors/manufacturing.png',
+    clients: [
+      'My Home Industries Private Limited - Hyderabad',
+      'PCBL - Thervoy kandigai',
+    ],
+  },
+  {
+    name: 'Utilities & Power Sector',
+    description: 'Substations, switchyards, utility interface systems, power evacuation infrastructure, transmission and distribution systems, and utility-grade electrical engineering solutions.',
+    image: '/images/sectors/hero-sectors.png',
+    clients: [
+      'TNEB',
+      'TNPDCL',
+      'TNGECL',
+      'APSPDCL',
+      'TSSPDCL',
+      'OPTCL',
+      'KPTCL',
+      'MPDCL',
+    ],
+  },
+  {
+    name: 'Oil & Gas',
+    description: 'Electrical systems for refineries, terminals, storage facilities, pipeline infrastructure, gas processing facilities, and associated industrial utility systems.',
+    image: '/images/sectors/oil-gas.png',
+    clients: [
+      'Supreme Petrochemicals – Chennai',
+      'ONGC – Narimanam',
+      'Manali Petrochemicals Limited - Manali',
+      'CPCL - Manali',
+      'ONGC – Karaikal',
+      'BPCL – Cochin',
+      'Tagros Chemicals Private Limited – Cuddalore',
+      'Detergeo Chem Private Limited – Gummidipoondi',
+      'Ultra Marine Pigments Private Limited',
+    ],
+  },
+  {
+    name: 'Petrochemical & Chemical Industries',
+    description: 'Specialized electrical infrastructure for hazardous-area facilities, petrochemical processing units, specialty chemical plants, and chemical manufacturing industries.',
+    image: '/images/sectors/oil-gas.png',
+    clients: [
+      'Chemplast Sanmar Limited – Hosur',
+      'Manali Petrochemicals Limited',
+      'CPCL',
+      'ONGC – Karaikal',
+      'BPCL Cochin',
+      'Tagros Chemicals Private Limited – Cuddalore',
+      'Detergeo Chem Private Limited',
+      'Ultra Marine Pigments Private Limited - Naidupet',
+      'Kothari Petrochemical Ltd – Manali',
+      'Supreme Petrochemicals – Manali',
+    ],
+  },
+  {
+    name: 'FMCG & Consumer Goods',
+    description: 'Electrical distribution systems and industrial electrification solutions for FMCG manufacturing units, packaging industries, food processing plants, and consumer goods production facilities.',
+    image: '/images/sectors/manufacturing.png',
+    clients: [
+      'HUL – Vadamangalam - Pondicherry',
+      'GRB Dairy Foods Private Limited - Hosur',
+      'Hamilton Housewares Private Limited - Sricity',
+      'Adyar Ananda Bhavan - Ulundurpet & Chennai',
+    ],
+  },
+  {
+    name: 'Food Processing & Beverage Industries',
+    description: 'Power infrastructure for food manufacturing, cold storage facilities, beverage plants, dairy processing units, packaging lines, and hygienic processing environments.',
+    image: '/images/sectors/pharma.png',
+    clients: [
+      'SKYGOURMET – Pallavaram',
+      'Rosa Foods - Nagari',
+      'GHO Diary - Villuppuram',
+      'CP Aqua - Redhills',
+    ],
+  },
+  {
+    name: 'Textile & Garment Industries',
+    description: 'Electrical solutions for spinning mills, weaving units, textile processing facilities, garment manufacturing units, and export-oriented textile industries.',
+    image: '/images/sectors/manufacturing.png',
+    clients: [
+      'Loyal Textiles – Madurai',
+      'Sri Kanniga Parameshwari Textiles',
+      'Sri Parameshwari Spinning Mills',
+      'Pachaiyappas – Kancheepuram',
+      'RMKV Silks – Tirunelveli',
+    ],
+  },
+  {
+    name: 'Paper & Printing Industries',
+    description: 'Power distribution and industrial electrification solutions for paper mills, packaging industries, printing facilities, and pulp processing plants.',
+    image: '/images/sectors/manufacturing.png',
+    clients: [
+      'Cholan Paper Mills',
+      'HTL Limited - Guindy',
+      'BYD Electronics – Irungattukottai',
+      'Delta Electronics',
+      'Cholan Paper Mills - Maduranthagam',
+      'TNPL - Trichy',
+    ],
+  },
+  {
+    name: 'Electronics & Electrical Manufacturing',
+    description: 'Electrical infrastructure for electronics manufacturing facilities, semiconductor support infrastructure, electrical equipment manufacturing, and precision production environments.',
+    image: '/images/sectors/datacenter.png',
+    clients: [
+      'Samsung Electronics - Sunguvachatram',
+      'Tata Electronics Private Limited – Kelamangalam',
+    ],
+  },
+  {
+    name: 'Warehousing & Logistics',
+    description: 'Electrical solutions for logistics parks, warehouses, cold chain facilities, fulfillment centers, industrial storage facilities, and integrated logistics infrastructure.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'Kailash Logistics – Chennai',
+      'Indospace Logistics – Chennai',
+      'YCH Logistics – Sungavachtram',
+    ],
+  },
+  {
+    name: 'Airports & Aviation Infrastructure',
+    description: 'Power distribution systems, backup power infrastructure, lighting systems, and utility support systems for airport and aviation-related infrastructure.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'AAI – Chennai',
+      'AAI – Salem',
+      'AAI – Pondicherry',
+      'AAI – Renigunta',
+      'GMR - Goa',
+    ],
+  },
+  {
+    name: 'Railway & Transportation Infrastructure',
+    description: 'Electrical systems for railway facilities, transportation terminals, depots, signaling support infrastructure, and allied transportation facilities.',
+    image: '/images/sectors/infrastructure.png',
+    clients: ['Projects available on request'],
+  },
+  {
+    name: 'Ports & Marine Infrastructure',
+    description: 'Industrial electrical infrastructure for ports, container terminals, marine facilities, shipyards, and coastal industrial developments.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'Kamarajar Port – Ennore',
+      'Chennai Port – Chennai',
+      'VOC Port - Tuticorin',
+    ],
+  },
+  {
+    name: 'Water Treatment & Environmental Infrastructure',
+    description: 'Electrical systems for water treatment plants, sewage treatment plants, pumping stations, desalination facilities, and environmental infrastructure projects.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'VA Tech Wabag – Chennai',
+      'TWAD Board – Multiple Locations',
+      'IVRCL',
+    ],
+  },
+  {
+    name: 'Educational Institutions & Campuses',
+    description: 'Reliable electrical distribution systems for universities, colleges, institutional campuses, training centers, and research facilities.',
+    image: '/images/sectors/commercial.png',
+    clients: [
+      'Sri Ramachandra Medical College - Chennai',
+      'Chennai Institute of Technology – Chennai',
+      'Saveetha College of Engineering – Thandalam',
+      'SRM – Ramapuram',
+    ],
+  },
+  {
+    name: 'Hospitality & Entertainment',
+    description: 'Electrical infrastructure for hotels, resorts, convention centers, entertainment facilities, multiplexes, and hospitality developments.',
+    image: '/images/sectors/commercial.png',
+    clients: [
+      'Sri Ramachandra Hospital',
+      'MIOT Hospital',
+      'Rohini Hospital',
+      'RELA Hospital',
+      'Saveetha Dental Hospital',
+    ],
+  },
+  {
+    name: 'Government & Public Sector Projects',
+    description: 'Execution support for government infrastructure projects, PSU facilities, institutional infrastructure, and public utility developments.',
+    image: '/images/sectors/infrastructure.png',
+    clients: [
+      'HVF – Avadi',
+      'MES - Ooty',
+      'ISRO Propulsion Complex – Mahendragiri',
+    ],
+  },
+  {
+    name: 'Glass & Ceramics Industries',
+    description: 'Electrical systems for glass manufacturing, ceramics production units, kiln operations, and temperature-critical industrial processes.',
+    image: '/images/sectors/cement-steel.png',
+    clients: [
+      'Saint Gobain – Sriperumbudur',
+      'Carborundum Universal Limited – Various plants',
+      'SNJ India Glasses – Tiruvallur',
+    ],
+  },
+  {
+    name: 'Telecom & Communication Infrastructure',
+    description: 'Power systems, backup infrastructure, and electrical integration solutions for telecom facilities, communication towers, and network infrastructure.',
+    image: '/images/sectors/datacenter.png',
+    clients: [
+      'Aircel',
+      'Airtel',
+      'Idea Cellular',
+      'Vodafone',
+    ],
+  },
+]
+
 /* ═══════════════════════════════════════════════════════════
-   CONSTELLATION SVG (Hero Background)
+   HERO INTRO COPY
    ═══════════════════════════════════════════════════════════ */
 
-function ConstellationSVG() {
-  const nodes = [
-    { cx: 80, cy: 60, r: 4 }, { cx: 200, cy: 40, r: 3 }, { cx: 340, cy: 80, r: 5 },
-    { cx: 480, cy: 50, r: 3 }, { cx: 620, cy: 70, r: 4 }, { cx: 760, cy: 45, r: 3 },
-    { cx: 900, cy: 65, r: 5 }, { cx: 1040, cy: 55, r: 4 }, { cx: 1200, cy: 75, r: 3 },
-    { cx: 150, cy: 180, r: 3 }, { cx: 300, cy: 200, r: 4 }, { cx: 450, cy: 170, r: 3 },
-    { cx: 600, cy: 210, r: 5 }, { cx: 750, cy: 185, r: 3 }, { cx: 900, cy: 200, r: 4 },
-    { cx: 1050, cy: 175, r: 3 }, { cx: 1200, cy: 195, r: 4 },
-    { cx: 100, cy: 320, r: 3 }, { cx: 280, cy: 340, r: 4 }, { cx: 430, cy: 310, r: 3 },
-    { cx: 580, cy: 350, r: 4 }, { cx: 730, cy: 330, r: 3 }, { cx: 880, cy: 345, r: 4 },
-    { cx: 1030, cy: 315, r: 3 }, { cx: 1180, cy: 340, r: 4 },
-    { cx: 180, cy: 460, r: 3 }, { cx: 380, cy: 440, r: 4 }, { cx: 550, cy: 470, r: 3 },
-    { cx: 720, cy: 450, r: 4 }, { cx: 870, cy: 465, r: 3 }, { cx: 1020, cy: 445, r: 4 },
-  ]
+const HERO_INTRO =
+  'Shri Vaari Electricals delivers integrated electrical EPC, power infrastructure, industrial electrification, substations, testing & commissioning, and utility coordination solutions across a wide spectrum of industries and critical infrastructure sectors throughout India. Our multidisciplinary engineering and execution capability enables us to support greenfield, brownfield, expansion, modernization, retrofitting, and utility integration projects across diverse industrial environments.'
 
-  const connections = [
-    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8],
-    [0, 9], [1, 10], [2, 11], [3, 12], [4, 13], [5, 14], [6, 15], [7, 16],
-    [9, 10], [10, 11], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16],
-    [9, 17], [10, 18], [11, 19], [12, 20], [13, 21], [14, 22], [15, 23], [16, 23],
-    [17, 18], [18, 19], [19, 20], [20, 21], [21, 22], [22, 23],
-    [17, 24], [18, 25], [19, 26], [20, 27], [21, 28], [22, 29],
-    [24, 25], [25, 26], [26, 27], [27, 28], [28, 29],
-  ]
+/* ═══════════════════════════════════════════════════════════
+   SECTOR CARD
+   ═══════════════════════════════════════════════════════════ */
+
+function SectorCard({ sector, index, isExpanded, onToggle }: {
+  sector: Sector
+  index: number
+  isExpanded: boolean
+  onToggle: () => void
+}) {
+  const clientCount = sector.clients.length
 
   return (
-    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1280 540" preserveAspectRatio="xMidYMid slice">
-      {/* Connection lines */}
-      {connections.map(([a, b], i) => (
-        <motion.line
-          key={`line-${i}`}
-          x1={nodes[a].cx} y1={nodes[a].cy}
-          x2={nodes[b].cx} y2={nodes[b].cy}
-          stroke="rgba(232,117,26,0.08)" strokeWidth="1"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2, delay: i * 0.02, ease: 'easeOut' }}
+    <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-300 flex flex-col">
+      {/* Image */}
+      <div className="relative h-48 w-full overflow-hidden bg-[#1A1A2E]">
+        <img
+          src={sector.image}
+          alt={sector.name}
+          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
         />
-      ))}
-      {/* Nodes */}
-      {nodes.map((n, i) => (
-        <motion.circle
-          key={`node-${i}`}
-          cx={n.cx} cy={n.cy} r={n.r}
-          fill={i % 5 === 0 ? 'rgba(232,117,26,0.25)' : 'rgba(255,255,255,0.1)'}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 + i * 0.03, type: 'spring' }}
+        {/* Subtle INK gradient overlay at bottom for text legibility */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-20 pointer-events-none"
+          style={{ background: 'linear-gradient(to top, rgba(26,26,46,0.55), rgba(26,26,46,0))' }}
         />
-      ))}
-      {/* Animated pulse rings on key nodes */}
-      {[2, 12, 20, 27].map((idx) => (
-        <motion.circle
-          key={`pulse-${idx}`}
-          cx={nodes[idx].cx} cy={nodes[idx].cy} r={nodes[idx].r}
-          fill="none" stroke="rgba(232,117,26,0.3)" strokeWidth="1"
-          animate={{ r: [nodes[idx].r, nodes[idx].r + 12, nodes[idx].r], opacity: [0.5, 0, 0.5] }}
-          transition={{ duration: 3, repeat: Infinity, delay: idx * 0.3 }}
-        />
-      ))}
-    </svg>
+        {/* Client count badge */}
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur text-[11px] font-semibold tracking-wide text-slate-700 border border-slate-200 shadow-sm">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-slate-500" />
+          {clientCount} {clientCount === 1 ? 'Client' : 'Clients'}
+        </span>
+        {/* Faded index number watermark */}
+        <span className="absolute bottom-2 left-3 text-3xl font-extrabold leading-none text-white/25 select-none">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* Body */}
+      <div className="p-5 flex flex-col flex-1">
+        <h3 className="text-base font-bold text-[#1A1A2E] leading-snug">
+          {sector.name}
+        </h3>
+        <p className="mt-2 text-sm text-slate-500 leading-relaxed line-clamp-3">
+          {sector.description}
+        </p>
+
+        {/* Expand toggle */}
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isExpanded}
+          aria-controls={`sector-clients-${index}`}
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1A1A2E] hover:text-slate-700 transition-colors w-fit"
+        >
+          {isExpanded ? 'Hide clients' : `View ${clientCount} ${clientCount === 1 ? 'client' : 'clients'}`}
+          <ChevronDown
+            className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+            strokeWidth={2.5}
+          />
+        </button>
+
+        {/* Collapsible client list */}
+        {isExpanded && (
+          <div
+            id={`sector-clients-${index}`}
+            className="mt-4 bg-slate-50 border-t border-slate-100 p-4 rounded-md"
+          >
+            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-slate-500 mb-3">
+              Notable Clients
+            </p>
+            <ul className="space-y-2 max-h-56 overflow-y-auto pr-1">
+              {sector.clients.map((client, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
+                  <span
+                    className="mt-1.5 inline-block h-1 w-1 rounded-full bg-slate-500 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span>{client}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SECTOR DATA
+   MAIN PAGE
    ═══════════════════════════════════════════════════════════ */
-
-const sectors = [
-  {
-    name: 'Power & Utilities',
-    icon: Zap,
-    description: 'EHV substations, switchyards, and transmission lines up to 400KV. Trusted by state electricity boards across South India.',
-    stat: '65+ Switchyards',
-    statLabel: 'Delivered',
-    gradient: 'from-[#1B3A5C] to-[#2A5F9E]',
-    accent: '#1B3A5C',
-    lightAccent: '#1B3A5C',
-    details: ['EHV Substations up to 400KV', 'Transmission Lines 100+ KMs', 'Switchyard EPC', 'UG Cable Works 45+ KMs'],
-  },
-  {
-    name: 'Industrial & Manufacturing',
-    icon: Factory,
-    description: 'LT/HT panels, AMC services, and turnkey electrical solutions for factories and manufacturing plants.',
-    stat: '10,000+',
-    statLabel: 'Panels Installed',
-    gradient: 'from-[#E8751A] to-[#F59E0B]',
-    accent: '#E8751A',
-    lightAccent: '#E8751A',
-    details: ['LT/HT Panel Manufacturing', 'Industrial AMC Services', 'Plant Electrification', 'Motor Control Centers'],
-  },
-  {
-    name: 'Oil & Gas / Petrochemical',
-    icon: Droplets,
-    description: 'GIS substations for refineries and petrochemical plants. Specialized hazardous area electrical installations.',
-    stat: '10+',
-    statLabel: 'GIS Substations',
-    gradient: 'from-[#0D9488] to-[#14B8A6]',
-    accent: '#0D9488',
-    lightAccent: '#0D9488',
-    details: ['GIS Substations', 'Hazardous Area Installations', 'Goa Bridge Project', 'Chemplast & Gujarat Fluorochemicals'],
-  },
-  {
-    name: 'Solar & Renewable Energy',
-    icon: Sun,
-    description: 'Complete solar EPC solutions from rooftop to ground mount. Solar division since 2014 with MW-scale delivery.',
-    stat: '450+ MW',
-    statLabel: 'Solar Capacity',
-    gradient: 'from-[#D97706] to-[#FBBF24]',
-    accent: '#D97706',
-    lightAccent: '#D97706',
-    details: ['5.5 MW Rooftop Solar', '450 MW Ground Mount', 'Net Metering Integration', 'O&M Support'],
-  },
-  {
-    name: 'Commercial & Real Estate',
-    icon: Building2,
-    description: 'IT parks, commercial buildings, and retail complexes. Complete electrical infrastructure from design to commissioning.',
-    stat: '200+',
-    statLabel: 'Projects',
-    gradient: 'from-[#7C3AED] to-[#A78BFA]',
-    accent: '#7C3AED',
-    lightAccent: '#7C3AED',
-    details: ['IT Park Electrification', 'Commercial Buildings', 'Retail Complexes', 'Building Management Systems'],
-  },
-  {
-    name: 'Infrastructure & Transportation',
-    icon: Train,
-    description: 'Airports, metro, and port electrical infrastructure. Specialized projects including Goa Airport works.',
-    stat: '50+',
-    statLabel: 'Infra Projects',
-    gradient: 'from-[#DC2626] to-[#F87171]',
-    accent: '#DC2626',
-    lightAccent: '#DC2626',
-    details: ['Airport Electrical Works', 'Metro Rail Systems', 'Port Infrastructure', 'Goa Airport Project'],
-  },
-  {
-    name: 'Cement & Heavy Industry',
-    icon: Hammer,
-    description: 'Electrical solutions for cement plants and heavy industries. Partners include Dalmia, India Cements, and Chettinad.',
-    stat: '30+',
-    statLabel: 'Heavy Industry',
-    gradient: 'from-[#78716C] to-[#A8A29E]',
-    accent: '#78716C',
-    lightAccent: '#78716C',
-    details: ['Dalmia Cement Projects', 'India Cements Works', 'Chettinad Cements', 'Heavy Duty Switchgear'],
-  },
-  {
-    name: 'Chemical & Pharmaceutical',
-    icon: FlaskConical,
-    description: 'Specialized electrical installations for chemical and pharma facilities with strict compliance requirements.',
-    stat: '25+',
-    statLabel: 'Pharma/Chem Projects',
-    gradient: 'from-[#2A5A8A] to-[#34D399]',
-    accent: '#2A5A8A',
-    lightAccent: '#2A5A8A',
-    details: ['Gujarat Fluorochemicals', 'Clean Room Electrical', 'Hazardous Area Compliance', 'Process Control Panels'],
-  },
-  {
-    name: 'Healthcare & Institutional',
-    icon: Heart,
-    description: 'Hospitals, educational institutions, and government buildings. Reliable power solutions for critical facilities.',
-    stat: '100+',
-    statLabel: 'Institutions Served',
-    gradient: 'from-[#EC4899] to-[#F9A8D4]',
-    accent: '#EC4899',
-    lightAccent: '#EC4899',
-    details: ['Hospital Power Systems', 'Educational Institutions', 'Government Buildings', 'Backup Power Solutions'],
-  },
-  {
-    name: 'International Projects',
-    icon: Globe,
-    description: 'Electrical EPC projects across 6 countries — Nigeria, Qatar, Bangladesh, Sri Lanka, Oman, and Sierra Leone.',
-    stat: '6',
-    statLabel: 'Countries',
-    gradient: 'from-[#2563EB] to-[#60A5FA]',
-    accent: '#2563EB',
-    lightAccent: '#2563EB',
-    details: ['Nigeria Projects', 'Qatar Operations', 'Bangladesh Installations', 'Sri Lanka & Oman'],
-  },
-]
-
-/* ═══════════════════════════════════════════════════════════
-   UTILITY/BOARD DATA
-   ═══════════════════════════════════════════════════════════ */
-
-const utilities = [
-  { name: 'TNPDCL', fullName: 'Tamil Nadu Power Distribution Corp', region: 'Tamil Nadu', x: 50, y: 65 },
-  { name: 'TANTRANSCO', fullName: 'Tamil Nadu Transmission Corp', region: 'Tamil Nadu', x: 42, y: 55 },
-  { name: 'APTRANSCO', fullName: 'AP Transmission Corp', region: 'Andhra Pradesh', x: 35, y: 60 },
-  { name: 'TSTRANSCO', fullName: 'Telangana Transmission Corp', region: 'Telangana', x: 28, y: 50 },
-  { name: 'APSPDCL', fullName: 'AP Southern Power Distribution', region: 'Andhra Pradesh', x: 40, y: 72 },
-  { name: 'KPTCL', fullName: 'Karnataka Power Transmission Corp', region: 'Karnataka', x: 25, y: 62 },
-  { name: 'KSEB', fullName: 'Kerala State Electricity Board', region: 'Kerala', x: 20, y: 72 },
-  { name: 'GOA', fullName: 'Goa Electricity Dept', region: 'Goa', x: 17, y: 48 },
-  { name: 'OPTCL', fullName: 'Odisha Power Transmission Corp', region: 'Odisha', x: 55, y: 40 },
-  { name: 'OPDCL', fullName: 'Odisha Power Distribution Corp', region: 'Odisha', x: 60, y: 35 },
-]
-
-/* ═══════════════════════════════════════════════════════════
-   PROJECT SHOWCASE DATA
-   ═══════════════════════════════════════════════════════════ */
-
-const showcaseProjects = [
-  {
-    sector: 'Power & Utilities',
-    title: '230KV Substation',
-    year: '2023',
-    value: '₹25 Cr+',
-    description: '230KV/110KV substation with complete switchyard, protection systems, and SCADA integration for state utility.',
-    icon: Zap,
-    color: '#1B3A5C',
-  },
-  {
-    sector: 'Industrial',
-    title: '110KV GIS Substation',
-    year: '2022',
-    value: '₹18 Cr+',
-    description: 'Gas Insulated Substation for a major industrial client, offering compact footprint and enhanced reliability.',
-    icon: Factory,
-    color: '#E8751A',
-  },
-  {
-    sector: 'Renewable',
-    title: '450MW Solar Plant',
-    year: '2024',
-    value: '₹200 Cr+',
-    description: 'Ground-mount solar EPC spanning multiple sites with 450+ MW cumulative capacity across India.',
-    icon: Sun,
-    color: '#D97706',
-  },
-  {
-    sector: 'Infrastructure',
-    title: 'Goa Airport Works',
-    year: '2021',
-    value: '₹12 Cr+',
-    description: 'Complete electrical infrastructure for Goa Airport including substations, lighting, and backup systems.',
-    icon: Train,
-    color: '#DC2626',
-  },
-  {
-    sector: 'International',
-    title: '6-Country Projects',
-    year: 'Ongoing',
-    value: 'Multi-Crore',
-    description: 'Electrical EPC projects across Nigeria, Qatar, Bangladesh, Sri Lanka, Oman, and Sierra Leone.',
-    icon: Globe,
-    color: '#2563EB',
-  },
-  {
-    sector: 'Cement & Heavy',
-    title: 'Dalmia Cement Plant',
-    year: '2022',
-    value: '₹15 Cr+',
-    description: 'Complete electrical installation for cement manufacturing facility including HT panels and switchyard.',
-    icon: Hammer,
-    color: '#78716C',
-  },
-]
-
 
 export default function SectorsPage() {
   const { navigate } = useRouter()
-  const [hoveredSector, setHoveredSector] = useState<number | null>(null)
+  const [expandedSector, setExpandedSector] = useState<number | null>(null)
 
-  /* Hero parallax */
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-
-  /* Horizontal scroll ref for project showcase */
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-
-  const checkScroll = () => {
-    const el = scrollContainerRef.current
-    if (!el) return
-    setCanScrollLeft(el.scrollLeft > 0)
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
+  const toggle = (i: number) => {
+    setExpandedSector((prev) => (prev === i ? null : i))
   }
-
-  const scrollProjects = (dir: 'left' | 'right') => {
-    const el = scrollContainerRef.current
-    if (!el) return
-    el.scrollBy({ left: dir === 'right' ? 400 : -400, behavior: 'smooth' })
-    setTimeout(checkScroll, 400)
-  }
-
-  useEffect(() => {
-    const el = scrollContainerRef.current
-    if (!el) return
-    el.addEventListener('scroll', checkScroll)
-    checkScroll()
-    return () => el.removeEventListener('scroll', checkScroll)
-  }, [])
 
   return (
-    <>
-      {/* ═══════════════════════════════════════════════════════
-          1. HERO — Constellation Network Background
-          ═══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative h-[85vh] min-h-[560px] overflow-hidden flex items-center justify-center">
-        <motion.div style={{ y: heroY }} className="absolute inset-0 bg-[#0C2340]">
-          {/* Gradient */}
-          <div className="absolute inset-0" style={{
-            background: 'radial-gradient(ellipse at 30% 40%, rgba(232,117,26,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(13,148,136,0.08) 0%, transparent 50%), linear-gradient(160deg, #0C2340 0%, #1B3A5C 40%, #0C2340 100%)',
-          }} />
-          {/* Constellation SVG */}
-          <ConstellationSVG />
-          {/* Glow accents */}
-          <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full bg-[#E8751A]/5 blur-3xl" />
-          <div className="absolute bottom-[10%] left-[5%] w-96 h-96 rounded-full bg-[#0D9488]/5 blur-3xl" />
-        </motion.div>
+    <div className="min-h-screen bg-white">
 
-        {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 text-center px-5 max-w-5xl mx-auto">
+      {/* ─────────────────────────────────────────
+          HERO
+          ───────────────────────────────────────── */}
+      <section
+        className="relative overflow-hidden"
+        style={{ background: INK }}
+      >
+        {/* Background image with dark INK overlay */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/sectors/hero-sectors.png"
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'rgba(26,26,46,0.75)' }}
+          />
+        </div>
+
+        {/* Subtle top fade for breadcrumb legibility */}
+        <div
+          className="absolute inset-x-0 top-0 h-24 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, rgba(26,26,46,0.55), rgba(26,26,46,0))' }}
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32">
           {/* Breadcrumb */}
-          <motion.nav
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex items-center justify-center gap-2 text-sm mb-8"
-          >
-            <button onClick={() => navigate('home')} className="text-white/50 hover:text-white transition-colors">Home</button>
-            <ChevronRight className="w-4 h-4 text-white/30" />
-            <button onClick={() => navigate('about')} className="text-white/50 hover:text-white transition-colors">Company</button>
-            <ChevronRight className="w-4 h-4 text-white/30" />
-            <span className="text-[#E8751A]">Key Sectors</span>
-          </motion.nav>
+          <FadeIn>
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm text-slate-300">
+              <button
+                onClick={() => navigate('home')}
+                className="hover:text-white transition-colors"
+              >
+                Home
+              </button>
+              <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+              <span className="text-white font-medium">Sectors</span>
+            </nav>
+          </FadeIn>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
-            <Badge className="bg-[#E8751A]/15 text-[#E8751A] border border-[#E8751A]/25 rounded-full px-5 py-1.5 text-sm font-medium mb-6">
-              <Zap className="w-3.5 h-3.5 mr-1.5" /> 10 Sectors • 6 Countries • 29+ Years
-            </Badge>
-          </motion.div>
+          {/* Coral badge */}
+          <FadeIn delay={0.08} className="mt-8">
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.12em] uppercase text-white"
+              style={{ backgroundColor: CORAL }}
+            >
+              27 Sectors • 1200+ Projects • 29+ Years
+            </span>
+          </FadeIn>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-5 tracking-tight"
-          >
-            Powering Every{' '}
-            <span className="text-white">Sector</span>
-          </motion.h1>
+          {/* Headline */}
+          <FadeIn delay={0.16}>
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.05] max-w-4xl">
+              Key Sectors We Serve
+            </h1>
+          </FadeIn>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="text-lg md:text-xl text-white/50 font-light mb-3 max-w-2xl mx-auto"
-          >
-            From 400KV substations to rooftop solar, from cement plants to international airports —
-            SVEPL delivers across every vertical of electrical engineering.
-          </motion.p>
-
-          {/* Quick stats row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.65 }}
-            className="flex flex-wrap justify-center gap-6 md:gap-10 mt-8"
-          >
-            {[
-              { label: '10 Sectors', icon: Layers },
-              { label: '10+ Utility Approvals', icon: Shield },
-              { label: '6 Countries', icon: Globe },
-              { label: '1200+ Projects', icon: CheckCircle2 },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-white/50">
-                <item.icon className="w-4 h-4 text-[#E8751A]/70" />
-                <span className="text-xs md:text-sm font-medium">{item.label}</span>
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
-        >
-          <span className="text-white/30 text-xs uppercase tracking-[0.2em]">Explore</span>
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>
-            <ChevronDown className="w-5 h-5 text-white/30" />
-          </motion.div>
-        </motion.div>
+          {/* Subtitle / hero intro */}
+          <FadeIn delay={0.24}>
+            <p className="mt-6 text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl">
+              {HERO_INTRO}
+            </p>
+          </FadeIn>
+        </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════
-          2. SECTOR GRID — 10 Sector Cards (single-color / monochrome)
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="text-center mb-14">
-              {/* Monochrome label — hairlines + tracked uppercase */}
-              <div className="flex items-center justify-center gap-3 mb-5">
-                <span className="h-px w-8 bg-slate-300" />
-                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
-                  Our Expertise
-                </span>
-                <span className="h-px w-8 bg-slate-300" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A2E] mb-3">Key Sectors We Serve</h2>
-              <p className="text-slate-500 max-w-2xl mx-auto text-sm">
-                Nearly three decades of experience across diverse industries, from power utilities to international projects —
-                every sector benefits from our integrated EPC approach.
+      {/* ─────────────────────────────────────────
+          SECTOR GRID
+          ───────────────────────────────────────── */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Section header */}
+          <FadeIn className="mb-10 md:mb-14">
+            <div className="max-w-3xl">
+              <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-slate-500">
+                Our Reach
+              </p>
+              <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1A1A2E]">
+                Industries & Infrastructure We Power
+              </h2>
+              <p className="mt-4 text-base text-slate-500 leading-relaxed">
+                From automotive plants to data centers, from ports to solar farms — explore the 27 sectors
+                where our engineering teams have delivered critical electrical infrastructure. Click any
+                sector to view notable clients.
               </p>
             </div>
           </FadeIn>
 
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5" staggerDelay={0.07}>
-            {sectors.map((sector, idx) => {
-              const Icon = sector.icon
-              const isHovered = hoveredSector === idx
-              return (
-                <StaggerChild key={sector.name}>
-                  <motion.div
-                    onMouseEnter={() => setHoveredSector(idx)}
-                    onMouseLeave={() => setHoveredSector(null)}
-                    whileHover={{ y: -6 }}
-                    transition={{ duration: 0.3 }}
-                    className="relative h-full"
-                  >
-                    <Card className="relative overflow-hidden rounded-xl border border-slate-200 hover:border-slate-300 shadow-none h-full cursor-pointer group transition-colors">
-                      {/* Top bar — single INK */}
-                      <div className="h-1 bg-[#1A1A2E]" />
-
-                      <CardContent className="p-5">
-                        {/* Icon — solid INK background, white icon (single color) */}
-                        <div className="w-12 h-12 rounded-xl bg-[#1A1A2E] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
-                          <Icon className="w-6 h-6 text-white" strokeWidth={1.5} />
-                        </div>
-
-                        {/* Sector name */}
-                        <h3 className="text-base font-bold text-[#1A1A2E] mb-2 leading-tight">
-                          {sector.name}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-slate-500 text-xs leading-relaxed mb-4 line-clamp-3">
-                          {sector.description}
-                        </p>
-
-                        {/* Key stat — single INK color */}
-                        <div className="flex items-end justify-between">
-                          <div>
-                            <p className="text-2xl font-extrabold text-[#1A1A2E] leading-none">
-                              <AnimatedCounter value={parseInt(sector.stat) || 0} suffix={sector.stat.replace(/[0-9,]/g, '')} />
-                            </p>
-                            <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">{sector.statLabel}</p>
-                          </div>
-                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#1A1A2E] group-hover:translate-x-1 transition-all" />
-                        </div>
-
-                        {/* Hover expanded details */}
-                        <AnimatePresence>
-                          {isHovered && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.25 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
-                                {sector.details.map((detail, dIdx) => (
-                                  <div key={dIdx} className="flex items-center gap-2">
-                                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 text-slate-400" strokeWidth={2} />
-                                    <span className="text-slate-600 text-xs">{detail}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </StaggerChild>
-              )
-            })}
+          {/* Grid */}
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SECTORS.map((sector, i) => (
+              <StaggerChild key={i}>
+                <SectorCard
+                  sector={sector}
+                  index={i}
+                  isExpanded={expandedSector === i}
+                  onToggle={() => toggle(i)}
+                />
+              </StaggerChild>
+            ))}
           </StaggerContainer>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════
-          3. POWER UTILITY MAP — Connected Nodes
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 relative overflow-hidden" style={{
-        background: 'linear-gradient(160deg, #0C2340 0%, #1B3A5C 50%, #1E3A5F 100%)',
-      }}>
-        {/* Dot pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
-          backgroundSize: '24px 24px',
-        }} />
-        <div className="absolute top-[5%] right-[-5%] w-80 h-80 rounded-full bg-[#E8751A]/5 blur-3xl" />
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+      {/* ─────────────────────────────────────────
+          CTA — simple white section, coral button
+          ───────────────────────────────────────── */}
+      <section className="bg-white pb-20 md:pb-28">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <div className="text-center mb-12">
-              <Badge className="bg-white/10 text-white/70 border border-white/10 rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                Approved By
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Utility & Board Approvals</h2>
-              <div className="section-bar mx-auto mb-4" />
-              <p className="text-white/50 max-w-xl mx-auto text-sm">
-                Approved by 10+ state electricity boards and utilities across India — a testament to our quality and compliance.
+            <div className="border-t border-slate-200 pt-14 md:pt-20 text-center">
+              <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-slate-500">
+                Let's Build Together
               </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* Left — Map visualization */}
-            <FadeIn direction="left">
-              <div className="relative bg-white/5 rounded-2xl border border-white/10 p-6 md:p-8 backdrop-blur-sm">
-                {/* Simplified South India map outline */}
-                <svg viewBox="0 0 100 100" className="w-full max-w-md mx-auto">
-                  {/* South India outline */}
-                  <path
-                    d="M15,35 Q20,25 30,22 Q40,18 50,22 Q60,20 70,25 Q80,30 85,40 Q90,55 82,70 Q75,82 65,88 Q55,92 45,90 Q35,88 28,80 Q20,72 15,60 Q12,48 15,35Z"
-                    fill="rgba(232,117,26,0.05)"
-                    stroke="rgba(232,117,26,0.15)"
-                    strokeWidth="0.5"
-                  />
-                  {/* Connection lines between utilities */}
-                  {[
-                    [0, 1], [1, 2], [2, 3], [2, 4], [3, 5], [5, 6], [5, 7], [3, 8], [8, 9],
-                  ].map(([a, b], i) => (
-                    <motion.line
-                      key={`util-line-${i}`}
-                      x1={utilities[a].x} y1={utilities[a].y}
-                      x2={utilities[b].x} y2={utilities[b].y}
-                      stroke="rgba(232,117,26,0.2)" strokeWidth="0.3"
-                      strokeDasharray="1.5,1"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.5, delay: 0.3 + i * 0.1 }}
-                    />
-                  ))}
-                  {/* Utility nodes */}
-                  {utilities.map((util, i) => (
-                    <motion.g key={util.name} initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.5 + i * 0.08, type: 'spring' }}>
-                      {/* Outer ring */}
-                      <circle cx={util.x} cy={util.y} r="3.5" fill="none" stroke="rgba(232,117,26,0.3)" strokeWidth="0.4" />
-                      {/* Inner dot */}
-                      <circle cx={util.x} cy={util.y} r="1.8" fill="rgba(232,117,26,0.6)" />
-                      {/* Label */}
-                      <text x={util.x} y={util.y - 5} textAnchor="middle" fill="white" fontSize="2.5" fontWeight="600" fontFamily="Inter, sans-serif">
-                        {util.name}
-                      </text>
-                    </motion.g>
-                  ))}
-                  {/* Animated pulse on key node */}
-                  <motion.circle
-                    cx={utilities[0].x} cy={utilities[0].y} r={3.5}
-                    fill="none" stroke="rgba(232,117,26,0.4)" strokeWidth="0.5"
-                    animate={{ r: [3.5, 7, 3.5], opacity: [0.4, 0, 0.4] }}
-                    transition={{ duration: 2.5, repeat: Infinity }}
-                  />
-                </svg>
-              </div>
-            </FadeIn>
-
-            {/* Right — Utility list */}
-            <FadeIn direction="right">
-              <div className="grid grid-cols-2 gap-3">
-                {utilities.map((util, i) => (
-                  <motion.div
-                    key={util.name}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                    className="bg-white/5 rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors group cursor-default"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-md bg-[#E8751A]/20 flex items-center justify-center shrink-0">
-                        <Zap className="w-4 h-4 text-[#E8751A]" />
-                      </div>
-                      <div>
-                        <p className="text-white text-sm font-semibold">{util.name}</p>
-                        <p className="text-white/40 text-[10px]">{util.region}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          4. PROJECT SHOWCASE — Horizontal Scrolling
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-[#F0F4F8] relative overflow-hidden">
-        {/* Decorative dots */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #1B3A5C 1px, transparent 0)',
-          backgroundSize: '28px 28px',
-        }} />
-
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
-          <FadeIn>
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <Badge variant="outline" className="border-[#1B3A5C]/20 text-[#1B3A5C] rounded-full px-3 py-0.5 text-xs font-semibold mb-4">
-                  Notable Projects
-                </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-2">Project Showcase by Sector</h2>
-                <div className="section-bar mb-3" />
-                <p className="text-[#6B7280] text-sm max-w-lg">Landmark projects across sectors that define our capability and commitment.</p>
-              </div>
-              {/* Scroll arrows */}
-              <div className="hidden md:flex items-center gap-2">
+              <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#1A1A2E] max-w-3xl mx-auto">
+                Have a project in one of these sectors?
+              </h2>
+              <p className="mt-5 text-base sm:text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                Talk to our engineering team about your electrical EPC, substation, industrial electrification,
+                or renewable energy requirements.
+              </p>
+              <div className="mt-9 flex justify-center">
                 <button
-                  onClick={() => scrollProjects('left')}
-                  disabled={!canScrollLeft}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollLeft ? 'border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
+                  onClick={() => navigate('contact')}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md text-sm font-semibold text-white transition-all hover:opacity-90 hover:gap-3 shadow-sm"
+                  style={{ backgroundColor: CORAL }}
                 >
-                  <ChevronRight className="w-5 h-5 rotate-180" />
-                </button>
-                <button
-                  onClick={() => scrollProjects('right')}
-                  disabled={!canScrollRight}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${canScrollRight ? 'border-[#1B3A5C] text-[#1B3A5C] hover:bg-[#1B3A5C] hover:text-white' : 'border-[#D1D5DB] text-[#D1D5DB] cursor-not-allowed'}`}
-                >
-                  <ChevronRight className="w-5 h-5" />
+                  Get a Quote
+                  <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
                 </button>
               </div>
             </div>
           </FadeIn>
-
-          {/* Scrollable container */}
-          <div
-            ref={scrollContainerRef}
-            className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {showcaseProjects.map((project, i) => {
-              const Icon = project.icon
-              return (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="snap-start shrink-0 w-[320px] md:w-[380px]"
-                >
-                  <Card className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow duration-300 h-full overflow-hidden group">
-                    {/* Top color bar */}
-                    <div className="h-2" style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}88)` }} />
-                    <CardContent className="p-6">
-                      {/* Sector badge + Year */}
-                      <div className="flex items-center justify-between mb-4">
-                        <Badge className="rounded-full text-xs font-semibold border-0" style={{
-                          backgroundColor: `${project.color}15`,
-                          color: project.color,
-                        }}>
-                          {project.sector}
-                        </Badge>
-                        <span className="text-xs text-[#9CA3AF] font-medium">{project.year}</span>
-                      </div>
-
-                      {/* Icon */}
-                      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{
-                        background: `linear-gradient(135deg, ${project.color}, ${project.color}88)`,
-                      }}>
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-xl font-bold text-[#1A1A2E] mb-2">{project.title}</h3>
-
-                      {/* Description */}
-                      <p className="text-[#6B7280] text-sm leading-relaxed mb-4">{project.description}</p>
-
-                      {/* Value */}
-                      <div className="flex items-center justify-between pt-4 border-t border-[#F0F4F8]">
-                        <div>
-                          <p className="text-xs text-[#9CA3AF] font-medium uppercase tracking-wider">Project Value</p>
-                          <p className="text-lg font-bold" style={{ color: project.color }}>{project.value}</p>
-                        </div>
-                        <ArrowRight className="w-5 h-5 text-[#D1D5DB] group-hover:text-[#E8751A] group-hover:translate-x-1 transition-all" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )
-            })}
-          </div>
         </div>
       </section>
 
-
-      {/* ═══════════════════════════════════════════════════════
-          7. CTA — Power Your Sector
-          ═══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{
-        background: 'linear-gradient(135deg, #E8751A 0%, #C55F10 50%, #F59231 100%)',
-      }}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Decorative circles */}
-          <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-white/5" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-white/5" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-white/[0.02]" />
-        </div>
-
-        {/* Decorative SVG grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{
-          backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-        }} />
-
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 py-20 md:py-28 text-center">
-          <FadeIn direction="scale">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              {[Zap, Sun, Building2, Factory, Globe].map((Icon, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center"
-                >
-                  <Icon className="w-5 h-5 text-white" />
-                </motion.div>
-              ))}
-            </div>
-
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              Power Your Sector
-            </h2>
-            <p className="text-white/80 mb-8 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-              Whatever your industry, SVEPL has the expertise, approvals, and track record to deliver.
-              From concept to commissioning — let&apos;s power your next project together.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button onClick={() => navigate('contact')}
-                className="bg-white text-[#E8751A] hover:bg-white/90 rounded-md px-8 h-12 font-semibold text-sm transition-colors shadow-lg">
-                Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 hover:border-white rounded-md px-8 h-12 font-semibold text-sm transition-colors" asChild>
-                <a href="tel:+919941905833"><Phone className="mr-2 w-4 h-4" />Call Us</a>
-              </Button>
-            </div>
-
-            {/* Trust badges */}
-            <div className="flex flex-wrap justify-center gap-6 mt-10">
-              {[
-                { label: '29+ Years', icon: Clock },
-                { label: '1200+ Projects', icon: CheckCircle2 },
-                { label: 'CRISIL BB+', icon: Shield },
-                { label: '10+ Utility Approvals', icon: Award },
-              ].map((badge) => (
-                <div key={badge.label} className="flex items-center gap-2 text-white/60">
-                  <badge.icon className="w-4 h-4" />
-                  <span className="text-xs font-medium">{badge.label}</span>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-    </>
+    </div>
   )
 }

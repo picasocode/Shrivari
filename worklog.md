@@ -2053,3 +2053,37 @@ Stage Summary:
 - "Key insights" (stats) redesigned as bold editorial monochrome band — all INK color, no coral, huge typography.
 - Lint clean. Dev server running on port 3000.
 - Screenshots saved: clients-single-color.png, clients-final.png
+
+---
+Task ID: sectors-rewrite-1
+Agent: full-stack-developer
+Task: Completely rewrite /home/z/my-project/src/components/pages/SectorsPage.tsx with new sector content (27 sectors with real client projects), a professional monochrome design, sector images, expandable client lists, and removing all old sections except hero + sector grid + CTA.
+
+Work Log:
+- Read /home/z/my-project/worklog.md to understand prior work (Journey refactor, About page redesign, Clients page monochrome treatment, Services page additions).
+- Read the existing SectorsPage.tsx (877 lines) — identified old sections to remove: ConstellationSVG component, utilities data array, showcaseProjects data array, Power Utility Map section (section 3), Project Showcase horizontal scroll section (section 4), scrollContainerRef/checkScroll/scrollProjects logic, old orange gradient CTA.
+- Verified all 9 sector images already exist in /home/z/my-project/public/images/sectors/ (automotive, manufacturing, infrastructure, commercial, solar, datacenter, pharma, cement-steel, oil-gas, hero-sectors).
+- Confirmed useRouter import path via /home/z/my-project/src/components/Router.tsx (exports useRouter hook with navigate(page) API).
+- Wrote a completely new SectorsPage.tsx (687 lines):
+  - 'use client' directive at top.
+  - Imports cleaned: only useState/useRef/useEffect from react, motion/useInView from framer-motion, ChevronDown/ChevronRight/ArrowRight/MapPin from lucide-react, useRouter from '@/components/Router'. Removed Card/CardContent/Badge/Button, useScroll/useTransform/AnimatePresence, and all unused icons.
+  - Color system constants: INK='#1A1A2E', CORAL='#E8751A' (used ONLY for hero badge + CTA button, nowhere else).
+  - Kept FadeIn, StaggerContainer, StaggerChild, AnimatedCounter animation helpers (simplified, removed unused direction variants).
+  - sectors array: all 27 sectors parsed exactly from user-provided content, each with {name, description, image, clients[]} — including Automotive (13 clients), Manufacturing (13), Infrastructure (3), Commercial (7), Renewable/Solar (15), IT/Datacenters (9), Pharma (14), Cement/Steel (9), Process Industries (2), Utilities (8), Oil & Gas (9), Petrochemical (10), FMCG (4), Food Processing (4), Textile (5), Paper/Printing (6), Electronics (2), Warehousing (3), Airports (5), Railway (0 → "Projects available on request"), Ports (3), Water Treatment (3), Educational (4), Hospitality (5), Government/PSU (3), Glass & Ceramics (3), Telecom (4).
+  - HERO section: full-bleed background image (/images/sectors/hero-sectors.png) with rgba(26,26,46,0.75) INK overlay, breadcrumb (Home / Sectors), coral pill badge "27 Sectors • 1200+ Projects • 29+ Years", white headline "Key Sectors We Serve", hero intro subtitle (the user-provided multi-sentence intro text). FadeIn-only animation, no constellation SVG, no parallax.
+  - SECTOR GRID section: responsive grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6), StaggerContainer wrapping 27 SectorCard components. Each card: white bg, border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow; h-48 w-full object-cover image with bg-[#1A1A2E] placeholder + subtle INK gradient overlay at bottom; sector name (bold INK); description (slate-500 text-sm line-clamp-3); client-count badge in slate; expand toggle button (ChevronDown rotates 180deg when expanded) controlling a useState `expandedSector` index; expanded client list in bg-slate-50 border-t border-slate-100 p-4 with each client as text-xs text-slate-600 with a small slate dot bullet.
+  - CTA section: simple white background, centered headline + paragraph, single coral "Get a Quote" button (bg #E8751A) linking to contact page via navigate('contact'). Removed old orange gradient CTA.
+- Ran `bun run lint` — initially 2 warnings (unused eslint-disable directives for @next/next/no-img-element on two <img> tags). Removed the eslint-disable comments since the project's ESLint config doesn't actually flag <img> usage. Re-ran lint → 0 errors, 0 warnings.
+- Verified dev server: confirmed Turbopack running on port 3000 (Ready in 691ms). The only errors in dev.log are pre-existing Supabase env-var errors (blogs/testimonials APIs) unrelated to this task.
+- Verified file structure: 687 lines, complete with hero + sector grid + CTA, no leftover references to removed sections (ConstellationSVG, utilities, showcaseProjects, scrollContainerRef, etc.).
+
+Stage Summary:
+- SectorsPage.tsx completely rewritten (877 → 687 lines) with new content + design.
+- 27 sectors rendered with exact user-provided data (names, descriptions, real client+location lists).
+- Strict monochrome color treatment: INK (#1A1A2E) + slate shades + white throughout, with coral (#E8751A) used ONLY in the hero badge and the CTA button — nowhere else. No multi-color gradients, no per-sector color variation.
+- Removed sections: ConstellationSVG, Power Utility Map, Project Showcase horizontal scroll, old orange gradient CTA, utilities array, showcaseProjects array, scroll logic.
+- Kept sections: Hero (with bg image + INK overlay + coral badge), Sector Grid (27 image-forward cards with expandable client lists), CTA (white + coral button).
+- Sector card interaction: click expand toggle reveals bulleted client list; ChevronDown icon rotates 180deg when expanded; only one card expanded at a time (expandedSector index state).
+- Responsive: 1 col mobile / 2 col sm / 3 col lg, gap-6.
+- Lint: 0 errors, 0 warnings.
+- Produced artifact: rewritten /home/z/my-project/src/components/pages/SectorsPage.tsx.
