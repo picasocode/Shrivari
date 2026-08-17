@@ -647,6 +647,60 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
+          AWARDS & RECOGNITION — Real photos of our accolades
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#E8751A] uppercase">Recognition</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#1A1A2E] mb-3 tracking-tight">
+                Awards &amp; Recognition
+              </h2>
+              <p className="text-[#6B7280] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                Three decades of engineering excellence, recognised by industry
+                bodies and partners — a few of the accolades that line our walls.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-4xl mx-auto">
+            {[
+              { src: '/images/about/awards-1.jpg', caption: 'Trophies & industry awards' },
+              { src: '/images/about/awards-2.jpg', caption: 'ISO & compliance certificates' },
+            ].map((item, i) => (
+              <FadeIn key={item.caption} delay={i * 0.1}>
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="relative h-72 md:h-80 overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={`${item.caption} — SVEPL awards showcase`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/15 to-transparent" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                      {item.caption}
+                    </span>
+                  </div>
+                </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
           STATS — Horizontal bar chart style on light background
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 relative overflow-hidden bg-[#EFEFEF]">

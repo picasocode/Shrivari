@@ -477,6 +477,64 @@ export default function ManufacturingPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
+          PANEL ASSEMBLY & TESTING — Real photos from the shop floor
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#E8751A] uppercase">Assembly & Testing</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#1A1A2E] mb-3 tracking-tight">
+                Panel Assembly &amp; Testing
+              </h2>
+              <p className="text-[#6B7280] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                From bare enclosure to fully wired and tested distribution
+                board — every panel passes through skilled hands and rigorous QA.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+            {[
+              { src: '/images/manufacturing/panel-assembly.jpg', title: 'Assembly Bay', desc: 'Technicians wiring and rigging control assemblies' },
+              { src: '/images/manufacturing/panel-test.jpg', title: 'Testing & QA', desc: 'Pre-dispatch electrical testing of assembled panels' },
+              { src: '/images/manufacturing/panel-inspection.jpg', title: 'Inspection', desc: 'Joint inspection of internal wiring and terminations' },
+              { src: '/images/manufacturing/panel-acdb.jpg', title: 'ACDB Panels', desc: 'Finished Alternating Current Distribution Boards' },
+            ].map((item, i) => (
+              <FadeIn key={item.title} delay={(i % 2) * 0.1}>
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white"
+                >
+                  <div className="relative h-56 md:h-72 overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={`${item.title} — SVEPL Panel Manufacturing, Guindy`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/20 to-transparent" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                    <h3 className="text-white font-bold text-lg md:text-xl mb-1 tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/75 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
           MANUFACTURING ADVANTAGES
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">

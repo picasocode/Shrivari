@@ -458,19 +458,20 @@ export default function CareersPage() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
             {[
               { src: '/images/careers/life-1.jpg', caption: 'Project review sessions' },
               { src: '/images/careers/life-2.jpg', caption: 'Engineering huddles' },
               { src: '/images/careers/life-3.jpg', caption: 'Technical walk-throughs' },
+              { src: '/images/careers/life-4.jpg', caption: 'Daily coordination' },
             ].map((item, i) => (
-              <FadeIn key={item.caption} delay={i * 0.1}>
+              <FadeIn key={item.caption} delay={i * 0.08}>
                 <motion.div
                   whileHover={{ y: -6 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
-                  <div className="relative h-64 md:h-72 overflow-hidden">
+                  <div className="relative h-56 md:h-64 overflow-hidden">
                     <img
                       src={item.src}
                       alt={`${item.caption} — Life at SVEPL`}
@@ -479,8 +480,8 @@ export default function CareersPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/80 via-transparent to-transparent" />
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
                       {item.caption}
                     </span>
