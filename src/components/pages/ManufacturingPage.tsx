@@ -271,8 +271,8 @@ export default function ManufacturingPage() {
                 <div className="absolute -top-4 -right-4 w-full h-full rounded-lg border-2 border-[#E8751A]/20 -z-0 hidden md:block" />
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/images/manufacturing/hero.png"
-                    alt="Panel Manufacturing Facility"
+                    src="/images/manufacturing/facility.jpg"
+                    alt="Shri Vaari Electricals — Manufacturing Facility, Guindy, Chennai"
                     width={1344}
                     height={768}
                     className="w-full object-cover min-h-[320px] md:min-h-[400px]"

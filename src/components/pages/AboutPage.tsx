@@ -286,8 +286,8 @@ export default function AboutPage() {
                 <div className="absolute -top-4 -right-4 w-full h-full rounded-lg border-2 border-[#E8751A]/20 -z-0 hidden md:block" />
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
                   <img
-                    src="/images/about-team.jpg"
-                    alt="SVEPL Team and Facilities at Guindy, Chennai"
+                    src="/images/about/office-exterior.jpg"
+                    alt="Shri Vaari Electricals — Corporate Office, Guindy, Chennai"
                     className="w-full object-cover min-h-[320px] md:min-h-[380px]"
                   />
                   {/* Overlay badge */}
@@ -302,6 +302,14 @@ export default function AboutPage() {
                       </div>
                     </div>
                   </div>
+                </div>
+                {/* Inset credential detail — ISO 9001:2015 signage */}
+                <div className="absolute -bottom-6 -right-4 md:-right-6 w-28 h-28 md:w-36 md:h-36 rounded-lg overflow-hidden border-4 border-white shadow-xl hidden sm:block z-10">
+                  <img
+                    src="/images/about/credential-badge.jpg"
+                    alt="SVEPL ISO 9001:2015 certified signage"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </FadeIn>

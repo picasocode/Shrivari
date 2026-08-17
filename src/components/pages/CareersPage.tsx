@@ -621,12 +621,16 @@ export default function CareersPage() {
               </div>
 
               {/* Right: Decorative + Stats */}
-              <div className="relative bg-gradient-to-br from-[#1B3A5C] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center">
-                {/* Background pattern */}
-                <div className="absolute inset-0 opacity-[0.04]" style={{
-                  backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
-                  backgroundSize: '20px 20px',
-                }} />
+              <div className="relative bg-gradient-to-br from-[#1B3A5C] to-[#0C2340] p-8 md:p-12 flex flex-col justify-center overflow-hidden">
+                {/* Faded office background image */}
+                <img
+                  src="/images/careers/office-bg.jpg"
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover opacity-20"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1B3A5C]/80 to-[#0C2340]/90" />
 
                 <div className="relative z-10">
                   <FadeIn delay={0.1}>
