@@ -149,6 +149,33 @@ export default function HomePage() {
               />
             </FadeIn>
           </div>
+
+          {/* Real photos strip — best of SVEPL */}
+          <FadeIn delay={0.2}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 md:mt-12">
+              {[
+                { src: '/images/home/about-1.jpg', caption: 'Panel assembly' },
+                { src: '/images/home/about-2.jpg', caption: 'Engineering office' },
+                { src: '/images/home/about-3.jpg', caption: 'Team collaboration' },
+              ].map((item, i) => (
+                <FadeIn key={item.caption} delay={0.25 + i * 0.08}>
+                  <div className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img
+                      src={item.src}
+                      alt={`${item.caption} — SVEPL`}
+                      className="w-full h-48 md:h-56 object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/80 via-transparent to-transparent" />
+                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                      {item.caption}
+                    </span>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
