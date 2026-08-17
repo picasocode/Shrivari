@@ -419,6 +419,64 @@ export default function ManufacturingPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
+          SHOP FLOOR IN ACTION — Real photos from our facility
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#E8751A] uppercase">Inside Our Facility</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#1A1A2E] mb-3 tracking-tight">
+                Shop Floor in Action
+              </h2>
+              <p className="text-[#6B7280] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                Where precision meets craftsmanship — a glimpse of our engineers
+                and technicians at work on the Guindy manufacturing floor.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+            {[
+              { src: '/images/manufacturing/shop-press.jpg', title: 'Hydraulic Press', desc: 'Precision punching and forming of panel components' },
+              { src: '/images/manufacturing/shop-grinder.jpg', title: 'Panel Fabrication', desc: 'Grinding and finishing of metal enclosures' },
+              { src: '/images/manufacturing/shop-drill.jpg', title: 'Drill Operations', desc: 'Accurate drilling on structural metalwork' },
+              { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding Bay', desc: 'Structural welding with full safety protocol' },
+            ].map((item, i) => (
+              <FadeIn key={item.title} delay={(i % 2) * 0.1}>
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white"
+                >
+                  <div className="relative h-56 md:h-72 overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={`${item.title} — SVEPL Manufacturing Facility, Guindy`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/20 to-transparent" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                    <h3 className="text-white font-bold text-lg md:text-xl mb-1 tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/75 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
           MANUFACTURING ADVANTAGES
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
