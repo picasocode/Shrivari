@@ -537,6 +537,19 @@ export default function ContactPage() {
                   {/* Top accent bar */}
                   <div className={`h-1.5 ${office.featured ? 'bg-gradient-to-r from-[#E8751A] to-[#F59E3B]' : 'bg-gradient-to-r from-[#E8751A] to-[#E8751A]/40'}`} />
 
+                  {/* Featured HQ card — image header */}
+                  {office.featured && (
+                    <div className="relative h-40 md:h-48 overflow-hidden">
+                      <img
+                        src="/images/offices/chennai-hq.jpg"
+                        alt={`${office.company} — ${office.city}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#152D4F] via-[#152D4F]/40 to-transparent" />
+                    </div>
+                  )}
+
                   <div className="p-6">
                     {/* Label badge */}
                     <div className="flex items-center justify-between mb-3">
@@ -663,6 +676,19 @@ export default function ContactPage() {
 
               {/* Left — Content */}
               <div>
+                {/* Corporate office reception image */}
+                <div className="relative rounded-xl overflow-hidden mb-6 h-44 md:h-52 border border-white/10">
+                  <img
+                    src="/images/offices/corporate-reception.jpg"
+                    alt="Shri Vaari Electricals — Corporate Office Reception"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/35 to-transparent" />
+                  <span className="absolute bottom-3 left-4 text-white/90 text-xs font-semibold tracking-[0.2em] uppercase">
+                    Our Corporate Office
+                  </span>
+                </div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/15 border border-[#E8751A]/30 mb-5">
                   <Building2 className="w-3.5 h-3.5 text-[#E8751A]" />
                   <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Corporate Office</span>

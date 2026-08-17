@@ -2133,3 +2133,46 @@ Stage Summary:
 - 5 columns × 10 rows layout preserved
 - Clean borderless look preserved
 - Ready to commit & push
+
+---
+Task ID: office-photos-placement
+Agent: main
+Task: Place 6 user-uploaded office/building photos (DSC_5750–5761) across pages — NOT touching home page slider
+
+Work Log:
+- Analyzed all 6 images via VLM (z-ai vision) to understand content:
+  - DSC_5750: exterior w/ loading bay + gate (industrial feel)
+  - DSC_5753: multi-story exterior, blue glass, corporate HQ look
+  - DSC_5754: indoor wall nameplate (company name, ISO 9001:2015, GST, Guindy address)
+  - DSC_5757: wide exterior w/ trees, white facade, blue glass
+  - DSC_5759: indoor reception (curved blue/white desk, brown sofas, TV)
+  - DSC_5761: indoor office (desk, monitor, printer, leather seating)
+- Used Explore subagent to map image-placement opportunities across About/Contact/Careers/Manufacturing pages
+- Resized all 6 via ffmpeg (crop to target aspect ratios, web-optimized ~50-130KB each):
+  - public/images/about/office-exterior.jpg (1200×800) ← DSC_5753
+  - public/images/about/credential-badge.jpg (600×600) ← DSC_5754
+  - public/images/offices/chennai-hq.jpg (1280×480) ← DSC_5757
+  - public/images/offices/corporate-reception.jpg (1200×500) ← DSC_5759
+  - public/images/careers/office-bg.jpg (1000×800) ← DSC_5761
+  - public/images/manufacturing/facility.jpg (1344×768) ← DSC_5750
+- Edits (6 spots, no home page touched):
+  1. AboutPage Our Story: swapped about-team.jpg → office-exterior.jpg; added inset credential-badge.jpg (small overlapping thumbnail, bottom-right, border-4 border-white, shadow, hidden on mobile)
+  2. ContactPage Office Locations: added image header (h-40 md:h-48) to featured Chennai HQ card only, with navy gradient overlay
+  3. ContactPage Corporate Office Banner: added reception photo (h-44 md:h-52) above the heading, with navy gradient overlay + "Our Corporate Office" caption
+  4. CareersPage CTA: replaced radial dot-pattern background with faded office-bg.jpg (opacity-20) + navy gradient overlay for text contrast
+  5. ManufacturingPage Introduction: swapped duplicate hero.png → facility.jpg (kept width/height/badge overlay)
+- Lint passed cleanly
+- Restarted dev server (cleared .next)
+- Verified all images load=true via agent-browser DOM checks across all 4 routes
+- Verified visually via VLM screenshots:
+  - About: building exterior + inset credential badge confirmed, clean layout
+  - Contact: HQ card exterior photo + corporate reception photo confirmed, properly sized, no broken images
+  - Careers: faded office bg behind stats, white text readable, clean layout
+  - Manufacturing: facility exterior with Guindy badge confirmed, side-by-side grid intact
+
+Stage Summary:
+- 6 office/building photos placed across 4 pages (About, Contact, Careers, Manufacturing)
+- Home page slider NOT touched (as instructed)
+- All images web-optimized (total ~510KB vs original ~41MB)
+- All verified loading + visually correct via VLM
+- NOT PUSHED — user said wait for additional images, will push together later
