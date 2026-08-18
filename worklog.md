@@ -2259,3 +2259,42 @@ Stage Summary:
 - Home page About section now showcases 3 best real photos (slider untouched)
 - All web-optimized (batch 3 total ~740KB)
 - Ready to PUSH all (previous unpushed commit + these changes)
+
+---
+Task ID: contact-redesign
+Agent: main
+Task: Completely redesign Contact page — clean, neat, impressive, no repetition, with exact 6 enquiry form fields
+
+Work Log:
+- Read full existing ContactPage.tsx (838 lines) — identified repetition:
+  - Chennai HQ appeared in: contactInfo sidebar, Office Locations grid (featured), AND a separate "Corporate Office Banner" (3x)
+  - Phone/address appeared in: contactInfo, OFFICES, CORPORATE, Quick Contact Bar (4x)
+  - Had 6 sections: Hero, Form+Info, Office Locations, Corporate Banner, States Covered, Quick Contact Bar — bloated
+- Completely rewrote ContactPage.tsx from scratch (~600 lines, cleaner)
+- New structure (4 sections only, ZERO repetition):
+  1. HERO — minimal white, breadcrumb + "Let's Build Something Together" heading + intro (matches design language of Clients/About pages)
+  2. ENQUIRY FORM + CONTACT ESSENTIALS — 5-col grid (3+2 split):
+     - Left (3 cols): enquiry form card with EXACT 6 fields user specified:
+       Name, Company Name, Phone Number, Email Address, Project Type (dropdown), Message
+     - Right (2 cols): navy "Reach Us" essentials card (phone/email/address/hours — single source of truth) + "Prefer to talk?" CTA card
+     - company + projectType mapped into API's `subject` field so backend still receives them
+  3. OUR OFFICES — clean 4-col grid of all 8 offices, Chennai HQ as featured (2-col span + photo header). No separate Corporate banner.
+  4. CLOSING CTA — minimal "Let's Start a Conversation" with scroll-to-form button
+- Removed bloated/repetitive sections: Corporate Office Banner, States Covered strip, Quick Contact Bar, decorative SVG connection pattern, dot grids
+- Project Type dropdown has 8 relevant options (EPC, Panel Mfg, Substation, Industrial, Solar, Testing, Cabling, Maintenance, Other)
+- Design: clean white bg, INK (#1A1A2E) headings, NAVY (#152D4F) essentials card, CORAL (#E8751A) accents, slate-200 borders, rounded-xl/2xl, FadeIn animations, hover lift on office cards
+- Reusable Field/SelectField components at module scope (no lint issues)
+- Lint passed cleanly
+- Restarted dev server (cleared .next)
+- Verified via agent-browser DOM check: form has exactly 6 fields (Name, Company, Phone, Email, Project Type select, Message) — confirmed
+- Verified HTML5 required validation works on Name/Email/Message (3 invalid fields detected on empty submit)
+- Verified visually via VLM:
+  - Hero + form: "clean hero, 2-column with 6-field form left + navy essentials card right, neat uncluttered design"
+  - Offices grid: "clean grid, Chennai HQ featured with photo header + navy bg, no repetition"
+
+Stage Summary:
+- Contact page fully redesigned — clean, neat, impressive
+- 6 exact enquiry fields as user specified (Name, Company Name, Phone, Email, Project Type, Message)
+- All repetition eliminated (Chennai HQ info now appears in exactly ONE place: the essentials card + ONE office card)
+- 8 offices in clean grid, no separate corporate banner
+- Ready to PUSH
