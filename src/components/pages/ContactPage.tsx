@@ -3,8 +3,8 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import {
-  Phone, Mail, MapPin, Clock, Send, CheckCircle, ChevronRight,
-  Building2, ArrowRight,
+  Phone, Mail, MapPin, Send, CheckCircle, ChevronRight,
+  Building2, Factory,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
@@ -14,7 +14,6 @@ import { submitContact } from '@/lib/api'
    Design tokens
    ──────────────────────────────────────────────────────────── */
 const INK = '#1A1A2E'
-const NAVY = '#152D4F'
 const CORAL = '#E8751A'
 
 /* ────────────────────────────────────────────────────────────
@@ -56,8 +55,7 @@ function telLink(phone: string): string {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Offices — single source of truth (Chennai HQ is the featured
-   card; no separate "Corporate Office" section needed)
+   Offices — single source of truth (uniform cards, no images)
    ──────────────────────────────────────────────────────────── */
 interface Office {
   id: string
@@ -68,7 +66,7 @@ interface Office {
   state: string
   phones: string[]
   emails: string[]
-  featured?: boolean
+  kind: 'head' | 'regional' | 'manufacturing'
 }
 
 const OFFICES: Office[] = [
@@ -81,7 +79,7 @@ const OFFICES: Office[] = [
     state: 'Tamil Nadu',
     phones: ['044 2250 0241', '044 2250 0913', '044 4350 2914'],
     emails: ['enquiries@shrivaarielectricals.com'],
-    featured: true,
+    kind: 'head',
   },
   {
     id: 'hyderabad',
@@ -92,6 +90,7 @@ const OFFICES: Office[] = [
     state: 'Telangana',
     phones: ['75400 88953'],
     emails: ['enquiries@shrivarielctrotech.com'],
+    kind: 'regional',
   },
   {
     id: 'bangalore',
@@ -102,6 +101,7 @@ const OFFICES: Office[] = [
     state: 'Karnataka',
     phones: ['81478 25481'],
     emails: ['technical.blr@shrivaarielectricals.com'],
+    kind: 'regional',
   },
   {
     id: 'trivandrum',
@@ -112,6 +112,7 @@ const OFFICES: Office[] = [
     state: 'Kerala',
     phones: ['95513 66695'],
     emails: [],
+    kind: 'regional',
   },
   {
     id: 'pondicherry',
@@ -122,6 +123,7 @@ const OFFICES: Office[] = [
     state: 'Puducherry',
     phones: ['0413 2256 174', '98439 29232'],
     emails: ['srivaari.pdy@gmail.com'],
+    kind: 'regional',
   },
   {
     id: 'hosur',
@@ -132,6 +134,7 @@ const OFFICES: Office[] = [
     state: 'Tamil Nadu',
     phones: ['99943 72426'],
     emails: ['shrivaari.hsr@gmail.com'],
+    kind: 'regional',
   },
   {
     id: 'goa',
@@ -142,6 +145,7 @@ const OFFICES: Office[] = [
     state: 'Goa',
     phones: ['98809 94281', '92847 76364'],
     emails: ['projects.blr@shrivaarielectricals.com'],
+    kind: 'regional',
   },
   {
     id: 'chettipedu',
@@ -152,6 +156,7 @@ const OFFICES: Office[] = [
     state: 'Tamil Nadu',
     phones: ['95510 47711'],
     emails: [],
+    kind: 'manufacturing',
   },
 ]
 
@@ -229,7 +234,7 @@ export default function ContactPage() {
           HERO — minimal, clean, lots of air
           ════════════════════════════════════════════════════════ */}
       <section className="bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-14 md:pb-20">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-12 md:pb-16">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -274,390 +279,241 @@ export default function ContactPage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
-          ENQUIRY FORM + CONTACT ESSENTIALS
-          Two-column split. Left = form (6 fields). Right = essentials.
+          ENQUIRY FORM — centered, focused, full attention
           ════════════════════════════════════════════════════════ */}
-      <section className="bg-white pb-16 md:pb-24">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14">
-            {/* ── Left: Enquiry form (3 of 5 cols) ── */}
-            <FadeIn className="lg:col-span-3">
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-10">
-                <div className="mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2" style={{ color: INK }}>
-                    Send an Enquiry
-                  </h2>
-                  <p className="text-slate-500 text-sm md:text-base">
-                    Fill in the form below and we&apos;ll respond within one business day.
-                  </p>
+      <section id="enquiry-form" className="bg-white pb-16 md:pb-24">
+        <div className="max-w-4xl mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 p-8 md:p-12">
+              {/* Header */}
+              <div className="mb-8 md:mb-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="w-8 h-[2px]" style={{ background: CORAL }} />
+                  <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-500">
+                    Enquiry Form
+                  </span>
                 </div>
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2" style={{ color: INK }}>
+                  Send an Enquiry
+                </h2>
+                <p className="text-slate-500 text-sm md:text-base">
+                  Fill in the form below and we&apos;ll respond within one business day.
+                </p>
+              </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Row 1: Name + Company Name */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <Field
-                      label="Name"
-                      required
-                      value={form.name}
-                      onChange={v => setField('name', v)}
-                      placeholder="Your full name"
-                    />
-                    <Field
-                      label="Company Name"
-                      value={form.company}
-                      onChange={v => setField('company', v)}
-                      placeholder="Your company"
-                    />
-                  </div>
-
-                  {/* Row 2: Phone + Email */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <Field
-                      label="Phone Number"
-                      type="tel"
-                      value={form.phone}
-                      onChange={v => setField('phone', v)}
-                      placeholder="10-digit mobile"
-                    />
-                    <Field
-                      label="Email Address"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={v => setField('email', v)}
-                      placeholder="you@company.com"
-                    />
-                  </div>
-
-                  {/* Row 3: Project Type (select) */}
-                  <SelectField
-                    label="Project Type"
-                    value={form.projectType}
-                    onChange={v => setField('projectType', v)}
-                    options={PROJECT_TYPES}
-                    placeholder="Select a project type"
-                  />
-
-                  {/* Row 4: Message */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Row 1: Name + Company Name */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <Field
-                    label="Message"
+                    label="Name"
                     required
-                    multiline
-                    value={form.message}
-                    onChange={v => setField('message', v)}
-                    placeholder="Tell us about your project scope, location, timeline…"
+                    value={form.name}
+                    onChange={v => setField('name', v)}
+                    placeholder="Your full name"
                   />
-
-                  {/* Error / Success */}
-                  {error && (
-                    <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                      {error}
-                    </p>
-                  )}
-                  {success && (
-                    <div className="flex items-start gap-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-                      <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold">Thank you — your enquiry is on its way.</p>
-                        <p className="text-green-600 mt-0.5">Our team will respond within one business day.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Submit */}
-                  <Button
-                    type="submit"
-                    disabled={submitting}
-                    size="lg"
-                    className="w-full h-12 md:h-14 rounded-xl text-sm md:text-base font-semibold transition-all duration-300 group"
-                    style={{ background: INK, color: '#FFFFFF' }}
-                  >
-                    {submitting ? 'Sending…' : 'Send Enquiry'}
-                    {!submitting && (
-                      <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    )}
-                  </Button>
-                </form>
-              </div>
-            </FadeIn>
-
-            {/* ── Right: Contact essentials (2 of 5 cols) ── */}
-            <FadeIn delay={0.15} className="lg:col-span-2">
-              <div className="space-y-4">
-                {/* Essentials card */}
-                <div className="rounded-2xl p-6 md:p-8" style={{ background: NAVY }}>
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="w-8 h-[2px]" style={{ background: CORAL }} />
-                    <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-white/60">
-                      Reach Us
-                    </span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-6 leading-tight">
-                    Shri Vaari Electricals
-                  </h3>
-
-                  <div className="space-y-5">
-                    {/* Phone */}
-                    <a
-                      href={telLink('+91 99419 05833')}
-                      className="flex items-start gap-4 group"
-                    >
-                      <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(232,117,26,0.15)' }}>
-                        <Phone className="w-4 h-4" style={{ color: CORAL }} />
-                      </span>
-                      <div>
-                        <p className="text-[11px] font-semibold tracking-wider uppercase text-white/50 mb-0.5">Phone</p>
-                        <p className="text-white font-medium text-sm group-hover:text-[#E8751A] transition-colors">
-                          +91 99419 05833
-                        </p>
-                        <p className="text-white/50 text-xs mt-0.5">044 2250 0241 / 0913</p>
-                      </div>
-                    </a>
-
-                    {/* Email */}
-                    <a
-                      href="mailto:enquiries@shrivaarielectricals.com"
-                      className="flex items-start gap-4 group"
-                    >
-                      <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(232,117,26,0.15)' }}>
-                        <Mail className="w-4 h-4" style={{ color: CORAL }} />
-                      </span>
-                      <div className="min-w-0">
-                        <p className="text-[11px] font-semibold tracking-wider uppercase text-white/50 mb-0.5">Email</p>
-                        <p className="text-white font-medium text-sm break-all group-hover:text-[#E8751A] transition-colors">
-                          enquiries@shrivaarielectricals.com
-                        </p>
-                      </div>
-                    </a>
-
-                    {/* Address */}
-                    <div className="flex items-start gap-4">
-                      <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(232,117,26,0.15)' }}>
-                        <MapPin className="w-4 h-4" style={{ color: CORAL }} />
-                      </span>
-                      <div>
-                        <p className="text-[11px] font-semibold tracking-wider uppercase text-white/50 mb-0.5">Head Office</p>
-                        <p className="text-white font-medium text-sm leading-relaxed">
-                          C-37, Thiru-Vi-Ka Industrial Estate, Guindy – 600 032, Chennai, Tamil Nadu
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Hours */}
-                    <div className="flex items-start gap-4">
-                      <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(232,117,26,0.15)' }}>
-                        <Clock className="w-4 h-4" style={{ color: CORAL }} />
-                      </span>
-                      <div>
-                        <p className="text-[11px] font-semibold tracking-wider uppercase text-white/50 mb-0.5">Business Hours</p>
-                        <p className="text-white font-medium text-sm">Mon – Sat</p>
-                        <p className="text-white/50 text-xs">9:30 AM – 6:30 PM</p>
-                      </div>
-                    </div>
-                  </div>
+                  <Field
+                    label="Company Name"
+                    value={form.company}
+                    onChange={v => setField('company', v)}
+                    placeholder="Your company"
+                  />
                 </div>
 
-                {/* Quick CTA card */}
-                <div className="rounded-2xl border border-slate-200 p-6 md:p-8 bg-[#F8FAFC]">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Building2 className="w-4 h-4" style={{ color: CORAL }} />
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500">
-                      Prefer to talk?
-                    </span>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                    Speak directly with our engineering team for urgent project enquiries.
+                {/* Row 2: Phone + Email */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Field
+                    label="Phone Number"
+                    type="tel"
+                    value={form.phone}
+                    onChange={v => setField('phone', v)}
+                    placeholder="10-digit mobile"
+                  />
+                  <Field
+                    label="Email Address"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={v => setField('email', v)}
+                    placeholder="you@company.com"
+                  />
+                </div>
+
+                {/* Row 3: Project Type (select) */}
+                <SelectField
+                  label="Project Type"
+                  value={form.projectType}
+                  onChange={v => setField('projectType', v)}
+                  options={PROJECT_TYPES}
+                  placeholder="Select a project type"
+                />
+
+                {/* Row 4: Message */}
+                <Field
+                  label="Message"
+                  required
+                  multiline
+                  value={form.message}
+                  onChange={v => setField('message', v)}
+                  placeholder="Tell us about your project scope, location, timeline…"
+                />
+
+                {/* Error / Success */}
+                {error && (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+                    {error}
                   </p>
-                  <a
-                    href={telLink('+91 99419 05833')}
-                    className="inline-flex items-center gap-2 font-semibold text-sm transition-colors group"
-                    style={{ color: INK }}
-                  >
-                    Call +91 99419 05833
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: CORAL }} />
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
+                )}
+                {success && (
+                  <div className="flex items-start gap-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                    <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold">Thank you — your enquiry is on its way.</p>
+                      <p className="text-green-600 mt-0.5">Our team will respond within one business day.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Submit */}
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  size="lg"
+                  className="w-full h-12 md:h-14 rounded-xl text-sm md:text-base font-semibold transition-all duration-300 group"
+                  style={{ background: INK, color: '#FFFFFF' }}
+                >
+                  {submitting ? 'Sending…' : 'Send Enquiry'}
+                  {!submitting && (
+                    <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  )}
+                </Button>
+              </form>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════
-          OUR OFFICES — clean grid, Chennai HQ as featured card.
-          No separate "Corporate Office" section — no repetition.
+          OUR OFFICES — clean directory list (no grid, no images)
           ════════════════════════════════════════════════════════ */}
-      <section className="bg-[#F8FAFC] py-16 md:py-24 border-t border-slate-200">
+      <section className="bg-[#F8FAFC] py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
-            <div className="text-center mb-12 md:mb-14">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <span className="h-px w-8 bg-slate-300" />
-                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400">
+            <div className="mb-12 md:mb-14">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-10 h-[2px]" style={{ background: CORAL }} />
+                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-500">
                   Pan-India Presence
                 </span>
-                <span className="h-px w-8 bg-slate-300" />
               </div>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3" style={{ color: INK }}>
                 Our Offices
               </h2>
-              <p className="text-slate-500 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-                Eight offices across India — a head office, regional branches,
-                and a dedicated manufacturing unit.
+              <p className="text-slate-500 text-base md:text-lg max-w-2xl leading-relaxed">
+                A head office, six regional branches and a dedicated manufacturing
+                unit — eight locations serving projects across India.
               </p>
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Directory list */}
+          <div className="space-y-3">
             {OFFICES.map((office, i) => (
-              <FadeIn key={office.id} delay={(i % 4) * 0.08}>
+              <FadeIn key={office.id} delay={i * 0.04}>
                 <motion.div
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -2 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`relative h-full rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 ${
-                    office.featured
-                      ? 'sm:col-span-2 lg:col-span-2'
-                      : 'bg-white border border-slate-200 hover:border-slate-300'
-                  }`}
-                  style={office.featured ? { background: `linear-gradient(160deg, ${NAVY} 0%, #0D1D3A 100%)` } : {}}
+                  className="bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 p-5 md:p-7"
                 >
-                  {/* Featured HQ image header */}
-                  {office.featured && (
-                    <div className="relative h-40 md:h-48 overflow-hidden">
-                      <img
-                        src="/images/offices/chennai-hq.jpg"
-                        alt={`${office.company} — ${office.city}`}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A] via-[#0D1D3A]/40 to-transparent" />
-                    </div>
-                  )}
-
-                  <div className="p-6">
-                    {/* Label badge */}
-                    <div className="flex items-center justify-between mb-3">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 items-start">
+                    {/* Identity */}
+                    <div className="md:col-span-4">
                       <span
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider"
-                        style={
-                          office.featured
-                            ? { background: CORAL, color: '#FFFFFF' }
-                            : { background: 'rgba(232,117,26,0.1)', color: CORAL }
-                        }
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2.5"
+                        style={{
+                          background:
+                            office.kind === 'head'
+                              ? CORAL
+                              : office.kind === 'manufacturing'
+                                ? 'rgba(21,45,79,0.1)'
+                                : 'rgba(232,117,26,0.1)',
+                          color:
+                            office.kind === 'head' ? '#FFFFFF' : office.kind === 'manufacturing' ? '#152D4F' : CORAL,
+                        }}
                       >
-                        <Building2 className="w-3 h-3" />
+                        {office.kind === 'manufacturing' ? (
+                          <Factory className="w-3 h-3" />
+                        ) : (
+                          <Building2 className="w-3 h-3" />
+                        )}
                         {office.label}
                       </span>
-                      {office.featured && (
-                        <span className="text-white/30 text-xs font-medium">{office.state}</span>
-                      )}
-                    </div>
-
-                    {/* Company name */}
-                    <h3
-                      className={`font-bold text-base mb-1 leading-tight ${office.featured ? 'text-white' : ''}`}
-                      style={office.featured ? {} : { color: INK }}
-                    >
-                      {office.company}
-                    </h3>
-
-                    {/* City, State */}
-                    <div className="flex items-center gap-1.5 mb-3">
-                      <MapPin className="w-4 h-4 shrink-0" style={{ color: CORAL }} />
-                      <span
-                        className={`text-sm font-semibold ${office.featured ? 'text-white' : ''}`}
-                        style={office.featured ? {} : { color: INK }}
-                      >
-                        {office.city}, {office.state}
-                      </span>
+                      <h3 className="font-bold text-base leading-tight" style={{ color: INK }}>
+                        {office.company}
+                      </h3>
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <MapPin className="w-3.5 h-3.5 shrink-0" style={{ color: CORAL }} />
+                        <span className="text-sm font-semibold" style={{ color: INK }}>
+                          {office.city}, {office.state}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Address */}
-                    <p className={`text-xs leading-relaxed mb-4 ${office.featured ? 'text-white/60' : 'text-slate-500'}`}>
-                      {office.address}
-                    </p>
+                    <div className="md:col-span-5 md:border-l md:border-slate-100 md:pl-6">
+                      <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-1.5">
+                        Address
+                      </p>
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        {office.address}
+                      </p>
+                    </div>
 
-                    {/* Phones */}
-                    {office.phones.length > 0 && (
-                      <div className="space-y-1 mb-3">
-                        {office.phones.map(p => (
-                          <a
-                            key={p}
-                            href={telLink(p)}
-                            className={`flex items-center gap-2 text-xs transition-colors ${office.featured ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-[#1A1A2E]'}`}
-                          >
-                            <Phone className="w-3 h-3 shrink-0" style={{ color: CORAL }} />
-                            {p}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Emails */}
-                    {office.emails.length > 0 && (
-                      <div className="space-y-1">
-                        {office.emails.map(em => (
-                          <a
-                            key={em}
-                            href={`mailto:${em}`}
-                            className={`flex items-center gap-2 text-xs transition-colors break-all ${office.featured ? 'text-white/80 hover:text-white' : 'text-slate-600 hover:text-[#1A1A2E]'}`}
-                          >
-                            <Mail className="w-3 h-3 shrink-0" style={{ color: CORAL }} />
-                            {em}
-                          </a>
-                        ))}
-                      </div>
-                    )}
+                    {/* Contact */}
+                    <div className="md:col-span-3 md:border-l md:border-slate-100 md:pl-6">
+                      {office.phones.length > 0 && (
+                        <div className="mb-3">
+                          <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-1.5">
+                            Phone
+                          </p>
+                          <div className="space-y-1">
+                            {office.phones.map(p => (
+                              <a
+                                key={p}
+                                href={telLink(p)}
+                                className="flex items-center gap-2 text-sm text-slate-600 hover:text-[#1A1A2E] transition-colors"
+                              >
+                                <Phone className="w-3 h-3 shrink-0" style={{ color: CORAL }} />
+                                {p}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {office.emails.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400 mb-1.5">
+                            Email
+                          </p>
+                          <div className="space-y-1">
+                            {office.emails.map(em => (
+                              <a
+                                key={em}
+                                href={`mailto:${em}`}
+                                className="flex items-center gap-2 text-xs text-slate-600 hover:text-[#1A1A2E] transition-colors break-all"
+                              >
+                                <Mail className="w-3 h-3 shrink-0" style={{ color: CORAL }} />
+                                {em}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════════
-          CLOSING CTA — minimal
-          ════════════════════════════════════════════════════════ */}
-      <section className="bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-20 md:py-28 text-center">
-          <FadeIn>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <span className="w-8 h-[2px]" style={{ background: CORAL }} />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500">
-                Ready When You Are
-              </span>
-              <span className="w-8 h-[2px]" style={{ background: CORAL }} />
-            </div>
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-5 leading-tight" style={{ color: INK }}>
-              Let&apos;s Start a Conversation
-            </h2>
-            <p className="text-slate-500 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-              Whether it&apos;s a turnkey EPC project or a single panel —
-              we&apos;re here to help you power it forward.
-            </p>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full px-8 py-6 text-base font-semibold border-2 transition-all duration-300 group hover:text-white"
-              style={{ borderColor: CORAL, color: CORAL }}
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  const el = document.getElementById('enquiry-form')
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }
-              }}
-              onMouseEnter={e => {
-                ;(e.currentTarget as HTMLButtonElement).style.background = CORAL
-              }}
-              onMouseLeave={e => {
-                ;(e.currentTarget as HTMLButtonElement).style.background = 'transparent'
-              }}
-            >
-              Send an Enquiry
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </FadeIn>
         </div>
       </section>
     </div>
