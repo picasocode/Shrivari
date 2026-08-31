@@ -149,33 +149,53 @@ export default function HomePage() {
               />
             </FadeIn>
           </div>
+        </div>
+      </section>
 
-          {/* Real photos strip — best of SVEPL */}
-          <FadeIn delay={0.2}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 md:mt-12">
-              {[
-                { src: '/images/home/about-1.jpg', caption: 'Panel assembly' },
-                { src: '/images/home/about-2.jpg', caption: 'Engineering office' },
-                { src: '/images/home/about-3.jpg', caption: 'Team collaboration' },
-              ].map((item, i) => (
-                <FadeIn key={item.caption} delay={0.25 + i * 0.08}>
-                  <div className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <img
-                      src={item.src}
-                      alt={`${item.caption} — SVEPL`}
-                      className="w-full h-48 md:h-56 object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
-                      {item.caption}
-                    </span>
-                  </div>
-                </FadeIn>
-              ))}
+      {/* ─── Awards & Recognition ─── */}
+      <section className="py-14 md:py-20 bg-[#F8FAFC] relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Recognition</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3 tracking-tight">
+                Awards &amp; Recognition
+              </h2>
+              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                Three decades of engineering excellence, recognised by industry
+                bodies and partners — a few of the accolades that line our walls.
+              </p>
             </div>
           </FadeIn>
+
+          <div className="max-w-4xl mx-auto">
+            <FadeIn delay={0.1}>
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="relative h-72 md:h-[26rem] overflow-hidden">
+                  <img
+                    src="/images/home/awards-building.jpg"
+                    alt="Shri Vaari Electricals Pvt. Ltd. corporate headquarters — awards and recognition showcase"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/15 to-transparent" />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#1A1A2E] text-xs font-bold tracking-wide">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                    SVEPL Corporate Headquarters — Shri Vaari Electricals Pvt. Ltd.
+                  </span>
+                </div>
+              </motion.div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
