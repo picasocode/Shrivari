@@ -24,6 +24,12 @@ const slides = [
     subtitle: '3000+ Projects Delivered Successfully',
     desc: 'Leading industries rely on us for transmission & distribution, switchyard construction, and electrical services.',
   },
+  {
+    image: '/images/hero-4.jpg',
+    title: 'Built In-House. Tested End-to-End.',
+    subtitle: 'In-House Manufacturing Facility',
+    desc: 'Every panel is designed, fabricated, wired and tested under one roof — full control over quality, customization and delivery timelines.',
+  },
 ]
 
 export default function Hero() {
