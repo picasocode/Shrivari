@@ -45,7 +45,7 @@ const PRODUCTS: Product[] = [
     name: 'PCC Panels',
     tagline: 'Power Control Center',
     description: 'Power control center panels designed for efficient and centralized power distribution across industrial and infrastructure installations.',
-    image: '/images/manufacturing/pcc.png',
+    image: '/images/manufacturing/pcc.jpg',
     icon: Zap,
     features: ['Centralized distribution', 'Main incoming breaker', 'Bus bar design up to 6300A', 'Metering & protection'],
   },
@@ -54,7 +54,7 @@ const PRODUCTS: Product[] = [
     name: 'MCC Panels',
     tagline: 'Motor Control Center',
     description: 'Motor control center panels for industrial motor operations and process control, engineered for reliability and safety.',
-    image: '/images/manufacturing/mcc.png',
+    image: '/images/manufacturing/mcc.jpg',
     icon: Cpu,
     features: ['Motor starters', 'Contactor & relay logic', 'DOL / Star-Delta / RDF', 'Process interlocks'],
   },
@@ -63,7 +63,7 @@ const PRODUCTS: Product[] = [
     name: 'APFC Panels',
     tagline: 'Automatic Power Factor Correction',
     description: 'Automatic power factor correction panels for energy efficiency optimization, reducing kVA demand and penalty charges.',
-    image: '/images/manufacturing/apfc.png',
+    image: '/images/manufacturing/apfc.jpg',
     icon: Gauge,
     features: ['Capacitor banks', 'Reactor harmonics control', 'Automatic controller', 'Step-wise switching'],
   },
@@ -72,7 +72,7 @@ const PRODUCTS: Product[] = [
     name: 'PLC Automation Panels',
     tagline: 'Programmable Logic Control',
     description: 'Automation and process control panels with advanced PLC integration, enabling smart industrial operations and remote monitoring.',
-    image: '/images/manufacturing/plc.png',
+    image: '/images/manufacturing/plc.jpg',
     icon: CircuitBoard,
     features: ['PLC integrated control', 'HMI touch interface', 'I/O modules', 'SCADA ready'],
   },
@@ -81,7 +81,7 @@ const PRODUCTS: Product[] = [
     name: 'Synchronization Panels',
     tagline: 'Generator & Utility Sync',
     description: 'Generator and utility synchronization systems for uninterrupted operations, enabling seamless parallel operation and load sharing.',
-    image: '/images/manufacturing/sync.png',
+    image: '/images/manufacturing/sync.jpg',
     icon: RefreshCw,
     features: ['Auto / manual sync', 'Load sharing', 'Mains & DG parallel', 'Reverse power protection'],
   },
@@ -90,7 +90,7 @@ const PRODUCTS: Product[] = [
     name: 'VFD Panels',
     tagline: 'Variable Frequency Drive',
     description: 'Variable frequency drive panels for motor speed control and energy optimization across pumps, fans, and process loads.',
-    image: '/images/manufacturing/vfd.png',
+    image: '/images/manufacturing/vfd.jpg',
     icon: Activity,
     features: ['Speed control', 'Energy optimization', 'Soft start / stop', 'Harmonics mitigation'],
   },
@@ -99,9 +99,18 @@ const PRODUCTS: Product[] = [
     name: 'SAS / SCADA Systems',
     tagline: 'Substation Automation & Supervisory Control',
     description: 'Substation automation systems and SCADA solutions for real-time monitoring, control, and data acquisition across electrical networks.',
-    image: '/images/manufacturing/scada.png',
+    image: '/images/manufacturing/scada.jpg',
     icon: MonitorPlay,
     features: ['Real-time monitoring', 'Remote control', 'Data acquisition', 'Event & alarm logging'],
+  },
+  {
+    id: 'cr',
+    name: 'C&R Panels',
+    tagline: 'Control & Relay Panel',
+    description: 'Control and relay panels for controlling and protecting electrical equipment — housing protection relays, auxiliary relays, MCBs, control switches, and indication lamps.',
+    image: '/images/manufacturing/cr.jpg',
+    icon: ShieldCheck,
+    features: ['Overcurrent & earth fault relays', 'Breaker trip signal', 'Breaker control & status indication', 'Alarms & interlocking'],
   },
 ]
 
@@ -441,10 +450,11 @@ export default function ManufacturingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
             {[
-              { src: '/images/manufacturing/shop-press.jpg', title: 'Hydraulic Press', desc: 'Precision punching and forming of panel components' },
-              { src: '/images/manufacturing/shop-grinder.jpg', title: 'Panel Fabrication', desc: 'Grinding and finishing of metal enclosures' },
-              { src: '/images/manufacturing/shop-drill.jpg', title: 'Drill Operations', desc: 'Accurate drilling on structural metalwork' },
-              { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding Bay', desc: 'Structural welding with full safety protocol' },
+              { src: '/images/manufacturing/shop-press.jpg', title: 'CNC Laser Punching', desc: 'Precision laser cutting and punching of panel components' },
+              { src: '/images/manufacturing/shop-grinder.jpg', title: 'Sanding & Finishing', desc: 'Grinding and surface finishing of metal enclosures' },
+              { src: '/images/manufacturing/shop-drill.jpg', title: 'Drilling Work', desc: 'Accurate drilling on structural metalwork' },
+              { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding & Fabrication', desc: 'Structural fabrication and welding with full safety protocol' },
+              { src: '/images/manufacturing/shop-powder.jpg', title: 'Powder Coating Area', desc: 'In-house powder coating and finishing of enclosures' },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={(i % 2) * 0.1}>
                 <motion.div
@@ -499,9 +509,9 @@ export default function ManufacturingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
             {[
-              { src: '/images/manufacturing/panel-assembly.jpg', title: 'Assembly Bay', desc: 'Technicians wiring and rigging control assemblies' },
+              { src: '/images/manufacturing/panel-assembly.jpg', title: 'Assembly Work', desc: 'Fitting enclosure doors and sub-assemblies on the floor' },
               { src: '/images/manufacturing/panel-test.jpg', title: 'Testing & QA', desc: 'Pre-dispatch electrical testing of assembled panels' },
-              { src: '/images/manufacturing/panel-inspection.jpg', title: 'Inspection', desc: 'Joint inspection of internal wiring and terminations' },
+              { src: '/images/manufacturing/panel-inspection.jpg', title: 'Panel Wiring', desc: 'Internal component installation and wire routing' },
               { src: '/images/manufacturing/panel-acdb.jpg', title: 'ACDB Panels', desc: 'Finished Alternating Current Distribution Boards' },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={(i % 2) * 0.1}>
