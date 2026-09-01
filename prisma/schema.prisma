@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -13,8 +12,8 @@ model Product {
   name        String
   slug        String   @unique
   category    String   // "LT Panels" or "HT Panels"
-  description String
-  features    String   // JSON array of features
+  description String   @db.Text
+  features    String   @db.Text // JSON array of features
   imageUrl    String   @default("")
   order       Int      @default(0)
   active      Boolean  @default(true)
@@ -26,9 +25,9 @@ model Service {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  description String
+  description String   @db.Text
   icon        String   @default("")
-  features    String   @default("[]") // JSON array
+  features    String   @default("[]") @db.Text // JSON array
   imageUrl    String   @default("")
   order       Int      @default(0)
   active      Boolean  @default(true)
@@ -42,7 +41,7 @@ model Client {
   industry    String   @default("")
   location    String   @default("")
   logoUrl     String   @default("")
-  description String   @default("")
+  description String   @default("") @db.Text
   order       Int      @default(0)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -54,7 +53,7 @@ model Testimonial {
   name        String
   company     String
   designation String   @default("")
-  content     String
+  content     String   @db.Text
   rating      Int      @default(5)
   videoUrl    String   @default("")
   imageUrl    String   @default("")
@@ -65,16 +64,16 @@ model Testimonial {
 }
 
 model Blog {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  excerpt      String   @default("")
-  content      String   @default("")
-  coverImageUrl String  @default("")
-  author       String   @default("Shri Vaari")
-  published    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String   @default("") @db.Text
+  content       String   @default("") @db.Text
+  coverImageUrl String   @default("")
+  author        String   @default("Shri Vaari")
+  published     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model ContactMessage {
@@ -83,7 +82,7 @@ model ContactMessage {
   email     String
   phone     String   @default("")
   subject   String   @default("")
-  message   String
+  message   String   @db.Text
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
@@ -91,7 +90,7 @@ model ContactMessage {
 model SiteSetting {
   id    String @id @default(cuid())
   key   String @unique
-  value String
+  value String @db.Text
 }
 
 model Project {
@@ -99,7 +98,7 @@ model Project {
   name        String
   client      String
   location    String
-  description String
+  description String   @db.Text
   imageUrl    String   @default("")
   category    String   @default("ongoing") // "ongoing" or "completed"
   order       Int      @default(0)
@@ -109,44 +108,44 @@ model Project {
 }
 
 model TeamMember {
-  id            String   @id @default(cuid())
-  name          String
-  designation   String
-  responsibility String  @default("")
-  experience    Int      @default(0)
-  initials      String   @default("")
-  gradientFrom  String   @default("#1B3A5C")
-  gradientTo    String   @default("#2A5F8F")
-  accent        String   @default("#1B3A5C")
-  linkedinUrl   String   @default("")
-  order         Int      @default(0)
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  designation    String
+  responsibility String   @default("") @db.Text
+  experience     Int      @default(0)
+  initials       String   @default("")
+  gradientFrom   String   @default("#1B3A5C")
+  gradientTo     String   @default("#2A5F8F")
+  accent         String   @default("#1B3A5C")
+  linkedinUrl    String   @default("")
+  order          Int      @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Sector {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  icon        String   @default("Zap")
-  stat        String   @default("")
-  statLabel   String   @default("")
-  gradientFrom String  @default("#1B3A5C")
-  gradientTo  String   @default("#2A5F8F")
-  accent      String   @default("#1B3A5C")
-  details     String   @default("[]") // JSON array of detail strings
-  order       Int      @default(0)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  description  String   @db.Text
+  icon         String   @default("Zap")
+  stat         String   @default("")
+  statLabel    String   @default("")
+  gradientFrom String   @default("#1B3A5C")
+  gradientTo   String   @default("#2A5F8F")
+  accent       String   @default("#1B3A5C")
+  details      String   @default("[]") @db.Text // JSON array of detail strings
+  order        Int      @default(0)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Milestone {
   id          String   @id @default(cuid())
   year        String
   title       String
-  description String
+  description String   @db.Text
   icon        String   @default("Rocket")
   color       String   @default("#1B3A5C")
   order       Int      @default(0)
@@ -210,7 +209,7 @@ model ProjectRecord {
   customerName String
   voltageLevel String   @default("")
   industry     String   @default("")
-  scopeOfWork  String   @default("")
+  scopeOfWork  String   @default("") @db.Text
   location     String   @default("")
   state        String   @default("")
   projectValue String   @default("")
