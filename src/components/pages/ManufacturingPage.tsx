@@ -451,13 +451,13 @@ export default function ManufacturingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {[
-              { src: '/images/manufacturing/shop-press.jpg', title: 'CNC Laser Punching', desc: 'Precision laser cutting and punching of panel components' },
-              { src: '/images/manufacturing/shop-grinder.jpg', title: 'Sanding & Finishing', desc: 'Grinding and surface finishing of metal enclosures' },
-              { src: '/images/manufacturing/shop-drill.jpg', title: 'Drilling Work', desc: 'Accurate drilling on structural metalwork' },
-              { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding & Fabrication', desc: 'Structural fabrication and welding with full safety protocol' },
-              { src: '/images/manufacturing/shop-powder.jpg', title: 'Powder Coating Area', desc: 'In-house powder coating and finishing of enclosures' },
-              { src: '/images/manufacturing/panel-assembly.jpg', title: 'Assembly Work', desc: 'Fitting enclosure doors and sub-assemblies on the floor' },
-              { src: '/images/manufacturing/panel-inspection.jpg', title: 'Panel Wiring', desc: 'Internal component installation and wire routing' },
+              { src: '/images/manufacturing/shop-cnc-punching.webp', title: 'CNC Laser Punching', desc: 'Precision laser cutting and punching of panel components', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-grinder.jpg', title: 'Sanding & Finishing', desc: 'Grinding and surface finishing of metal enclosures', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-drill.jpg', title: 'Drilling Work', desc: 'Accurate drilling on structural metalwork', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding & Fabrication', desc: 'Structural fabrication and welding with full safety protocol', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-powder.jpg', title: 'Powder Coating Area', desc: 'In-house powder coating and finishing of enclosures', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-assembly-work.webp', title: 'Assembly Work', desc: 'Fitting enclosure doors and sub-assemblies on the floor', pos: '50% 20%' },
+              { src: '/images/manufacturing/panel-inspection.jpg', title: 'Panel Wiring', desc: 'Internal component installation and wire routing', pos: '50% 50%' },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={(i % 3) * 0.1}>
                 <motion.div
@@ -470,6 +470,7 @@ export default function ManufacturingPage() {
                       src={item.src}
                       alt={`${item.title} — SVEPL Manufacturing Facility, Guindy`}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ objectPosition: item.pos }}
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0D1D3A]/85 via-[#0D1D3A]/20 to-transparent" />
