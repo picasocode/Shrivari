@@ -2298,3 +2298,27 @@ Stage Summary:
 - All repetition eliminated (Chennai HQ info now appears in exactly ONE place: the essentials card + ONE office card)
 - 8 offices in clean grid, no separate corporate banner
 - Ready to PUSH
+
+---
+Task ID: 12
+Agent: main
+Task: Apply ALL client content corrections from "Website - New.docx" (tracked-changes review) + build professional checklist + deep multi-pass verification
+
+Work Log:
+- Extracted full tracked-changes content from upload/Website - New.docx (python script parsing w:ins/w:del/highlight/color runs, 458 lines) + 88 embedded screenshots (word/media) to read exact office data
+- Built master checklist of 25+ items; verified each against current code/DB before editing
+- Hero.tsx: slide-1 image → client-provided "Shri Vaari Office - HO front view" (optimized to hero-office.jpg 1252x832/217KB, removed unused hero-1.jpg); title "Powering India's Electrical POWER Infrastructure"; desc "& solutions ... close to three decades"; slide-2 "+ fully compliant with applicable Indian and IEC standards"; slide-3 full Trusted Engineering Excellence rewrite (solar EPCS, industrial electrification, civil & structural works for switch boards & substations up to 400Kv)
+- AboutPage: hero "projects in 4 countries, turnover of around ₹200 Crores"; Our Story slimmed to ONLY the corrected overseas paragraph ("have established ... Sierra Leone, Qatar, Nigeria and Bangladesh"; removed boilerplate para, "fastest growing" sentence, consultancy para, whole Our Expertise grid + unused icons/vars); Journey "passion, value engineering"; vision "value Engineering excellence"; NEW "Company → Inside Our Conference Hall" section with 2 real conference-hall photos (life-1/life-2)
+- ContactPage: hero "Let's Build Together" + Solar EPC added to service list; 8 office data corrections from doc screenshot (HQ 044 2250 0813; Hyderabad D9/75400 88853/enquiries@shrivaarielectrotech.com; Bangalore "Next to Varier Bakery"; Trivandrum TC 17/837 (1)/TRRA-165-A/95513 66895; Puducherry "Ground Floor (Opp. Kokila Park Signal)"; Hosur "(Opp. to TNEB)"/shrivaari.hosr@gmail.com; Goa H.No. 53/1-B Birnathem/96699 84281/92847 75364)
+- Services: Navbar dropdown = exact 12 doc services (renamed Testing & Commissioning, Liaison with CEIG, Liaison with Utilities; added Electrical EPC Solutions, EHV / HV Substations, Industrial Electrification; dropped Retrofitting; fixed Layers/RefreshCw imports); ServicesPage s7 renamed + description carries all 13 utilities; ServiceDetailPage: liasion-utilities → "Liaison with Utilities" (name+shortName+iconMap+slugToName), NEW utilities?: string[] field rendered as 13 chips ("Utilities & Power Boards We Liaison With"), testing highlights[0] → 'CT/PT up to 33 KV' (doc struck "Service · NABL Accredited Lab"; NABL kept in description per doc); fixed ceig shortName typo; seed route names aligned
+- DB migration (scripts/migrate-task12-content.ts, run against Hostinger MySQL): about_text += "and entered into overseas market"; HT/LT Panel Retrofitting deactivated (order 13); 4 services created + 8 updated with doc-exact descriptions/features; renumbered 1-12 → exactly 12 active services in doc order (verified)
+- HomePage: About Our Company image → office reception photo (people-1.jpg); seed route about_text aligned
+- SectorsPage: 27 sector image-cards → accessible semantic TABLE "Tabular Form (Colums)" per doc (columns # / Sector-Industry / Scope of Delivery / Clients; navy header; zebra rows; row click expands Notable Clients in 3-col grid; sr-only caption; mobile hides Scope column; removed unused Stagger helpers)
+- Verification: lint clean; dev server 3001; agent-browser verified ALL 25 checklist checks across 7 pages (home hero 3 slides, stats, services list, 2 detail pages, about, contact, sectors) — 25/25 PASS (one intermittent was remote-MySQL settings latency, re-confirmed pass); screenshots confirmed sectors table + conference hall + hero visuals; mobile 390px responsive check; zero console/page errors; dev.log clean
+- Committed 14b0626 + pushed; GitHub API remote HEAD verified = 14b0626
+
+Stage Summary:
+- All client corrections from Website - New.docx applied: 10 tracked text edits, 1 hero image, 1 reception image, 2 conference-hall photos, 8 office data fixes, service naming/structure to exactly 12 per doc (incl. 13-utility list), sectors → tabular form
+- DB (Hostinger MySQL) migrated in sync with code; seed route kept consistent for future resets
+- Final sweep: 25/25 browser-verified checks, lint clean, no runtime errors
+- Remote main = 14b0626 (pushed & verified)
