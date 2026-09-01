@@ -137,9 +137,9 @@ const services: StaticService[] = [
   },
   {
     id: 's7',
-    name: 'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO',
+    name: 'Liaison with Utilities',
     slug: 'liasion-utilities',
-    description: 'Utility liaison services for power supply and grid connectivity — coordination with Meter & Relay testing, SE-O&M, non-conventional energy, operations, SS Erection, and TLC departments.',
+    description: 'Expert utility liaison services for power supply and grid connectivity across multiple state utilities including TNEB, KPTCL, APTRANSCO, and TSTRANSCO — TNPPCL, TNPGCL, TANTRANSCO, APSPDCL, APEPDCL, TSSPDCL, TSTRANSCO, OPTCL, OPDCL, BUSCOM and GMR Aerocity Goa.',
     capabilities: [
       'Coordination with Meter n Relay testing team',
       'Liaison with SE-O&M',
@@ -150,7 +150,7 @@ const services: StaticService[] = [
     ],
     category: 'Liaison',
     image: '/images/services/utility-liaison.png',
-    tagline: 'Grid connectivity across four state utilities.',
+    tagline: 'Grid connectivity across 13 state utilities.',
   },
   {
     id: 's8',
@@ -256,7 +256,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Energy & Harmonic Audit': BarChart3,
   'AMC': ShieldCheck,
   'Liaison with CEIG': FileCheck,
-  'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO': Building2,
+  'Liaison with Utilities': Building2,
   'Solar Works': Sun,
   'Electrical EPC Solutions': Network,
   'EHV / HV Substations': Zap,

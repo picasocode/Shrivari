@@ -27,6 +27,7 @@ interface StaticServiceData {
   shortName: string
   description: string
   tagline: string
+  utilities?: string[]
   capabilities: ServiceCapability[]
   processSteps: { title: string; desc: string }[]
   highlights: string[]
@@ -115,7 +116,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { title: 'Relay Calibration', desc: 'Numerical relay testing, setting verification, and coordination checks' },
       { title: 'Commissioning', desc: 'Live commissioning with load testing and performance verification' },
     ],
-    highlights: ['NABL Accredited Lab', 'CT/PT up to 33 KV', 'Condition Monitoring', 'IS/IEC Compliant'],
+    highlights: ['CT/PT up to 33 KV', 'Condition Monitoring', 'Transformer Testing', 'IS/IEC Compliant'],
     relatedProjects: [
       { name: '33KV 1250A VCB Panel', client: 'M.J. Casting Limited', location: 'Hosur' },
       { name: '11KV VCB Panels', client: 'TVS Srichakra', location: 'Madurai' },
@@ -184,7 +185,7 @@ const serviceData: Record<string, StaticServiceData> = {
   'liasion-ceig': {
     name: 'Liaison with CEIG',
     slug: 'liasion-ceig',
-    shortName: 'Liasion with CEIG',
+    shortName: 'Liaison with CEIG',
     description: 'SVEPL facilitates all statutory approvals and CEIG certification for electrical installations. Our established relationships with the electrical inspectorate ensure faster approvals through proper documentation preparation, timely submission, inspection coordination, and safety certificate procurement.',
     tagline: 'Statutory Approvals & CEIG Certification',
     capabilities: [
@@ -209,11 +210,18 @@ const serviceData: Record<string, StaticServiceData> = {
     image: '/images/services/ceig-liaison.png',
   },
   'liasion-utilities': {
-    name: 'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO',
+    name: 'Liaison with Utilities',
     slug: 'liasion-utilities',
-    shortName: 'Liasion with Govt',
+    shortName: 'Liaison with Utilities',
     description: 'SVEPL provides expert utility liaison services for power supply and grid connectivity across multiple state utilities including TNEB, KPTCL, APTRANSCO, and TSTRANSCO. Our established relationships ensure faster processing of applications, load enhancements, and grid connectivity coordination.',
     tagline: 'Utility Liaison for Power Supply & Grid Connectivity',
+    utilities: [
+      'TNPPCL', 'TNPGCL', 'TANTRANSCO',
+      'APSPDCL', 'APEPDCL', 'APTRANSCO',
+      'TSSPDCL', 'TSTRANSCO', 'OPTCL',
+      'OPDCL', 'KPTCL', 'BUSCOM',
+      'GMR Aerocity Goa',
+    ],
     capabilities: [
       { text: 'Coordination with Meter n Relay testing team' },
       { text: 'Liaison with SE-O&M' },
@@ -229,7 +237,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { title: 'Agreement Finalization', desc: 'Negotiation and finalization of power supply agreements' },
       { title: 'Grid Connectivity', desc: 'Coordination for grid connectivity and metering installation' },
     ],
-    highlights: ['Multi-utility Expertise', 'TNEB/KPTCL/APTRANSCO', 'Solar/Wind Approvals', 'Grid Connectivity'],
+    highlights: ['Multi-utility Expertise', '13 State Utilities', 'Solar/Wind Approvals', 'Grid Connectivity'],
     relatedProjects: [
       { name: '33KV Bay Extension for 10MW Solar', client: 'Solon India', location: 'Mothagam' },
       { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
@@ -451,7 +459,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Energy & Harmonic Audit': BarChart3,
   'AMC': ShieldCheck,
   'Liaison with CEIG': FileCheck,
-  'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO': Building2,
+  'Liaison with Utilities': Building2,
   'Solar Works': Sun,
   'Electrical EPC Solutions': Network,
   'EHV / HV Substations': Zap,
@@ -466,7 +474,7 @@ const slugToName: Record<string, string> = {
   'energy-harmonic-audit': 'Energy & Harmonic Audit',
   'amc': 'AMC',
   'liasion-ceig': 'Liaison with CEIG',
-  'liasion-utilities': 'Liaison with TNEB/KPTCL/APTRANSCO/TSTRANSCO',
+  'liasion-utilities': 'Liaison with Utilities',
   'solar-works': 'Solar Works',
   'electrical-epc-solutions': 'Electrical EPC Solutions',
   'ehv-hv-substations': 'EHV / HV Substations',
@@ -616,6 +624,30 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
               >
                 {data.description}
               </motion.p>
+
+              {/* Utilities list — Liaison with Utilities */}
+              {data.utilities && data.utilities.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.35 }}
+                  className="mb-7 max-w-xl"
+                >
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#152D4F] mb-3">
+                    Utilities &amp; Power Boards We Liaison With
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {data.utilities.map((u) => (
+                      <span
+                        key={u}
+                        className="text-xs font-semibold text-[#152D4F] bg-white border border-[#152D4F]/15 px-3 py-1.5 rounded-full shadow-sm"
+                      >
+                        {u}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
 
               <motion.div
                 initial={{ opacity: 0, y: 16 }}

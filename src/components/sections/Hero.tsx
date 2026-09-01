@@ -7,22 +7,22 @@ import { useRouter } from '@/components/Router'
 
 const slides = [
   {
-    image: '/images/hero-1.jpg',
-    title: 'Powering India\'s Electrical Infrastructure',
+    image: '/images/hero-office.jpg',
+    title: 'Powering India\'s Electrical POWER Infrastructure',
     subtitle: 'EPC Solutions upto 400KV',
-    desc: 'From design to commissioning — comprehensive electrical systems for industries across India with over two decades of excellence.',
+    desc: 'From design to commissioning — comprehensive electrical systems & solutions for industries across India with close to three decades of excellence.',
   },
   {
     image: '/images/hero-2.jpg',
     title: 'Precision-Built Electrical Panels',
     subtitle: 'LT & HT Panels — 415V to 33KV',
-    desc: 'State-of-the-art manufacturing facility producing world-class LT & HT panels, switchboards, and control systems.',
+    desc: 'State-of-the-art manufacturing facility producing world-class LT & HT panels, switchboards, and control systems, fully compliant with applicable Indian and IEC standards.',
   },
   {
     image: '/images/hero-3.jpg',
     title: 'Trusted Engineering Excellence',
     subtitle: '3000+ Projects Delivered Successfully',
-    desc: 'Leading industries rely on us for transmission & distribution, switchyard construction, and electrical services.',
+    desc: 'Leading industries and solar EPCS rely on us for Transmission & Distribution, switchyard construction, industrial electrification, solar projects and various service including civil and structural works for switch boards & substations up to 400Kv.',
   },
   {
     image: '/images/hero-4.jpg',

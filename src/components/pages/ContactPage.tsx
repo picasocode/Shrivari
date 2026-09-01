@@ -77,7 +77,7 @@ const OFFICES: Office[] = [
     address: 'C-37, Thiru-Vi-Ka Industrial Estate, Guindy – 600 032, Chennai, Tamil Nadu',
     city: 'Chennai',
     state: 'Tamil Nadu',
-    phones: ['044 2250 0241', '044 2250 0913', '044 4350 2914'],
+    phones: ['044 2250 0241', '044 2250 0813', '044 4350 2914'],
     emails: ['enquiries@shrivaarielectricals.com'],
     kind: 'head',
   },
@@ -85,18 +85,18 @@ const OFFICES: Office[] = [
     id: 'hyderabad',
     label: 'Regional Office',
     company: 'Shri Vaari Electrotech Pvt Ltd.',
-    address: 'Plot No. D8, Phase I, IDA Pashamailaram, Pattancheru, Sangareddy District, Telangana – 502 307',
+    address: 'Plot No. D9, Phase I, IDA Pashamailaram, Pattancheru, Sangareddy District, Telangana – 502 307',
     city: 'Hyderabad',
     state: 'Telangana',
-    phones: ['75400 88953'],
-    emails: ['enquiries@shrivarielctrotech.com'],
+    phones: ['75400 88853'],
+    emails: ['enquiries@shrivaarielectrotech.com'],
     kind: 'regional',
   },
   {
     id: 'bangalore',
     label: 'Regional Office',
     company: 'Shrivaari Electricals Pvt Ltd',
-    address: '2nd Floor, #690, 11th Main Road B, 2nd Block, Rajaji Nagar, Bangalore – 560 010',
+    address: '2nd Floor, #690, 11th Main Road B, 2nd Block, Rajaji Nagar, Next to Varier Bakery, Bangalore – 560 010',
     city: 'Bangalore',
     state: 'Karnataka',
     phones: ['81478 25481'],
@@ -107,10 +107,10 @@ const OFFICES: Office[] = [
     id: 'trivandrum',
     label: 'Regional Office',
     company: 'Shri Vaari Electricals Pvt. Ltd',
-    address: '1st Floor, TC V/1837 (1), TRRA-185-A, Aaditya, Nadukkavu Lane, Ambalamukku, Peroorkada PO, Thiruvananthapuram, Kerala – 695 005',
+    address: '1st Floor, TC 17/837 (1), TRRA-165-A, Aaditya, Nadukkavu Lane, Ambalamukku, Peroorkada P.O, Thiruvananthapuram, Kerala – 695 005',
     city: 'Thiruvananthapuram',
     state: 'Kerala',
-    phones: ['95513 66695'],
+    phones: ['95513 66895'],
     emails: [],
     kind: 'regional',
   },
@@ -118,7 +118,7 @@ const OFFICES: Office[] = [
     id: 'pondicherry',
     label: 'Regional Office',
     company: 'Sri Vaari Electricals Agencies',
-    address: '#2, ECR Main Road, Lawspet, Puducherry – 605 008',
+    address: '#2, ECR Main Road, Ground Floor (Opp. Kokila Park Signal), Lawspet, Puducherry – 605 008',
     city: 'Puducherry',
     state: 'Puducherry',
     phones: ['0413 2256 174', '98439 29232'],
@@ -129,21 +129,21 @@ const OFFICES: Office[] = [
     id: 'hosur',
     label: 'Regional Office',
     company: 'Sri Vaari Electricals Pvt. Ltd.',
-    address: '#315, 1st Floor, Mahalakshmi Tower, Rayakottai Road, Hosur – 635 109',
+    address: '#315, 1st Floor, Mahalakshmi Tower (Opp. to TNEB), Rayakottai Road, Hosur – 635 109',
     city: 'Hosur',
     state: 'Tamil Nadu',
     phones: ['99943 72426'],
-    emails: ['shrivaari.hsr@gmail.com'],
+    emails: ['shrivaari.hosr@gmail.com'],
     kind: 'regional',
   },
   {
     id: 'goa',
     label: 'Regional Office',
     company: 'Shri Vaari Electricals Pvt Ltd.',
-    address: 'Shri Ganesh Krupa, H.No. 51/1-B, Birmottem, Bastora, Bardez, Mapusa, North Goa – 403 507',
+    address: 'Shri Ganesh Krupa, H.No. 53/1-B, Birnathem, Bastora, Bardez, Mapusa, North Goa – 403 507',
     city: 'Mapusa',
     state: 'Goa',
-    phones: ['98809 94281', '92847 76364'],
+    phones: ['96699 84281', '92847 75364'],
     emails: ['projects.blr@shrivaarielectricals.com'],
     kind: 'regional',
   },
@@ -268,11 +268,10 @@ export default function ContactPage() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] mb-5" style={{ color: INK }}>
               Let&apos;s Build
               <br />
-              Something Together
+              Together
             </h1>
             <p className="text-slate-500 text-lg md:text-xl max-w-2xl leading-relaxed">
-              Tell us about your project — our engineering and execution team
-              will get back to you within one business day.
+              Get in touch with our engineering and project execution team for electrical EPC solutions, substations, Solar EPC, industrial electrification, panel manufacturing, testing &amp; commissioning, and utility coordination services.
             </p>
           </motion.div>
         </div>

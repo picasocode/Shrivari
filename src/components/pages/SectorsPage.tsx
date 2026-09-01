@@ -41,30 +41,6 @@ function FadeIn({ children, delay = 0, className = '', direction = 'up' }: {
   )
 }
 
-function StaggerContainer({ children, className = '', staggerDelay = 0.06 }: {
-  children: React.ReactNode; className?: string; staggerDelay?: number
-}) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-40px' })
-  return (
-    <motion.div ref={ref} initial="hidden" animate={isInView ? 'visible' : 'hidden'}
-      variants={{ hidden: {}, visible: { transition: { staggerChildren: staggerDelay } } }} className={className}>
-      {children}
-    </motion.div>
-  )
-}
-
-function StaggerChild({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <motion.div variants={{
-      hidden: { opacity: 0, y: 24 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
-    }} className={className}>
-      {children}
-    </motion.div>
-  )
-}
-
 /* ═══════════════════════════════════════════════════════════
    SECTOR DATA — 27 sectors, monochrome treatment (no per-sector color)
    ═══════════════════════════════════════════════════════════ */
@@ -444,87 +420,101 @@ const HERO_INTRO =
    SECTOR CARD
    ═══════════════════════════════════════════════════════════ */
 
-function SectorCard({ sector, index, isExpanded, onToggle }: {
+function SectorRow({ sector, index, isExpanded, onToggle }: {
   sector: Sector
   index: number
   isExpanded: boolean
   onToggle: () => void
 }) {
   const clientCount = sector.clients.length
+  const rowId = `sector-row-${index}`
+  const panelId = `sector-clients-${index}`
 
   return (
-    <div className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-300 flex flex-col">
-      {/* Image */}
-      <div className="relative h-48 w-full overflow-hidden bg-[#1A1A2E]">
-        <img
-          src={sector.image}
-          alt={sector.name}
-          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-        />
-        {/* Subtle INK gradient overlay at bottom for text legibility */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-20 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(26,26,46,0.55), rgba(26,26,46,0))' }}
-        />
-        {/* Client count badge */}
-        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur text-[11px] font-semibold tracking-wide text-slate-700 border border-slate-200 shadow-sm">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-slate-500" />
-          {clientCount} {clientCount === 1 ? 'Client' : 'Clients'}
-        </span>
-        {/* Faded index number watermark */}
-        <span className="absolute bottom-2 left-3 text-3xl font-extrabold leading-none text-white/25 select-none">
-          {String(index + 1).padStart(2, '0')}
-        </span>
-      </div>
+    <>
+      <tr
+        id={rowId}
+        className={`group cursor-pointer transition-colors duration-200 ${
+          isExpanded ? 'bg-slate-50' : 'bg-white hover:bg-slate-50/80'
+        } ${index % 2 === 1 && !isExpanded ? 'bg-slate-50/40' : ''} hover:bg-slate-50`}
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        aria-controls={panelId}
+      >
+        {/* Index */}
+        <td className="pl-5 pr-2 py-4 align-middle w-14">
+          <span className="text-sm font-bold tabular-nums text-slate-400 group-hover:text-[#E8751A] transition-colors">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        </td>
 
-      {/* Body */}
-      <div className="p-5 flex flex-col flex-1">
-        <h3 className="text-base font-bold text-[#1A1A2E] leading-snug">
-          {sector.name}
-        </h3>
-        <p className="mt-2 text-sm text-slate-500 leading-relaxed line-clamp-3">
-          {sector.description}
-        </p>
-
-        {/* Expand toggle */}
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={isExpanded}
-          aria-controls={`sector-clients-${index}`}
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1A1A2E] hover:text-slate-700 transition-colors w-fit"
-        >
-          {isExpanded ? 'Hide clients' : `View ${clientCount} ${clientCount === 1 ? 'client' : 'clients'}`}
-          <ChevronDown
-            className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
-            strokeWidth={2.5}
-          />
-        </button>
-
-        {/* Collapsible client list */}
-        {isExpanded && (
-          <div
-            id={`sector-clients-${index}`}
-            className="mt-4 bg-slate-50 border-t border-slate-100 p-4 rounded-md"
-          >
-            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-slate-500 mb-3">
-              Notable Clients
-            </p>
-            <ul className="space-y-2 max-h-56 overflow-y-auto pr-1">
-              {sector.clients.map((client, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
-                  <span
-                    className="mt-1.5 inline-block h-1 w-1 rounded-full bg-slate-500 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span>{client}</span>
-                </li>
-              ))}
-            </ul>
+        {/* Sector name */}
+        <td className="px-3 py-4 align-middle">
+          <div className="flex items-center gap-3">
+            <span
+              className={`inline-block h-8 w-1 rounded-full transition-colors duration-300 ${
+                isExpanded ? 'bg-[#E8751A]' : 'bg-slate-200 group-hover:bg-[#E8751A]/60'
+              }`}
+              aria-hidden="true"
+            />
+            <span className="text-sm md:text-[15px] font-bold text-[#1A1A2E] leading-snug">
+              {sector.name}
+            </span>
           </div>
-        )}
-      </div>
-    </div>
+        </td>
+
+        {/* Scope */}
+        <td className="hidden lg:table-cell px-3 py-4 align-middle max-w-md">
+          <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">
+            {sector.description}
+          </p>
+        </td>
+
+        {/* Clients count + expand */}
+        <td className="pl-3 pr-5 py-4 align-middle text-right whitespace-nowrap">
+          <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-[11px] font-semibold text-slate-600">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#E8751A]" aria-hidden="true" />
+              {clientCount} {clientCount === 1 ? 'Client' : 'Clients'}
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-slate-400 transition-transform duration-300 ${
+                isExpanded ? 'rotate-180 text-[#E8751A]' : 'group-hover:text-slate-600'
+              }`}
+              strokeWidth={2.5}
+              aria-hidden="true"
+            />
+          </span>
+        </td>
+      </tr>
+
+      {/* Expanded client list */}
+      {isExpanded && (
+        <tr id={panelId} className="bg-slate-50">
+          <td colSpan={4} className="px-5 md:px-14 pb-6 pt-1">
+            <div className="rounded-lg border border-slate-200 bg-white p-5">
+              <p className="text-[11px] font-bold tracking-[0.14em] uppercase text-slate-500 mb-4">
+                Notable Clients — {sector.name}
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5">
+                {sector.clients.map((client, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-[13px] text-slate-600 leading-relaxed"
+                  >
+                    <span
+                      className="mt-[7px] inline-block h-1 w-1 rounded-full bg-[#E8751A] shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span>{client}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
   )
 }
 
@@ -634,19 +624,48 @@ export default function SectorsPage() {
             </div>
           </FadeIn>
 
-          {/* Grid */}
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SECTORS.map((sector, i) => (
-              <StaggerChild key={i}>
-                <SectorCard
-                  sector={sector}
-                  index={i}
-                  isExpanded={expandedSector === i}
-                  onToggle={() => toggle(i)}
-                />
-              </StaggerChild>
-            ))}
-          </StaggerContainer>
+          {/* Tabular form — 27 sectors in columns */}
+          <FadeIn>
+            <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <caption className="sr-only">
+                    27 industry sectors served by Shri Vaari Electricals with notable clients
+                  </caption>
+                  <thead>
+                    <tr className="bg-[#1A1A2E] text-left">
+                      <th scope="col" className="pl-5 pr-2 py-4 w-14 text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                        #
+                      </th>
+                      <th scope="col" className="px-3 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                        Sector / Industry
+                      </th>
+                      <th scope="col" className="hidden lg:table-cell px-3 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                        Scope of Delivery
+                      </th>
+                      <th scope="col" className="pl-3 pr-5 py-4 text-right text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                        Clients
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {SECTORS.map((sector, i) => (
+                      <SectorRow
+                        key={i}
+                        sector={sector}
+                        index={i}
+                        isExpanded={expandedSector === i}
+                        onToggle={() => toggle(i)}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p className="mt-4 text-xs text-slate-400">
+              Click any sector row to view notable clients.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
