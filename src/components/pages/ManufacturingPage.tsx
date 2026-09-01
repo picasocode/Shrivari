@@ -457,9 +457,7 @@ export default function ManufacturingPage() {
               { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding & Fabrication', desc: 'Structural fabrication and welding with full safety protocol' },
               { src: '/images/manufacturing/shop-powder.jpg', title: 'Powder Coating Area', desc: 'In-house powder coating and finishing of enclosures' },
               { src: '/images/manufacturing/panel-assembly.jpg', title: 'Assembly Work', desc: 'Fitting enclosure doors and sub-assemblies on the floor' },
-              { src: '/images/manufacturing/panel-test.jpg', title: 'Testing & QA', desc: 'Pre-dispatch electrical testing of assembled panels' },
               { src: '/images/manufacturing/panel-inspection.jpg', title: 'Panel Wiring', desc: 'Internal component installation and wire routing' },
-              { src: '/images/manufacturing/panel-acdb.jpg', title: 'ACDB Panels', desc: 'Finished Alternating Current Distribution Boards' },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={(i % 3) * 0.1}>
                 <motion.div
