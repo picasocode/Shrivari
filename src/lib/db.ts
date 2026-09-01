@@ -1,10 +1,20 @@
+import { PrismaClient } from '@prisma/client'
+
 /**
- * Database client — uses Supabase REST API (PostgREST) as the primary backend.
+ * Database client — Prisma connected to the remote MySQL database
+ * (Hostinger: srv2124.hstgr.io), configured via DATABASE_URL in .env.
  *
- * No Prisma DB connection is needed at runtime. All data flows through
- * the Supabase REST endpoint using the service_role key (bypasses RLS).
- *
- * The `db` object provides a Prisma-compatible interface so API routes
- * don't need any changes.
+ * The same `db` object is exported as before, so all API routes keep
+ * working unchanged — they now hit the real database through Prisma
+ * instead of the Supabase REST emulation.
  */
-export { db } from './supabase-db'
+
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient }
+
+export const db =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  })
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db

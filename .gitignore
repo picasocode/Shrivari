@@ -54,3 +54,6 @@ server.log
 /skills/tool-results/
 upload/
 tool-results/
+
+# local database files (site now uses remote MySQL)
+/db/*.db
