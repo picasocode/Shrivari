@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, RefreshCw, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes } from 'lucide-react'
+import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes, Layers } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 import { useRouter, type PageName } from '@/components/Router'
@@ -16,14 +16,16 @@ interface NavbarProps {
 const serviceDropdownItems = [
   { label: 'Design & Engineering', slug: 'design-engineering', icon: PenTool, desc: 'Complete electrical system design from concept to detailed engineering' },
   { label: 'Project Execution', slug: 'project-execution', icon: Hammer, desc: 'End-to-end project execution from procurement to commissioning' },
-  { label: 'Testing', slug: 'testing', icon: FlaskConical, desc: 'Comprehensive testing and commissioning of electrical installations' },
+  { label: 'Testing & Commissioning', slug: 'testing', icon: FlaskConical, desc: 'Comprehensive testing and commissioning of electrical installations' },
   { label: 'Energy & Harmonic Audit', slug: 'energy-harmonic-audit', icon: BarChart3, desc: 'Energy audits and harmonic analysis for industrial facilities' },
   { label: 'AMC', slug: 'amc', icon: ShieldCheck, desc: 'Annual maintenance contracts for electrical installations' },
-  { label: 'HT/LT Panel Retrofitting', slug: 'ht-lt-panel-retrofitting', icon: RefreshCw, desc: 'Retrofitting and upgrading existing panels with modern switchgear' },
-  { label: 'Liasion with CEIG', slug: 'liasion-ceig', icon: FileCheck, desc: 'Liaison with Chief Electrical Inspector for statutory approvals' },
-  { label: 'Liasion with TNEB/KPTCL/APTRANSCO/TSTRANSCO', slug: 'liasion-utilities', icon: Building2, desc: 'Liaison with state electricity utilities for approvals' },
+  { label: 'Liaison with CEIG', slug: 'liasion-ceig', icon: FileCheck, desc: 'Liaison with Chief Electrical Inspector for statutory approvals' },
+  { label: 'Liaison with Utilities', slug: 'liasion-utilities', icon: Building2, desc: 'Liaison with state electricity utilities for approvals' },
   { label: 'Solar Works', slug: 'solar-works', icon: Sun, desc: 'Complete solar EPC solutions from design to commissioning' },
-  { label: 'HT & LT Panel Manufacturing', slug: 'manufacturing', icon: Factory, desc: 'Custom-built HT/LT panels and bus duct systems' },
+  { label: 'Electrical EPC Solutions', slug: 'electrical-epc-solutions', icon: Layers, desc: 'Single-window EPC from concept to commissioning' },
+  { label: 'EHV / HV Substations', slug: 'ehv-hv-substations', icon: Zap, desc: 'AIS & GIS substations up to 400 kV' },
+  { label: 'Industrial Electrification', slug: 'industrial-electrification', icon: Factory, desc: 'Complete industrial electrification solutions' },
+  { label: 'HT & LT Panel Manufacturing', slug: 'manufacturing', icon: Boxes, desc: 'Custom-built HT/LT panels and bus duct systems' },
 ]
 
 const companyDropdownItems = [

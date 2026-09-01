@@ -7,10 +7,7 @@ import {
   Sun, CheckCircle2, TrendingUp,
   Factory,
   Target, Eye, Shield, Users, Clock,
-  Zap, Boxes, FileCheck, RefreshCw,
-  ClipboardCheck, Network,
   BadgeCheck,
-  type LucideIcon,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -94,17 +91,6 @@ const statsData = [
   { value: 1200, suffix: '+', label: 'Projects Completed', maxVal: 1300, icon: Building2 },
 ]
 
-const EXPERTISE: { label: string; icon: LucideIcon }[] = [
-  { label: 'EHV / HV / MV / LV Electrical Systems', icon: Zap },
-  { label: 'AIS & GIS Substations', icon: Network },
-  { label: 'Industrial Electrification', icon: Factory },
-  { label: 'HT & LT Panel Manufacturing', icon: Boxes },
-  { label: 'Solar EPC', icon: Sun },
-  { label: 'Utility Liaison & CEIG Approvals', icon: FileCheck },
-  { label: 'Testing & Commissioning', icon: ClipboardCheck },
-  { label: 'Electrical Retrofitting & Upgradation', icon: RefreshCw },
-]
-
 const MISSION_POINTS = [
   'Deliver reliable and efficient electrical engineering solutions',
   'Maintain the highest standards of quality and safety',
@@ -128,7 +114,7 @@ const INFRASTRUCTURE: { title: string; desc: string; image: string }[] = [
   { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', image: '/images/infra/testing.png' },
 ]
 
-const VISION_TEXT = 'To become a trusted leader in integrated electrical infrastructure solutions through engineering excellence, innovation, safety, and customer satisfaction.'
+const VISION_TEXT = 'To become a trusted leader in integrated electrical infrastructure solutions through value Engineering excellence, innovation, safety, and customer satisfaction.'
 
 /* ─── Main Component ─── */
 export default function AboutPage() {
@@ -151,7 +137,6 @@ export default function AboutPage() {
       })
   }, [])
 
-  const aboutText = settings?.about_text || 'Shri Vaari Electricals Pvt. Ltd. is a professionally managed electrical engineering and EPC company specializing in the design, engineering, supply, installation, testing, commissioning, and maintenance of electrical infrastructure projects from 415 volts up to 400 kV.'
 
   const vision = settings?.vision || VISION_TEXT
 
@@ -207,7 +192,7 @@ export default function AboutPage() {
             className="text-sm md:text-base text-black max-w-2xl mx-auto leading-relaxed"
           >
             From a small firm in Chennai to one of South India&apos;s most trusted electrical engineering companies —
-            with operations across 8 cities, projects in 6 countries, and a turnover exceeding ₹200 Crores.
+            with operations across 8 cities, projects in 4 countries, and a turnover of around ₹200 Crores.
           </motion.p>
 
         </motion.div>
@@ -248,35 +233,9 @@ export default function AboutPage() {
                 <span className="text-[#1F2937]">Since 1998</span>
               </h2>
               <div className="section-bar mb-6" />
-              <p className="text-[#374151] leading-relaxed mb-4">
-                <span className="font-semibold text-[#1A1A2E]">{aboutText}</span> Started in 1998, SHRI VAARI ELECTRICALS is the fastest growing company in India in the field of electrical engineering.
+              <p className="text-[#374151] leading-relaxed">
+                A professionally managed, multi-location engineering firm with market leadership in India, we have established a significant position in overseas markets such as Sierra Leone, Qatar, Nigeria and Bangladesh in the EPC field (Engineering, Procurement and Construction).
               </p>
-              <p className="text-[#374151] leading-relaxed mb-4">
-                A professionally managed, multi-location engineering firm with market leadership in India, we are establishing a significant position in overseas markets such as Nepal, Bhutan, and Qatar in the EPC field (Engineering, Procurement and Construction).
-              </p>
-              <p className="text-[#374151] leading-relaxed mb-6">
-                We offer integrated design and engineering consultancy services from concept to completion for a wide range of projects across industries. We also specialize in project planning and appraisal, economic evaluation, design and detailed engineering, energy audit, safety audit, and supervision of construction and erection.
-              </p>
-
-              {/* Expertise Grid */}
-              <div className="bg-[#F8FAFC] rounded-2xl border border-[#E5E7EB] p-5 md:p-6">
-                <h4 className="text-sm font-bold text-[#1A1A2E] uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
-                  <span className="w-8 h-0.5 bg-[#E8751A] rounded-full" />
-                  Our Expertise
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
-                  {EXPERTISE.map((item) => (
-                    <div key={item.label} className="flex items-start gap-2.5 group">
-                      <div className="w-7 h-7 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center flex-shrink-0 group-hover:border-[#E8751A]/40 group-hover:bg-[#E8751A]/5 transition-colors">
-                        <item.icon className="w-3.5 h-3.5 text-[#E8751A]" />
-                      </div>
-                      <span className="text-sm text-[#374151] font-medium leading-tight pt-0.5">
-                        {item.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </FadeIn>
 
             {/* Right — Image with decorative frame + Project Stats */}
@@ -326,10 +285,46 @@ export default function AboutPage() {
       <Journey
         label="Our Journey"
         title="We have best team and best process"
-        description="From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of grit, innovation, and the relentless pursuit of excellence."
+        description="From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of passion, value engineering and the relentless pursuit of excellence."
         ctaText="Get Started"
         onCtaClick={() => navigate('contact')}
       />
+
+      {/* ═══════════════════════════════════════════════════════
+          COMPANY — Conference hall photos
+          ═══════════════════════════════════════════════════════ */}
+      <section className="pb-16 md:pb-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-8 h-0.5 bg-[#E8751A] rounded-full" />
+              <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Company</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mb-2 leading-snug">Inside Our Conference Hall</h3>
+            <p className="text-[#6B7280] text-sm md:text-base mb-8 max-w-2xl leading-relaxed">
+              Where designs are reviewed, projects are planned, and engineering decisions are made — together, under one roof.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { src: '/images/careers/life-1.jpg', alt: 'SVEPL conference hall — engineering team reviewing switchyard drawings' },
+                { src: '/images/careers/life-2.jpg', alt: 'SVEPL conference hall — project review meeting with detailed engineering drawings' },
+              ].map((img, i) => (
+                <FadeIn key={img.src} delay={i * 0.1}>
+                  <div className="group relative rounded-xl overflow-hidden border border-[#E5E7EB] shadow-sm hover:shadow-xl transition-shadow duration-500">
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1F2937]/40 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
 
       {/* ═══════════════════════════════════════════════════════
           MISSION & VISION — Image-forward dual cards

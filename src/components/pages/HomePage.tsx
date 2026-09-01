@@ -143,8 +143,8 @@ export default function HomePage() {
             </FadeIn>
             <FadeIn delay={0.15}>
               <img
-                src="/images/about-building.jpg"
-                alt="Shri Vaari Electricals Pvt. Ltd. — Corporate Headquarters"
+                src="/images/about/people-1.jpg"
+                alt="Shri Vaari Electricals — Office reception, Guindy, Chennai"
                 className="rounded-lg shadow w-full object-cover"
               />
             </FadeIn>

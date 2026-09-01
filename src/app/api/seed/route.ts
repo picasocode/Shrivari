@@ -439,7 +439,7 @@ export async function GET() {
         order: 6,
       },
       {
-        name: "Liasion with CEIG",
+        name: "Liaison with CEIG",
         slug: "liasion-ceig",
         description:
           "We provide liaison services with the Chief Electrical Inspector to Government (CEIG) for obtaining statutory approvals, inspections, and certifications for electrical installations.",
@@ -454,7 +454,7 @@ export async function GET() {
         order: 7,
       },
       {
-        name: "Liasion with TNEB/KPTCL/APTRANSCO/TSTRANSCO",
+        name: "Liaison with Utilities",
         slug: "liasion-utilities",
         description:
           "We facilitate liaison with state electricity utilities including TNEB, KPTCL, APTRANSCO, and TSTRANSCO for power supply agreements, load enhancements, and grid connectivity approvals.",
@@ -827,7 +827,7 @@ export async function GET() {
       {
         key: "about_text",
         value:
-          "Shri Vaari Electricals Pvt. Ltd. is a professionally managed, multi-location based engineering firm, having market leadership in South India and on its way to establish significant position in the pan Indian market. We offer innovative and value-added solutions to our customers for total electrical systems from design to commissioning.",
+          "Shri Vaari Electricals Pvt. Ltd. is a professionally managed, multi-location based engineering firm, having market leadership in South India and on its way to establish significant position in the pan Indian market and entered into overseas market. We offer innovative and value-added solutions to our customers for total electrical systems from design to commissioning.",
       },
       { key: "about_mission", value: "To be the most trusted and preferred electrical engineering partner for industries across India and beyond, delivering excellence from concept to commissioning." },
       { key: "about_vision", value: "To emerge as a pan-India leader in EHV projects, solar EPC, and industrial electrical solutions, driving innovation and sustainability in power infrastructure." },
