@@ -57,3 +57,6 @@ tool-results/
 
 # local database files (site now uses remote MySQL)
 /db/*.db
+
+# but keep the example template tracked
+!.env.example
