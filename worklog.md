@@ -2322,3 +2322,25 @@ Stage Summary:
 - DB (Hostinger MySQL) migrated in sync with code; seed route kept consistent for future resets
 - Final sweep: 25/25 browser-verified checks, lint clean, no runtime errors
 - Remote main = 14b0626 (pushed & verified)
+
+---
+Task ID: 13
+Agent: main
+Task: Redesign Team page to client's leadership reference format (Schneider Electric India Leadership page), apply client-provided team photos from Team.zip matched by filename, remove experience & social media links
+
+Work Log:
+- Fetched reference page se.com/in/en/about-us/company-profile/india-leadership/ (curl blocked by Akamai; used page_reader skill) — extracted exact structure: intro line "Introducing the Schneider Electric India Leadership", 3-col flex grid (lg:w-1/3), cards = square aspect photo (max-w 180/240px) + bold name (text-20/24) + regular designation (text-16/18), nothing else on cards
+- Extracted upload/Team.zip → 7 photos with names in filenames; mapped to existing team page names/positions: Mr Rangarajan - M D → Mr. Rengarajan (Managing Director), Mr. Sivagaminathan - E D → Mr. Sivagami Nathan (Executive Director), Mr. Rakesh Kumar (Operations Director), Mr. Ambalarajan (Director - Projects), Mr. Anand Purushothaman (Technical Director), Mr. Manjari (Project Director), Mrs. Harini (NEW — no existing entry, given generic 'Director', flagged to user for confirmation)
+- Processed photos with sharp: attention-strategy face-aware square crops → 480x480 mozjpeg q85 → public/images/team/team-*.jpg (19-39KB each); verified crops via square + circular contact sheets — all faces well-centered inside circular mask
+- Rewrote TeamPage.tsx (535 → 252 lines): kept navy hero (trimmed copy, removed experience line + hero stats row) + Schneider-format leadership grid (centered "OUR LEADERSHIP" eyebrow, "Introducing the Leadership Team at Shri Vaari Electricals" H2, circular photos w/ subtle hover scale + coral hairline, bold name, slate designation) + kept closing Careers CTA; REMOVED Philosophy / Team Stats / Capabilities sections to match the clean reference layout
+- Per client request: removed per-person experience badges + experience bars + Responsibility rows + LinkedIn/Email buttons (verified DOM: zero experience mentions; only remaining linkedin link is the site-wide footer social icon, not on cards)
+- Fixed pre-existing invisible "Learn About SVEPL" outline button on navy CTA (white-on-white) via inline transparent bg
+- Verified on port 3001 with agent-browser: all 7 images load (naturalWidth>0), 7 names in seniority order, desktop 3-col grid matches reference, mobile 390px single-column centered, zero console/page errors, screenshots captured (hero, intro, grid, Harini last-row, CTA fixed, mobile)
+- lint clean (no errors); removed temp dirs team-zip-raw/ + team-extract/
+- Committed d00bd4b + pushed; GitHub API verified remote HEAD = d00bd4b
+
+Stage Summary:
+- Team page now matches the Schneider Electric leadership reference exactly: circular portrait + name + designation only, centered 3-col grid on #FAFAFA
+- 7/7 client photos applied, filename→member matching documented; Mrs. Harini added with placeholder designation 'Director' (needs client confirmation of her actual role)
+- Experience & social links fully removed per client; page sections reduced to Hero + Leadership Grid + CTA
+- Remote main = d00bd4b (pushed & verified)
