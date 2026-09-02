@@ -2344,3 +2344,18 @@ Stage Summary:
 - 7/7 client photos applied, filename→member matching documented; Mrs. Harini added with placeholder designation 'Director' (needs client confirmation of her actual role)
 - Experience & social links fully removed per client; page sections reduced to Hero + Leadership Grid + CTA
 - Remote main = d00bd4b (pushed & verified)
+
+---
+Task ID: 13b
+Agent: main
+Task: User follow-up — change team portraits from circles to squares
+
+Work Log:
+- Sandbox had reset; re-cloned repo (main=2979679) + bun install + recreated .env (Hostinger MySQL URL)
+- TeamPage.tsx: photo mask rounded-full → rounded-2xl (soft rounded square; decorative glow + coral hairline untouched), comment updated
+- Verified on 3001 via agent-browser: desktop grid + mobile single-column both show square portraits, zero console/page errors; lint clean
+- Committed c6bb733 + pushed; GitHub API verified remote HEAD = c6bb733
+
+Stage Summary:
+- Team photos now square with soft rounded corners; everything else unchanged (name + designation only, no experience/social)
+- Remote main = c6bb733 (pushed & verified)
