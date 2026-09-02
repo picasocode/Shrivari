@@ -153,9 +153,9 @@ export default function TeamPage() {
             {leaders.map((leader, i) => (
               <FadeIn key={leader.name} delay={(i % 3) * 0.08}>
                 <div className="group flex flex-col items-center text-center max-w-[440px] mx-auto">
-                  {/* Circular portrait — square source, round mask */}
+                  {/* Square portrait with soft rounded corners */}
                   <div className="relative mb-5 w-full max-w-[200px] lg:max-w-[240px] aspect-square">
-                    <div className="h-full w-full overflow-hidden rounded-full ring-1 ring-slate-200/80 shadow-sm">
+                    <div className="h-full w-full overflow-hidden rounded-2xl ring-1 ring-slate-200/80 shadow-sm">
                       <img
                         src={leader.photo}
                         alt={leader.name}
