@@ -214,6 +214,7 @@ model ProjectRecord {
   state        String   @default("")
   projectValue String   @default("")
   year         String   @default("")
+  imageUrl     String   @default("")
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

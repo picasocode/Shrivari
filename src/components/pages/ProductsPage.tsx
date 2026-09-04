@@ -469,7 +469,7 @@ function ProductGrid({
             <article className="group relative h-full bg-white rounded-2xl border-2 border-slate-200 overflow-hidden transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
               {/* Large product image */}
               {p.imageUrl && (
-                <div className="relative h-52 overflow-hidden bg-slate-50 border-b border-slate-100">
+                <div className="relative h-56 overflow-hidden bg-slate-50 border-b border-slate-100">
                   <img
                     src={p.imageUrl}
                     alt={p.name}
@@ -491,7 +491,7 @@ function ProductGrid({
                 </h3>
 
                 {/* Description */}
-                <p className="text-slate-500 text-sm leading-relaxed mb-5 line-clamp-2">
+                <p className="text-slate-500 text-[15px] leading-relaxed mb-5 line-clamp-2">
                   {p.description}
                 </p>
 

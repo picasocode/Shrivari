@@ -2408,3 +2408,29 @@ Stage Summary:
 - Permanent fix pushed: HTML must-revalidate at CDN, immutable static assets — future redeploys can no longer break stale-edge visitors
 - favicon added; eslint/build/prod-header verification all clean
 - Pending manual step for client: redeploy from main (28d0344) then Purge All in hPanel Cache Manager
+
+---
+Task ID: 16-b
+Agent: Z.ai Code (sub-agent 16-b)
+Task: Add a "Project Records" admin section to AdminPanel.tsx — searchable list of the public Projects portfolio with per-record image-URL editing (PUT to DB, read-only notice for JSON fallback)
+
+Work Log:
+- Read worklog (Tasks 14/15) for conventions; bun install (node_modules was missing; sandbox has no .env/DB — MySQL Hostinger creds are never committed by design)
+- Read AdminPanel.tsx in full (ProductsSection/TestimonialsSection/ProjectsSection/MessagesSection patterns: useCrud hook, SectionWrapper, useToast notify, fetchAPI from @/lib/api, rounded-md + #E8751A buttons) + /api/project-records + /api/project-records/[id] routes + ProjectsPage consumer to confirm shapes (id only present when source==='supabase'; PUT returns Prisma camelCase row)
+- AdminPanel.tsx edits (ONLY file touched):
+  1. Imports: added ListChecks, Search, Info, Image as ImageIcon to lucide-react; added `import { Skeleton } from '@/components/ui/skeleton'`
+  2. `Section` union: added `'records'` (line 68)
+  3. navItems: added `{ key: 'records', label: 'Project Records', icon: ListChecks }` between Projects and Messages (line 88)
+  4. Section switch: `{activeSection === 'records' && <RecordsSection />}` (line 195)
+  5. New RecordsSection (lines 899-1145, after ProjectDialog): local ProjectRecordItem/ProjectRecordRow interfaces mirroring the API shapes; debounced search (350ms, mirrors ProjectsPage) → GET /api/project-records?search=…; fetch on mount + on debounced change with a reqId ref guarding stale-response races; skeleton loading rows (Skeleton, 8x); error state with Try Again; scrollable list `max-h-[70vh] overflow-y-auto divide-y`; each row = 64px thumbnail (img with onError → neutral slate box + ImageIcon for empty/broken, keyed by `${id}:${url}` so changed URLs retry), customer (font-semibold) + sno prefix, muted meta line `voltage KV · industry · location`, disabled-when-read-only imageUrl Input (placeholder "/images/projects/... or https://..."), Save button disabled unless (row has id) && (source==='supabase') && (draft changed); on save PUT /api/project-records/{id} {imageUrl} → maps camelCase response row back to record shape, updates local state, clears draft, success toast `Image updated for <customer>` / error toast `Save failed: …` via the shared useToast; `source==='json'` → amber info notice "Editing requires the database connection — showing read-only data." + all inputs/Save buttons disabled; count Badge in header + Refresh button; footer hint "Changes save directly to the database…" in DB mode; editor stacks input-over-button on mobile (fixed an 8px horizontal overflow found at 390px viewport)
+- Verified with dev server :3001 + agent-browser + network-route mocks (auth session/setup + project-records supabase payload with 4 records incl. one broken image URL and one id-less row; PUT returning a Prisma camelCase row) since the sandbox has no DB:
+  - Sidebar shows "Project Records"; section renders; GET on mount; count badge "4 records"; 64×64 thumbnail loaded for valid URL; broken + empty URLs fall back to slate icon box; meta lines correct ("11 KV · Automotive · Hosur" etc.)
+  - Save flow: typing enables Save only for the edited row → PUT 200 → toast "Image updated for Ashok Leyland" → input/state updated from PUT response (thumbnail swaps to p44) → Save disabled again; stale-search race + empty-search `?` request both observed correct; search "ashok" fires GET ?search=ashok after debounce
+  - Real-API JSON fallback (mocks removed, no DB): 159 records from data/project-records.json, source json → exact amber notice text, all 159 inputs + all Save buttons disabled, list scrollable (scrollH 15422 vs 630 client)
+  - Mobile 390px: zero overflowing elements after editor stacking fix; desktop VLM screenshot check: clean/professional, no layout problems; zero console/page errors
+- bun run lint → clean (0 errors/warnings); npx tsc --noEmit → zero errors in AdminPanel.tsx (only pre-existing errors in examples/, skills/, api/project-records/meta/route.ts which is not my file)
+
+Stage Summary:
+- Admin → "Project Records" section shipped in AdminPanel.tsx: search the 159-record portfolio list and edit each record's image URL against the DB, with per-row save, toasts, skeleton loading, broken-image fallback and a read-only notice when the API falls back to bundled JSON
+- No new dependencies, no other files touched, API routes untouched (16-a scope); PUT success path verified end-to-end via route interception; real JSON-fallback path verified against the actual API
+- Note: this sandbox has no DATABASE_URL, so the supabase save path was verified with mocked network responses — recommend one manual smoke test after deploy with the live DB

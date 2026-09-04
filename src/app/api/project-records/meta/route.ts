@@ -18,6 +18,9 @@ async function metaFromJson() {
     years: Array.from(
       new Set(records.map((r: { year: string }) => r.year).filter(Boolean))
     ).sort(),
+    voltages: Array.from(
+      new Set(records.map((r: { voltage: string }) => r.voltage).filter(Boolean))
+    ).sort((a: string, b: string) => (parseFloat(a) || 0) - (parseFloat(b) || 0)),
     source: "json" as const,
   };
 }
@@ -40,11 +43,15 @@ export async function GET() {
         const years = Array.from(
           new Set(rows.map((r: any) => r.year).filter(Boolean))
         ).sort();
+        const voltages = Array.from(
+          new Set(rows.map((r: any) => r.voltageLevel).filter(Boolean))
+        ).sort((a: string, b: string) => (parseFloat(a) || 0) - (parseFloat(b) || 0));
         return NextResponse.json({
           total: rows.length,
           industries,
           states,
           years,
+          voltages,
           source: "supabase",
         });
       }
