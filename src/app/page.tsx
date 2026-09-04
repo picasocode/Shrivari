@@ -51,6 +51,10 @@ function AppContent() {
     sectors: <SectorsPage />,
     careers: <CareersPage />,
     team: <TeamPage />,
+    // #admin deep link: logged-in users get the panel, everyone else the login/setup screen
+    admin: user
+      ? <AdminPanel onClose={() => { window.location.hash = 'home' }} />
+      : <LoginPage onClose={() => { window.location.hash = 'home' }} />,
   }
 
   // Don't render until auth is checked

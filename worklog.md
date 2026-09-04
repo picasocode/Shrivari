@@ -2359,3 +2359,29 @@ Work Log:
 Stage Summary:
 - Team photos now square with soft rounded corners; everything else unchanged (name + designation only, no experience/social)
 - Remote main = c6bb733 (pushed & verified)
+
+---
+Task ID: 14
+Agent: Z.ai Code (main)
+Task: Shivari Products.zip — apply 14 client product photos by file-name match (LT_Panel / HT_Panel / Bus_Duct folders), make product page fully dynamic & admin-editable (no placeholders), fix all broken dynamic behavior, test and push
+
+Work Log:
+- Sandbox reset again; re-cloned repo (main=46a2ce7 incl. Task 13b square portraits); bun install
+- No Hostinger MySQL password recoverable (never committed — by design) -> local verification used the pre-migration SQLite snapshot (extracted db/custom.db from git history commit 4dcef82) + temporary sqlite schema; schema.prisma/.env/db placeholder restored before commit
+- Extracted upload/Shivari Products.zip: LT_Panel (9), HT_Panel (3), Bus_Duct (2); sharp-optimized all 14 (width<=1000, mozjpeg q82, PNG flattened) -> public/images/products/<slug>.jpg named exactly after product slugs
+- Created src/lib/product-defaults.ts: canonical 16-product catalog (9 LT + 3 HT + 4 Busducts with full seed descriptions/features) + LEGACY_PLACEHOLDER_IMAGE ('shrivaarielectricals.com/img/portfolio/630x400.jpg' — found on ALL 12 production DB rows) + resolveProductImage()
+- /api/products GET: one-time-per-process ensureProductDefaults() — creates missing canonical rows (Busducts range missing from production DB entirely) + swaps legacy placeholder URLs for bundled slug photos; never touches admin-edited content (create only-if-slug-absent; image update only when value == exact legacy placeholder); [id] GET resolves too; POST unchanged
+- ProductsPage.tsx: DELETED hardcoded FALLBACK_LT/HT/BD fake products (the actual 'placeholder' content) -> everything renders from DB; added error state + Retry; hero eyebrow/title/subtitle now settings-driven
+- src/lib/site-settings-defaults.ts: all 21 settings keys with defaults (16 existing + 5 new products_*: hero_eyebrow/title/subtitle/comparison/specs JSON); /api/settings GET merges defaults under DB values so admin Settings screen lists every key; PUT fixed to accept bulk map — admin 'Save All' was silently failing (400) before
+- /api/seed: refactored to import DEFAULT_PRODUCTS (removed ~265 duplicated lines; fresh installs now include images + Busducts)
+- AdminPanel ProductDialog: added 'Busducts' category option + Image URL hint
+- Fixed pre-existing BUGS found during 'full dynamics' audit: sections/Products.tsx (dead code, unused import, had syntax error) deleted; sections/Journey.tsx line 47 'const ilestones,' syntax error (broke About page) fixed + FALLBACK_MILESTONES missing icon/color; Router.tsx params NEVER persisted to hash (tab deep-links impossible, reload lost tab) -> generic #page?key=val hash parse/build (service-detail/SLUG legacy format kept); page.tsx pages map missing 'admin' entry (#admin deep link fell back to HomePage) -> routed admin: user?AdminPanel:LoginPage
+- Verified on 3001 via agent-browser: LT tab 9 cards all real photos; HT 3 photos; Busducts 4 DB-backed cards (2 photos; isolated/plug-in have none by design — admin can set); DB check: 16 rows, 0 placeholder URLs remaining; admin setup->edit product name persists via API; settings products_hero_title edit -> Save All -> public page reflects -> reverted; category dropdown shows 3 options; #products?tab=ht + #products?tab=busduct + #admin deep links work; About page renders again; home intact; mobile 390px clean; only pre-existing minor warnings, no errors; lint 0/0, tsc clean (src)
+- Committed + pushed; GitHub API verified; 0-byte tracked db placeholder restored before commit (no data committed)
+
+Stage Summary:
+- Product catalog fully dynamic: 16 DB-backed, admin-editable products; 14 client photos applied by slug; zero placeholders (images or content)
+- Bootstrap makes production self-migrating on next deploy: first /api/products request creates the 4 missing Busducts rows and replaces all 12 legacy placeholder image URLs — no manual DB step needed
+- All 21 site settings visible & editable in admin (Save All actually works now); products page copy/tables driven by products_* settings with code fallbacks
+- Fixed 3 pre-existing breakages: About page syntax error, tab deep-linking, #admin deep link
+- Noted: CRUD APIs remain unauthenticated server-side (pre-existing; admin gate is client-side) — flag for future task
