@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { resolveProductImage } from "@/lib/product-defaults";
 
 export async function GET(
   _request: NextRequest,
@@ -16,7 +17,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(product);
+    return NextResponse.json(resolveProductImage(product));
   } catch (error) {
     console.error("Error fetching product:", error);
     return NextResponse.json(

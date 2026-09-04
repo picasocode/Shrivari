@@ -14,16 +14,16 @@ const CORAL = '#E8751A'
 
 /* ─── Content Data ─── */
 const FALLBACK_MILESTONES: Milestone[] = [
-  { id: 'm1', year: '1998', title: 'Inception', description: 'Shri Vaari Electricals established as a premier electrical firm in Chennai.', order: 1, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm2', year: '1999', title: 'AMC Services', description: 'Initiated Annual Maintenance Contract services for industrial clients.', order: 2, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm3', year: '2003', title: 'New Facility', description: 'Built a state-of-the-art 20,000 sq ft manufacturing unit at Guindy.', order: 3, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm4', year: '2005', title: 'Pvt Ltd Entity', description: 'Formally incorporated as a Private Limited industrial corporation.', order: 4, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm5', year: '2009', title: 'First EHV Project', description: 'Successfully executed our landmark Extra High Voltage project.', order: 5, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm6', year: '2014', title: 'Solar Division', description: 'Expanded into turnkey Solar Power Plant EPC solutions.', order: 6, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm7', year: '2015', title: 'Schneider Partner', description: 'Formed strategic alliance for high-voltage power distribution.', order: 7, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm8', year: '2018', title: '₹100+ Cr Turnover', description: 'Crossed the major revenue milestone of ₹100+ Crores.', order: 8, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm9', year: '2023', title: '55+ EHV Projects', description: 'Completed over 55+ major EHV infrastructure projects.', order: 9, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm10', year: '2025', title: 'IEC-61439 Certified', description: 'LT Switchgear panels certified to international IEC standards.', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm1', year: '1998', title: 'Inception', description: 'Shri Vaari Electricals established as a premier electrical firm in Chennai.', icon: 'Rocket', color: '#1B3A5C', order: 1, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm2', year: '1999', title: 'AMC Services', description: 'Initiated Annual Maintenance Contract services for industrial clients.', icon: 'Rocket', color: '#1B3A5C', order: 2, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm3', year: '2003', title: 'New Facility', description: 'Built a state-of-the-art 20,000 sq ft manufacturing unit at Guindy.', icon: 'Rocket', color: '#1B3A5C', order: 3, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm4', year: '2005', title: 'Pvt Ltd Entity', description: 'Formally incorporated as a Private Limited industrial corporation.', icon: 'Rocket', color: '#1B3A5C', order: 4, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm5', year: '2009', title: 'First EHV Project', description: 'Successfully executed our landmark Extra High Voltage project.', icon: 'Rocket', color: '#1B3A5C', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm6', year: '2014', title: 'Solar Division', description: 'Expanded into turnkey Solar Power Plant EPC solutions.', icon: 'Rocket', color: '#1B3A5C', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm7', year: '2015', title: 'Schneider Partner', description: 'Formed strategic alliance for high-voltage power distribution.', icon: 'Rocket', color: '#1B3A5C', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm8', year: '2018', title: '₹100+ Cr Turnover', description: 'Crossed the major revenue milestone of ₹100+ Crores.', icon: 'Rocket', color: '#1B3A5C', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm9', year: '2023', title: '55+ EHV Projects', description: 'Completed over 55+ major EHV infrastructure projects.', icon: 'Rocket', color: '#1B3A5C', order: 9, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm10', year: '2025', title: 'IEC-61439 Certified', description: 'LT Switchgear panels certified to international IEC standards.', icon: 'Rocket', color: '#1B3A5C', order: 10, active: true, createdAt: '', updatedAt: '' },
 ]
 
 export interface JourneyProps {

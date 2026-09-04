@@ -322,14 +322,14 @@ function ProductDialog({ item, onClose, onSave }: { item: Product | null; onClos
             <div className="space-y-1.5"><Label className="text-xs font-medium">Category</Label>
               <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                 <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
-                <SelectContent><SelectItem value="LT Panels">LT Panels</SelectItem><SelectItem value="HT Panels">HT Panels</SelectItem></SelectContent>
+                <SelectContent><SelectItem value="LT Panels">LT Panels</SelectItem><SelectItem value="HT Panels">HT Panels</SelectItem><SelectItem value="Busducts">Busducts</SelectItem></SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="/images/products/<slug>.jpg" /><p className="text-[11px] text-[#6B7280]">Bundled photos live in /images/products/ and are named after the product slug.</p></div>
           <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
         </div>
         <DialogFooter>

@@ -11,11 +11,18 @@ import {
   ArrowUpRight,
   CircuitBoard,
   Boxes,
+  AlertCircle,
+  RefreshCw,
 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter, type PageName } from '@/components/Router'
-import { fetchProducts, type Product } from '@/lib/api'
+import { fetchProducts, fetchSettings, type Product } from '@/lib/api'
+import {
+  parseComparisonRows,
+  parseSpecRows,
+  SITE_SETTINGS_DEFAULTS,
+} from '@/lib/site-settings-defaults'
 
 /* ─── Tokens (used sparingly — coral hairlines + ink text) ─── */
 const CORAL = '#E8751A'
@@ -57,30 +64,6 @@ function parseFeatures(features: string): string[] {
   }
 }
 
-/* ─── Comparison + Spec data ─── */
-const COMPARISON_DATA = [
-  { attribute: 'Voltage Range', lt: 'Up to 415V', ht: '11kV – 33kV', bd: 'Up to 6300A' },
-  { attribute: 'Insulation Class', lt: 'Class B (130°C)', ht: 'Class F (155°C)', bd: 'Class F (155°C)' },
-  { attribute: 'Busbar Material', lt: 'Copper / Aluminium', ht: 'Copper (Silver Plated)', bd: 'Copper / Aluminium' },
-  { attribute: 'Protection Relay', lt: 'Thermal / Magnetic', ht: 'Numerical / Microprocessor', bd: 'MCCB / Fuses' },
-  { attribute: 'Enclosure Rating', lt: 'IP42 – IP54', ht: 'IP54 – IP65', bd: 'IP54 – IP65' },
-  { attribute: 'Short Circuit', lt: 'Up to 50 kA', ht: 'Up to 40 kA (1 sec)', bd: 'Up to 100 kA (1 sec)' },
-  { attribute: 'Application', lt: 'Commercial / Residential', ht: 'Industrial / Utility', bd: 'High-current distribution' },
-]
-
-const SPEC_TABLE_DATA = [
-  { param: 'Rated Voltage', lt: '415V', ht: '11kV / 33kV', bd: 'Up to 1000V' },
-  { param: 'Rated Current', lt: '630A – 6300A', ht: '630A – 4000A', bd: '630A – 6300A' },
-  { param: 'Frequency', lt: '50 Hz', ht: '50 Hz', bd: '50 Hz' },
-  { param: 'Busbar System', lt: 'Single / Double', ht: 'Single Busbar', bd: 'Segregated / Non-seg.' },
-  { param: 'Cable Entry', lt: 'Bottom / Top', ht: 'Bottom', bd: 'Plug-in / Bolted' },
-  { param: 'Paint Finish', lt: 'Powder Coated (RAL 7035)', ht: 'Powder Coated (RAL 7035)', bd: 'Powder Coated (RAL 7035)' },
-  { param: 'Standards', lt: 'IS 8623 / IEC 61439', ht: 'IS 3427 / IEC 62271', bd: 'IEC 61439 / IS 8623' },
-  { param: 'Degree of Protection', lt: 'IP42 / IP54', ht: 'IP54 / IP65', bd: 'IP54 / IP65' },
-  { param: 'Operating Temp.', lt: '-5°C to +50°C', ht: '-5°C to +50°C', bd: '-5°C to +50°C' },
-  { param: 'Humidity', lt: '≤ 95% RH', ht: '≤ 95% RH', bd: '≤ 95% RH' },
-]
-
 /* ─── Category meta ─── */
 type Variant = 'lt' | 'ht' | 'busduct'
 const CATEGORY_META: Record<Variant, { title: string; voltage: string; subtitle: string; Icon: React.ElementType }> = {
@@ -89,45 +72,6 @@ const CATEGORY_META: Record<Variant, { title: string; voltage: string; subtitle:
   busduct: { title: 'Busducts', voltage: 'Up to 6300A', subtitle: 'Enclosed busbar systems for high-current power distribution.', Icon: Boxes },
 }
 
-/* ─── Fallback data ─── */
-const FALLBACK_IMG = '/images/services/ht-lt-panel-manufacturing.png'
-const mkProduct = (p: { name: string; slug: string; category: string; description: string; features: string[]; order: number }): Product => ({
-  id: `fallback-${p.slug}`,
-  name: p.name,
-  slug: p.slug,
-  category: p.category,
-  description: p.description,
-  features: JSON.stringify(p.features),
-  imageUrl: FALLBACK_IMG,
-  order: p.order,
-  active: true,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-})
-
-const FALLBACK_LT: Product[] = [
-  { name: 'CRP - Control & Relay Panel', slug: 'crp-control-relay-panel', category: 'LT Panels', order: 1, description: 'Control and Relay Panels are designed for protection, control, and monitoring of electrical power systems. These panels house relays, control switches, and indicating instruments for effective power system management.', features: ['Numerical/digital relay integration', 'SCADA compatibility', 'Anti-pumping and trip circuit supervision', 'Customized mimic bus bar arrangement', 'Dust and vermin proof enclosures', 'Type tested for short circuit withstand'] },
-  { name: 'PCC - Power Control Centre', slug: 'pcc-power-control-centre', category: 'LT Panels', order: 2, description: 'Power Control Centres are the central distribution boards that receive power from transformers or generators and distribute it to various loads. Our PCC panels feature robust busbar systems and advanced protection schemes.', features: ['Rated up to 6300A busbar capacity', 'Fully type-tested assemblies', 'Drawout and fixed type ACBs', 'Integrated power monitoring systems', 'Capacitor bank integration for PF correction', 'Multi-tier busbar arrangements'] },
-  { name: 'MCC - Motor Control Centre', slug: 'mcc-motor-control-centre', category: 'LT Panels', order: 3, description: 'Motor Control Centres provide centralized control and protection for multiple electric motors. Our MCC panels feature intelligent motor protection relays, soft starters, and VFD integration.', features: ['Intelligent motor protection relays', 'VFD and soft starter integration', 'DOL and star-delta starters', 'Auto/manual control modes', 'Interlocking and safety features', 'Plug-in type compartments for maintenance'] },
-  { name: 'APFC - Automatic Power Factor Control', slug: 'apfc-automatic-power-factor-control', category: 'LT Panels', order: 4, description: 'Automatic Power Factor Control panels dynamically switch capacitor banks to maintain the power factor close to unity, reducing electricity bills and avoiding penalties from utilities.', features: ['Microcontroller-based APFC relay', 'Real-time PF monitoring and display', 'Step-wise automatic capacitor switching', 'Harmonic filtering with detuned reactors', 'THD monitoring and protection', 'Target PF setting (0.95 to 0.99)'] },
-  { name: 'DG Synchronization Panel', slug: 'dg-synchronization-panel', category: 'LT Panels', order: 5, description: 'DG Synchronization Panels enable multiple diesel generators to operate in parallel, sharing the load efficiently. Our synchronization panels feature advanced auto-synch relays and load sharing controllers.', features: ['Auto/manual synchronization modes', 'Active and reactive load sharing', 'Reverse power relay protection', 'Black start capability', 'Auto start-stop with mains failure detection', 'Multi-generator paralleling up to 16 sets'] },
-  { name: 'PLC - Program Logic Control', slug: 'plc-program-logic-control', category: 'LT Panels', order: 6, description: 'Programmable Logic Control panels integrate industrial automation with electrical power distribution. Our PLC panels feature industry-standard controllers from Siemens, Allen Bradley, and Schneider.', features: ['SCADA and HMI integration', 'Modular I/O configuration', 'Communication protocols (Modbus, Profibus, Ethernet)', 'Data logging and trending', 'Alarm management systems', 'Remote monitoring and control capability'] },
-].map(mkProduct)
-
-const FALLBACK_HT: Product[] = [
-  { name: '11 KV Panel', slug: '11-kv-panel', category: 'HT Panels', order: 1, description: '11 KV HT Panels are designed for receiving and distributing high tension power at 11kV voltage level. These panels feature vacuum circuit breakers, current and voltage transformers, and comprehensive protection relays.', features: ['VCB rated up to 630A/1250A', 'Current transformer and potential transformer integration', 'Numerical relay protection (overcurrent, earth fault)', 'Busbar rating up to 1250A', 'Interlocked and safety-grounded design', 'Indoor and outdoor configurations'] },
-  { name: '22 KV Panel', slug: '22-kv-panel', category: 'HT Panels', order: 2, description: '22 KV HT Panels are engineered for medium voltage power distribution at the 22kV level. These panels are commonly used in large industrial plants and utility substations, featuring advanced vacuum circuit breaker technology.', features: ['VCB with high breaking capacity', 'Comprehensive protection scheme', 'Auto-reclosing functionality', 'SCADA integration ready', 'Seismic-qualified construction', 'Type tested as per IS/IEC standards'] },
-  { name: '33 KV Panel', slug: '33-kv-panel', category: 'HT Panels', order: 3, description: '33 KV HT Panels are designed for high voltage power distribution at the 33kV level. These panels are used in major industrial installations, utility substations, and power transmission networks.', features: ['High breaking capacity VCB', 'Comprehensive numerical protection', 'CT/PT integration for metering', 'Busbar differential protection', 'Auto-reclosing and sectionalizing', 'Type tested for 33kV class'] },
-  { name: 'VCB Panel', slug: 'vcb-panel', category: 'HT Panels', order: 4, description: 'Vacuum Circuit Breaker panels provide reliable switching and protection for medium voltage systems. Our VCB panels use vacuum interrupter technology for arc extinction, offering maintenance-free operation and long service life.', features: ['Vacuum interrupter technology', 'Maintenance-free operation', 'Fast fault clearance time', 'High mechanical endurance', 'Motor/spring operating mechanism', 'Integrated protection and control'] },
-].map(mkProduct)
-
-const FALLBACK_BD: Product[] = [
-  { name: 'Segregated Phase Busduct', slug: 'segregated-phase-busduct', category: 'Busducts', order: 1, description: 'Segregated phase busducts feature each phase conductor in its own grounded metallic enclosure, reducing electromagnetic forces and improving short-circuit withstand. Ideal for high-current generator connections and large industrial power distribution.', features: ['Each phase in separate metallic enclosure', 'Reduced electromagnetic forces between phases', 'Ratings up to 6300A', 'High short-circuit withstand capability', 'Forced-air or natural cooling options', 'Suitable for generator and transformer connections'] },
-  { name: 'Non-Segregated Phase Busduct', slug: 'non-segregated-phase-busduct', category: 'Busducts', order: 2, description: 'Non-segregated phase busducts house all phase conductors in a common metallic enclosure, offering a compact and economical solution for medium-current distribution between transformers, switchgear, and loads.', features: ['All phases in a common enclosure', 'Compact footprint for space-constrained installations', 'Ratings up to 4000A', 'Copper or aluminum busbar options', 'Indoor and outdoor configurations', 'Lower cost alternative for medium-current applications'] },
-  { name: 'Isolated Phase Busduct (IPB)', slug: 'isolated-phase-busduct', category: 'Busducts', order: 3, description: 'Isolated Phase Busducts enclose each phase conductor in its own individual housing, typically used for very high-current generator outputs in power plants. Provides maximum safety, minimal electromagnetic interference, and reliable power transmission.', features: ['Individual phase enclosures for maximum safety', 'Ratings from 4000A to 25000A', 'Minimal electromagnetic field emissions', 'Forced-air cooling for high-current ratings', 'Generator and transformer terminal connections', 'Power plant grade construction'] },
-  { name: 'Plug-in Tap-off Boxes', slug: 'plug-in-tap-off-boxes', category: 'Busducts', order: 4, description: 'Plug-in tap-off boxes provide flexible power take-off points along a busduct run, enabling easy connection of loads or distribution panels without disrupting the main busbar. Available in various ratings with integrated protection.', features: ['Hot-pluggable tap-off points', 'Integrated MCCB or fuse protection', 'Ratings from 100A to 630A', 'Lockable safety interlocks', 'Quick disconnect for maintenance', 'Compatible with segregated and non-segregated busducts'] },
-].map(mkProduct)
-
 /* ═════════════════════════ MAIN PAGE ═════════════════════════ */
 
 export default function ProductsPage() {
@@ -135,7 +79,9 @@ export default function ProductsPage() {
   const [ltProducts, setLtProducts] = useState<Product[]>([])
   const [htProducts, setHtProducts] = useState<Product[]>([])
   const [bdProducts, setBdProducts] = useState<Product[]>([])
+  const [settings, setSettings] = useState<Record<string, string>>(SITE_SETTINGS_DEFAULTS)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   // Single source of truth for the active tab: the router param.
   const activeTab: Variant =
@@ -147,21 +93,39 @@ export default function ProductsPage() {
     navigate('products', { tab })
   }
 
-  useEffect(() => {
+  const doLoad = () => {
     Promise.all([
-      fetchProducts('LT Panels').catch(() => []),
-      fetchProducts('HT Panels').catch(() => []),
-      fetchProducts('Busducts').catch(() => []),
-    ]).then(([lt, ht, bd]) => {
-      setLtProducts(lt.length > 0 ? lt : FALLBACK_LT)
-      setHtProducts(ht.length > 0 ? ht : FALLBACK_HT)
-      setBdProducts(bd.length > 0 ? bd : FALLBACK_BD)
+      fetchProducts('LT Panels'),
+      fetchProducts('HT Panels'),
+      fetchProducts('Busducts'),
+      fetchSettings().catch(() => null),
+    ]).then(([lt, ht, bd, s]) => {
+      setLtProducts(lt)
+      setHtProducts(ht)
+      setBdProducts(bd)
+      if (s) setSettings(s)
       setLoading(false)
-    }).catch(() => setLoading(false))
+    }).catch((err) => {
+      setError(err?.message || 'Failed to load products. Please try again.')
+      setLoading(false)
+    })
+  }
+
+  // Used by the Retry button — shows skeletons again while refetching.
+  const loadContent = () => {
+    setLoading(true)
+    setError(null)
+    doLoad()
+  }
+
+  useEffect(() => {
+    doLoad()
   }, [])
 
   const currentProducts = activeTab === 'lt' ? ltProducts : activeTab === 'ht' ? htProducts : bdProducts
   const meta = CATEGORY_META[activeTab]
+  const comparisonRows = parseComparisonRows(settings.products_comparison)
+  const specRows = parseSpecRows(settings.products_specs)
 
   return (
     <div className="bg-white min-h-screen">
@@ -193,18 +157,16 @@ export default function ProductsPage() {
             <div className="flex items-center gap-3 mb-6">
               <span className="w-10 h-[2px]" style={{ background: CORAL }} />
               <span className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500">
-                Technical Catalog
+                {settings.products_hero_eyebrow}
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05] mb-5" style={{ color: INK }}>
-              Precision-Built Panels
+              {settings.products_hero_title}
             </h1>
 
             <p className="text-slate-500 text-lg md:text-xl max-w-2xl leading-relaxed">
-              Engineered for reliability. Our LT panels, HT switchgear, and
-              busduct systems meet the most demanding industrial standards with
-              uncompromising quality.
+              {settings.products_hero_subtitle}
             </p>
           </motion.div>
 
@@ -245,6 +207,22 @@ export default function ProductsPage() {
       {/* ═══════════ PRODUCTS GRID ═══════════ */}
       <section className="bg-white pb-16 md:pb-24">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          {/* Error state — fetch failed entirely */}
+          {error ? (
+            <div className="flex flex-col items-center py-16 text-center">
+              <AlertCircle className="w-12 h-12 text-slate-300 mb-4" strokeWidth={1.5} />
+              <p className="text-slate-600 mb-6">{error}</p>
+              <button
+                onClick={loadContent}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-300"
+                style={{ borderColor: CORAL, color: CORAL }}
+              >
+                <RefreshCw className="w-4 h-4" />
+                Retry
+              </button>
+            </div>
+          ) : (
+            <>
           {/* Section header */}
           <FadeIn>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 md:mb-12 border-t border-slate-100 pt-10">
@@ -287,6 +265,8 @@ export default function ProductsPage() {
               </>
             )}
           </Tabs>
+            </>
+          )}
         </div>
       </section>
 
@@ -338,7 +318,7 @@ export default function ProductsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {COMPARISON_DATA.map((row, i) => (
+                  {comparisonRows.map((row, i) => (
                     <tr
                       key={row.attribute}
                       className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}
@@ -393,7 +373,7 @@ export default function ProductsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {SPEC_TABLE_DATA.map((row, i) => (
+                  {specRows.map((row, i) => (
                     <tr
                       key={row.param}
                       className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}
