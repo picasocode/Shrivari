@@ -19,6 +19,7 @@ import { useRouter } from '@/components/Router'
 
 /* ─── Types ─── */
 interface ProjectRecord {
+  id?: string
   sno: number
   customer: string
   voltage: string
@@ -28,6 +29,7 @@ interface ProjectRecord {
   state: string
   value: string
   year: string
+  imageUrl: string
 }
 
 interface Meta {
@@ -35,6 +37,7 @@ interface Meta {
   industries: string[]
   states: string[]
   years: string[]
+  voltages: string[]
 }
 
 /* ─── Industry → Icon & Color Map ─── */
@@ -108,6 +111,7 @@ export default function ProjectsPage() {
   const [industryFilter, setIndustryFilter] = useState('All')
   const [stateFilter, setStateFilter] = useState('All')
   const [yearFilter, setYearFilter] = useState('All')
+  const [voltageFilter, setVoltageFilter] = useState('All')
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
 
   // Pagination
@@ -131,6 +135,7 @@ export default function ProjectsPage() {
         if (industryFilter !== 'All') params.set('industry', industryFilter)
         if (stateFilter !== 'All') params.set('state', stateFilter)
         if (yearFilter !== 'All') params.set('year', yearFilter)
+        if (voltageFilter !== 'All') params.set('voltage', voltageFilter)
         if (search.trim()) params.set('search', search.trim())
 
         const r = await fetch(`/api/project-records?${params.toString()}`)
@@ -149,7 +154,7 @@ export default function ProjectsPage() {
     setLoading(true)
     fetchData()
     return () => { cancelled = true }
-  }, [industryFilter, stateFilter, yearFilter, search])
+  }, [industryFilter, stateFilter, yearFilter, voltageFilter, search])
 
   // Debounce search input
   const [searchInput, setSearchInput] = useState('')
@@ -169,9 +174,10 @@ export default function ProjectsPage() {
     setIndustryFilter('All')
     setStateFilter('All')
     setYearFilter('All')
+    setVoltageFilter('All')
   }
 
-  const hasActiveFilters = search || industryFilter !== 'All' || stateFilter !== 'All' || yearFilter !== 'All'
+  const hasActiveFilters = search || industryFilter !== 'All' || stateFilter !== 'All' || yearFilter !== 'All' || voltageFilter !== 'All'
 
   /* ─── Stats ─── */
   const stats = [
@@ -370,6 +376,18 @@ export default function ProjectsPage() {
                     ))}
                   </select>
 
+                  {/* Voltage filter */}
+                  <select
+                    value={voltageFilter}
+                    onChange={(e) => setVoltageFilter(e.target.value)}
+                    className="text-xs h-8 px-2.5 rounded-md border border-gray-200 bg-white text-gray-700 focus:border-[#1B3A5C] focus:outline-none cursor-pointer"
+                  >
+                    <option value="All">All Voltages</option>
+                    {meta?.voltages.map(v => (
+                      <option key={v} value={v}>{v} KV</option>
+                    ))}
+                  </select>
+
                   {/* State filter */}
                   <select
                     value={stateFilter}
@@ -531,12 +549,10 @@ export default function ProjectsPage() {
             </FadeIn>
           )}
 
-          {/* Results - Cards view */}
+          {/* Results - Cards view (image-first) */}
           {!loading && !error && records.length > 0 && viewMode === 'cards' && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {pagedRecords.map((p, i) => {
-                const meta = getIndustryMeta(p.industry)
-                const Icon = meta.icon
                 return (
                   <motion.div
                     key={p.sno}
@@ -545,23 +561,39 @@ export default function ProjectsPage() {
                     transition={{ duration: 0.3, delay: Math.min(i * 0.04, 0.4) }}
                   >
                     <Card className="h-full border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
-                      <div className={`h-1.5 ${meta.bg.replace('/5', '/20')}`} />
+                      {/* Project photo — the card's hero (no icon) */}
+                      <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                        {p.imageUrl ? (
+                          <img
+                            src={p.imageUrl}
+                            alt={`${p.customer} project`}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                          />
+                        ) : (
+                          <div
+                            className="flex h-full w-full flex-col items-center justify-center gap-2"
+                            style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #152D4F 55%, #0D1D3A 100%)' }}
+                          >
+                            <Zap className="w-6 h-6 text-[#E8751A]/70" />
+                            <span className="px-6 text-center text-sm font-semibold tracking-wide text-white/45 uppercase">
+                              {p.customer}
+                            </span>
+                          </div>
+                        )}
+                        {p.voltage && (
+                          <Badge className="absolute right-3 top-3 bg-white/95 text-[#1B3A5C] border-0 text-xs font-semibold shadow-sm">
+                            <Zap className="w-3 h-3 mr-1 text-[#E8751A]" />
+                            {p.voltage} KV
+                          </Badge>
+                        )}
+                        {p.year && (
+                          <Badge variant="outline" className="absolute left-3 top-3 bg-white/95 border-0 text-xs font-medium text-gray-700 shadow-sm">
+                            {p.year}
+                          </Badge>
+                        )}
+                      </div>
                       <CardContent className="p-5">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-lg ${meta.bg} flex items-center justify-center`}>
-                            <Icon className={`w-5 h-5 ${meta.color}`} />
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            {p.voltage && (
-                              <Badge className="bg-[#1B3A5C]/10 text-[#1B3A5C] border-0 text-xs font-semibold">
-                                {p.voltage} KV
-                              </Badge>
-                            )}
-                            <Badge variant="outline" className="text-xs font-medium border-gray-200 text-gray-600">
-                              {p.year}
-                            </Badge>
-                          </div>
-                        </div>
                         <h3 className="font-bold text-[#1A1A2E] text-base mb-1 group-hover:text-[#1B3A5C] transition-colors">
                           {p.customer}
                         </h3>
@@ -574,7 +606,7 @@ export default function ProjectsPage() {
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                           <div className="flex items-center gap-1 text-xs text-gray-600">
                             <MapPin className="w-3 h-3 text-gray-400" />
-                            {p.location}, {p.state}
+                            {p.location}{p.state ? `, ${p.state}` : ''}
                           </div>
                           <span className="text-[10px] text-gray-400">#{p.sno}</span>
                         </div>

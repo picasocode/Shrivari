@@ -5,6 +5,7 @@ import {
   X, Package, Wrench, Users, MessageSquareQuote, FileText, FolderKanban,
   Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw,
   Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube,
+  ListChecks, Search, Info, Image as ImageIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,6 +22,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   fetchProducts, fetchServices, fetchClients, fetchTestimonials,
   fetchBlogs, fetchProjects, fetchSettings, fetchAPI,
@@ -63,7 +65,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
 const useToast = () => useContext(ToastContext)
 
 /* ─── types ─── */
-type Section = 'products' | 'services' | 'clients' | 'testimonials' | 'blogs' | 'projects' | 'messages' | 'settings'
+type Section = 'products' | 'services' | 'clients' | 'testimonials' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
 
 interface ContactMessage {
   id: string
@@ -83,6 +85,7 @@ const navItems: { key: Section; label: string; icon: React.ComponentType<{ class
   { key: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
   { key: 'blogs', label: 'Blogs', icon: FileText },
   { key: 'projects', label: 'Projects', icon: FolderKanban },
+  { key: 'records', label: 'Project Records', icon: ListChecks },
   { key: 'messages', label: 'Messages', icon: Mail },
   { key: 'settings', label: 'Settings', icon: Settings },
 ]
@@ -189,6 +192,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
           {activeSection === 'testimonials' && <TestimonialsSection />}
           {activeSection === 'blogs' && <BlogsSection />}
           {activeSection === 'projects' && <ProjectsSection />}
+          {activeSection === 'records' && <RecordsSection />}
           {activeSection === 'messages' && <MessagesSection />}
           {activeSection === 'settings' && <SettingsSection />}
         </div>
@@ -889,6 +893,254 @@ function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClos
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   PROJECT RECORDS SECTION
+   (the portfolio list shown on the public Projects page)
+   ═══════════════════════════════════════════ */
+interface ProjectRecordItem {
+  id?: string
+  sno: number
+  customer: string
+  voltage: string
+  industry: string
+  scope: string
+  location: string
+  state: string
+  value: string
+  year: string
+  imageUrl?: string
+}
+
+interface ProjectRecordsResponse {
+  total: number
+  records: ProjectRecordItem[]
+  source: 'supabase' | 'json'
+}
+
+/** Prisma row shape returned by PUT /api/project-records/[id] (camelCase columns). */
+interface ProjectRecordRow {
+  id: string
+  sno?: number
+  customerName?: string
+  voltageLevel?: string
+  industry?: string
+  scopeOfWork?: string
+  location?: string
+  state?: string
+  projectValue?: string
+  year?: string
+  imageUrl?: string
+}
+
+function RecordsSection() {
+  const { notify } = useToast()
+  const [records, setRecords] = useState<ProjectRecordItem[]>([])
+  const [source, setSource] = useState<'supabase' | 'json'>('supabase')
+  const [searchInput, setSearchInput] = useState('')
+  const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [drafts, setDrafts] = useState<Record<string, string>>({})
+  const [savingId, setSavingId] = useState<string | null>(null)
+  const [brokenThumbs, setBrokenThumbs] = useState<Record<string, boolean>>({})
+  const reqIdRef = useRef(0)
+
+  // Debounce the search input (~350ms) before hitting the API.
+  useEffect(() => {
+    const t = setTimeout(() => setSearch(searchInput), 350)
+    return () => clearTimeout(t)
+  }, [searchInput])
+
+  const load = useCallback(() => {
+    const reqId = ++reqIdRef.current
+    setLoading(true)
+    setError(false)
+    const params = new URLSearchParams()
+    if (search.trim()) params.set('search', search.trim())
+    fetchAPI<ProjectRecordsResponse>(`/project-records?${params.toString()}`)
+      .then(data => {
+        if (reqId !== reqIdRef.current) return // a newer request superseded this one
+        setRecords(data.records || [])
+        setSource(data.source)
+        setDrafts({})
+        setLoading(false)
+      })
+      .catch(() => {
+        if (reqId !== reqIdRef.current) return
+        setError(true)
+        setLoading(false)
+      })
+  }, [search])
+
+  // Fetch on mount and whenever the debounced search changes.
+  useEffect(() => { load() }, [load])
+
+  const handleSave = async (record: ProjectRecordItem) => {
+    const id = record.id
+    if (!id || source !== 'supabase') return
+    const imageUrl = (drafts[id] ?? record.imageUrl ?? '').trim()
+    setSavingId(id)
+    try {
+      const updated = await fetchAPI<ProjectRecordRow>(`/project-records/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ imageUrl }),
+      })
+      // Map the Prisma row (camelCase columns) back to the API record shape.
+      const mapped: ProjectRecordItem = {
+        id: updated.id,
+        sno: updated.sno ?? record.sno,
+        customer: updated.customerName ?? record.customer,
+        voltage: updated.voltageLevel ?? record.voltage,
+        industry: updated.industry ?? record.industry,
+        scope: updated.scopeOfWork ?? record.scope,
+        location: updated.location ?? record.location,
+        state: updated.state ?? record.state,
+        value: updated.projectValue ?? record.value,
+        year: updated.year ?? record.year,
+        imageUrl: updated.imageUrl ?? imageUrl,
+      }
+      setRecords(prev => prev.map(r => r.id === id ? mapped : r))
+      setDrafts(prev => {
+        const next = { ...prev }
+        delete next[id]
+        return next
+      })
+      notify('success', `Image updated for ${record.customer || `record #${record.sno}`}`)
+    } catch (e) {
+      notify('error', `Save failed: ${(e as Error).message}`)
+    } finally {
+      setSavingId(null)
+    }
+  }
+
+  const setDraft = (id: string, value: string) => {
+    setDrafts(prev => ({ ...prev, [id]: value }))
+  }
+
+  return (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-[#1A1A2E]">Project Records</h2>
+          <p className="text-xs text-[#6B7280] mt-1">The portfolio list on the public Projects page — set each record&apos;s image URL.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {!loading && !error && (
+            <Badge variant="secondary" className="text-xs rounded">{records.length} record{records.length === 1 ? '' : 's'}</Badge>
+          )}
+          <Button variant="outline" size="sm" onClick={load} className="rounded-md text-xs">
+            <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
+          </Button>
+        </div>
+      </div>
+
+      {source === 'json' && !loading && !error && (
+        <div className="flex items-start gap-2.5 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 mb-4">
+          <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-amber-800">Editing requires the database connection — showing read-only data.</p>
+        </div>
+      )}
+
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
+        <Input
+          value={searchInput}
+          onChange={e => setSearchInput(e.target.value)}
+          placeholder="Search customer, industry, location, voltage..."
+          className="rounded-md h-9 text-sm pl-9 bg-white"
+        />
+      </div>
+
+      {loading ? (
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm divide-y divide-[#E5E7EB]">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="p-4 flex items-center gap-4">
+              <Skeleton className="w-16 h-16 rounded-md shrink-0" />
+              <div className="flex-1 space-y-2 min-w-0">
+                <Skeleton className="h-4 w-48 max-w-full" />
+                <Skeleton className="h-3 w-72 max-w-full" />
+              </div>
+              <Skeleton className="h-9 flex-1 md:w-[400px] md:flex-none" />
+              <Skeleton className="h-9 w-16 shrink-0" />
+            </div>
+          ))}
+        </div>
+      ) : error ? (
+        <div className="flex flex-col items-center py-20 text-[#6B7280]">
+          <AlertCircle className="w-10 h-10 mb-3" />
+          <p className="mb-2">Failed to load project records.</p>
+          <Button variant="outline" onClick={load} className="rounded-md">Try Again</Button>
+        </div>
+      ) : records.length === 0 ? (
+        <p className="text-[#6B7280] text-center py-12">No project records found{search.trim() ? ` for "${search.trim()}"` : ''}.</p>
+      ) : (
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+          <div className="max-h-[70vh] overflow-y-auto divide-y divide-[#E5E7EB]">
+            {records.map(r => {
+              const key = r.id ?? `sno-${r.sno}`
+              const draft = r.id ? (drafts[r.id] ?? r.imageUrl ?? '') : (r.imageUrl ?? '')
+              const dirty = draft.trim() !== (r.imageUrl ?? '').trim()
+              const saving = !!r.id && savingId === r.id
+              const canSave = !!r.id && source === 'supabase' && dirty && !saving
+              const thumb = (r.imageUrl ?? '').trim()
+              const thumbBroken = brokenThumbs[`${key}:${thumb}`]
+              const meta = [r.voltage ? `${r.voltage} KV` : '', r.industry, r.location].filter(Boolean).join(' · ')
+              return (
+                <div key={key} className="p-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-4 hover:bg-[#F0F4F8]/60 transition-colors">
+                  {/* Thumbnail (64px) */}
+                  {thumb && !thumbBroken ? (
+                    <img
+                      src={thumb}
+                      alt={r.customer}
+                      className="w-16 h-16 rounded-md object-cover border border-[#E5E7EB] bg-[#F0F4F8] shrink-0"
+                      onError={() => setBrokenThumbs(prev => ({ ...prev, [`${key}:${thumb}`]: true }))}
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                      <ImageIcon className="w-6 h-6 text-slate-400" />
+                    </div>
+                  )}
+                  {/* Record info */}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-sm text-[#1A1A2E] truncate">
+                      <span className="text-[#9CA3AF] font-normal mr-1.5">#{r.sno}</span>
+                      {r.customer || '—'}
+                    </p>
+                    <p className="text-xs text-[#6B7280] mt-0.5 truncate">{meta || '—'}</p>
+                  </div>
+                  {/* Image URL editor (stacks on mobile, side-by-side from sm up) */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:w-[400px] shrink-0">
+                    <Input
+                      value={draft}
+                      onChange={e => { if (r.id) setDraft(r.id, e.target.value) }}
+                      placeholder="/images/projects/... or https://..."
+                      disabled={!r.id || source !== 'supabase'}
+                      className="rounded-md h-9 text-xs w-full flex-1 min-w-0"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => handleSave(r)}
+                      disabled={!canSave}
+                      className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md text-xs self-end sm:self-auto shrink-0"
+                    >
+                      {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Check className="w-3.5 h-3.5 mr-1" />}
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {!loading && !error && records.length > 0 && source === 'supabase' && (
+        <p className="mt-3 text-xs text-[#6B7280]">Changes save directly to the database and appear on the public Projects page immediately.</p>
+      )}
+    </>
   )
 }
 

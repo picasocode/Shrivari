@@ -162,7 +162,8 @@
     "location": "Sholingur",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2013"
+    "year": "2013",
+    "imageUrl": "/images/projects/p15-brakes-foundaries.jpg"
   },
   {
     "sno": 16,
@@ -283,7 +284,8 @@
     "location": "Chengalpet",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2016"
+    "year": "2016",
+    "imageUrl": "/images/projects/p27-hll-biotech.jpg"
   },
   {
     "sno": 28,
@@ -305,7 +307,8 @@
     "location": "Thiruporur",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2016"
+    "year": "2016",
+    "imageUrl": "/images/projects/p29-hitachi.jpg"
   },
   {
     "sno": 30,
@@ -349,7 +352,8 @@
     "location": "MM Nagar",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2018"
+    "year": "2018",
+    "imageUrl": "/images/projects/p33-hanonautomotive.jpg"
   },
   {
     "sno": 34,
@@ -371,7 +375,8 @@
     "location": "Viralimalai",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2018"
+    "year": "2018",
+    "imageUrl": "/images/projects/p35-m-m-forging.jpg"
   },
   {
     "sno": 36,
@@ -426,7 +431,8 @@
     "location": "Hosur",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2019"
+    "year": "2019",
+    "imageUrl": "/images/projects/p40-ashok-leyland.jpg"
   },
   {
     "sno": 41,
@@ -470,7 +476,8 @@
     "location": "Naidupet",
     "state": "Andhrapradesh",
     "value": "",
-    "year": "2020"
+    "year": "2020",
+    "imageUrl": "/images/projects/p44-brakes-foundaries.jpg"
   },
   {
     "sno": 45,
@@ -503,7 +510,8 @@
     "location": "Jagluru",
     "state": "Karnataka",
     "value": "",
-    "year": "2021"
+    "year": "2021",
+    "imageUrl": "/images/projects/p47-clean-max-enviro-energy-solutions.jpg"
   },
   {
     "sno": 48,
@@ -536,7 +544,8 @@
     "location": "Hyderabad",
     "state": "Telengana",
     "value": "",
-    "year": "2022"
+    "year": "2022",
+    "imageUrl": "/images/projects/p50-dlf-hyderabad.jpg"
   },
   {
     "sno": 51,
@@ -646,7 +655,8 @@
     "location": "Karur",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2023"
+    "year": "2023",
+    "imageUrl": "/images/projects/p60-shobikaa-impex.jpg"
   },
   {
     "sno": 61,
@@ -723,7 +733,8 @@
     "location": "Byree",
     "state": "Odisha",
     "value": "",
-    "year": "2026"
+    "year": "2026",
+    "imageUrl": "/images/projects/p67-my-home.jpg"
   },
   {
     "sno": 68,
@@ -844,7 +855,8 @@
     "location": "Krishnagiri",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2026"
+    "year": "2026",
+    "imageUrl": "/images/projects/p78-chemplast.jpg"
   },
   {
     "sno": 79,
@@ -888,7 +900,8 @@
     "location": "Gummidipoondi",
     "state": "Tamilnadu",
     "value": "",
-    "year": "2023"
+    "year": "2023",
+    "imageUrl": "/images/projects/p82-jotham-ferro-alloys.jpg"
   },
   {
     "sno": 83,
@@ -1185,7 +1198,8 @@
     "location": "",
     "state": "",
     "value": "",
-    "year": ""
+    "year": "",
+    "imageUrl": "/images/projects/p119-govindaraja-spinning-mills.jpg"
   },
   {
     "sno": 120,
@@ -1570,7 +1584,8 @@
     "location": "Kanchipuram & Hosur",
     "state": "Tamilnadu",
     "value": "",
-    "year": ""
+    "year": "",
+    "imageUrl": "/images/projects/p158-sandhar-ascast-private-limited.jpg"
   },
   {
     "sno": 159,
@@ -1746,6 +1761,7 @@
     "location": "Goa",
     "state": "",
     "value": "",
-    "year": ""
+    "year": "",
+    "imageUrl": "/images/projects/p174-gmr.jpg"
   }
 ]
