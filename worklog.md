@@ -2434,3 +2434,27 @@ Stage Summary:
 - Admin → "Project Records" section shipped in AdminPanel.tsx: search the 159-record portfolio list and edit each record's image URL against the DB, with per-row save, toasts, skeleton loading, broken-image fallback and a read-only notice when the API falls back to bundled JSON
 - No new dependencies, no other files touched, API routes untouched (16-a scope); PUT success path verified end-to-end via route interception; real JSON-fallback path verified against the actual API
 - Note: this sandbox has no DATABASE_URL, so the supabase save path was verified with mocked network responses — recommend one manual smoke test after deploy with the live DB
+
+---
+Task ID: 16
+Agent: Z.ai Code (main)
+Task: Projects.zip photos by name match, voltage filter on Projects page, image-first cards (no icons), admin-editable record images, panel page lower size bump; test and push
+
+Work Log:
+- Re-cloned repo (sandbox reset again; main=56033b8); bun install
+- Unzipped upload/Projects.zip: 37 folders named '<Client> - <Voltage>' with 53 photos + Thumbs.db junk
+- Curated name matching folder -> data/project-records.json (customer + voltage + location evidence; internal photo filenames like 'BRAKES INDIA - SHOLINGUR - 2.png' confirmed matches): 16 records matched incl. Brakes foundaries x2 (Sholingur sno15 / Naidupet sno44 via location), GMR-Goa (sno174), Govindaraja (sno119), Sandhar (sno158); voltage-conflicting folders deliberately skipped (Brigade 110 vs record 11, Exide 132 vs 110); user predicted 'just 5 to 10'
+- sharp: 16 photos -> public/images/projects/p<sno>-<slug>.jpg (<=1200px, mozjpeg q80, 912KB total); data/project-records.json updated with imageUrl for the 16
+- prisma schema: ProjectRecord.imageUrl; API project-records GET: id+imageUrl in mapRow, ?voltage= filter, once-per-process bootstrap (ALTER TABLE ProjectRecord ADD COLUMN imageUrl for existing prod MySQL + backfill empty imageUrls from JSON by sno; never touches admin-edited values); meta route: voltages[] (fixed accidental Set.sort() type error caught by tsc)
+- NEW /api/project-records/[id] GET/PUT (whitelisted fields; no server auth — pre-existing repo pattern)
+- ProjectsPage: voltage dropdown (All Voltages + <v> KV options), fetch param, Clear All + hasActiveFilters include it; CARDS VIEW REBUILT image-first (h-48 photo hero, voltage+year badges overlaid, navy-gradient Zap+name fallback when no photo) — industry icons REMOVED from cards only (table keeps them per user: 'remove that in card only')
+- AdminPanel (subagent Task 16-b): new 'Project Records' section — debounced search, 159 rows w/ 64px thumbnails, inline imageUrl input + Save (PUT) + toast, read-only notice on json fallback; lint 0/0
+- Products ('panel') page: card image h-52->h-56, description text-sm->text-[15px] ('lower size little bit high' — interpretation flagged to user)
+- Local verify on sqlite snapshot (db/custom.db from 4dcef82 + 159 records seeded WITHOUT imageUrl to exercise bootstrap): bootstrap logged 'added imageUrl column' + 'backfilled 16 image URLs'; meta voltages ['0.415','11','22','33','66','110','132','220','230']; browser: cards show photos + branded fallbacks, voltage=110 -> 37 results incl. all 7 matched 110KV photos; admin login -> Project Records -> search Ashok -> change image -> Save -> toast + thumbnail swap + DB row updated -> reverted; mobile 390px clean; pitfalls fixed en route: bunx prisma generate resolved mismatched CLI (use ./node_modules/.bin/prisma), shell-global DATABASE_URL pointed db push at my-project db (unset for repo ops)
+- Restored mysql schema + 0-byte db placeholder before commit; eslint 0/0; committed 4302c56 + pushed; GitHub API verified (25 files)
+
+Stage Summary:
+- Projects page: voltage filter live; cards are photo-first without icons; 16 real client photos applied by name match and visible instantly (JSON) and auto-migrated into prod MySQL on first /api/project-records request after deploy
+- All record images editable in Admin > Project Records (search + inline save)
+- Products page slightly larger card image + description text
+- Note: prod deploy will self-migrate (ALTER TABLE) on first records request — no manual DB step
