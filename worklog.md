@@ -2385,3 +2385,26 @@ Stage Summary:
 - All 21 site settings visible & editable in admin (Save All actually works now); products page copy/tables driven by products_* settings with code fallbacks
 - Fixed 3 pre-existing breakages: About page syntax error, tab deep-linking, #admin deep link
 - Noted: CRUD APIs remain unauthenticated server-side (pre-existing; admin gate is client-side) — flag for future task
+
+---
+Task ID: 15
+Agent: Z.ai Code (main)
+Task: Live site https://tech.shrivaarielectricals.com/ "not loading" after hosting deploy — diagnose and fix
+
+Work Log:
+- Sandbox reset again; re-cloned repo (main=0940952 incl. Task 14 dynamic products)
+- curl: server returns 200 with Next.js headers (platform: hostinger, server: hcdn) — app IS running
+- agent-browser: first load renders fine; RELOAD stuck on infinite spinner, empty body, scrollHeight 0, ZERO console/page errors
+- Network log on stuck load: HTML came from a different CDN edge (kul-edge2 vs kul-edge3) referencing /_next/static/chunks/2mzim8rymm1-e.css (404) and 0djw7h5_ay9sk.js (404) — chunks from a PREVIOUS build deleted on redeploy
+- Root cause: app is a fully client-rendered SPA, so the prerendered HTML shell carried Next.js default Cache-Control s-maxage=31536000 (1 year); Hostinger hcdn cached HTML per edge node; each rebuild wipes old fingerprinted chunks -> stale-edge visitors get 404 chunks, hydration never completes, silent infinite spinner; intermittent depending on which edge serves you
+- Fix in next.config.ts headers(): source /:path* -> 'public, max-age=0, must-revalidate' (HTML always revalidated at CDN; last matching rule wins), /_next/static/:path* -> 'public, max-age=31536000, immutable', /images/:path* -> 'public, max-age=86400, stale-while-revalidate=604800'
+- Added src/app/icon.svg (brand navy #0C2340 tile + white bolt from public/logo.svg) — fixes favicon.ico 404; Next injects <link rel="icon">
+- Verified: bun install, eslint clean (0/0), production build EXIT 0, prod server :3001 -> headers confirmed on / (must-revalidate), /_next chunk (immutable), /images/logo.png (86400+SWR), /icon.svg (200 svg, link tag present in HTML)
+- Committed 28d0344 + worklog; pushed; GitHub API verified main=28d0344
+- Note for user: after redeploying, MUST purge Hostinger CDN cache (hPanel) once — the currently poisoned 1-year-cached HTML at the edges only clears via purge (or cache manager toggle)
+
+Stage Summary:
+- 'Site not loading' root-caused to CDN-cached stale HTML + deleted chunks (not an app bug); intermittent infinite spinner reproduced and explained
+- Permanent fix pushed: HTML must-revalidate at CDN, immutable static assets — future redeploys can no longer break stale-edge visitors
+- favicon added; eslint/build/prod-header verification all clean
+- Pending manual step for client: redeploy from main (28d0344) then Purge All in hPanel Cache Manager
