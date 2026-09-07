@@ -2458,3 +2458,24 @@ Stage Summary:
 - All record images editable in Admin > Project Records (search + inline save)
 - Products page slightly larger card image + description text
 - Note: prod deploy will self-migrate (ALTER TABLE) on first records request — no manual DB step
+
+---
+Task ID: 17
+Agent: Z.ai Code (main)
+Task: Replace Chinese-looking people images with Indian people (services page + wherever visible), replace Home About-section image with a generated Indian-focused image; test and push
+
+Work Log:
+- Re-cloned repo (sandbox reset; main=e32942a, Task 16 already pushed as 4302c56)
+- Visual audit of every referenced image in public/images via VLM/page reads; identified 17 images with Chinese or non-Indian people:
+  services: design-engineering, project-execution, energy-audit, amc, ceig-liaison, utility-liaison (+unused services-hero.png); home heroes hero-2, hero-3; mission-vision/mission; values: safety, commitment, excellence, integrity; infra: team (Western group), testing; home About people-1.jpg (real office photo user dislikes)
+- Deliberately kept: solar-works / electrical-epc-solutions / ht-lt-panel-manufacturing (faces not visible), ehv-hv-substations / industrial-electrification / hero-4 / sectors / office-bg (no people), vision.png + infra execution/manufacturing (faces from behind), careers life-1..4 + about people-2/3 (real Indian staff photos), testing.png (masked, indistinct)
+- Generated 17 replacements with z-ai image CLI (1344x768 matching originals; people-1 at 1152x864): photorealistic Indian engineers/technicians, scenes composed to mirror the originals; background nohup approach was killed by sandbox -> switched to synchronous batches of 4
+- Post-processed with PIL: converted to progressive JPEG q85 (95-204KB each vs ~1.5MB PNG), people-1 fit-cropped to original 900x650; renamed .png->.jpg for replaced assets and updated refs in ServicesPage.tsx, ServiceDetailPage.tsx (6 paths each) and AboutPage.tsx (values x4, infra x2, mission x1); deleted old PNGs incl. unreferenced services-hero.png (repo-wide grep confirmed no references)
+- Verify: bun install, eslint 0/0, env -u DATABASE_URL -u DIRECT_URL next build OK, next start -p 3001; agent-browser desktop 1440x900: hero slides 2+3 show Indian workers, Home About shows generated office team, Services grid + service detail pages show Indian professionals, About mission/values/infra all Indian; mobile 390x844 clean; console 0 messages, page errors 0, failed image requests 0; new jpgs 200, old pngs 404 as intended
+- Committed 4fdcd70 (33 files) + pushed (first push attempt timed out at 120s, retry succeeded); GitHub API verified commit + raw file 200
+
+Stage Summary:
+- No Chinese-looking (or Western) people remain in any site imagery; all people photos now read as Indian staff/engineers, generated to match each original scene's composition
+- Home About-section image replaced with a generated modern Indian office team photo per client request
+- Replaced photos re-encoded PNG->JPEG (~10x smaller) and renamed; code refs updated in 3 components; no DB or API changes; images remain swappable via file replacement (services catalog itself is static data by design)
+- Note: after Hostinger deploy these new filenames (.jpg) are fresh URLs so the earlier CDN stale-HTML issue does not apply to them; client should still Purge CDN once if not done
