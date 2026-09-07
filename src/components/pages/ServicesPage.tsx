@@ -43,7 +43,7 @@ const services: StaticService[] = [
       'Design of Lightning system as per IS-2309',
     ],
     category: 'Engineering',
-    image: '/images/services/design-engineering.png',
+    image: '/images/services/design-engineering.jpg',
     tagline: 'From concept to commissioning — engineered to standard.',
   },
   {
@@ -63,7 +63,7 @@ const services: StaticService[] = [
       'Stakeholder management',
     ],
     category: 'Engineering',
-    image: '/images/services/project-execution.png',
+    image: '/images/services/project-execution.jpg',
     tagline: 'On schedule. On budget. On standard.',
   },
   {
@@ -99,7 +99,7 @@ const services: StaticService[] = [
       'Report submission, discussion of recommendation with customer & finalizing the report',
     ],
     category: 'Engineering',
-    image: '/images/services/energy-audit.png',
+    image: '/images/services/energy-audit.jpg',
     tagline: 'Measure. Analyse. Optimise.',
   },
   {
@@ -116,7 +116,7 @@ const services: StaticService[] = [
       'Standardized annual rate contracts for transparency',
     ],
     category: 'Maintenance',
-    image: '/images/services/amc.png',
+    image: '/images/services/amc.jpg',
     tagline: '150+ technicians. 16+ years. Zero downtime.',
   },
   {
@@ -132,7 +132,7 @@ const services: StaticService[] = [
       'Getting Safety certificate',
     ],
     category: 'Liaison',
-    image: '/images/services/ceig-liaison.png',
+    image: '/images/services/ceig-liaison.jpg',
     tagline: 'Statutory approvals, handled end-to-end.',
   },
   {
@@ -149,7 +149,7 @@ const services: StaticService[] = [
       'Liaison with TLC department (Transmission line construction) for line works',
     ],
     category: 'Liaison',
-    image: '/images/services/utility-liaison.png',
+    image: '/images/services/utility-liaison.jpg',
     tagline: 'Grid connectivity across 13 state utilities.',
   },
   {

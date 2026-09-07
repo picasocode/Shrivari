@@ -100,18 +100,18 @@ const MISSION_POINTS = [
 ]
 
 const CORE_VALUES: { name: string; desc: string; image: string }[] = [
-  { name: 'Integrity', desc: 'Transparent and ethical business practices in every engagement.', image: '/images/values/integrity.png' },
-  { name: 'Engineering Excellence', desc: 'Commitment to technical precision and quality execution.', image: '/images/values/excellence.png' },
-  { name: 'Safety', desc: 'Prioritizing personnel, equipment, and operational safety.', image: '/images/values/safety.png' },
+  { name: 'Integrity', desc: 'Transparent and ethical business practices in every engagement.', image: '/images/values/integrity.jpg' },
+  { name: 'Engineering Excellence', desc: 'Commitment to technical precision and quality execution.', image: '/images/values/excellence.jpg' },
+  { name: 'Safety', desc: 'Prioritizing personnel, equipment, and operational safety.', image: '/images/values/safety.jpg' },
   { name: 'Innovation', desc: 'Adopting advanced technologies and engineering methodologies.', image: '/images/values/innovation.png' },
-  { name: 'Customer Commitment', desc: 'Delivering solutions aligned with client objectives and timelines.', image: '/images/values/commitment.png' },
+  { name: 'Customer Commitment', desc: 'Delivering solutions aligned with client objectives and timelines.', image: '/images/values/commitment.jpg' },
 ]
 
 const INFRASTRUCTURE: { title: string; desc: string; image: string }[] = [
-  { title: 'Engineering Team', desc: 'Experienced electrical engineers, project managers, testing engineers, and commissioning specialists.', image: '/images/infra/team.png' },
+  { title: 'Engineering Team', desc: 'Experienced electrical engineers, project managers, testing engineers, and commissioning specialists.', image: '/images/infra/team.jpg' },
   { title: 'Manufacturing Facility', desc: 'Modern panel manufacturing infrastructure with quality-focused production processes.', image: '/images/infra/manufacturing.png' },
   { title: 'Project Execution', desc: 'Capability to execute projects across industrial plants, substations, infrastructure facilities, and commercial developments.', image: '/images/infra/execution.png' },
-  { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', image: '/images/infra/testing.png' },
+  { title: 'Testing & Commissioning', desc: 'Advanced testing procedures and commissioning practices for reliable system operation.', image: '/images/infra/testing.jpg' },
 ]
 
 const VISION_TEXT = 'To become a trusted leader in integrated electrical infrastructure solutions through value Engineering excellence, innovation, safety, and customer satisfaction.'
@@ -359,7 +359,7 @@ export default function AboutPage() {
                 {/* Image header */}
                 <div className="relative overflow-hidden h-52 md:h-56">
                   <motion.img
-                    src="/images/mission-vision/mission.png"
+                    src="/images/mission-vision/mission.jpg"
                     alt="Our Mission — Engineering team collaboration"
                     className="w-full h-full object-cover"
                     initial={false}

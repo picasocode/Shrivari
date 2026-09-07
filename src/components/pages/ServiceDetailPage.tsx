@@ -65,7 +65,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
       { name: '132KV/11KV Switchyard', client: 'MM Forging', location: 'Viralimalai' },
     ],
-    image: '/images/services/design-engineering.png',
+    image: '/images/services/design-engineering.jpg',
   },
   'project-execution': {
     name: 'Project Execution',
@@ -93,7 +93,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '11KV/433V Electrification', client: 'Madras Security Printers', location: 'Chennai' },
       { name: '11KV/433V Electrification', client: 'PSG Institute of Technology', location: 'Coimbatore' },
     ],
-    image: '/images/services/project-execution.png',
+    image: '/images/services/project-execution.jpg',
   },
   'testing': {
     name: 'Testing & Commissioning',
@@ -152,7 +152,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '11KV Transformer/VCB Panels', client: 'Delta Electronics', location: 'Hosur' },
       { name: '33KV 1250A VCB Panel', client: 'M.J. Casting Limited', location: 'Hosur' },
     ],
-    image: '/images/services/energy-audit.png',
+    image: '/images/services/energy-audit.jpg',
   },
   'amc': {
     name: 'AMC',
@@ -180,7 +180,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
       { name: '132KV/11KV Switchyard', client: 'MM Forging', location: 'Viralimalai' },
     ],
-    image: '/images/services/amc.png',
+    image: '/images/services/amc.jpg',
   },
   'liasion-ceig': {
     name: 'Liaison with CEIG',
@@ -207,7 +207,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '11KV/433V Electrification', client: 'PSG Institute of Technology', location: 'Coimbatore' },
       { name: '11KV Transformer/VCB Panels', client: 'Delta Electronics', location: 'Hosur' },
     ],
-    image: '/images/services/ceig-liaison.png',
+    image: '/images/services/ceig-liaison.jpg',
   },
   'liasion-utilities': {
     name: 'Liaison with Utilities',
@@ -242,7 +242,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { name: '33KV Bay Extension for 10MW Solar', client: 'Solon India', location: 'Mothagam' },
       { name: '110KV/11KV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
     ],
-    image: '/images/services/utility-liaison.png',
+    image: '/images/services/utility-liaison.jpg',
   },
   'solar-works': {
     name: 'Solar Works',
