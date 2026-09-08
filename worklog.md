@@ -2479,3 +2479,30 @@ Stage Summary:
 - Home About-section image replaced with a generated modern Indian office team photo per client request
 - Replaced photos re-encoded PNG->JPEG (~10x smaller) and renamed; code refs updated in 3 components; no DB or API changes; images remain swappable via file replacement (services catalog itself is static data by design)
 - Note: after Hostinger deploy these new filenames (.jpg) are fresh URLs so the earlier CDN stale-HTML issue does not apply to them; client should still Purge CDN once if not done
+---
+Task ID: 18
+Agent: Z.ai Code (main)
+Task: Admin page — Add/Edit buttons appear dead (no popup/dialog opens); fix, verify, push
+
+Work Log:
+- Re-cloned repo (sandbox reset; main=a4d2627); bun install
+- Live check: GET /api/auth/setup on tech.shrivaarielectricals.com returned {"needsSetup":true} → client had JUST created the admin (first-time setup), which is why the dead-UI report surfaced now: dialogs were NEVER visually verified in Task 15/16 (15 checked persistence via API; 16-b Records section has no Radix dialog)
+- Root cause: AdminPanel root is fixed inset-0 z-[100] bg-white; shadcn Dialog (Radix portal to <body>) renders overlay+content at z-50 → every admin dialog (Add + pencil Edit across Products/Services/Clients/Testimonials/Blogs/Projects) mounted fully BEHIND the opaque admin overlay → clicks "did nothing"
+- Fix src/components/ui/dialog.tsx: DialogOverlay + DialogContent z-50 → z-[150]; src/components/ui/select.tsx: SelectContent z-50 → z-[160] (Select is also a body portal; ProductDialog category + ProjectDialog status dropdowns must stack above the now-z-150 dialog); toasts already z-[200] stay topmost
+- Fix src/lib/api.ts fetchAPI: parse error body and append server detail to thrown message → admin toasts now show e.g. "Save failed: API error: 400 Bad Request — Name, slug, category, and description are required" instead of a bare 400 (found while testing: POST /api/products requires description; the unhelpful toast would have been the user's NEXT complaint)
+- Local E2E on sqlite snapshot (db/custom.db from 4dcef82 + temp sqlite schema + prisma generate, seeded User admin@shrivari.test; regenerated mysql schema + removed temp schema after; db/custom.db is gitignored, not committed):
+  - Login → Products → Add: dialog visible (512×490, z=150, elementFromPoint hits dialog); before-fix behavior reproduced logically (z 50 < 100)
+  - Select inside dialog: z=160, onTop=true, items LT/HT/Busducts; Project status Select: Ongoing/Completed z=160 onTop
+  - Full CRUD: create "QA Test Product" → toast "Product created" + row (17); pencil → "Edit Product" prefilled → rename → "Product updated"; trash → native confirm → "Product deleted" (16 rows)
+  - Section sweep: Add dialogs open for Testimonial/Project/Blog Post/Client/Service (all z=150 visible); Messages shows empty-state, Settings loads 21 fields + Save All, Project Records unaffected
+  - Improved toast verified live: missing-description save now shows the server's validation message
+  - Site-wide regression: blog reader dialog (public page) opens on top at z=150
+  - Mobile 390×844: dialog full-width, fits viewport, all fields usable; desktop 1280 screenshot clean
+  - Console: 0 errors (only pre-existing Radix aria-describedby warning); lint 0/0; tsc no errors in changed files
+- Committed fc91639 + pushed; authenticated GitHub API verified (3 files: dialog.tsx, select.tsx, api.ts)
+
+Stage Summary:
+- Admin Add/Edit/Delete dialogs now actually appear — this was a pure CSS stacking bug (dialog z-50 hidden under admin z-[100]); zero logic changes
+- Admin toasts now surface real server validation messages
+- Hierarchy now: admin panel 100 < dialog 150 < select 160 < toast 200
+- NOTE FOR CLIENT: after Hostinger deploy, hard-refresh (Ctrl+Shift+R) — the changed bundles are new hashed filenames so stale-CDN should not bite, but if old UI persists, Purge CDN once in hPanel
