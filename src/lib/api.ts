@@ -108,7 +108,17 @@ export async function fetchAPI<T>(endpoint: string, options?: RequestInit): Prom
     ...options,
   });
   if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
+    // Surface the server's error message (e.g. "Name, slug, category, and
+    // description are required") instead of a bare status code, so admin
+    // toasts explain what to fix.
+    let detail = '';
+    try {
+      const body = await res.json();
+      if (body?.error) detail = ` — ${body.error}`;
+    } catch {
+      // response body was not JSON — fall back to status text only
+    }
+    throw new Error(`API error: ${res.status} ${res.statusText}${detail}`);
   }
   return res.json();
 }
