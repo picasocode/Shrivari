@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef, createContext, useContext, us
 import {
   X, Package, Wrench, Users, MessageSquareQuote, FileText, FolderKanban,
   Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw,
-  Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube,
+  Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube, Upload,
   ListChecks, Search, Info, Image as ImageIcon, LayoutDashboard,
   Briefcase, Zap, Cpu, Gauge, Activity, MonitorPlay, CircuitBoard,
   ShieldCheck, Factory, Award, Boxes, FileCheck, Hammer, FlaskConical,
@@ -76,6 +76,82 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
   )
 }
 const useToast = () => useContext(ToastContext)
+
+/* ─── Image upload (bytes stored in the database — survive every deploy) ─── */
+const UPLOAD_MAX_MB = 5
+const UPLOAD_ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']
+
+function validateImageFile(file: File): string | null {
+  if (!UPLOAD_ALLOWED_TYPES.includes(file.type)) return 'Please choose a JPG, PNG, WebP, GIF, AVIF or SVG image'
+  if (file.size > UPLOAD_MAX_MB * 1024 * 1024) return `Image must be ${UPLOAD_MAX_MB}MB or smaller`
+  return null
+}
+
+async function uploadImageFile(file: File): Promise<string> {
+  const body = new FormData()
+  body.append('file', file)
+  const res = await fetch('/api/upload', { method: 'POST', body })
+  const data = await res.json().catch(() => null)
+  if (!res.ok) throw new Error(data?.error || 'Upload failed')
+  return data.url as string
+}
+
+function ImageUpload({ label, value, onChange }: { label: string; value: string; onChange: (url: string) => void }) {
+  const { notify } = useToast()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+
+  const handleFile = async (file: File) => {
+    const problem = validateImageFile(file)
+    if (problem) { notify('error', problem); return }
+    setUploading(true)
+    try {
+      onChange(await uploadImageFile(file))
+      notify('success', 'Image uploaded — click Save to apply')
+    } catch (err) {
+      notify('error', err instanceof Error ? err.message : 'Upload failed')
+    } finally {
+      setUploading(false)
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div className="space-y-1.5">
+      <Label className="text-xs font-medium">{label}</Label>
+      <div className="rounded-md border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-3">
+        {value ? (
+          <img src={value} alt={`${label} preview`} className="mx-auto max-h-32 w-auto rounded-md border border-[#E2E8F0] bg-white object-contain p-1" />
+        ) : (
+          <div className="flex h-20 flex-col items-center justify-center gap-1 text-[#94A3B8]">
+            <ImageIcon className="h-6 w-6" />
+            <span className="text-xs">No image yet</span>
+          </div>
+        )}
+        <div className="mt-2.5 flex flex-wrap items-center gap-2">
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={e => { const f = e.target.files?.[0]; if (f) void handleFile(f); e.target.value = '' }}
+          />
+          <Button type="button" variant="outline" size="sm" className="h-8 rounded-md text-xs" disabled={uploading} onClick={() => inputRef.current?.click()}>
+            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+            {uploading ? 'Uploading…' : value ? 'Replace image' : 'Upload image'}
+          </Button>
+          {value && (
+            <Button type="button" variant="ghost" size="sm" className="h-8 rounded-md text-xs text-red-600 hover:text-red-700 hover:bg-red-50" disabled={uploading} onClick={() => onChange('')}>
+              <X className="h-3.5 w-3.5" /> Remove
+            </Button>
+          )}
+        </div>
+      </div>
+      <Input value={value} onChange={e => onChange(e.target.value)} className="rounded-md h-9 text-sm" placeholder="…or paste an image URL" disabled={uploading} />
+      <p className="text-[11px] text-[#6B7280]">Upload a file (stored safely in the database, survives redeploys) or paste a URL. Max {UPLOAD_MAX_MB}MB.</p>
+    </div>
+  )
+}
 
 /* ─── types ─── */
 type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
@@ -755,7 +831,7 @@ function ProductDialog({ item, onClose, onSave }: { item: Product | null; onClos
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="/images/products/<slug>.jpg" /><p className="text-[11px] text-[#6B7280]">Bundled photos live in /images/products/ and are named after the product slug.</p></div>
+          <ImageUpload label="Image URL" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
           <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
         </div>
         <DialogFooter>
@@ -866,7 +942,7 @@ function ServiceDialog({ item, onClose, onSave }: { item: Service | null; onClos
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Features (JSON array or comma-separated)</Label><Textarea value={form.features} onChange={e => setForm(f => ({ ...f, features: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <ImageUpload label="Image URL" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
           <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
         </div>
         <DialogFooter>
@@ -976,7 +1052,7 @@ function ClientDialog({ item, onClose, onSave }: { item: Client | null; onClose:
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Logo URL</Label><Input value={form.logoUrl} onChange={e => setForm(f => ({ ...f, logoUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <ImageUpload label="Logo URL" value={form.logoUrl} onChange={url => setForm(f => ({ ...f, logoUrl: url }))} />
           <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
         </div>
         <DialogFooter>
@@ -1118,7 +1194,7 @@ function TestimonialDialog({ item, onClose, onSave }: { item: Testimonial | null
               <p className="text-[11px] text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Not a valid YouTube URL</p>
             )}
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL (optional avatar)</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <ImageUpload label="Image URL (optional avatar)" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
             <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
@@ -1253,7 +1329,7 @@ function BlogDialog({ item, onClose, onSave }: { item: Blog | null; onClose: () 
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5"><Label className="text-xs font-medium">Author</Label><Input value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Cover Image URL</Label><Input value={form.coverImageUrl} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <ImageUpload label="Cover Image URL" value={form.coverImageUrl} onChange={url => setForm(f => ({ ...f, coverImageUrl: url }))} />
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Excerpt</Label><Textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} rows={2} className="rounded-md text-sm resize-none" /></div>
           <div className="space-y-1.5">
@@ -1435,7 +1511,7 @@ function ManufacturingItemDialog({ item, onClose, onSave }: { item: Manufacturin
             <Label className="text-xs font-medium">Features (one per line)</Label>
             <Textarea value={form.featuresText} onChange={e => setForm(f => ({ ...f, featuresText: e.target.value }))} rows={4} className="rounded-md text-sm resize-none" placeholder={'Centralized distribution\nBus bar design up to 6300A'} />
           </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.image} onChange={e => setForm(f => ({ ...f, image: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="/images/manufacturing/<name>.jpg" /></div>
+          <ImageUpload label="Image URL" value={form.image} onChange={url => setForm(f => ({ ...f, image: url }))} />
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label className="text-xs font-medium">Icon</Label>
@@ -1806,7 +1882,7 @@ function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClos
             </div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <ImageUpload label="Image URL" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
             <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
@@ -1871,8 +1947,11 @@ function RecordsSection() {
   const [error, setError] = useState(false)
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [savingId, setSavingId] = useState<string | null>(null)
+  const [uploadingId, setUploadingId] = useState<string | null>(null)
   const [brokenThumbs, setBrokenThumbs] = useState<Record<string, boolean>>({})
   const reqIdRef = useRef(0)
+  const recordFileRef = useRef<HTMLInputElement>(null)
+  const uploadTargetRef = useRef<ProjectRecordItem | null>(null)
 
   // Debounce the search input (~350ms) before hitting the API.
   useEffect(() => {
@@ -1904,10 +1983,10 @@ function RecordsSection() {
   // Fetch on mount and whenever the debounced search changes.
   useEffect(() => { load() }, [load])
 
-  const handleSave = async (record: ProjectRecordItem) => {
+  const handleSave = async (record: ProjectRecordItem, explicitUrl?: string) => {
     const id = record.id
     if (!id || source !== 'supabase') return
-    const imageUrl = (drafts[id] ?? record.imageUrl ?? '').trim()
+    const imageUrl = (explicitUrl ?? drafts[id] ?? record.imageUrl ?? '').trim()
     setSavingId(id)
     try {
       const updated = await fetchAPI<ProjectRecordRow>(`/project-records/${id}`, {
@@ -1946,6 +2025,25 @@ function RecordsSection() {
     setDrafts(prev => ({ ...prev, [id]: value }))
   }
 
+  // Upload a file for a row: pick → POST /api/upload → save the returned
+  // /api/images/<id> URL onto that record in one shot.
+  const handleRecordUpload = async (file: File) => {
+    const record = uploadTargetRef.current
+    if (!record?.id) return
+    const problem = validateImageFile(file)
+    if (problem) { notify('error', problem); return }
+    setUploadingId(record.id)
+    try {
+      const url = await uploadImageFile(file)
+      await handleSave(record, url)
+    } catch (err) {
+      notify('error', err instanceof Error ? err.message : 'Upload failed')
+    } finally {
+      setUploadingId(null)
+      uploadTargetRef.current = null
+    }
+  }
+
   // Voltage facet from the loaded page of records; filter is client-side
   const voltages = useMemo(() => {
     const seen: string[] = []
@@ -1962,6 +2060,13 @@ function RecordsSection() {
 
   return (
     <>
+      <input
+        ref={recordFileRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={e => { const f = e.target.files?.[0]; if (f) void handleRecordUpload(f); e.target.value = '' }}
+      />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-[#1A1A2E]">Project Records</h2>
@@ -2064,7 +2169,7 @@ function RecordsSection() {
                     <p className="text-xs text-[#6B7280] mt-0.5 truncate">{meta || '—'}</p>
                   </div>
                   {/* Image URL editor (stacks on mobile, side-by-side from sm up) */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:w-[400px] shrink-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:w-[480px] shrink-0">
                     <Input
                       value={draft}
                       onChange={e => { if (r.id) setDraft(r.id, e.target.value) }}
@@ -2072,6 +2177,16 @@ function RecordsSection() {
                       disabled={!r.id || source !== 'supabase'}
                       className="rounded-md h-9 text-xs w-full flex-1 min-w-0"
                     />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => { if (!r.id) return; uploadTargetRef.current = r; recordFileRef.current?.click() }}
+                      disabled={!r.id || source !== 'supabase' || uploadingId === r.id}
+                      className="rounded-md text-xs self-end sm:self-auto shrink-0"
+                    >
+                      {uploadingId === r.id ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Upload className="w-3.5 h-3.5 mr-1" />}
+                      Upload
+                    </Button>
                     <Button
                       size="sm"
                       onClick={() => handleSave(r)}

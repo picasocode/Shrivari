@@ -234,3 +234,16 @@ model ManufacturingItem {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// Images uploaded through the admin panel — the bytes live in the database,
+// so uploaded images survive every deploy/push (there is no on-disk folder
+// that a redeploy could wipe). Served by /api/images/[id]; POST /api/upload
+// also mirrors a best-effort copy into the repo-root upload/ folder.
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  data      Bytes
+  createdAt DateTime @default(now())
+}
