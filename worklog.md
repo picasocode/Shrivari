@@ -2506,3 +2506,18 @@ Stage Summary:
 - Admin toasts now surface real server validation messages
 - Hierarchy now: admin panel 100 < dialog 150 < select 160 < toast 200
 - NOTE FOR CLIENT: after Hostinger deploy, hard-refresh (Ctrl+Shift+R) — the changed bundles are new hashed filenames so stale-CDN should not bite, but if old UI persists, Purge CDN once in hPanel
+---
+Task ID: 19
+Agent: Z.ai Code (main)
+Task: Manufacturing page — replace SAS/SCADA Systems card image with client-uploaded photo; push fast
+
+Work Log:
+- Re-cloned repo (sandbox reset; main=275b077); bun install
+- Located single reference: ManufacturingPage.tsx PRODUCTS entry 'scada' → image '/images/manufacturing/scada.jpg' (896x1195); card renders object-cover in h-48/52 container
+- Processed upload "WhatsApp Image 2026-09-12 at 11.01.08.jpeg" (1254x1254, 259KB): sharp resize 900x900 inside, mozjpeg q85 progressive → 88KB; saved as NEW filename scada-panel.jpg (cache-bust — no CDN purge needed, unlike same-name replacement); deleted old scada.jpg; updated the one reference
+- Verified on 3001 + agent-browser: /images/manufacturing/scada-panel.jpg 200 (90002B); #manufacturing card <img> loaded 900x900, alt 'SAS / SCADA Systems'; screenshot confirms the SAS Network Panel photo (grey panel, red/green pushbuttons, red rotary handle) on the card next to C&R Panels; console 0 errors; lint 0/0
+- Committed 4fb6a81 + pushed; authenticated GitHub API verified (3 files)
+
+Stage Summary:
+- SAS/SCADA Systems card now shows the client's real SAS Network Panel photo; old stock image removed
+- New filename chosen deliberately for instant cache-bust; no code changes beyond the one image path
