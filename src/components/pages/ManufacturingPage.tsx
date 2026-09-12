@@ -35,7 +35,6 @@ interface Product {
   tagline: string
   description: string
   image: string
-  imageFit?: 'cover' | 'contain'
   icon: React.ComponentType<{ className?: string }>
   features: string[]
 }
@@ -101,7 +100,6 @@ const PRODUCTS: Product[] = [
     tagline: 'Substation Automation & Supervisory Control',
     description: 'Substation automation systems and SCADA solutions for real-time monitoring, control, and data acquisition across electrical networks.',
     image: '/images/manufacturing/scada-panel.jpg',
-    imageFit: 'contain',
     icon: MonitorPlay,
     features: ['Real-time monitoring', 'Remote control', 'Data acquisition', 'Event & alarm logging'],
   },
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
     tagline: 'Control & Relay Panel',
     description: 'Control and relay panels for controlling and protecting electrical equipment — housing protection relays, auxiliary relays, MCBs, control switches, and indication lamps.',
     image: '/images/manufacturing/cr-panel-svepl.jpg',
-    imageFit: 'contain',
     icon: ShieldCheck,
     features: ['Overcurrent & earth fault relays', 'Breaker trip signal', 'Breaker control & status indication', 'Alarms & interlocking'],
   },
@@ -380,14 +377,14 @@ export default function ManufacturingPage() {
                     transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                     className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
                   >
-                    {/* Image */}
-                    <div className={`relative overflow-hidden ${product.imageFit === 'contain' ? '' : 'h-48 md:h-52'}`}>
+                    {/* Image — uniform square on every card (SAS-card geometry) */}
+                    <div className="relative overflow-hidden aspect-square">
                       <motion.img
                         src={product.image}
                         alt={product.name}
-                        className={product.imageFit === 'contain' ? 'w-full h-auto' : 'w-full h-full object-cover'}
+                        className="w-full h-full object-cover"
                         initial={false}
-                        whileHover={{ scale: product.imageFit === 'contain' ? 1.03 : 1.08 }}
+                        whileHover={{ scale: 1.08 }}
                         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
                       />
                       {/* Gradient overlay */}

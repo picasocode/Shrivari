@@ -469,7 +469,7 @@ function ProductGrid({
             <article className="group relative h-full bg-white rounded-2xl border-2 border-slate-200 overflow-hidden transition-all duration-300 hover:border-slate-300 hover:shadow-lg">
               {/* Large product image */}
               {p.imageUrl && (
-                <div className="relative h-56 overflow-hidden bg-slate-50 border-b border-slate-100">
+                <div className="relative aspect-square overflow-hidden bg-slate-50 border-b border-slate-100">
                   <img
                     src={p.imageUrl}
                     alt={p.name}
