@@ -2548,3 +2548,18 @@ Work Log:
 
 Stage Summary:
 - SAS/SCADA card is now a full-bleed square-photo feature card; imageFit='contain' semantics = 'card sizes to image'
+---
+Task ID: 22
+Agent: Z.ai Code (main)
+Task: C&R Panels card (next after SAS) — same image + same card-fit config; push fast
+
+Work Log:
+- User re-uploaded the same WhatsApp SAS panel photo (identical 259767B); per instruction applied it to the NEXT card in the grid = C&R Panels ('cr', directly after 'scada' in PRODUCTS)
+- Copied processed 900x900 scada-panel.jpg → separate cr-panel.jpg (independent file so either card's photo can be swapped later without touching the other); cr entry updated: image cr-panel.jpg + imageFit 'contain' (same edge-to-edge square config as scada)
+- Left old manufacturing/cr.jpg on disk (zero remaining code refs, harmless)
+- Verified on 3001 + agent-browser: cr img 390x390 square edge-to-edge, loads, both bottom-row cards now match; console 0 errors; lint 0/0
+- Committed 5a5e80b + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- SAS/SCADA and C&R Panels cards both show the panel photo full-bleed square with identical config
+- NOTE: C&R card currently displays a photo labeled 'SAS NETWORK PANEL' — if the user meant a different photo for C&R, swapping = replace cr-panel.jpg only
