@@ -2521,3 +2521,17 @@ Work Log:
 Stage Summary:
 - SAS/SCADA Systems card now shows the client's real SAS Network Panel photo; old stock image removed
 - New filename chosen deliberately for instant cache-bust; no code changes beyond the one image path
+---
+Task ID: 20
+Agent: Z.ai Code (main)
+Task: Manufacturing SAS/SCADA card — photo must be fully visible (no crop); update and push
+
+Work Log:
+- Cause: card image container is fixed h-48/52 with object-cover → square 900x900 panel photo was center-cropped (~48% vertical band shown), cutting off the 'SAS NETWORK PANEL' label and bottom vents
+- ManufacturingPage.tsx: added optional Product.imageFit ('cover' | 'contain'); scada entry set to 'contain'; card img className + hover zoom (1.03 vs 1.08) conditional on it; contain cards get slate-50 backing + hairline border-b so letterboxing reads as intentional framing
+- All other product cards unchanged (object-cover)
+- Verified on 3001 + agent-browser: computed object-fit=contain on scada img; desktop screenshot shows entire photo (lifting eyes → label → buttons → rotary handle → vents → floor); mobile 390px shows full photo (348x191 img box); C&R Panels neighbor card still cover; console 0 errors; lint 0/0
+- Committed ff4f58f + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- SAS/SCADA Systems card now displays the client photo fully uncropped; one-field pattern (imageFit) lets any future card opt into full-visibility mode
