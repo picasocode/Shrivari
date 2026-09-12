@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef, createContext, useContext, useMemo } from 'react'
 import {
-  X, Package, Wrench, Users, MessageSquareQuote, FileText, FolderKanban,
-  Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw,
+  X, Package, Wrench, Users, MessageSquareQuote, FileText,
+  Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw, UserPlus,
   Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube, Upload,
   ListChecks, Search, Info, Image as ImageIcon, LayoutDashboard,
   Briefcase, Zap, Cpu, Gauge, Activity, MonitorPlay, CircuitBoard,
@@ -30,11 +30,11 @@ import { Switch } from '@/components/ui/switch'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   fetchProducts, fetchServices, fetchClients, fetchTestimonials,
-  fetchBlogs, fetchProjects, fetchSettings, fetchAPI,
+  fetchBlogs, fetchAPI,
   fetchCareers, fetchManufacturing,
   createItem, updateItem, deleteItem,
   type Product, type Service, type Client, type Testimonial,
-  type Blog, type Project, type SiteSettings,
+  type Blog,
   type Career, type ManufacturingItem,
 } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
@@ -154,7 +154,7 @@ function ImageUpload({ label, value, onChange }: { label: string; value: string;
 }
 
 /* ─── types ─── */
-type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
+type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'applications' | 'blogs' | 'records' | 'messages'
 
 interface ContactMessage {
   id: string
@@ -175,11 +175,10 @@ const navItems: { key: Section; label: string; icon: React.ComponentType<{ class
   { key: 'clients', label: 'Clients', icon: Users },
   { key: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
   { key: 'careers', label: 'Careers', icon: Briefcase },
+  { key: 'applications', label: 'Applications', icon: UserPlus },
   { key: 'blogs', label: 'Blogs', icon: FileText },
-  { key: 'projects', label: 'Projects', icon: FolderKanban },
   { key: 'records', label: 'Project Records', icon: ListChecks },
   { key: 'messages', label: 'Messages', icon: Mail },
-  { key: 'settings', label: 'Settings', icon: Settings },
 ]
 
 /* ─── generic CRUD state ─── */
@@ -318,10 +317,9 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
             {activeSection === 'testimonials' && <TestimonialsSection />}
             {activeSection === 'careers' && <CareersSection />}
             {activeSection === 'blogs' && <BlogsSection />}
-            {activeSection === 'projects' && <ProjectsSection />}
+            {activeSection === 'applications' && <ApplicationsSection />}
             {activeSection === 'records' && <RecordsSection />}
             {activeSection === 'messages' && <MessagesSection />}
-            {activeSection === 'settings' && <SettingsSection />}
           </div>
         </div>
       </div>
@@ -451,7 +449,8 @@ interface DashboardStats {
   testimonials: number
   blogs: number
   blogsPublished: number
-  projects: number
+  applications: number
+  newApplications: number
   records: number
   messages: number
   unreadMessages: number
@@ -476,14 +475,14 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
       fetchAPI<Client[]>('/clients'),
       fetchAPI<Testimonial[]>('/testimonials'),
       fetchAPI<Blog[]>('/blogs'),
-      fetchAPI<Project[]>('/projects'),
+      fetchAPI<JobApplication[]>('/applications'),
       fetchAPI<ContactMessage[]>('/contact/messages'),
       recordsCount,
     ])
   }, [])
 
   const apply = useCallback(([
-    products, services, clients, testimonials, blogs, projects, messages, records,
+    products, services, clients, testimonials, blogs, applications, messages, records,
   ]: Awaited<ReturnType<typeof fetchAll>>) => {
     setStats({
       products: products.length,
@@ -497,7 +496,8 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
       testimonials: testimonials.length,
       blogs: blogs.length,
       blogsPublished: blogs.filter(b => b.published).length,
-      projects: projects.length,
+      applications: applications.length,
+      newApplications: applications.filter(a => a.status === 'new').length,
       records,
       messages: messages.length,
       unreadMessages: messages.filter(m => !m.read).length,
@@ -588,7 +588,7 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
     { key: 'services', label: 'Services', value: stats.services, sub: `${stats.servicesActive} active`, icon: Wrench, section: 'services' },
     { key: 'clients', label: 'Clients', value: stats.clients, sub: `${stats.clientsActive} active`, icon: Users, section: 'clients' },
     { key: 'blogs', label: 'Blogs', value: stats.blogs, sub: `${stats.blogsPublished} published`, icon: FileText, section: 'blogs' },
-    { key: 'projects', label: 'Projects', value: stats.projects, sub: 'portfolio gallery', icon: FolderKanban, section: 'projects' },
+    { key: 'applications', label: 'Applications', value: stats.applications, sub: stats.newApplications > 0 ? `${stats.newApplications} new` : 'job applications', icon: UserPlus, section: 'applications', highlight: stats.newApplications > 0 },
     { key: 'records', label: 'Project Records', value: stats.records, sub: 'site installations', icon: ListChecks, section: 'records' },
     { key: 'testimonials', label: 'Testimonials', value: stats.testimonials, sub: 'client reviews', icon: MessageSquareQuote, section: 'testimonials' },
   ]
@@ -600,7 +600,7 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
     { label: 'Write a Blog Post', icon: FileText, section: 'blogs' },
     { label: 'Review Messages', icon: Mail, section: 'messages' },
     { label: 'Project Records', icon: ListChecks, section: 'records' },
-    { label: 'Site Settings', icon: Settings, section: 'settings' },
+    { label: 'Job Applications', icon: UserPlus, section: 'applications' },
   ]
 
   return (
@@ -770,7 +770,7 @@ function ProductsSection() {
           ]}
         />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -886,7 +886,7 @@ function ServicesSection() {
       <FilterBar placeholder="Search services…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
         <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -997,7 +997,7 @@ function ClientsSection() {
       <FilterBar placeholder="Search clients…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
         <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -1107,7 +1107,7 @@ function TestimonialsSection() {
       <FilterBar placeholder="Search testimonials…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
         <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -1263,7 +1263,7 @@ function BlogsSection() {
           ]}
         />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -1405,7 +1405,7 @@ function ManufacturingSection() {
       <FilterBar placeholder="Search cards…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
         <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
       </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F0F4F8]">
@@ -1615,7 +1615,7 @@ function CareersSection() {
       {items.length === 0 && !loading ? (
         <p className="text-[#6B7280] text-center py-12">No openings yet — click Add to post one.</p>
       ) : (
-        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-[#F0F4F8]">
@@ -1767,135 +1767,6 @@ function CareerDialog({ item, onClose, onSave }: { item: Career | null; onClose:
   )
 }
 
-/* ═══════════════════════════════════════════
-   PROJECTS SECTION
-   ═══════════════════════════════════════════ */
-function ProjectsSection() {
-  const { items, setItems, loading, error, load } = useCrud<Project>(() => fetchProjects())
-  const [editing, setEditing] = useState<Project | null>(null)
-  const [creating, setCreating] = useState(false)
-  const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('all')
-  const { notify } = useToast()
-
-  const categories = useMemo(() => {
-    const seen: string[] = []
-    for (const p of items) if (p.category && !seen.includes(p.category)) seen.push(p.category)
-    return seen
-  }, [items])
-
-  const filtered = useMemo(() => items.filter(p =>
-    rowMatches([p.name, p.client, p.location, p.category], search) &&
-    (category === 'all' || p.category === category)
-  ), [items, search, category])
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this project?')) return
-    try { await deleteItem('/projects', id); setItems(prev => prev.filter(p => p.id !== id)); notify('success', 'Project deleted') }
-    catch (e) { notify('error', `Delete failed: ${(e as Error).message}`) }
-  }
-
-  const handleSave = async (data: Partial<Project>) => {
-    try {
-      if (editing) {
-        const updated = await updateItem<Project>('/projects', editing.id, data)
-        setItems(prev => prev.map(p => p.id === editing.id ? updated : p))
-        notify('success', 'Project updated')
-      } else {
-        const created = await createItem<Project>('/projects', data)
-        setItems(prev => [...prev, created])
-        notify('success', 'Project created')
-      }
-      setEditing(null); setCreating(false)
-    } catch (e) {
-      notify('error', `Save failed: ${(e as Error).message}`)
-    }
-  }
-
-  return (
-    <SectionWrapper title="Projects" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search projects…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect
-          value={category}
-          onChange={setCategory}
-          label="Category"
-          options={[{ value: 'all', label: 'All categories' }, ...categories.map(c => ({ value: c, label: c })) ]}
-        />
-      </FilterBar>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-[#F0F4F8]">
-              <TableHead className="text-xs font-semibold">Name</TableHead>
-              <TableHead className="text-xs font-semibold hidden md:table-cell">Client</TableHead>
-              <TableHead className="text-xs font-semibold hidden lg:table-cell">Category</TableHead>
-              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map(p => (
-              <TableRow key={p.id}>
-                <TableCell className="font-medium text-sm">{p.name}</TableCell>
-                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{p.client}</TableCell>
-                <TableCell className="hidden lg:table-cell"><Badge variant="secondary" className="text-xs rounded">{p.category}</Badge></TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(p)}><Pencil className="w-3.5 h-3.5" /></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700" onClick={() => handleDelete(p.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      {(editing || creating) && (
-        <ProjectDialog item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
-      )}
-    </SectionWrapper>
-  )
-}
-
-function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClose: () => void; onSave: (data: Partial<Project>) => void }) {
-  const [form, setForm] = useState(() =>
-    item
-      ? { name: item.name, client: item.client, location: item.location, description: item.description, imageUrl: item.imageUrl, category: item.category, order: item.order, active: item.active }
-      : { name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', order: 0, active: true }
-  )
-
-  return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
-        <DialogHeader><DialogTitle>{item ? 'Edit Project' : 'Add Project'}</DialogTitle></DialogHeader>
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Client</Label><Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Category</Label>
-              <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
-                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
-                <SelectContent><SelectItem value="ongoing">Ongoing</SelectItem><SelectItem value="completed">Completed</SelectItem></SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
-          <ImageUpload label="Image URL" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
-          <Button onClick={() => onSave(form)} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">Save</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
 
 /* ═══════════════════════════════════════════
    PROJECT RECORDS SECTION
@@ -2134,7 +2005,7 @@ function RecordsSection() {
       ) : visibleRecords.length === 0 ? (
         <p className="text-[#6B7280] text-center py-12">No project records found{search.trim() ? ` for "${search.trim()}"` : ''}.</p>
       ) : (
-        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
           <div className="max-h-[70vh] overflow-y-auto divide-y divide-[#E5E7EB]">
             {visibleRecords.map(r => {
               const key = r.id ?? `sno-${r.sno}`
@@ -2208,6 +2079,169 @@ function RecordsSection() {
         <p className="mt-3 text-xs text-[#6B7280]">Changes save directly to the database and appear on the public Projects page immediately.</p>
       )}
     </>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   JOB APPLICATIONS SECTION
+   (submitted via the Apply Now form on the public Careers page)
+   ═══════════════════════════════════════════ */
+interface JobApplication {
+  id: string
+  jobTitle: string
+  name: string
+  email: string
+  phone: string
+  experience: string
+  resumeUrl: string
+  message: string
+  status: string
+  createdAt: string
+}
+
+const APPLICATION_STATUSES: { value: string; label: string; badge: string }[] = [
+  { value: 'new', label: 'New', badge: 'bg-[#E8751A] text-white' },
+  { value: 'reviewed', label: 'Reviewed', badge: 'bg-[#1B3A5C]/10 text-[#1B3A5C]' },
+  { value: 'shortlisted', label: 'Shortlisted', badge: 'bg-[#0D9488]/10 text-[#0D9488]' },
+  { value: 'rejected', label: 'Rejected', badge: 'bg-slate-100 text-slate-500' },
+  { value: 'hired', label: 'Hired', badge: 'bg-green-100 text-green-700' },
+]
+
+function ApplicationsSection() {
+  const { notify } = useToast()
+  const [applications, setApplications] = useState<JobApplication[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
+
+  useEffect(() => {
+    fetchAPI<JobApplication[]>('/applications')
+      .then(data => { setApplications(data); setLoading(false) })
+      .catch(() => { setError(true); setLoading(false) })
+  }, [])
+
+  const load = useCallback(() => {
+    setLoading(true)
+    setError(false)
+    fetchAPI<JobApplication[]>('/applications')
+      .then(data => { setApplications(data); setLoading(false) })
+      .catch(() => { setError(true); setLoading(false) })
+  }, [])
+
+  const filtered = useMemo(() => applications.filter(a =>
+    rowMatches([a.name, a.email, a.phone, a.jobTitle, a.message], search) &&
+    (status === 'all' || a.status === status)
+  ), [applications, search, status])
+
+  const setStatusFor = async (application: JobApplication, next: string) => {
+    const prev = application.status
+    if (next === prev) return
+    setApplications(list => list.map(x => x.id === application.id ? { ...x, status: next } : x))
+    try {
+      await fetchAPI(`/applications/${application.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ status: next }),
+      })
+      notify('success', `${application.name} marked ${next}`)
+    } catch (e) {
+      setApplications(list => list.map(x => x.id === application.id ? { ...x, status: prev } : x))
+      notify('error', `Status update failed: ${(e as Error).message}`)
+    }
+  }
+
+  const handleDelete = async (application: JobApplication) => {
+    if (!confirm(`Delete the application from ${application.name}?`)) return
+    try {
+      await fetchAPI(`/applications/${application.id}`, { method: 'DELETE' })
+      setApplications(list => list.filter(x => x.id !== application.id))
+      notify('success', 'Application deleted')
+    } catch (e) {
+      notify('error', `Delete failed: ${(e as Error).message}`)
+    }
+  }
+
+  return (
+    <SectionWrapper title="Job Applications" loading={loading} error={error} onRetry={load}>
+      <FilterBar
+        placeholder="Search name, email, role…"
+        search={search}
+        onSearch={setSearch}
+        count={filtered.length}
+        total={applications.length}
+      >
+        <FilterSelect
+          value={status}
+          onChange={setStatus}
+          label="Status"
+          options={[
+            { value: 'all', label: 'All statuses' },
+            ...APPLICATION_STATUSES.map(s => ({ value: s.value, label: s.label })),
+          ]}
+        />
+      </FilterBar>
+      {filtered.length === 0 ? (
+        <p className="text-[#6B7280] text-center py-12">No applications match.</p>
+      ) : (
+        <div className="space-y-4">
+          {filtered.map(a => {
+            const meta = APPLICATION_STATUSES.find(s => s.value === a.status) || APPLICATION_STATUSES[0]
+            return (
+              <div
+                key={a.id}
+                className={`bg-white rounded-md border shadow-sm p-5 ${a.status === 'new' ? 'border-[#E8751A]/30 bg-[#E8751A]/[0.02]' : 'border-[#E5E7EB]'}`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-semibold text-sm text-[#1A1A2E]">{a.name}</h3>
+                      <Badge className={`${meta.badge} text-xs rounded border-0`}>{meta.label}</Badge>
+                    </div>
+                    <p className="text-xs text-[#6B7280] mt-0.5">
+                      Applied for <span className="font-medium text-[#1B3A5C]">{a.jobTitle}</span>
+                    </p>
+                  </div>
+                  <span className="text-xs text-[#6B7280] shrink-0">
+                    {new Date(a.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#6B7280] mb-2">
+                  <a href={`mailto:${a.email}`} className="hover:text-[#E8751A]">{a.email}</a>
+                  {a.phone && <a href={`tel:${a.phone}`} className="hover:text-[#E8751A]">{a.phone}</a>}
+                  {a.experience && <span>Experience: {a.experience}</span>}
+                  {a.resumeUrl && (
+                    <a href={a.resumeUrl} target="_blank" rel="noreferrer" className="text-[#1B3A5C] font-medium hover:text-[#E8751A] inline-flex items-center gap-1">
+                      <FileText className="w-3 h-3" /> View Resume
+                    </a>
+                  )}
+                </div>
+                <p className="text-sm text-[#374151] leading-relaxed mb-3 whitespace-pre-line">{a.message}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Select value={a.status} onValueChange={v => void setStatusFor(a, v)}>
+                    <SelectTrigger className="h-8 rounded-md text-xs w-[150px] bg-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {APPLICATION_STATUSES.map(s => (
+                        <SelectItem key={s.value} value={s.value} className="text-xs">{s.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => void handleDelete(a)}
+                    className="rounded-md text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </SectionWrapper>
   )
 }
 
@@ -2296,79 +2330,5 @@ function MessagesSection() {
         </div>
       )}
     </SectionWrapper>
-  )
-}
-
-/* ═══════════════════════════════════════════
-   SETTINGS SECTION
-   ═══════════════════════════════════════════ */
-function SettingsSection() {
-  const [settings, setSettings] = useState<SiteSettings>({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [saving, setSaving] = useState(false)
-
-  useEffect(() => {
-    fetchSettings()
-      .then(data => { setSettings(data); setLoading(false) })
-      .catch(() => { setError(true); setLoading(false) })
-  }, [])
-
-  const load = useCallback(() => {
-    setLoading(true)
-    setError(false)
-    fetchSettings()
-      .then(data => { setSettings(data); setLoading(false) })
-      .catch(() => { setError(true); setLoading(false) })
-  }, [])
-
-  const handleSave = async () => {
-    setSaving(true)
-    try {
-      await fetchAPI('/settings', {
-        method: 'PUT',
-        body: JSON.stringify(settings),
-      })
-    } catch {}
-    setSaving(false)
-  }
-
-  if (loading) {
-    return <div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 text-[#1B3A5C] animate-spin" /></div>
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center py-20 text-[#6B7280]">
-        <AlertCircle className="w-10 h-10 mb-3" />
-        <p className="mb-2">Failed to load settings.</p>
-        <Button variant="outline" onClick={load} className="rounded-md">Try Again</Button>
-      </div>
-    )
-  }
-
-  return (
-    <>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-[#1A1A2E]">Settings</h2>
-        <Button onClick={handleSave} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
-          {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-          Save All
-        </Button>
-      </div>
-      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm p-6 space-y-5">
-        {Object.entries(settings).map(([key, value]) => (
-          <div key={key} className="space-y-1.5">
-            <Label className="text-xs font-medium text-[#1A1A2E]">{key}</Label>
-            <Textarea
-              value={value}
-              onChange={e => setSettings(prev => ({ ...prev, [key]: e.target.value }))}
-              rows={2}
-              className="rounded-md text-sm resize-none"
-            />
-          </div>
-        ))}
-      </div>
-    </>
   )
 }

@@ -247,3 +247,18 @@ model Media {
   data      Bytes
   createdAt DateTime @default(now())
 }
+
+// Job applications submitted through the Careers page "Apply Now" form —
+// managed (status/review/delete) from the admin Applications section.
+model JobApplication {
+  id         String   @id @default(cuid())
+  jobTitle   String
+  name       String
+  email      String
+  phone      String   @default("")
+  experience String   @default("")
+  resumeUrl  String   @default("")
+  message    String   @db.Text
+  status     String   @default("new") // new | reviewed | shortlisted | rejected | hired
+  createdAt  DateTime @default(now())
+}

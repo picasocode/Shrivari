@@ -5,6 +5,8 @@ import { motion, useInView } from 'framer-motion'
 import {
   ChevronRight,
   CheckCircle,
+  Plus,
+  Minus,
   Zap,
   Shield,
   ArrowRight,
@@ -450,6 +452,10 @@ function ProductGrid({
   products: Product[]
   onNavigate: (page: PageName, params?: Record<string, string>) => void
 }) {
+  // Per-card feature expansion — the "+N more" chip reveals every listed point
+  const [expandedFeatures, setExpandedFeatures] = useState<Record<string, boolean>>({})
+  const toggleFeatures = (id: string) =>
+    setExpandedFeatures(prev => ({ ...prev, [id]: !prev[id] }))
   if (products.length === 0) {
     return (
       <div className="text-center py-20">
@@ -495,10 +501,10 @@ function ProductGrid({
                   {p.description}
                 </p>
 
-                {/* Features as inline tags */}
+                {/* Features as inline tags — "+N more" expands to the full list */}
                 {features.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mb-6">
-                    {features.slice(0, 4).map((f, fi) => (
+                    {(expandedFeatures[p.id] ? features : features.slice(0, 4)).map((f, fi) => (
                       <span
                         key={fi}
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 bg-slate-50 border border-slate-100"
@@ -508,9 +514,14 @@ function ProductGrid({
                       </span>
                     ))}
                     {features.length > 4 && (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium text-slate-400 bg-slate-50 border border-slate-100">
-                        +{features.length - 4} more
-                      </span>
+                      <button
+                        onClick={() => toggleFeatures(p.id)}
+                        aria-expanded={!!expandedFeatures[p.id]}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold text-[#E8751A] bg-[#E8751A]/[0.06] border border-[#E8751A]/25 hover:bg-[#E8751A]/[0.14] transition-colors cursor-pointer"
+                      >
+                        {expandedFeatures[p.id] ? <Minus className="w-3 h-3" strokeWidth={2.5} /> : <Plus className="w-3 h-3" strokeWidth={2.5} />}
+                        {expandedFeatures[p.id] ? 'Show less' : `+${features.length - 4} more`}
+                      </button>
                     )}
                   </div>
                 )}
