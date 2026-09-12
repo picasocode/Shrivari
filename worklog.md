@@ -2577,3 +2577,17 @@ Work Log:
 Stage Summary:
 - Both bottom-row cards show their own real photos in the same card-fit config: SAS/SCADA -> SAS network panel, C&R -> SVEPL control & relay panel lineup
 - Photo ships as provided (its own white margins preserved); if client wants panels to fill the card more, a border-trim crop is a one-line sharp change
+---
+Task ID: 24
+Agent: Z.ai Code (main)
+Task: All cards on Products + Manufacturing pages — fixed square image size like the SAS card
+
+Work Log:
+- ManufacturingPage: collapsed the imageFit special-case into one uniform treatment — every card image container is now fixed aspect-square with object-cover; removed Product.imageFit field and both entries' flags (scada/cr square photos render identically; landscape photos center-crop)
+- ProductsPage: catalog card image area h-56 -> aspect-square (2-col grid, so 588px squares on desktop)
+- Local verify needed sqlite snapshot again (shell-global DATABASE_URL points at my-project db -> /api/products 500 locally only; prod MySQL unaffected): re-extracted 4dcef82 snapshot + temp sqlite schema + prisma generate; restored mysql schema after
+- Verified on 3001 + agent-browser: Manufacturing 8/8 imgs 390x390 uniform aspect; Products LT tab 9/9 cards 588x588 uniform; mobile 390px -> 346x346, card content flows clean; console 0 errors; lint 0/0
+- Committed 021c96d + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- Card imagery now 100% uniform across Products and Manufacturing: fixed square (SAS geometry), photos cover-crop to fit; page-level grids stay perfectly aligned
