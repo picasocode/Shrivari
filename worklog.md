@@ -2654,3 +2654,26 @@ Stage Summary:
 - Every image field in the admin panel now accepts a real file upload with preview, replace and remove — no more copy-pasting URLs
 - Uploaded images are stored in the DATABASE, so no deploy, push, or fresh clone can ever delete them; upload/ additionally collects a plain-file mirror of every upload
 - upload/ folder rule preserved: root folder ignored for runtime mirrors, existing tracked image intact
+---
+Task ID: 28
+Agent: Z.ai Code (main)
+Task: Careers "Apply Now" as a real application form + admin management; admin panel responsive check; remove Settings + Projects sections; audit admin↔frontend linkage (Products "+" expand, Testimonials stars/avatar)
+
+Work Log:
+- CAREERS APPLY: new JobApplication model (+ zero-touch CREATE TABLE IF NOT EXISTS bootstrap in src/lib/applications.ts, MySQL+SQLite compatible — no prod migration); POST/GET /api/applications (public submit with name/email/message/jobTitle validation + email regex, resumeUrl http-check; list newest-first) and PUT/DELETE /api/applications/[id] (status whitelist: new|reviewed|shortlisted|rejected|hired)
+- CareersPage: per-job ApplyDialog (name*, email*, phone, experience, resume link, message*) with inline validation, spinner, "Application sent!" success view; every job card's Apply Now opens it pre-filled with that title; CTA "Send Your Resume" opens it as "General Application" (was: just navigated to Contact)
+- ADMIN APPLICATIONS SECTION: nav item after Careers (UserPlus); card list styled like Messages — New badge + coral highlight for status=new, mailto/tel links, View Resume anchor, experience, message, per-card status Select (optimistic update + rollback on failure), Delete with confirm; FilterBar search (name/email/phone/role/message) + status FilterSelect + x-of-y count
+- DASHBOARD: Projects stat card replaced by Applications card (count + "N new" + NEW highlight badge); quick actions "Site Settings" → "Job Applications"; fetchAll swaps /projects for /applications
+- REMOVED: SettingsSection + ProjectsSection + ProjectDialog (596 lines) — nav items, render branches, dashboard references, unused imports (FolderKanban/fetchProjects/fetchSettings/type Project/type SiteSettings) all gone; APIs kept so the home-page projects strip and site settings keep working untouched
+- PRODUCT "+" EXPAND: the plain "+N more" chip is now a real toggle button — click reveals ALL feature tags, turns into "− Show less" (per-card state, aria-expanded)
+- TESTIMONIALS: added coral Stars display (featured + grid cards, hidden when rating=0) and photo avatar when admin set an avatar image (InitialsAvatar stays as fallback)
+- RESPONSIVE: all 8 admin table wrappers overflow-hidden → overflow-x-auto (was CLIPPING columns on phones, now scroll); verified products table scrollable at 390px (wrapper 356 / table 364)
+- LINKAGE AUDIT: products✅ manufacturing✅ services✅ clients✅ testimonials✅ (fixed missing rating/avatar) careers✅ blogs✅ records→Projects page✅ messages✅ applications(new)✅; home projects strip still renders from preserved data
+- Verified on 3001 + agent-browser: curl API (201/400-validation/list), browser apply flow end-to-end (fill→submit→DB row→success view), admin status change persisted (shortlisted), search "priya"=1 of 2, delete with confirm removed row from DB+UI, dashboard Applications card 3/"3 new", nav shows Applications and no Settings/Projects (desktop sidebar AND mobile Select), "+2 more" expands to 6 tags with Show less, testimonial stars visible, mobile 390: applications cards 358px, apply dialog 358px scrollable, products table scrollable; console 0 errors; lint 0/0; mysql schema (with Media + JobApplication) restored + client regenerated
+- Committed 41dd0ab + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- Careers page now has a real per-job application flow — submissions land in a new admin Applications section with full status control (New/Reviewed/Shortlisted/Rejected/Hired), search, filter and delete
+- Admin lost the dead Settings and Projects menus; Dashboard's Projects card became a live Job Applications tracker
+- Public site now displays every admin-managed field that was missing: product feature lists expand via the + chip, testimonials show star ratings and avatar photos
+- All admin tables scroll horizontally on phones instead of clipping
