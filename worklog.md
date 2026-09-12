@@ -2563,3 +2563,17 @@ Work Log:
 Stage Summary:
 - SAS/SCADA and C&R Panels cards both show the panel photo full-bleed square with identical config
 - NOTE: C&R card currently displays a photo labeled 'SAS NETWORK PANEL' — if the user meant a different photo for C&R, swapping = replace cr-panel.jpg only
+---
+Task ID: 23
+Agent: Z.ai Code (main)
+Task: C&R Panels card — put the real SVEPL panel photo (lan_resize.png) into the card
+
+Work Log:
+- Processed upload lan_resize.png (1254x1254 PNG): sharp resize 1000x1000 inside, mozjpeg q85 progressive -> 104KB; saved as NEW filename cr-panel-svepl.jpg (cache-busts the temp SAS photo from 5a5e80b in case already deployed); removed temp cr-panel.jpg from git; legacy cr.jpg also dropped from tracking (no refs)
+- cr entry image -> /images/manufacturing/cr-panel-svepl.jpg, imageFit 'contain' unchanged
+- Verified on 3001 + agent-browser: img loads 1000x1000, card shows the full P1-P8/INCOMER/OUTGOING lineup photo edge-to-edge square; console 0 errors; lint 0/0
+- Committed 48ca988 + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- Both bottom-row cards show their own real photos in the same card-fit config: SAS/SCADA -> SAS network panel, C&R -> SVEPL control & relay panel lineup
+- Photo ships as provided (its own white margins preserved); if client wants panels to fill the card more, a border-trim crop is a one-line sharp change
