@@ -380,11 +380,11 @@ export default function ManufacturingPage() {
                     className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
                   >
                     {/* Image */}
-                    <div className={`relative overflow-hidden h-48 md:h-52 ${product.imageFit === 'contain' ? 'bg-slate-50 border-b border-slate-100' : ''}`}>
+                    <div className={`relative overflow-hidden ${product.imageFit === 'contain' ? '' : 'h-48 md:h-52'}`}>
                       <motion.img
                         src={product.image}
                         alt={product.name}
-                        className={`w-full h-full ${product.imageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
+                        className={product.imageFit === 'contain' ? 'w-full h-auto' : 'w-full h-full object-cover'}
                         initial={false}
                         whileHover={{ scale: product.imageFit === 'contain' ? 1.03 : 1.08 }}
                         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
