@@ -5,7 +5,7 @@ import {
   X, Package, Wrench, Users, MessageSquareQuote, FileText, FolderKanban,
   Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw,
   Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube,
-  ListChecks, Search, Info, Image as ImageIcon,
+  ListChecks, Search, Info, Image as ImageIcon, LayoutDashboard,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -65,7 +65,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
 const useToast = () => useContext(ToastContext)
 
 /* ─── types ─── */
-type Section = 'products' | 'services' | 'clients' | 'testimonials' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
+type Section = 'dashboard' | 'products' | 'services' | 'clients' | 'testimonials' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
 
 interface ContactMessage {
   id: string
@@ -79,6 +79,7 @@ interface ContactMessage {
 }
 
 const navItems: { key: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'products', label: 'Products', icon: Package },
   { key: 'services', label: 'Services', icon: Wrench },
   { key: 'clients', label: 'Clients', icon: Users },
@@ -127,7 +128,7 @@ interface AdminPanelProps {
 }
 
 export default function AdminPanel({ onClose }: AdminPanelProps) {
-  const [activeSection, setActiveSection] = useState<Section>('products')
+  const [activeSection, setActiveSection] = useState<Section>('dashboard')
   const { user, logout } = useAuth()
 
   const handleLogout = async () => {
@@ -137,9 +138,9 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 
   return (
     <ToastProvider>
-    <div className="fixed inset-0 z-[100] bg-white flex">
-      {/* Sidebar */}
-      <div className="w-56 bg-[#1B3A5C] flex flex-col shrink-0">
+    <div className="fixed inset-0 z-[100] bg-white flex flex-col md:flex-row">
+      {/* Sidebar — desktop */}
+      <div className="hidden md:flex w-56 bg-[#1B3A5C] flex-col shrink-0">
         <div className="flex items-center justify-between p-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
             <Shield className="w-5 h-5 text-[#E8751A]" />
@@ -184,17 +185,51 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto bg-[#F0F4F8]">
-        <div className="p-6 md:p-8">
-          {activeSection === 'products' && <ProductsSection />}
-          {activeSection === 'services' && <ServicesSection />}
-          {activeSection === 'clients' && <ClientsSection />}
-          {activeSection === 'testimonials' && <TestimonialsSection />}
-          {activeSection === 'blogs' && <BlogsSection />}
-          {activeSection === 'projects' && <ProjectsSection />}
-          {activeSection === 'records' && <RecordsSection />}
-          {activeSection === 'messages' && <MessagesSection />}
-          {activeSection === 'settings' && <SettingsSection />}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Mobile top bar — section picker replaces the sidebar */}
+        <div className="md:hidden bg-[#1B3A5C] px-3 py-2.5 flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <Shield className="w-5 h-5 text-[#E8751A]" />
+            <span className="text-white font-bold">Admin</span>
+          </div>
+          <Select value={activeSection} onValueChange={v => setActiveSection(v as Section)}>
+            <SelectTrigger className="flex-1 min-w-0 h-8 rounded-md bg-white/10 border-white/20 text-white text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {navItems.map(item => (
+                <SelectItem key={item.key} value={item.key} className="text-xs">
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {user && (
+            <button
+              onClick={handleLogout}
+              aria-label="Logout"
+              className="shrink-0 p-1.5 rounded-md text-red-300 hover:bg-red-500/10 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
+          <button onClick={onClose} aria-label="Close admin panel" className="shrink-0 text-white/50 hover:text-white transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto bg-[#F0F4F8]">
+          <div className="p-4 md:p-8">
+            {activeSection === 'dashboard' && <DashboardSection onNavigate={setActiveSection} />}
+            {activeSection === 'products' && <ProductsSection />}
+            {activeSection === 'services' && <ServicesSection />}
+            {activeSection === 'clients' && <ClientsSection />}
+            {activeSection === 'testimonials' && <TestimonialsSection />}
+            {activeSection === 'blogs' && <BlogsSection />}
+            {activeSection === 'projects' && <ProjectsSection />}
+            {activeSection === 'records' && <RecordsSection />}
+            {activeSection === 'messages' && <MessagesSection />}
+            {activeSection === 'settings' && <SettingsSection />}
+          </div>
         </div>
       </div>
     </div>
@@ -234,6 +269,242 @@ function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
       ) : (
         children
       )}
+    </>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD SECTION
+   ═══════════════════════════════════════════ */
+interface DashboardStats {
+  products: number
+  ltPanels: number
+  htPanels: number
+  busducts: number
+  services: number
+  servicesActive: number
+  clients: number
+  clientsActive: number
+  testimonials: number
+  blogs: number
+  blogsPublished: number
+  projects: number
+  records: number
+  messages: number
+  unreadMessages: number
+}
+
+function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => void }) {
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [recentMessages, setRecentMessages] = useState<ContactMessage[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  const fetchAll = useCallback(() => {
+    // Project Records has a JSON fallback, but guard anyway so one flaky
+    // endpoint can never blank out the whole dashboard.
+    const recordsCount = fetchAPI<ProjectRecordsResponse>('/project-records')
+      .then(r => r.records?.length ?? 0)
+      .catch(() => 0)
+    return Promise.all([
+      fetchAPI<Product[]>('/products'),
+      fetchAPI<Service[]>('/services'),
+      fetchAPI<Client[]>('/clients'),
+      fetchAPI<Testimonial[]>('/testimonials'),
+      fetchAPI<Blog[]>('/blogs'),
+      fetchAPI<Project[]>('/projects'),
+      fetchAPI<ContactMessage[]>('/contact/messages'),
+      recordsCount,
+    ])
+  }, [])
+
+  const apply = useCallback(([
+    products, services, clients, testimonials, blogs, projects, messages, records,
+  ]: Awaited<ReturnType<typeof fetchAll>>) => {
+    setStats({
+      products: products.length,
+      ltPanels: products.filter(p => p.category === 'LT Panels').length,
+      htPanels: products.filter(p => p.category === 'HT Panels').length,
+      busducts: products.filter(p => p.category === 'Busducts').length,
+      services: services.length,
+      servicesActive: services.filter(s => s.active).length,
+      clients: clients.length,
+      clientsActive: clients.filter(c => c.active).length,
+      testimonials: testimonials.length,
+      blogs: blogs.length,
+      blogsPublished: blogs.filter(b => b.published).length,
+      projects: projects.length,
+      records,
+      messages: messages.length,
+      unreadMessages: messages.filter(m => !m.read).length,
+    })
+    setRecentMessages(messages.slice(0, 4))
+    setLoading(false)
+  }, [])
+
+  const load = useCallback(() => {
+    setLoading(true)
+    setError(false)
+    fetchAll().then(apply).catch(() => {
+      setError(true)
+      setLoading(false)
+    })
+  }, [fetchAll, apply])
+
+  // Initial fetch — no synchronous setState here (mirrors useCrud), all
+  // state updates happen in the promise callbacks.
+  useEffect(() => {
+    fetchAll().then(apply).catch(() => {
+      setError(true)
+      setLoading(false)
+    })
+  }, [fetchAll, apply])
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-[#1A1A2E]">Dashboard</h2>
+          <Button variant="outline" size="sm" onClick={load} className="rounded-md text-xs">
+            <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
+          </Button>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+            <Skeleton key={i} className="h-28 rounded-md" />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="h-64 rounded-md lg:col-span-2" />
+          <Skeleton className="h-64 rounded-md" />
+        </div>
+      </>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center py-20 text-[#6B7280]">
+        <AlertCircle className="w-10 h-10 mb-3" />
+        <p className="mb-2">Failed to load dashboard.</p>
+        <Button variant="outline" onClick={load} className="rounded-md">Try Again</Button>
+      </div>
+    )
+  }
+
+  if (!stats) return null
+
+  const statCards: {
+    key: string; label: string; value: number; sub: string
+    icon: React.ComponentType<{ className?: string }>; section: Section; highlight?: boolean
+  }[] = [
+    { key: 'products', label: 'Products', value: stats.products, sub: `${stats.ltPanels} LT · ${stats.htPanels} HT · ${stats.busducts} Busduct`, icon: Package, section: 'products' },
+    { key: 'messages', label: 'Messages', value: stats.messages, sub: `${stats.unreadMessages} unread`, icon: Mail, section: 'messages', highlight: stats.unreadMessages > 0 },
+    { key: 'services', label: 'Services', value: stats.services, sub: `${stats.servicesActive} active`, icon: Wrench, section: 'services' },
+    { key: 'clients', label: 'Clients', value: stats.clients, sub: `${stats.clientsActive} active`, icon: Users, section: 'clients' },
+    { key: 'blogs', label: 'Blogs', value: stats.blogs, sub: `${stats.blogsPublished} published`, icon: FileText, section: 'blogs' },
+    { key: 'projects', label: 'Projects', value: stats.projects, sub: 'portfolio gallery', icon: FolderKanban, section: 'projects' },
+    { key: 'records', label: 'Project Records', value: stats.records, sub: 'site installations', icon: ListChecks, section: 'records' },
+    { key: 'testimonials', label: 'Testimonials', value: stats.testimonials, sub: 'client reviews', icon: MessageSquareQuote, section: 'testimonials' },
+  ]
+
+  const quickActions: { label: string; icon: React.ComponentType<{ className?: string }>; section: Section }[] = [
+    { label: 'Manage Products', icon: Package, section: 'products' },
+    { label: 'Write a Blog Post', icon: FileText, section: 'blogs' },
+    { label: 'Review Messages', icon: Mail, section: 'messages' },
+    { label: 'Project Records', icon: ListChecks, section: 'records' },
+    { label: 'Site Settings', icon: Settings, section: 'settings' },
+  ]
+
+  return (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-[#1A1A2E]">Dashboard</h2>
+          <p className="text-sm text-[#6B7280] mt-0.5">Site content and inquiries at a glance.</p>
+        </div>
+        <Button variant="outline" size="sm" onClick={load} className="rounded-md text-xs">
+          <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
+        </Button>
+      </div>
+
+      {/* Stat cards — click any card to jump to its section */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {statCards.map(card => (
+          <button
+            key={card.key}
+            onClick={() => onNavigate(card.section)}
+            className="text-left bg-white rounded-md border border-[#E5E7EB] shadow-sm p-4 hover:shadow-md hover:border-[#E8751A]/50 transition-all group"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className={`w-9 h-9 rounded-md flex items-center justify-center ${card.highlight ? 'bg-[#E8751A]/10' : 'bg-[#1B3A5C]/5'}`}>
+                <card.icon className={`w-4 h-4 ${card.highlight ? 'text-[#E8751A]' : 'text-[#1B3A5C]'}`} />
+              </div>
+              {card.highlight && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E8751A] text-white">
+                  NEW
+                </span>
+              )}
+            </div>
+            <p className="text-2xl font-bold text-[#1A1A2E] leading-none">{card.value}</p>
+            <p className="text-xs font-medium text-[#6B7280] mt-1.5">{card.label}</p>
+            <p className="text-[11px] text-[#9CA3AF] mt-1 truncate">{card.sub}</p>
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent messages */}
+        <div className="lg:col-span-2 bg-white rounded-md border border-[#E5E7EB] shadow-sm p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-sm text-[#1A1A2E]">Recent Messages</h3>
+            <Button variant="outline" size="sm" onClick={() => onNavigate('messages')} className="rounded-md text-xs">
+              View all
+            </Button>
+          </div>
+          {recentMessages.length === 0 ? (
+            <p className="text-[#6B7280] text-sm py-8 text-center">No messages yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {recentMessages.map(m => (
+                <button
+                  key={m.id}
+                  onClick={() => onNavigate('messages')}
+                  className={`w-full text-left flex items-start justify-between gap-3 p-3 rounded-md border transition-colors hover:border-[#E8751A]/50 hover:bg-[#E8751A]/[0.02] ${m.read ? 'border-[#E5E7EB]' : 'border-[#E8751A]/30 bg-[#E8751A]/[0.02]'}`}
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-sm text-[#1A1A2E] truncate">{m.name}</p>
+                      {!m.read && <Badge className="bg-[#E8751A]/10 text-[#E8751A] text-xs rounded">New</Badge>}
+                    </div>
+                    <p className="text-xs text-[#6B7280] truncate mt-0.5">{m.subject || m.message}</p>
+                  </div>
+                  <span className="text-[11px] text-[#9CA3AF] shrink-0 mt-0.5">
+                    {new Date(m.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Quick actions */}
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm p-5">
+          <h3 className="font-semibold text-sm text-[#1A1A2E] mb-4">Quick Actions</h3>
+          <div className="space-y-2">
+            {quickActions.map(action => (
+              <button
+                key={action.label}
+                onClick={() => onNavigate(action.section)}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md border border-[#E5E7EB] hover:border-[#E8751A]/50 hover:bg-[#E8751A]/[0.02] transition-colors text-sm text-[#374151]"
+              >
+                <action.icon className="w-4 h-4 text-[#1B3A5C] shrink-0" />
+                {action.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   )
 }

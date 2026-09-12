@@ -246,8 +246,8 @@ export default function ProductsPage() {
 
           <Tabs value={activeTab} onValueChange={handleTabChange}>
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[0, 1, 2, 3].map(i => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[0, 1, 2, 3, 4, 5].map(i => (
                   <Skeleton key={i} className="h-72 rounded-2xl" />
                 ))}
               </div>
@@ -460,7 +460,7 @@ function ProductGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
       {products.map((p, i) => {
         const features = parseFeatures(p.features)
         return (
