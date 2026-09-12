@@ -2633,3 +2633,24 @@ Stage Summary:
 - Blog is now a real multi-page section: list -> dedicated post pages, and admins write with a real WYSIWYG (markdown-backed)
 - Dashboard has an inquiries graph; Careers and Manufacturing pages are fully admin-controlled (DB-backed with self-provisioning schema + seeded defaults — no manual prod migration needed)
 - Every admin table has search + a relevant filter with live counts
+---
+Task ID: 27
+Agent: Z.ai Code (main)
+Task: All admin image URL fields get a real upload option (upload/change/edit/update) — uploaded files must survive every push
+
+Work Log:
+- New Media model (Bytes) in prisma/schema.prisma; src/lib/media.ts ships MEDIA_TABLE_SQL + ensureMediaTable() using the same zero-touch CREATE TABLE IF NOT EXISTS bootstrap as ManufacturingItem/Career (valid on MySQL LONGBLOB and SQLite BLOB) — no manual prod migration needed
+- POST /api/upload: multipart formData, image-mime whitelist (JPG/PNG/WebP/GIF/AVIF/SVG), 5MB cap, stores bytes in DB, returns {url:"/api/images/<cuid>"}; ALSO mirrors a best-effort copy into repo-root upload/<id>-<filename> (fs errors non-fatal — DB stays source of truth)
+- GET /api/images/[id]: serves bytes with stored Content-Type + immutable Cache-Control + nosniff; 404 on unknown id
+- next.config.ts: /api/images/:path* header rule (immutable) placed after the catch-all max-age=0 rule so it wins
+- AdminPanel: new ImageUpload widget (preview, "Upload image"/"Replace image" file picker, Remove, keep-the-URL input fallback, 5MB + type validation, toasts) wired into ALL 7 dialog image fields — Products imageUrl, Services imageUrl, Clients logoUrl, Testimonials imageUrl, Blogs coverImageUrl, Manufacturing image, Projects imageUrl
+- RecordsSection: per-row Upload button (hidden shared file input + uploadTargetRef) → upload → auto-save that record's imageUrl in one shot; handleSave gained explicitUrl param; row editor widened 400→480px
+- .gitignore: `upload/` → `/upload/` (root folder only — the unscoped rule was silently ignoring the new src/app/api/upload route)
+- The user's protected upload/pasted_image_1785328772465.png stays tracked and untouched (verified on GitHub after push)
+- Verified on 3001 + agent-browser: curl upload→serve byte-identical + immutable headers + 415/413/404 paths; browser: product dialog upload → preview → Save → public Products page renders DB image (1188x896), replace → new id, Remove → placeholder, URL-paste fallback, Records row Upload → auto-save → live thumbnail; mobile 390px dialog fits with widget fully visible; console 0 errors (only pre-existing Radix aria warnings); lint 0/0
+- Local sqlite env: schema swap + generate; Media table was created at runtime by the bootstrap SQL itself (validates the prod zero-touch path); mysql schema restored + client regenerated after
+
+Stage Summary:
+- Every image field in the admin panel now accepts a real file upload with preview, replace and remove — no more copy-pasting URLs
+- Uploaded images are stored in the DATABASE, so no deploy, push, or fresh clone can ever delete them; upload/ additionally collects a plain-file mirror of every upload
+- upload/ folder rule preserved: root folder ignored for runtime mirrors, existing tracked image intact
