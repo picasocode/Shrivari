@@ -2591,3 +2591,24 @@ Work Log:
 
 Stage Summary:
 - Card imagery now 100% uniform across Products and Manufacturing: fixed square (SAS geometry), photos cover-crop to fit; page-level grids stay perfectly aligned
+---
+Task ID: 25
+Agent: Z.ai Code (main)
+Task: Products page — 3 columns per row; Admin panel — add a Dashboard
+
+Work Log:
+- ProductsPage: ProductGrid + loading skeleton switched to grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 (mobile 1 / tablet 2 / desktop 3 per row); square-image card geometry from Task 24 unchanged
+- AdminPanel: added 'dashboard' Section — first nav item (LayoutDashboard icon) and the default landing section after login
+- DashboardSection: 8 parallel API fetches (products/services/clients/testimonials/blogs/projects/contact-messages + guarded project-records count); 8 clickable stat cards with sub-lines (products "9 LT · 3 HT · 4 Busduct", messages "N unread" + coral NEW badge, services/clients "N active", blogs "N published"); Recent Messages panel (top 4, unread highlighted, View all); Quick Actions panel (5 shortcuts); every stat card + row + action navigates via setActiveSection; skeleton + error/retry states match house style
+- AdminPanel shell made responsive: sidebar now hidden md:flex; on mobile a navy top bar (Shield + section Select + logout + close) replaces it — fixes the pre-existing 224px-sidebar squeeze at 390px; desktop layout untouched
+- Local verify env: sqlite schema swap + ./node_modules/.bin/prisma generate + absolute DATABASE_URL (file: paths resolve against prisma/ — the earlier relative URL silently created an empty prisma/db/custom.db); seeded admin@shrivari.local + 3 contact messages + 2 ProjectRecord rows into db/custom.db (gitignored, local only); mysql schema restored + client regenerated after
+- Sandbox quirk hit: post-start source edits were NOT picked up by the running Turbopack dev server (Fast Refresh silent) and stable chunk URLs stayed cached in the browser — had to restart server AND relaunch agent-browser to see new code
+- Lint fix en route: react-hooks/set-state-in-effect — split DashboardSection fetch into fetchAll()/apply() with a useCrud-style effect (no synchronous setState in effect body); lint now 0/0
+- Verified on 3001 + agent-browser: Products 9 cards in 3x3 grid @1440 (380px square images), HT tab 3-in-a-row, mobile 390 = 1 col / 768 = 2 cols; admin login lands on Dashboard with correct counts (16/3/9/58/4/8/2/6), Refresh re-fetches, stat-card + quick-action + mobile-Select navigation all work; desktop sidebar identical to before; console 0 errors
+- Committed 2104de3 + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- Products page now packs 3 cards per row on desktop (uniform squares kept)
+- Admin opens straight into a real dashboard: content counts at a glance, unread-message spotlight, recent inquiries, and one-click jumps into every section
+- Admin is now fully usable on phones (top-bar section picker replaces the desktop-only sidebar)
+- Prod note: Project Records card reads the live Supabase-backed count (local snapshot showed 2 seeded rows; JSON fallback guarded to 0 on failure)
