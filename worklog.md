@@ -2535,3 +2535,16 @@ Work Log:
 
 Stage Summary:
 - SAS/SCADA Systems card now displays the client photo fully uncropped; one-field pattern (imageFit) lets any future card opt into full-visibility mode
+---
+Task ID: 21
+Agent: Z.ai Code (main)
+Task: SAS card — make the CARD size fit the image (edge-to-edge), only that card
+
+Work Log:
+- Replaced Task 20's letterbox approach: for imageFit==='contain' cards the image container no longer has a fixed h-48/52 (and no slate-50 backing/border) — the img renders w-full h-auto so the square photo fills the card width completely and the card grows to the image
+- All other product cards untouched (fixed-height object-cover)
+- Verified on 3001 + agent-browser: scada img 390x390 on desktop (square, == container width, edge-to-edge, whole panel visible incl. label + floor); mobile 390px → 348x348 square; neighbor C&R card unaffected in row flow; console 0 errors; lint 0/0
+- Committed 249e611 + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- SAS/SCADA card is now a full-bleed square-photo feature card; imageFit='contain' semantics = 'card sizes to image'
