@@ -2612,3 +2612,24 @@ Stage Summary:
 - Admin opens straight into a real dashboard: content counts at a glance, unread-message spotlight, recent inquiries, and one-click jumps into every section
 - Admin is now fully usable on phones (top-bar section picker replaces the desktop-only sidebar)
 - Prod note: Project Records card reads the live Supabase-backed count (local snapshot showed 2 seeded rows; JSON fallback guarded to 0 on failure)
+---
+Task ID: 26
+Agent: Z.ai Code (main)
+Task: Blog separate pages (not popup) + rich text editor for blog in admin + dashboard graph + dynamic careers page via admin + dynamic manufacturing cards + search/filter on all admin tables
+
+Work Log:
+- BLOG PAGES: blog posts now open on a dedicated page (#blog-post?slug=…) — new BlogPostPage.tsx (hero + cover + markdown body via react-markdown + author box + older/newer + related + skeleton/not-found); BlogPage dialog removed; page.tsx wires 'blog-post'; scroll-to-top on slug change
+- RICH EDITOR: admin BlogDialog now uses MDXEditor (already in deps; toolbar = UndoRedo, BlockTypeSelect, Bold/Italic/Underline, strike, lists, links) via new RichTextEditor.tsx loaded with next/dynamic ssr:false; saves markdown; dialog widened (must use sm:max-w-3xl — plain max-w-3xl loses to the base sm:max-w-lg media query); auto-slug from title until slug touched
+- DASHBOARD GRAPH: recharts bar chart 'Inquiries — last 6 months' bucketed from ContactMessage.createdAt; quick actions +2 shortcuts; recent messages re-laid out full-width 2-up
+- MANUFACTURING DYNAMIC: new ManufacturingItem model; /api/manufacturing + [id] CRUD; GET bootstrap runs MySQL+SQLite-compatible CREATE TABLE IF NOT EXISTS then seeds the 8 canonical cards (name-keyed, never overwrites admin edits) — zero-touch prod migration; public page renders from API with hardcoded catalog as fallback; icon resolved by name via registry; admin Manufacturing section (search/status filter, icon picker with live preview, features one-per-line -> JSON, order, active)
+- CAREERS DYNAMIC: /api/careers GET gains same bootstrap (table guard + 8 canonical openings title-keyed; snapshot/prod already had identical rows so it's a no-op there); public CareersPage renders from API (department chips derived from data), hardcoded list as fallback; admin Careers section (search/department filter, CRUD dialog with type select, icon picker, accent color picker + live preview)
+- SEARCH/FILTER EVERYWHERE: shared FilterBar + rowMatches + FilterSelect helpers; applied to Products (category), Services, Clients, Testimonials, Manufacturing (status), Blogs (published/draft), Projects (category derived), Messages (search + unread/read), Careers (department); Records keeps server-side search, adds client voltage filter + count; each bar shows 'x of y'
+- SANDBOX QUIRKS: (1) dev-server file watcher misses post-start edits — restarted server AND relaunched browser to see changes; (2) sandbox clock is 2026 — chart showed zero bars until seeds re-dated relative to now; (3) tailwind-merge does not dedupe sm:max-w-lg vs max-w-3xl (different variants)
+- Also fixed en route: lint unused eslint-disable + img alt in BlogPostPage; CAREER_ICON_MAP type widened for style prop (tsc); recharts container warning via relative positioning
+- Verified on 3001 + agent-browser: popup->page navigation, markdown (h2/strong/ul/blockquote/target=_blank links) rendered publicly, editor typed text saved through admin and persisted to DB, chart bars (Apr..Sept) + tooltip, careers create/delete round-trip visible on public page instantly, manufacturing tagline+icon edit visible on public page (then reverted), products category filter = 4 busducts, messages search 'solar' = 1 hit, mobile 390px (chart 316px wide, FilterBar stacks, blog post clean), console 0 errors (only pre-existing Radix aria warnings), lint 0/0, tsc no new errors; local sqlite: schema swap + db push + generate + restore mysql schema + regenerate mysql client
+- Committed 6715e0c + pushed; authenticated GitHub API verified
+
+Stage Summary:
+- Blog is now a real multi-page section: list -> dedicated post pages, and admins write with a real WYSIWYG (markdown-backed)
+- Dashboard has an inquiries graph; Careers and Manufacturing pages are fully admin-controlled (DB-backed with self-provisioning schema + seeded defaults — no manual prod migration needed)
+- Every admin table has search + a relevant filter with live counts
