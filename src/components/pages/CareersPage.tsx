@@ -7,11 +7,16 @@ import {
   GraduationCap, Heart, Zap, Building2, Globe, Award, Target, Send,
   Shield, ChevronDown, Phone, Mail, Sparkles, Lightbulb,
   Hammer, FlaskConical, LayoutGrid, Wrench, Cpu, Gauge, Factory,
+  Loader2, CheckCircle2, X,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useRouter } from '@/components/Router'
 import { fetchCareers, type Career } from '@/lib/api'
 
@@ -194,12 +199,154 @@ const departmentColorMap: Record<string, string> = {
 }
 
 /* ────────────────────────────────────────────────────────────
+   APPLY DIALOG — dedicated application form per opening. Submissions
+   are saved to the database and reviewed from the admin Applications
+   section (status tracking, search, delete).
+   ──────────────────────────────────────────────────────────── */
+interface ApplyForm {
+  name: string
+  email: string
+  phone: string
+  experience: string
+  resumeUrl: string
+  message: string
+}
+const emptyApplyForm: ApplyForm = { name: '', email: '', phone: '', experience: '', resumeUrl: '', message: '' }
+
+function ApplyDialog({ jobTitle, onClose }: { jobTitle: string; onClose: () => void }) {
+  const [form, setForm] = useState<ApplyForm>(emptyApplyForm)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const set = (key: keyof ApplyForm) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm(f => ({ ...f, [key]: e.target.value }))
+
+  const submit = async () => {
+    setError('')
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError('Please fill in your name, email and a short message.')
+      return
+    }
+    setSending(true)
+    try {
+      const res = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobTitle, ...form }),
+      })
+      const data = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(data?.error || 'Failed to submit application')
+      setSent(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit application')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={v => { if (!v) onClose() }}>
+      <DialogContent className="rounded-xl max-h-[88vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-left">
+            <span className="block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#E8751A] mb-1">Apply Now</span>
+            {jobTitle}
+          </DialogTitle>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute right-4 top-4 text-[#9CA3AF] hover:text-[#1A1A2E] transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </DialogHeader>
+
+        {sent ? (
+          <div className="py-8 flex flex-col items-center text-center">
+            <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mb-4">
+              <CheckCircle2 className="w-7 h-7 text-green-600" />
+            </div>
+            <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">Application sent!</h3>
+            <p className="text-sm text-[#6B7280] max-w-xs mb-6">
+              Thank you for applying for <span className="font-semibold text-[#1B3A5C]">{jobTitle}</span>.
+              Our HR team will review your application and get back to you soon.
+            </p>
+            <Button onClick={onClose} className="bg-[#1B3A5C] hover:bg-[#0C2340] text-white rounded-md px-8">
+              Done
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">Full Name *</Label>
+                <Input value={form.name} onChange={set('name')} placeholder="Your full name" className="rounded-md h-9 text-sm" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">Email *</Label>
+                <Input type="email" value={form.email} onChange={set('email')} placeholder="you@example.com" className="rounded-md h-9 text-sm" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">Phone</Label>
+                <Input value={form.phone} onChange={set('phone')} placeholder="+91 98765 43210" className="rounded-md h-9 text-sm" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">Experience</Label>
+                <Input value={form.experience} onChange={set('experience')} placeholder="e.g. 5 years / Fresher" className="rounded-md h-9 text-sm" />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Resume link (optional)</Label>
+              <Input value={form.resumeUrl} onChange={set('resumeUrl')} placeholder="https://drive.google.com/… or LinkedIn profile" className="rounded-md h-9 text-sm" />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Message *</Label>
+              <Textarea
+                value={form.message}
+                onChange={set('message')}
+                rows={4}
+                placeholder="Tell us why you're a great fit for this role…"
+                className="rounded-md text-sm resize-none"
+              />
+            </div>
+            {error && (
+              <p className="text-xs text-red-600 flex items-center gap-1">
+                <X className="w-3 h-3" /> {error}
+              </p>
+            )}
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <Button variant="outline" onClick={onClose} disabled={sending} className="rounded-md">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => void submit()}
+                disabled={sending}
+                className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md"
+              >
+                {sending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
+                {sending ? 'Sending…' : 'Submit Application'}
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/* ────────────────────────────────────────────────────────────
    MAIN COMPONENT
    ──────────────────────────────────────────────────────────── */
 export default function CareersPage() {
   const { navigate } = useRouter()
   const [activeDepartment, setActiveDepartment] = useState<Department>('all')
   const [jobs, setJobs] = useState<JobOpening[]>(jobOpenings)
+  // Job title currently being applied to (null = dialog closed)
+  const [applyJobTitle, setApplyJobTitle] = useState<string | null>(null)
 
   // Live openings from the DB (admin-managed); hardcoded list stays as fallback
   useEffect(() => {
@@ -622,7 +769,7 @@ export default function CareersPage() {
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-[#9CA3AF] font-medium">{job.type}</span>
                               <Button
-                                onClick={() => navigate('contact')}
+                                onClick={() => setApplyJobTitle(job.title)}
                                 size="sm"
                                 className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md px-4 h-8 text-xs font-semibold transition-colors"
                               >
@@ -704,7 +851,7 @@ export default function CareersPage() {
 
                   {/* CTA Button */}
                   <Button
-                    onClick={() => navigate('contact')}
+                    onClick={() => setApplyJobTitle('General Application')}
                     className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-lg px-8 h-12 text-sm font-semibold transition-colors w-fit"
                   >
                     <Send className="w-4 h-4 mr-2" />
@@ -756,6 +903,11 @@ export default function CareersPage() {
           </div>
         </div>
       </section>
+
+      {/* Apply dialog — one instance, opened per job */}
+      {applyJobTitle && (
+        <ApplyDialog jobTitle={applyJobTitle} onClose={() => setApplyJobTitle(null)} />
+      )}
     </>
   )
 }

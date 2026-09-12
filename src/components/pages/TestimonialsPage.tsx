@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Quote, Play, MessageSquare } from 'lucide-react'
+import { ChevronRight, Quote, Play, MessageSquare, Star } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,6 +24,18 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
     >
       {children}
     </motion.div>
+  )
+}
+
+/* ── Star rating (admin-managed field — shown when rating > 0) ── */
+function Stars({ rating, className = '' }: { rating: number; className?: string }) {
+  if (!rating || rating <= 0) return null
+  return (
+    <div className={`flex items-center gap-0.5 ${className}`} role="img" aria-label={`${rating} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map(i => (
+        <Star key={i} className={`w-3.5 h-3.5 ${i <= rating ? 'text-[#E8751A] fill-[#E8751A]' : 'text-slate-200 fill-slate-200'}`} />
+      ))}
+    </div>
   )
 }
 
@@ -188,10 +200,15 @@ export default function TestimonialsPage() {
                 <div className="relative flex flex-col md:flex-row items-start gap-6 md:gap-10">
                   {/* Avatar + info column */}
                   <div className="flex flex-col items-center text-center md:text-left md:items-start shrink-0">
-                    <InitialsAvatar name={featured.name} size="lg" />
+                    {featured.imageUrl ? (
+                      <img src={featured.imageUrl} alt={featured.name} className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" />
+                    ) : (
+                      <InitialsAvatar name={featured.name} size="lg" />
+                    )}
                     <div className="mt-3">
                       <h3 className="text-xl md:text-2xl font-bold text-[#1B3A5C]">{featured.name}</h3>
                       <p className="text-[#6B7280] text-sm mt-0.5">{featured.designation}</p>
+                      <Stars rating={featured.rating} className="mt-2 justify-center md:justify-start" />
                       <Badge className="mt-2 bg-[#1B3A5C]/10 text-[#1B3A5C] hover:bg-[#1B3A5C]/20 border-0 font-medium text-xs">
                         {featured.company}
                       </Badge>
@@ -278,12 +295,17 @@ export default function TestimonialsPage() {
 
                         {/* Person info */}
                         <div className="flex items-center gap-3 pt-4 border-t border-[#E2E8F0]">
-                          <InitialsAvatar name={t.name} size="sm" />
+                          {t.imageUrl ? (
+                            <img src={t.imageUrl} alt={t.name} className="w-9 h-9 rounded-full object-cover border border-[#E2E8F0] shrink-0" />
+                          ) : (
+                            <InitialsAvatar name={t.name} size="sm" />
+                          )}
                           <div className="min-w-0">
                             <p className="font-semibold text-[#1B3A5C] text-sm truncate">{t.name}</p>
                             <p className="text-[#6B7280] text-xs truncate">
                               {t.designation}{t.designation && t.company ? ', ' : ''}{t.company}
                             </p>
+                            <Stars rating={t.rating} className="mt-1" />
                           </div>
                         </div>
                       </CardContent>
