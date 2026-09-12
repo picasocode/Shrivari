@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import {
@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useRouter } from '@/components/Router'
+import { fetchManufacturing, type ManufacturingItem } from '@/lib/api'
+import { MANUFACTURING_DEFAULTS } from '@/lib/manufacturing-defaults'
 
 /* ─── Fade-in helper ─── */
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -28,91 +30,47 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
-/* ─── Product Data ─── */
-interface Product {
+/* ─── Icon registry — admin picks an icon by name, the page resolves it ─── */
+export const MANUFACTURING_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  Zap, Cpu, Gauge, Activity, RefreshCw, MonitorPlay, CircuitBoard,
+  ShieldCheck, Factory, Settings, Award, Boxes, FileCheck, CheckCircle2,
+}
+
+export function ManufacturingIcon({ name, className }: { name: string; className?: string }) {
+  const Icon = MANUFACTURING_ICONS[name] || Factory
+  return <Icon className={className} />
+}
+
+function parseFeatures(features: string): string[] {
+  try {
+    const parsed = JSON.parse(features)
+    if (Array.isArray(parsed)) return parsed
+    return []
+  } catch {
+    return features ? features.split(',').map(f => f.trim()).filter(Boolean) : []
+  }
+}
+
+interface CardData {
   id: string
   name: string
   tagline: string
   description: string
   image: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: string
   features: string[]
 }
 
-const PRODUCTS: Product[] = [
-  {
-    id: 'pcc',
-    name: 'PCC Panels',
-    tagline: 'Power Control Center',
-    description: 'Power control center panels designed for efficient and centralized power distribution across industrial and infrastructure installations.',
-    image: '/images/manufacturing/pcc.jpg',
-    icon: Zap,
-    features: ['Centralized distribution', 'Main incoming breaker', 'Bus bar design up to 6300A', 'Metering & protection'],
-  },
-  {
-    id: 'mcc',
-    name: 'MCC Panels',
-    tagline: 'Motor Control Center',
-    description: 'Motor control center panels for industrial motor operations and process control, engineered for reliability and safety.',
-    image: '/images/manufacturing/mcc.jpg',
-    icon: Cpu,
-    features: ['Motor starters', 'Contactor & relay logic', 'DOL / Star-Delta / RDF', 'Process interlocks'],
-  },
-  {
-    id: 'apfc',
-    name: 'APFC Panels',
-    tagline: 'Automatic Power Factor Correction',
-    description: 'Automatic power factor correction panels for energy efficiency optimization, reducing kVA demand and penalty charges.',
-    image: '/images/manufacturing/apfc.jpg',
-    icon: Gauge,
-    features: ['Capacitor banks', 'Reactor harmonics control', 'Automatic controller', 'Step-wise switching'],
-  },
-  {
-    id: 'plc',
-    name: 'PLC Automation Panels',
-    tagline: 'Programmable Logic Control',
-    description: 'Automation and process control panels with advanced PLC integration, enabling smart industrial operations and remote monitoring.',
-    image: '/images/manufacturing/plc.jpg',
-    icon: CircuitBoard,
-    features: ['PLC integrated control', 'HMI touch interface', 'I/O modules', 'SCADA ready'],
-  },
-  {
-    id: 'sync',
-    name: 'Synchronization Panels',
-    tagline: 'Generator & Utility Sync',
-    description: 'Generator and utility synchronization systems for uninterrupted operations, enabling seamless parallel operation and load sharing.',
-    image: '/images/manufacturing/sync.jpg',
-    icon: RefreshCw,
-    features: ['Auto / manual sync', 'Load sharing', 'Mains & DG parallel', 'Reverse power protection'],
-  },
-  {
-    id: 'vfd',
-    name: 'VFD Panels',
-    tagline: 'Variable Frequency Drive',
-    description: 'Variable frequency drive panels for motor speed control and energy optimization across pumps, fans, and process loads.',
-    image: '/images/manufacturing/vfd.jpg',
-    icon: Activity,
-    features: ['Speed control', 'Energy optimization', 'Soft start / stop', 'Harmonics mitigation'],
-  },
-  {
-    id: 'scada',
-    name: 'SAS / SCADA Systems',
-    tagline: 'Substation Automation & Supervisory Control',
-    description: 'Substation automation systems and SCADA solutions for real-time monitoring, control, and data acquisition across electrical networks.',
-    image: '/images/manufacturing/scada-panel.jpg',
-    icon: MonitorPlay,
-    features: ['Real-time monitoring', 'Remote control', 'Data acquisition', 'Event & alarm logging'],
-  },
-  {
-    id: 'cr',
-    name: 'C&R Panels',
-    tagline: 'Control & Relay Panel',
-    description: 'Control and relay panels for controlling and protecting electrical equipment — housing protection relays, auxiliary relays, MCBs, control switches, and indication lamps.',
-    image: '/images/manufacturing/cr-panel-svepl.jpg',
-    icon: ShieldCheck,
-    features: ['Overcurrent & earth fault relays', 'Breaker trip signal', 'Breaker control & status indication', 'Alarms & interlocking'],
-  },
-]
+/* Offline/empty fallback — mirrors the seeded DB defaults */
+const FALLBACK_CARDS: CardData[] = MANUFACTURING_DEFAULTS.map(m => ({
+  id: m.slug,
+  name: m.name,
+  tagline: m.tagline,
+  description: m.description,
+  image: m.image,
+  icon: m.icon,
+  features: m.features,
+}))
 
 /* ─── Manufacturing Advantages ─── */
 const ADVANTAGES = [
@@ -134,6 +92,27 @@ const STATS = [
 
 export default function ManufacturingPage() {
   const { navigate } = useRouter()
+  const [cards, setCards] = useState<CardData[]>(FALLBACK_CARDS)
+
+  // Live catalog from the DB (admin-managed); hardcoded defaults stay as fallback
+  useEffect(() => {
+    let alive = true
+    fetchManufacturing(true)
+      .then(items => {
+        if (!alive || items.length === 0) return
+        setCards(items.map((m: ManufacturingItem) => ({
+          id: m.id,
+          name: m.name,
+          tagline: m.tagline,
+          description: m.description,
+          image: m.image,
+          icon: m.icon,
+          features: parseFeatures(m.features),
+        })))
+      })
+      .catch(() => { /* keep fallback cards */ })
+    return () => { alive = false }
+  }, [])
 
   /* Parallax hero */
   const heroRef = useRef<HTMLElement>(null)
@@ -368,8 +347,7 @@ export default function ManufacturingPage() {
 
           {/* Product grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PRODUCTS.map((product, i) => {
-              const Icon = product.icon
+            {cards.map((product, i) => {
               return (
                 <FadeIn key={product.id} delay={i * 0.08}>
                   <motion.div
@@ -393,7 +371,7 @@ export default function ManufacturingPage() {
                       <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
                       {/* Icon badge */}
                       <div className="absolute top-4 right-4 w-11 h-11 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
-                        <Icon className="w-5 h-5 text-[#E8751A]" />
+                        <ManufacturingIcon name={product.icon} className="w-5 h-5 text-[#E8751A]" />
                       </div>
                     </div>
 

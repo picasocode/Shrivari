@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { Calendar, User, ArrowRight, Clock, BookOpen, ChevronRight, Mail } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useRouter } from '@/components/Router'
 import { fetchBlogs, type Blog } from '@/lib/api'
@@ -59,7 +58,6 @@ export default function BlogPage() {
   const { navigate } = useRouter()
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -139,7 +137,7 @@ export default function BlogPage() {
             <FadeIn>
               <Card
                 className="overflow-hidden rounded-2xl border-0 shadow-lg cursor-pointer group"
-                onClick={() => setSelectedBlog(featured)}
+                onClick={() => navigate('blog-post', { slug: featured.slug })}
               >
                 <div className="grid grid-cols-1 md:grid-cols-2">
                   {/* Image side */}
@@ -215,7 +213,7 @@ export default function BlogPage() {
                   <FadeIn key={b.id} delay={i * 0.07}>
                     <Card
                       className="overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-sm card-hover cursor-pointer group h-full"
-                      onClick={() => setSelectedBlog(b)}
+                      onClick={() => navigate('blog-post', { slug: b.slug })}
                     >
                       <div className={`grid grid-cols-1 ${isEven ? 'sm:grid-cols-[200px_1fr]' : 'sm:grid-cols-[1fr_200px]'} h-full`}>
                         {/* Image */}
@@ -327,42 +325,6 @@ export default function BlogPage() {
           </FadeIn>
         </div>
       </section>
-
-      {/* ════════════════════════════════════════════
-          BLOG READING DIALOG
-      ════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {selectedBlog && (
-          <Dialog open={!!selectedBlog} onOpenChange={(open) => { if (!open) setSelectedBlog(null) }}>
-            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white rounded-2xl p-0">
-              {/* Dialog header with gradient */}
-              <div className="sticky top-0 z-10 bg-gradient-to-r from-[#1B3A5C] to-[#152D4F] px-6 pt-6 pb-4 -mx-1 -mt-1 rounded-t-2xl">
-                <DialogHeader>
-                  <DialogTitle className="text-xl md:text-2xl font-bold text-white pr-8 leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif' }}>
-                    {selectedBlog.title}
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="flex items-center gap-4 text-xs text-white/60 mt-3">
-                  <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{formatDate(selectedBlog.createdAt)}</span>
-                  {selectedBlog.author && <span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5" />{selectedBlog.author}</span>}
-                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{readingTime(selectedBlog.content)}</span>
-                </div>
-              </div>
-
-              <div className="px-6 pb-6 pt-4">
-                {selectedBlog.coverImageUrl && (
-                  <div className="h-48 md:h-56 rounded-xl bg-cover bg-center mb-6" style={{ backgroundImage: `url(${selectedBlog.coverImageUrl})` }} />
-                )}
-                <div className="prose prose-sm max-w-none">
-                  {selectedBlog.content.split('\n').map((paragraph, i) => (
-                    <p key={i} className="text-[#374151] leading-relaxed mb-4">{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
-      </AnimatePresence>
     </>
   )
 }

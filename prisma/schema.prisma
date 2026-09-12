@@ -219,3 +219,18 @@ model ProjectRecord {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+// Cards on the public Manufacturing page — fully editable from the admin panel.
+model ManufacturingItem {
+  id          String   @id @default(cuid())
+  name        String
+  tagline     String   @default("")
+  description String   @db.Text
+  image       String   @default("")
+  features    String   @default("[]") @db.Text
+  icon        String   @default("Factory")
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
