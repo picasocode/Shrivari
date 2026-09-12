@@ -99,7 +99,7 @@ const PRODUCTS: Product[] = [
     name: 'SAS / SCADA Systems',
     tagline: 'Substation Automation & Supervisory Control',
     description: 'Substation automation systems and SCADA solutions for real-time monitoring, control, and data acquisition across electrical networks.',
-    image: '/images/manufacturing/scada.jpg',
+    image: '/images/manufacturing/scada-panel.jpg',
     icon: MonitorPlay,
     features: ['Real-time monitoring', 'Remote control', 'Data acquisition', 'Event & alarm logging'],
   },
