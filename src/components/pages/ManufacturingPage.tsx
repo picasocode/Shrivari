@@ -35,6 +35,7 @@ interface Product {
   tagline: string
   description: string
   image: string
+  imageFit?: 'cover' | 'contain'
   icon: React.ComponentType<{ className?: string }>
   features: string[]
 }
@@ -100,6 +101,7 @@ const PRODUCTS: Product[] = [
     tagline: 'Substation Automation & Supervisory Control',
     description: 'Substation automation systems and SCADA solutions for real-time monitoring, control, and data acquisition across electrical networks.',
     image: '/images/manufacturing/scada-panel.jpg',
+    imageFit: 'contain',
     icon: MonitorPlay,
     features: ['Real-time monitoring', 'Remote control', 'Data acquisition', 'Event & alarm logging'],
   },
@@ -378,13 +380,13 @@ export default function ManufacturingPage() {
                     className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
                   >
                     {/* Image */}
-                    <div className="relative overflow-hidden h-48 md:h-52">
+                    <div className={`relative overflow-hidden h-48 md:h-52 ${product.imageFit === 'contain' ? 'bg-slate-50 border-b border-slate-100' : ''}`}>
                       <motion.img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full ${product.imageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
                         initial={false}
-                        whileHover={{ scale: 1.08 }}
+                        whileHover={{ scale: product.imageFit === 'contain' ? 1.03 : 1.08 }}
                         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
                       />
                       {/* Gradient overlay */}
