@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
           { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
         ],
       },
+      {
+        // Admin-uploaded images are served from the database via
+        // /api/images/[id] — each upload has a unique, immutable id, so
+        // they can be cached forever (rule placed after the catch-all
+        // below-zero rule so it wins for this path).
+        source: '/api/images/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
     ];
   },
 };

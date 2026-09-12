@@ -52,7 +52,7 @@ prompt
 server.log
 # Skills directory
 /skills/tool-results/
-upload/
+/upload/
 tool-results/
 
 # local database files (site now uses remote MySQL)
