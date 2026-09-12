@@ -290,3 +290,22 @@ export async function fetchCareers(activeOnly?: boolean): Promise<Career[]> {
   const query = activeOnly ? '?active=true' : '';
   return fetchAPI(`/careers${query}`);
 }
+
+export interface ManufacturingItem {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  image: string;
+  features: string;
+  icon: string;
+  order: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function fetchManufacturing(activeOnly?: boolean): Promise<ManufacturingItem[]> {
+  const query = activeOnly ? '?active=true' : '';
+  return fetchAPI(`/manufacturing${query}`);
+}

@@ -1,12 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef, createContext, useContext } from 'react'
+import { useState, useEffect, useCallback, useRef, createContext, useContext, useMemo } from 'react'
 import {
   X, Package, Wrench, Users, MessageSquareQuote, FileText, FolderKanban,
   Mail, Settings, Plus, Pencil, Trash2, Check, RefreshCw,
   Loader2, AlertCircle, LogOut, Shield, CheckCircle2, XCircle, Youtube,
   ListChecks, Search, Info, Image as ImageIcon, LayoutDashboard,
+  Briefcase, Zap, Cpu, Gauge, Activity, MonitorPlay, CircuitBoard,
+  ShieldCheck, Factory, Award, Boxes, FileCheck, Hammer, FlaskConical,
+  Building2, Globe, Target, Sparkles, GraduationCap, Lightbulb,
 } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -26,11 +31,19 @@ import { Skeleton } from '@/components/ui/skeleton'
 import {
   fetchProducts, fetchServices, fetchClients, fetchTestimonials,
   fetchBlogs, fetchProjects, fetchSettings, fetchAPI,
+  fetchCareers, fetchManufacturing,
   createItem, updateItem, deleteItem,
   type Product, type Service, type Client, type Testimonial,
   type Blog, type Project, type SiteSettings,
+  type Career, type ManufacturingItem,
 } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+
+// Rich text (WYSIWYG markdown) editor for blog posts — client-side only.
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[340px] rounded-md" />,
+})
 
 /* ─── Toast notification system ─── */
 interface Toast { id: number; type: 'success' | 'error'; message: string }
@@ -65,7 +78,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
 const useToast = () => useContext(ToastContext)
 
 /* ─── types ─── */
-type Section = 'dashboard' | 'products' | 'services' | 'clients' | 'testimonials' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
+type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'blogs' | 'projects' | 'records' | 'messages' | 'settings'
 
 interface ContactMessage {
   id: string
@@ -81,9 +94,11 @@ interface ContactMessage {
 const navItems: { key: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'products', label: 'Products', icon: Package },
+  { key: 'manufacturing', label: 'Manufacturing', icon: Factory },
   { key: 'services', label: 'Services', icon: Wrench },
   { key: 'clients', label: 'Clients', icon: Users },
   { key: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { key: 'careers', label: 'Careers', icon: Briefcase },
   { key: 'blogs', label: 'Blogs', icon: FileText },
   { key: 'projects', label: 'Projects', icon: FolderKanban },
   { key: 'records', label: 'Project Records', icon: ListChecks },
@@ -221,9 +236,11 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
           <div className="p-4 md:p-8">
             {activeSection === 'dashboard' && <DashboardSection onNavigate={setActiveSection} />}
             {activeSection === 'products' && <ProductsSection />}
+            {activeSection === 'manufacturing' && <ManufacturingSection />}
             {activeSection === 'services' && <ServicesSection />}
             {activeSection === 'clients' && <ClientsSection />}
             {activeSection === 'testimonials' && <TestimonialsSection />}
+            {activeSection === 'careers' && <CareersSection />}
             {activeSection === 'blogs' && <BlogsSection />}
             {activeSection === 'projects' && <ProjectsSection />}
             {activeSection === 'records' && <RecordsSection />}
@@ -274,6 +291,76 @@ function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
 }
 
 /* ═══════════════════════════════════════════
+   SEARCH / FILTER TOOLBAR (shared by all sections)
+   ═══════════════════════════════════════════ */
+function FilterBar({ placeholder, search, onSearch, count, total, children }: {
+  placeholder: string
+  search: string
+  onSearch: (v: string) => void
+  count: number
+  total: number
+  children?: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+      <div className="relative flex-1 sm:max-w-xs">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9CA3AF]" />
+        <Input
+          value={search}
+          onChange={e => onSearch(e.target.value)}
+          placeholder={placeholder}
+          className="pl-9 h-9 rounded-md text-sm bg-white"
+        />
+      </div>
+      {children}
+      <span className="text-xs text-[#9CA3AF] sm:ml-auto shrink-0">
+        {count} of {total}
+      </span>
+    </div>
+  )
+}
+
+/** Case-insensitive substring match across a row's searchable text. */
+function rowMatches(fields: (string | number | boolean | undefined | null)[], query: string): boolean {
+  const q = query.trim().toLowerCase()
+  if (!q) return true
+  return fields.some(f => String(f ?? '').toLowerCase().includes(q))
+}
+
+/** Dropdown filter for a single-key facet (status, category, …). */
+function FilterSelect({ value, onChange, options, label }: {
+  value: string
+  onChange: (v: string) => void
+  options: { value: string; label: string }[]
+  label: string
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="sm:w-[150px] h-9 rounded-md text-xs bg-white">
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map(o => (
+          <SelectItem key={o.value} value={o.value} className="text-xs">{o.label}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+const STATUS_OPTIONS: { value: string; label: string }[] = [
+  { value: 'all', label: 'All statuses' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' },
+]
+
+function statusFilterMatch(item: { active?: boolean; published?: boolean }, filter: string): boolean {
+  if (filter === 'all') return true
+  const flag = item.published !== undefined ? item.published : item.active !== false
+  return filter === 'active' ? flag : !flag
+}
+
+/* ═══════════════════════════════════════════
    DASHBOARD SECTION
    ═══════════════════════════════════════════ */
 interface DashboardStats {
@@ -297,6 +384,7 @@ interface DashboardStats {
 function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => void }) {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [recentMessages, setRecentMessages] = useState<ContactMessage[]>([])
+  const [allMessages, setAllMessages] = useState<ContactMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
@@ -339,6 +427,7 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
       unreadMessages: messages.filter(m => !m.read).length,
     })
     setRecentMessages(messages.slice(0, 4))
+    setAllMessages(messages)
     setLoading(false)
   }, [])
 
@@ -359,6 +448,26 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
       setLoading(false)
     })
   }, [fetchAll, apply])
+
+  // Inquiries per month — last 6 calendar months, newest on the right
+  const chartData = useMemo(() => {
+    const buckets: { key: string; label: string; count: number }[] = []
+    const now = new Date()
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+      buckets.push({
+        key: `${d.getFullYear()}-${d.getMonth()}`,
+        label: d.toLocaleDateString('en-IN', { month: 'short' }),
+        count: 0,
+      })
+    }
+    for (const m of allMessages) {
+      const d = new Date(m.createdAt)
+      const bucket = buckets.find(b => b.key === `${d.getFullYear()}-${d.getMonth()}`)
+      if (bucket) bucket.count++
+    }
+    return buckets
+  }, [allMessages])
 
   if (loading) {
     return (
@@ -410,6 +519,8 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
 
   const quickActions: { label: string; icon: React.ComponentType<{ className?: string }>; section: Section }[] = [
     { label: 'Manage Products', icon: Package, section: 'products' },
+    { label: 'Manufacturing Cards', icon: Factory, section: 'manufacturing' },
+    { label: 'Manage Careers', icon: Briefcase, section: 'careers' },
     { label: 'Write a Blog Post', icon: FileText, section: 'blogs' },
     { label: 'Review Messages', icon: Mail, section: 'messages' },
     { label: 'Project Records', icon: ListChecks, section: 'records' },
@@ -453,39 +564,25 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent messages */}
-        <div className="lg:col-span-2 bg-white rounded-md border border-[#E5E7EB] shadow-sm p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-sm text-[#1A1A2E]">Recent Messages</h3>
-            <Button variant="outline" size="sm" onClick={() => onNavigate('messages')} className="rounded-md text-xs">
-              View all
-            </Button>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Inquiries chart */}
+        <div className="lg:col-span-2 relative bg-white rounded-md border border-[#E5E7EB] shadow-sm p-5">
+          <div className="mb-4">
+            <h3 className="font-semibold text-sm text-[#1A1A2E]">Inquiries — last 6 months</h3>
+            <p className="text-xs text-[#9CA3AF] mt-0.5">{stats.messages} contact messages received</p>
           </div>
-          {recentMessages.length === 0 ? (
-            <p className="text-[#6B7280] text-sm py-8 text-center">No messages yet.</p>
-          ) : (
-            <div className="space-y-3">
-              {recentMessages.map(m => (
-                <button
-                  key={m.id}
-                  onClick={() => onNavigate('messages')}
-                  className={`w-full text-left flex items-start justify-between gap-3 p-3 rounded-md border transition-colors hover:border-[#E8751A]/50 hover:bg-[#E8751A]/[0.02] ${m.read ? 'border-[#E5E7EB]' : 'border-[#E8751A]/30 bg-[#E8751A]/[0.02]'}`}
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold text-sm text-[#1A1A2E] truncate">{m.name}</p>
-                      {!m.read && <Badge className="bg-[#E8751A]/10 text-[#E8751A] text-xs rounded">New</Badge>}
-                    </div>
-                    <p className="text-xs text-[#6B7280] truncate mt-0.5">{m.subject || m.message}</p>
-                  </div>
-                  <span className="text-[11px] text-[#9CA3AF] shrink-0 mt-0.5">
-                    {new Date(m.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
+          <ResponsiveContainer width="100%" height={230}>
+            <BarChart data={chartData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+              <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} dy={4} />
+              <YAxis allowDecimals={false} tickLine={false} axisLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
+              <Tooltip
+                cursor={{ fill: 'rgba(232,117,26,0.06)' }}
+                contentStyle={{ borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 12 }}
+              />
+              <Bar dataKey="count" name="Messages" fill="#E8751A" radius={[6, 6, 0, 0]} maxBarSize={36} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Quick actions */}
@@ -505,6 +602,40 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
           </div>
         </div>
       </div>
+
+      {/* Recent messages — full width, two-up on desktop */}
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-sm text-[#1A1A2E]">Recent Messages</h3>
+          <Button variant="outline" size="sm" onClick={() => onNavigate('messages')} className="rounded-md text-xs">
+            View all
+          </Button>
+        </div>
+        {recentMessages.length === 0 ? (
+          <p className="text-[#6B7280] text-sm py-8 text-center">No messages yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {recentMessages.map(m => (
+              <button
+                key={m.id}
+                onClick={() => onNavigate('messages')}
+                className={`text-left p-3 rounded-md border transition-colors hover:border-[#E8751A]/50 hover:bg-[#E8751A]/[0.02] ${m.read ? 'border-[#E5E7EB]' : 'border-[#E8751A]/30 bg-[#E8751A]/[0.02]'}`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <p className="font-semibold text-sm text-[#1A1A2E] truncate">{m.name}</p>
+                    {!m.read && <Badge className="bg-[#E8751A]/10 text-[#E8751A] text-xs rounded shrink-0">New</Badge>}
+                  </div>
+                  <span className="text-[11px] text-[#9CA3AF] shrink-0">
+                    {new Date(m.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <p className="text-xs text-[#6B7280] truncate mt-1">{m.subject || m.message}</p>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   )
 }
@@ -516,7 +647,14 @@ function ProductsSection() {
   const { items, setItems, loading, error, load } = useCrud<Product>(() => fetchProducts())
   const [editing, setEditing] = useState<Product | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('all')
   const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(p =>
+    rowMatches([p.name, p.slug, p.category, p.description], search) &&
+    (category === 'all' || p.category === category)
+  ), [items, search, category])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this product?')) return
@@ -543,6 +681,19 @@ function ProductsSection() {
 
   return (
     <SectionWrapper title="Products" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search products…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect
+          value={category}
+          onChange={setCategory}
+          label="Category"
+          options={[
+            { value: 'all', label: 'All categories' },
+            { value: 'LT Panels', label: 'LT Panels' },
+            { value: 'HT Panels', label: 'HT Panels' },
+            { value: 'Busducts', label: 'Busducts' },
+          ]}
+        />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -554,7 +705,7 @@ function ProductsSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(p => (
+            {filtered.map(p => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium text-sm">{p.name}</TableCell>
                 <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs rounded">{p.category}</Badge></TableCell>
@@ -623,7 +774,13 @@ function ServicesSection() {
   const { items, setItems, loading, error, load } = useCrud<Service>(() => fetchServices())
   const [editing, setEditing] = useState<Service | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
   const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(s =>
+    rowMatches([s.name, s.slug, s.description], search) && statusFilterMatch(s, status)
+  ), [items, search, status])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this service?')) return
@@ -650,6 +807,9 @@ function ServicesSection() {
 
   return (
     <SectionWrapper title="Services" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search services…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -661,7 +821,7 @@ function ServicesSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(s => (
+            {filtered.map(s => (
               <TableRow key={s.id}>
                 <TableCell className="font-medium text-sm">{s.name}</TableCell>
                 <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{s.slug}</TableCell>
@@ -725,7 +885,13 @@ function ClientsSection() {
   const { items, setItems, loading, error, load } = useCrud<Client>(() => fetchClients())
   const [editing, setEditing] = useState<Client | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
   const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(c =>
+    rowMatches([c.name, c.industry, c.location], search) && statusFilterMatch(c, status)
+  ), [items, search, status])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this client?')) return
@@ -752,6 +918,9 @@ function ClientsSection() {
 
   return (
     <SectionWrapper title="Clients" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search clients…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -763,7 +932,7 @@ function ClientsSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(c => (
+            {filtered.map(c => (
               <TableRow key={c.id}>
                 <TableCell className="font-medium text-sm">{c.name}</TableCell>
                 <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs rounded">{c.industry}</Badge></TableCell>
@@ -826,7 +995,13 @@ function TestimonialsSection() {
   const { items, setItems, loading, error, load } = useCrud<Testimonial>(() => fetchTestimonials())
   const [editing, setEditing] = useState<Testimonial | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
   const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(t =>
+    rowMatches([t.name, t.company, t.designation, t.content], search) && statusFilterMatch(t, status)
+  ), [items, search, status])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this testimonial?')) return
@@ -853,6 +1028,9 @@ function TestimonialsSection() {
 
   return (
     <SectionWrapper title="Testimonials" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search testimonials…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -865,7 +1043,7 @@ function TestimonialsSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(t => (
+            {filtered.map(t => (
               <TableRow key={t.id}>
                 <TableCell className="font-medium text-sm">{t.name}</TableCell>
                 <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{t.company}</TableCell>
@@ -964,7 +1142,13 @@ function BlogsSection() {
   const { items, setItems, loading, error, load } = useCrud<Blog>(() => fetchBlogs())
   const [editing, setEditing] = useState<Blog | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
   const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(b =>
+    rowMatches([b.title, b.author, b.slug, b.excerpt], search) && statusFilterMatch(b, status)
+  ), [items, search, status])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this blog post?')) return
@@ -991,6 +1175,18 @@ function BlogsSection() {
 
   return (
     <SectionWrapper title="Blog Posts" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search posts…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect
+          value={status}
+          onChange={setStatus}
+          label="Status"
+          options={[
+            { value: 'all', label: 'All posts' },
+            { value: 'active', label: 'Published' },
+            { value: 'inactive', label: 'Draft' },
+          ]}
+        />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -1002,7 +1198,7 @@ function BlogsSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(b => (
+            {filtered.map(b => (
               <TableRow key={b.id}>
                 <TableCell className="font-medium text-sm max-w-xs truncate">{b.title}</TableCell>
                 <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{b.author}</TableCell>
@@ -1019,7 +1215,7 @@ function BlogsSection() {
         </Table>
       </div>
       {(editing || creating) && (
-        <BlogDialog item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
+        <BlogDialog key={editing?.id ?? 'new'} item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
       )}
     </SectionWrapper>
   )
@@ -1032,26 +1228,463 @@ function BlogDialog({ item, onClose, onSave }: { item: Blog | null; onClose: () 
       : { title: '', slug: '', excerpt: '', content: '', coverImageUrl: '', author: '', published: false }
   )
 
+  // Auto-slug from the title while the slug field is untouched
+  const [slugTouched, setSlugTouched] = useState(!!item)
+  const handleTitle = (title: string) => {
+    setForm(f => ({
+      ...f,
+      title,
+      slug: slugTouched ? f.slug : title.toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, ''),
+    }))
+  }
+
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
+      <DialogContent className="sm:max-w-3xl max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-md">
         <DialogHeader><DialogTitle>{item ? 'Edit Blog Post' : 'Add Blog Post'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Title</Label><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Title</Label><Input value={form.title} onChange={e => handleTitle(e.target.value)} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Slug</Label><Input value={form.slug} onChange={e => { setSlugTouched(true); setForm(f => ({ ...f, slug: e.target.value })) }} className="rounded-md h-9 text-sm" placeholder="auto-generated-from-title" /></div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5"><Label className="text-xs font-medium">Author</Label><Input value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
             <div className="space-y-1.5"><Label className="text-xs font-medium">Cover Image URL</Label><Input value={form.coverImageUrl} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Excerpt</Label><Textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} rows={2} className="rounded-md text-sm resize-none" /></div>
-          <div className="space-y-1.5"><Label className="text-xs font-medium">Content</Label><Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={6} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium">Content (rich text editor — saved as markdown)</Label>
+            <RichTextEditor
+              markdown={form.content || ''}
+              onChange={md => setForm(f => ({ ...f, content: md }))}
+            />
+            <p className="text-[11px] text-[#6B7280]">Bold, italic, headings, lists, quotes and links via the toolbar. Renders on the public blog page exactly as shown.</p>
+          </div>
           <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={v => setForm(f => ({ ...f, published: v }))} /><Label className="text-xs font-medium">Published</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
           <Button onClick={() => onSave(form)} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   MANUFACTURING SECTION
+   ═══════════════════════════════════════════ */
+const MANUFACTURING_ICON_NAMES = [
+  'Zap', 'Cpu', 'Gauge', 'Activity', 'RefreshCw', 'MonitorPlay', 'CircuitBoard',
+  'ShieldCheck', 'Factory', 'Settings', 'Award', 'Boxes', 'FileCheck', 'CheckCircle2',
+]
+
+const MANUFACTURING_ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Zap, Cpu, Gauge, Activity, RefreshCw, MonitorPlay, CircuitBoard,
+  ShieldCheck, Factory, Settings, Award, Boxes, FileCheck, CheckCircle2,
+}
+
+function ManufacturingSection() {
+  const { items, setItems, loading, error, load } = useCrud<ManufacturingItem>(() => fetchManufacturing())
+  const [editing, setEditing] = useState<ManufacturingItem | null>(null)
+  const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
+  const { notify } = useToast()
+
+  const filtered = useMemo(() => items.filter(m =>
+    rowMatches([m.name, m.tagline, m.description], search) && statusFilterMatch(m, status)
+  ), [items, search, status])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this manufacturing card? The public page falls back to bundled defaults only when the catalog is empty.')) return
+    try { await deleteItem('/manufacturing', id); setItems(prev => prev.filter(m => m.id !== id)); notify('success', 'Manufacturing card deleted') }
+    catch (e) { notify('error', `Delete failed: ${(e as Error).message}`) }
+  }
+
+  const handleSave = async (data: Partial<ManufacturingItem>) => {
+    try {
+      if (editing) {
+        const updated = await updateItem<ManufacturingItem>('/manufacturing', editing.id, data)
+        setItems(prev => prev.map(m => m.id === editing.id ? updated : m))
+        notify('success', 'Manufacturing card updated')
+      } else {
+        const created = await createItem<ManufacturingItem>('/manufacturing', data)
+        setItems(prev => [...prev, created])
+        notify('success', 'Manufacturing card created')
+      }
+      setEditing(null); setCreating(false)
+    } catch (e) {
+      notify('error', `Save failed: ${(e as Error).message}`)
+    }
+  }
+
+  return (
+    <SectionWrapper title="Manufacturing Cards" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <p className="text-xs text-[#6B7280] mb-3">These cards power the public Manufacturing page — edit names, photos, descriptions and features here.</p>
+      <FilterBar placeholder="Search cards…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
+      </FilterBar>
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-[#F0F4F8]">
+              <TableHead className="text-xs font-semibold">Name</TableHead>
+              <TableHead className="text-xs font-semibold hidden md:table-cell">Tagline</TableHead>
+              <TableHead className="text-xs font-semibold hidden lg:table-cell">Order</TableHead>
+              <TableHead className="text-xs font-semibold hidden md:table-cell">Active</TableHead>
+              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map(m => {
+              const IconPreview = MANUFACTURING_ICON_MAP[m.icon] || Factory
+              return (
+                <TableRow key={m.id}>
+                  <TableCell className="font-medium text-sm">
+                    <span className="flex items-center gap-2">
+                      <span className="w-7 h-7 rounded-md bg-[#E8751A]/10 flex items-center justify-center shrink-0">
+                        <IconPreview className="w-3.5 h-3.5 text-[#E8751A]" />
+                      </span>
+                      {m.name}
+                    </span>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell text-sm text-[#6B7280] max-w-xs truncate">{m.tagline}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{m.order}</TableCell>
+                  <TableCell className="hidden md:table-cell">{m.active ? <Badge className="bg-green-50 text-green-600 text-xs rounded">Active</Badge> : <Badge variant="secondary" className="text-xs rounded">Inactive</Badge>}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(m)}><Pencil className="w-3.5 h-3.5" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700" onClick={() => handleDelete(m.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </div>
+      {(editing || creating) && (
+        <ManufacturingItemDialog key={editing?.id ?? 'new'} item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
+      )}
+    </SectionWrapper>
+  )
+}
+
+function ManufacturingItemDialog({ item, onClose, onSave }: { item: ManufacturingItem | null; onClose: () => void; onSave: (data: Partial<ManufacturingItem>) => void }) {
+  const featuresToText = (features: string) => {
+    try {
+      const parsed = JSON.parse(features)
+      if (Array.isArray(parsed)) return parsed.join('\n')
+      return features
+    } catch {
+      return features
+    }
+  }
+  const [form, setForm] = useState(() => ({
+    name: item?.name ?? '',
+    tagline: item?.tagline ?? '',
+    description: item?.description ?? '',
+    image: item?.image ?? '',
+    featuresText: featuresToText(item?.features ?? ''),
+    icon: item?.icon ?? 'Factory',
+    order: item?.order ?? 0,
+    active: item?.active ?? true,
+  }))
+  const [saving, setSaving] = useState(false)
+
+  const IconPreview = MANUFACTURING_ICON_MAP[form.icon] || Factory
+
+  const handleSave = async () => {
+    if (!form.name.trim() || !form.description.trim()) {
+      return // let the API error surface via onSave throw
+    }
+    setSaving(true)
+    const features = JSON.stringify(form.featuresText.split('\n').map(f => f.trim()).filter(Boolean))
+    try {
+      await onSave({
+        name: form.name,
+        tagline: form.tagline,
+        description: form.description,
+        image: form.image,
+        features,
+        icon: form.icon,
+        order: form.order,
+        active: form.active,
+      })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
+        <DialogHeader><DialogTitle>{item ? 'Edit Manufacturing Card' : 'Add Manufacturing Card'}</DialogTitle></DialogHeader>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Name</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Tagline</Label><Input value={form.tagline} onChange={e => setForm(f => ({ ...f, tagline: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="e.g. Power Control Center" /></div>
+          </div>
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium">Features (one per line)</Label>
+            <Textarea value={form.featuresText} onChange={e => setForm(f => ({ ...f, featuresText: e.target.value }))} rows={4} className="rounded-md text-sm resize-none" placeholder={'Centralized distribution\nBus bar design up to 6300A'} />
+          </div>
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Image URL</Label><Input value={form.image} onChange={e => setForm(f => ({ ...f, image: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="/images/manufacturing/<name>.jpg" /></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Icon</Label>
+              <Select value={form.icon} onValueChange={v => setForm(f => ({ ...f, icon: v }))}>
+                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {MANUFACTURING_ICON_NAMES.map(name => (
+                    <SelectItem key={name} value={name} className="text-sm">{name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="flex items-center gap-3 rounded-md border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5">
+            <span className="w-8 h-8 rounded-md bg-[#E8751A]/10 flex items-center justify-center shrink-0">
+              <IconPreview className="w-4 h-4 text-[#E8751A]" />
+            </span>
+            <span className="text-xs text-[#6B7280]">Icon preview — shown as the badge on the card photo</span>
+          </div>
+          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active (visible on public page)</Label></div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button onClick={handleSave} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   CAREERS SECTION
+   ═══════════════════════════════════════════ */
+const CAREER_ICON_NAMES = [
+  'Briefcase', 'Zap', 'Hammer', 'FlaskConical', 'Building2', 'Lightbulb',
+  'Shield', 'Sparkles', 'GraduationCap', 'Users', 'Globe', 'Wrench',
+  'Cpu', 'Gauge', 'Factory', 'Target',
+]
+
+const CAREER_ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+  Briefcase, Zap, Hammer, FlaskConical, Building2, Lightbulb, Shield,
+  Sparkles, GraduationCap, Users, Globe, Wrench, Cpu, Gauge, Factory, Target,
+}
+
+function CareersSection() {
+  const { items, setItems, loading, error, load } = useCrud<Career>(() => fetchCareers())
+  const [editing, setEditing] = useState<Career | null>(null)
+  const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [department, setDepartment] = useState('all')
+  const { notify } = useToast()
+
+  const departments = useMemo(() => {
+    const seen: string[] = []
+    for (const c of items) if (c.department && !seen.includes(c.department)) seen.push(c.department)
+    return seen
+  }, [items])
+
+  const filtered = useMemo(() => items.filter(c =>
+    rowMatches([c.title, c.department, c.location, c.experience, c.type], search) &&
+    (department === 'all' || c.department === department) && statusFilterMatch(c, 'all')
+  ), [items, search, department])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this job opening? It will disappear from the public Careers page.')) return
+    try { await deleteItem('/careers', id); setItems(prev => prev.filter(c => c.id !== id)); notify('success', 'Job opening deleted') }
+    catch (e) { notify('error', `Delete failed: ${(e as Error).message}`) }
+  }
+
+  const handleSave = async (data: Partial<Career>) => {
+    try {
+      if (editing) {
+        const updated = await updateItem<Career>('/careers', editing.id, data)
+        setItems(prev => prev.map(c => c.id === editing.id ? updated : c))
+        notify('success', 'Job opening updated')
+      } else {
+        const created = await createItem<Career>('/careers', data)
+        setItems(prev => [...prev, created])
+        notify('success', 'Job opening created')
+      }
+      setEditing(null); setCreating(false)
+    } catch (e) {
+      notify('error', `Save failed: ${(e as Error).message}`)
+    }
+  }
+
+  return (
+    <SectionWrapper title="Careers" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <p className="text-xs text-[#6B7280] mb-3">Job openings shown on the public Careers page — add, edit or deactivate positions anytime.</p>
+      <FilterBar placeholder="Search openings…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect
+          value={department}
+          onChange={setDepartment}
+          label="Department"
+          options={[{ value: 'all', label: 'All departments' }, ...departments.map(d => ({ value: d, label: d }))]}
+        />
+      </FilterBar>
+      {items.length === 0 && !loading ? (
+        <p className="text-[#6B7280] text-center py-12">No openings yet — click Add to post one.</p>
+      ) : (
+        <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-[#F0F4F8]">
+                <TableHead className="text-xs font-semibold">Title</TableHead>
+                <TableHead className="text-xs font-semibold hidden md:table-cell">Department</TableHead>
+                <TableHead className="text-xs font-semibold hidden lg:table-cell">Location</TableHead>
+                <TableHead className="text-xs font-semibold hidden lg:table-cell">Experience</TableHead>
+                <TableHead className="text-xs font-semibold hidden md:table-cell">Active</TableHead>
+                <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map(c => {
+                const IconPreview = CAREER_ICON_MAP[c.icon] || Briefcase
+                return (
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium text-sm">
+                      <span className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ backgroundColor: `${c.accent}14` }}>
+                          <IconPreview className="w-3.5 h-3.5" style={{ color: c.accent }} />
+                        </span>
+                        {c.title}
+                      </span>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs rounded">{c.department}</Badge></TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{c.location}</TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{c.experience}</TableCell>
+                    <TableCell className="hidden md:table-cell">{c.active ? <Badge className="bg-green-50 text-green-600 text-xs rounded">Active</Badge> : <Badge variant="secondary" className="text-xs rounded">Inactive</Badge>}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(c)}><Pencil className="w-3.5 h-3.5" /></Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700" onClick={() => handleDelete(c.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+      {(editing || creating) && (
+        <CareerDialog key={editing?.id ?? 'new'} item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
+      )}
+    </SectionWrapper>
+  )
+}
+
+function CareerDialog({ item, onClose, onSave }: { item: Career | null; onClose: () => void; onSave: (data: Partial<Career>) => void }) {
+  const [form, setForm] = useState(() => ({
+    title: item?.title ?? '',
+    location: item?.location ?? '',
+    experience: item?.experience ?? '',
+    department: item?.department ?? 'Engineering',
+    type: item?.type ?? 'Full-time',
+    icon: item?.icon ?? 'Briefcase',
+    accent: item?.accent ?? '#1B3A5C',
+    order: item?.order ?? 0,
+    active: item?.active ?? true,
+  }))
+  const [saving, setSaving] = useState(false)
+
+  const IconPreview = CAREER_ICON_MAP[form.icon] || Briefcase
+
+  const handleSave = async () => {
+    if (!form.title.trim() || !form.location.trim() || !form.experience.trim() || !form.department.trim()) return
+    setSaving(true)
+    try {
+      await onSave({ ...form })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
+        <DialogHeader><DialogTitle>{item ? 'Edit Job Opening' : 'Add Job Opening'}</DialogTitle></DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Job Title</Label><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="e.g. Senior Electrical Engineer" /></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Location</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="Chennai" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Experience</Label><Input value={form.experience} onChange={e => setForm(f => ({ ...f, experience: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="3-6 years" /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Department</Label>
+              <Input value={form.department} onChange={e => setForm(f => ({ ...f, department: e.target.value }))} className="rounded-md h-9 text-sm" placeholder="Engineering" list="career-departments" />
+              <datalist id="career-departments">
+                <option value="Engineering" /><option value="Operations" /><option value="Design" /><option value="Service" />
+              </datalist>
+            </div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Type</Label>
+              <Select value={form.type} onValueChange={v => setForm(f => ({ ...f, type: v }))}>
+                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Full-time">Full-time</SelectItem>
+                  <SelectItem value="Part-time">Part-time</SelectItem>
+                  <SelectItem value="Contract">Contract</SelectItem>
+                  <SelectItem value="Internship">Internship</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Icon</Label>
+              <Select value={form.icon} onValueChange={v => setForm(f => ({ ...f, icon: v }))}>
+                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {CAREER_ICON_NAMES.map(name => (
+                    <SelectItem key={name} value={name} className="text-sm">{name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Accent color</Label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={form.accent}
+                  onChange={e => setForm(f => ({ ...f, accent: e.target.value }))}
+                  className="w-9 h-9 rounded-md border border-[#E5E7EB] bg-white cursor-pointer p-1"
+                  aria-label="Accent color"
+                />
+                <Input value={form.accent} onChange={e => setForm(f => ({ ...f, accent: e.target.value }))} className="rounded-md h-9 text-sm flex-1" />
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="flex items-center gap-2 pt-5"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+          </div>
+          <div className="flex items-center gap-3 rounded-md border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5">
+            <span className="w-8 h-8 rounded-md flex items-center justify-center shrink-0" style={{ backgroundColor: `${form.accent}14` }}>
+              <IconPreview className="w-4 h-4" style={{ color: form.accent }} />
+            </span>
+            <span className="text-xs text-[#6B7280]">Card preview — icon and accent color on the public page</span>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button onClick={handleSave} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1065,7 +1698,20 @@ function ProjectsSection() {
   const { items, setItems, loading, error, load } = useCrud<Project>(() => fetchProjects())
   const [editing, setEditing] = useState<Project | null>(null)
   const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('all')
   const { notify } = useToast()
+
+  const categories = useMemo(() => {
+    const seen: string[] = []
+    for (const p of items) if (p.category && !seen.includes(p.category)) seen.push(p.category)
+    return seen
+  }, [items])
+
+  const filtered = useMemo(() => items.filter(p =>
+    rowMatches([p.name, p.client, p.location, p.category], search) &&
+    (category === 'all' || p.category === category)
+  ), [items, search, category])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this project?')) return
@@ -1092,6 +1738,14 @@ function ProjectsSection() {
 
   return (
     <SectionWrapper title="Projects" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+      <FilterBar placeholder="Search projects…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
+        <FilterSelect
+          value={category}
+          onChange={setCategory}
+          label="Category"
+          options={[{ value: 'all', label: 'All categories' }, ...categories.map(c => ({ value: c, label: c })) ]}
+        />
+      </FilterBar>
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -1103,7 +1757,7 @@ function ProjectsSection() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.map(p => (
+            {filtered.map(p => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium text-sm">{p.name}</TableCell>
                 <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{p.client}</TableCell>
@@ -1212,6 +1866,7 @@ function RecordsSection() {
   const [source, setSource] = useState<'supabase' | 'json'>('supabase')
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+  const [voltageFilter, setVoltageFilter] = useState('all')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [drafts, setDrafts] = useState<Record<string, string>>({})
@@ -1291,6 +1946,20 @@ function RecordsSection() {
     setDrafts(prev => ({ ...prev, [id]: value }))
   }
 
+  // Voltage facet from the loaded page of records; filter is client-side
+  const voltages = useMemo(() => {
+    const seen: string[] = []
+    for (const r of records) {
+      const v = (r.voltage ?? '').trim()
+      if (v && !seen.includes(v)) seen.push(v)
+    }
+    return seen.sort((a, b) => parseFloat(a) - parseFloat(b))
+  }, [records])
+
+  const visibleRecords = useMemo(() =>
+    voltageFilter === 'all' ? records : records.filter(r => (r.voltage ?? '').trim() === voltageFilter)
+  , [records, voltageFilter])
+
   return (
     <>
       <div className="flex items-center justify-between mb-6">
@@ -1315,14 +1984,26 @@ function RecordsSection() {
         </div>
       )}
 
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
-        <Input
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Search customer, industry, location, voltage..."
-          className="rounded-md h-9 text-sm pl-9 bg-white"
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+        <div className="relative flex-1 sm:max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
+          <Input
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            placeholder="Search customer, industry, location, voltage..."
+            className="rounded-md h-9 text-sm pl-9 bg-white"
+          />
+        </div>
+        <FilterSelect
+          value={voltageFilter}
+          onChange={setVoltageFilter}
+          label="Voltage"
+          options={[
+            { value: 'all', label: 'All voltages' },
+            ...voltages.map(v => ({ value: v, label: `${v} KV` })),
+          ]}
         />
+        <span className="text-xs text-[#9CA3AF] sm:ml-auto shrink-0">{visibleRecords.length} of {records.length}</span>
       </div>
 
       {loading ? (
@@ -1345,12 +2026,12 @@ function RecordsSection() {
           <p className="mb-2">Failed to load project records.</p>
           <Button variant="outline" onClick={load} className="rounded-md">Try Again</Button>
         </div>
-      ) : records.length === 0 ? (
+      ) : visibleRecords.length === 0 ? (
         <p className="text-[#6B7280] text-center py-12">No project records found{search.trim() ? ` for "${search.trim()}"` : ''}.</p>
       ) : (
         <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-hidden">
           <div className="max-h-[70vh] overflow-y-auto divide-y divide-[#E5E7EB]">
-            {records.map(r => {
+            {visibleRecords.map(r => {
               const key = r.id ?? `sno-${r.sno}`
               const draft = r.id ? (drafts[r.id] ?? r.imageUrl ?? '') : (r.imageUrl ?? '')
               const dirty = draft.trim() !== (r.imageUrl ?? '').trim()
@@ -1422,12 +2103,19 @@ function MessagesSection() {
   const [messages, setMessages] = useState<ContactMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
 
   useEffect(() => {
     fetchAPI<ContactMessage[]>('/contact/messages')
       .then(data => { setMessages(data); setLoading(false) })
       .catch(() => { setError(true); setLoading(false) })
   }, [])
+
+  const filtered = useMemo(() => messages.filter(m =>
+    rowMatches([m.name, m.email, m.phone, m.subject, m.message], search) &&
+    (status === 'all' || (status === 'unread' ? !m.read : m.read))
+  ), [messages, search, status])
 
   const load = useCallback(() => {
     setLoading(true)
@@ -1449,11 +2137,23 @@ function MessagesSection() {
 
   return (
     <SectionWrapper title="Contact Messages" loading={loading} error={error} onRetry={load}>
-      {messages.length === 0 ? (
-        <p className="text-[#6B7280] text-center py-12">No messages yet.</p>
+      <FilterBar placeholder="Search messages…" search={search} onSearch={setSearch} count={filtered.length} total={messages.length}>
+        <FilterSelect
+          value={status}
+          onChange={setStatus}
+          label="Status"
+          options={[
+            { value: 'all', label: 'All messages' },
+            { value: 'unread', label: 'Unread' },
+            { value: 'read', label: 'Read' },
+          ]}
+        />
+      </FilterBar>
+      {filtered.length === 0 ? (
+        <p className="text-[#6B7280] text-center py-12">No messages match.</p>
       ) : (
         <div className="space-y-4">
-          {messages.map(m => (
+          {filtered.map(m => (
             <div
               key={m.id}
               className={`bg-white rounded-md border shadow-sm p-5 ${m.read ? 'border-[#E5E7EB]' : 'border-[#E8751A]/30 bg-[#E8751A]/[0.02]'}`}

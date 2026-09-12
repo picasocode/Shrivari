@@ -15,6 +15,7 @@ import ClientsPage from '@/components/pages/ClientsPage'
 import ProjectsPage from '@/components/pages/ProjectsPage'
 import TestimonialsPage from '@/components/pages/TestimonialsPage'
 import BlogPage from '@/components/pages/BlogPage'
+import BlogPostPage from '@/components/pages/BlogPostPage'
 import ContactPage from '@/components/pages/ContactPage'
 import SectorsPage from '@/components/pages/SectorsPage'
 import CareersPage from '@/components/pages/CareersPage'
@@ -47,6 +48,7 @@ function AppContent() {
     projects: <ProjectsPage />,
     testimonials: <TestimonialsPage />,
     blog: <BlogPage />,
+    'blog-post': <BlogPostPage slug={router.params.slug || ''} />,
     contact: <ContactPage />,
     sectors: <SectorsPage />,
     careers: <CareersPage />,

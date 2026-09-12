@@ -1,18 +1,19 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import {
   Briefcase, MapPin, Clock, ChevronRight, ArrowRight, Users, TrendingUp,
   GraduationCap, Heart, Zap, Building2, Globe, Award, Target, Send,
   Shield, ChevronDown, Phone, Mail, Sparkles, Lightbulb,
-  Hammer, FlaskConical, LayoutGrid,
+  Hammer, FlaskConical, LayoutGrid, Wrench, Cpu, Gauge, Factory,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from '@/components/Router'
+import { fetchCareers, type Career } from '@/lib/api'
 
 /* ────────────────────────────────────────────────────────────
    FADE-IN HELPER
@@ -95,11 +96,17 @@ const whyJoinData = [
 
 type Department = 'all' | 'Engineering' | 'Operations' | 'Design' | 'Service'
 
+/* Icon registry — admin picks an icon by name, the page resolves it */
+const CAREER_ICONS: Record<string, React.ElementType> = {
+  Briefcase, Zap, Hammer, FlaskConical, Building2, Lightbulb, Shield,
+  Sparkles, GraduationCap, Users, Globe, Wrench, Cpu, Gauge, Factory, Target,
+}
+
 interface JobOpening {
   title: string
   location: string
   experience: string
-  department: Department
+  department: string
   type: string
   icon: React.ElementType
 }
@@ -192,10 +199,40 @@ const departmentColorMap: Record<string, string> = {
 export default function CareersPage() {
   const { navigate } = useRouter()
   const [activeDepartment, setActiveDepartment] = useState<Department>('all')
+  const [jobs, setJobs] = useState<JobOpening[]>(jobOpenings)
+
+  // Live openings from the DB (admin-managed); hardcoded list stays as fallback
+  useEffect(() => {
+    let alive = true
+    fetchCareers(true)
+      .then(data => {
+        if (!alive || data.length === 0) return
+        setJobs(data.map((c: Career) => ({
+          title: c.title,
+          location: c.location,
+          experience: c.experience,
+          department: c.department,
+          type: c.type,
+          icon: CAREER_ICONS[c.icon] || Briefcase,
+        })))
+      })
+      .catch(() => { /* keep fallback jobs */ })
+    return () => { alive = false }
+  }, [])
+
+  // Department chips grow with whatever departments exist in the data
+  const availableDepartments = useMemo<{ label: string; value: string }[]>(() => {
+    const seen: string[] = []
+    for (const j of jobs) if (!seen.includes(j.department)) seen.push(j.department)
+    // Preserve the canonical order first, then any new departments
+    const ordered = departments.filter(d => seen.includes(d.value)).map(d => ({ label: d.label, value: d.value as string }))
+    for (const s of seen) if (!departments.some(d => d.value === s)) ordered.push({ label: s, value: s })
+    return [{ label: 'All Departments', value: 'all' }, ...ordered]
+  }, [jobs])
 
   const filteredJobs = activeDepartment === 'all'
-    ? jobOpenings
-    : jobOpenings.filter(j => j.department === activeDepartment)
+    ? jobs
+    : jobs.filter(j => j.department === activeDepartment)
 
   return (
     <>
@@ -522,10 +559,10 @@ export default function CareersPage() {
           {/* Department Filter */}
           <FadeIn delay={0.1}>
             <div className="flex flex-wrap justify-center gap-2 mb-10">
-              {departments.map((dept) => (
+              {availableDepartments.map((dept) => (
                 <button
                   key={dept.value}
-                  onClick={() => setActiveDepartment(dept.value)}
+                  onClick={() => setActiveDepartment(dept.value as Department)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     activeDepartment === dept.value
                       ? 'bg-[#1B3A5C] text-white shadow-md'

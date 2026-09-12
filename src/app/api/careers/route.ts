@@ -1,8 +1,63 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { CAREER_DEFAULTS, CAREER_TABLE_SQL } from "@/lib/manufacturing-defaults";
+
+// ───────────────────────────────────────────────────────────────────────────
+// One-time-per-process bootstrap: creates the Career table if the database
+// predates it (raw SQL valid on MySQL + SQLite) and seeds the canonical
+// openings once. Rows are only created when the title is absent, so admin
+// edits are never overwritten.
+// ───────────────────────────────────────────────────────────────────────────
+let ensurePromise: Promise<void> | null = null;
+
+function ensureCareerDefaults(): Promise<void> {
+  if (!ensurePromise) {
+    ensurePromise = (async () => {
+      await db.$executeRawUnsafe(CAREER_TABLE_SQL);
+
+      const existing = await db.career.findMany({ select: { id: true, title: true } });
+      const byTitle = new Set(existing.map(c => c.title));
+
+      const missing = CAREER_DEFAULTS.filter(c => !byTitle.has(c.title));
+      for (const c of missing) {
+        try {
+          await db.career.create({
+            data: {
+              title: c.title,
+              location: c.location,
+              experience: c.experience,
+              department: c.department,
+              type: c.type,
+              icon: c.icon,
+              accent: c.accent,
+              order: missing.indexOf(c) + 1,
+            },
+          });
+        } catch (err) {
+          if (
+            err &&
+            typeof err === "object" &&
+            "code" in err &&
+            (err as { code?: string }).code === "P2002"
+          ) {
+            continue;
+          }
+          throw err;
+        }
+      }
+    })().catch(err => {
+      console.error("ensureCareerDefaults failed (will retry on next request):", err);
+      ensurePromise = null;
+      throw err;
+    });
+  }
+  return ensurePromise;
+}
 
 export async function GET(request: NextRequest) {
   try {
+    await ensureCareerDefaults().catch(() => null);
+
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get("active") === "true";
 
