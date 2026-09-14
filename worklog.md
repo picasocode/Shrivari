@@ -2724,3 +2724,22 @@ Stage Summary:
 - Pushed 6e2c5fb "Task 29 — …" (19 files, +805/−187) to origin/main; GitHub API confirms remote main = 6e2c5fb, src/lib/csv.ts + services-hero.jpg present, upload/ folder intact
 - All Task 28 + Task 29 items now complete: applications system with resume upload, per-field filters on every admin table, records add-new, CSV export on every section, blog share, content/contact/photo corrections
 - Artifacts: src/app/api/applications/route.ts (resume URL fix), src/lib/csv.ts (new), src/components/admin/AdminPanel.tsx (filters/CSV/add/responsive headers), CareersPage/BlogPage/BlogPostPage/ClientsPage/ServicesPage/ServiceDetailPage/HomePage/TeamPage/ContactPage/Footer updates, 3 new/replaced images
+
+---
+Task ID: 30
+Agent: main (Z.ai Code)
+Task: User-requested UI polish round — bigger client page logos, brighter home hero overlay, electrical-themed Home About image, remove small icon badges from Manufacturing cards. Verify, push, confirm on GitHub.
+
+Work Log:
+- Sandbox had been reset (repo gone); re-cloned github.com/picasocode/Shrivari with token → remote main was 857a0d3 (Tasks 28+29 already pushed). Set up sqlite test DB (sed mysql→sqlite, .env with absolute file path, db:push + generate) after backing up mysql schema to /tmp
+- ClientsPage.tsx: logo cards enlarged — max-w 210px→250px, h-32/40 → h-36/48, inner padding p-6/8 → p-5/7 (logo fills more of the card); loading skeleton updated to identical geometry so no layout jump
+- Hero.tsx (home): slide overlay lightened bg-black/45 → bg-black/25 per "make it little bright instead of black dark" — hero photos (building/trees/signage) now clearly visible, headline/desc still legible on desktop + mobile
+- HomePage.tsx About Our Company: swapped team photo people-1.jpg?v=2 → new /images/about/electrical-controls.jpg (AI-generated: Indian engineers in navy uniforms + white helmets inspecting LT/HT electrical switchgear panels; first generation had East Asian engineers — regenerated with Indian engineers since user previously rejected a "Chinese guy" image); alt text updated to panel/switchgear wording
+- ManufacturingPage.tsx: removed the small icon badge (11×11 white rounded box with lucide icon) from the top-right of every product-range card; deleted now-dead ManufacturingIcon/MANUFACTURING_ICONS registry and the 7 icon imports only it used (Zap/Cpu/Gauge/Activity/RefreshCw/MonitorPlay/CircuitBoard) — verified no other file imported them (admin included); DB icon field left untouched harmlessly
+- Generated image via z-ai CLI (1344x768) into public/images/about/electrical-controls.jpg
+- Verified on dev server port 3001 (sqlite) with agent-browser, desktop 1440×900 + mobile 390×844: hero visibly brighter on both, About image renders (350×200 mobile / right column desktop), client card measured 247×192 (was ~210×160), Manufacturing PCC/MCC/APFC cards show clean images with no icon badge; 0 page errors, 0 console errors (only pre-existing third-party non-static-position warning); bun run lint 0/0
+- Restored prisma/schema.prisma to mysql and regenerated client before commit; confirmed db/custom.db + .env gitignored, /upload/ untouched
+
+Stage Summary:
+- Pushed dbbf2a2 "UI polish: brighter home hero overlay, bigger client logo cards, electrical-themed About image, remove manufacturing card icon badges" (5 files, +7/−23 + new jpg) to origin/main
+- GitHub API confirmed remote main = dbbf2a2, upload/ folder still present (1 file), electrical-controls.jpg live via raw HTTP 200
