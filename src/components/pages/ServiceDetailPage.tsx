@@ -1042,7 +1042,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   </div>
                 </a>
                 <a
-                  href="mailto:info@shri_vaari_electricals.com"
+                  href="mailto:enquiries@shrivaarielectricals.com"
                   className="flex items-center gap-3 mb-5 group"
                 >
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
@@ -1051,7 +1051,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   <div>
                     <p className="text-xs text-white/50">Email a brief</p>
                     <p className="text-white font-semibold group-hover:text-[#E8751A] transition-colors break-all">
-                      info@shri_vaari_electricals.com
+                      enquiries@shrivaarielectricals.com
                     </p>
                   </div>
                 </a>

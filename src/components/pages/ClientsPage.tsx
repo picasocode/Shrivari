@@ -135,28 +135,32 @@ function buildMonogram(name: string): string {
   return parts[0].slice(0, 2).toUpperCase()
 }
 
-/* ─── A single logo item for a clean listed grid ───
-   No box, no border, no animation. Logo renders in its OWN color (natural).
-   Every logo is forced into a FIXED square box so all 50 appear at the
-   exact same visual size (no matter the source favicon's intrinsic size).
-   Falls back to a clean monogram if the image fails. */
+/* ─── A single logo item for a clean carded grid ───
+   Each logo sits in a BIG bordered card with a soft shadow (and a slightly
+   deeper shadow on hover). Every logo is forced into the same fixed card
+   size so all 50 appear at the exact same visual size (no matter the
+   source favicon's intrinsic size). Falls back to a clean monogram if the
+   image fails. */
 function LogoItem({ client }: { client: Client }) {
   const [errored, setErrored] = useState(false)
   const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   return (
-    <div className="flex items-center justify-center h-24 md:h-28 px-4">
-      <div className="relative flex items-center justify-center w-20 h-20 md:w-24 md:h-24">
+    <div className="flex items-center justify-center p-2.5">
+      <div
+        title={client.name}
+        className="relative flex items-center justify-center w-full max-w-[210px] h-32 md:h-40 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-6 md:p-8"
+      >
         {client.logoUrl && !errored ? (
           <img
             src={client.logoUrl}
             alt={client.name}
             onError={() => setErrored(true)}
-            className="w-full h-full object-contain"
+            className="max-w-full max-h-full w-auto h-auto object-contain"
             loading="lazy"
           />
         ) : (
-          <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-700 select-none">
+          <span className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-700 select-none">
             {monogram}
           </span>
         )}
@@ -355,8 +359,8 @@ export default function ClientsPage() {
         </section>
       )}
 
-      {/* ════════════════ CLIENT LOGOS — CLEAN LISTED GRID, 5 PER ROW, PAGINATED ════════════════ */}
-      {/* Logos in their own color. No borders, no animation. 5 per row × 10 rows = 50 per page. */}
+      {/* ════════════════ CLIENT LOGOS — BIG CARDED GRID, 5 PER ROW, PAGINATED ════════════════ */}
+      {/* Each logo in a bordered, shadowed card of identical size. 5 per row × 10 rows = 50 per page. */}
       <section id="client-logos" className="bg-white py-12 md:py-16">
         <div className="max-w-[1400px] mx-auto px-5 lg:px-8">
           {/* Section label */}
@@ -369,11 +373,11 @@ export default function ClientsPage() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-6">
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-20 md:h-24 mx-auto w-full max-w-[10rem] bg-slate-100 animate-pulse"
+                  className="h-32 md:h-40 mx-auto w-full max-w-[210px] rounded-xl border border-slate-200 bg-slate-50 animate-pulse"
                 />
               ))}
             </div>
@@ -383,7 +387,7 @@ export default function ClientsPage() {
               <p className="text-slate-500 text-lg">No clients found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
               {pageClients.map(c => (
                 <LogoItem key={c.id} client={c} />
               ))}

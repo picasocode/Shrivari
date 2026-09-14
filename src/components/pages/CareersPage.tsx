@@ -7,7 +7,7 @@ import {
   GraduationCap, Heart, Zap, Building2, Globe, Award, Target, Send,
   Shield, ChevronDown, Phone, Mail, Sparkles, Lightbulb,
   Hammer, FlaskConical, LayoutGrid, Wrench, Cpu, Gauge, Factory,
-  Loader2, CheckCircle2, X,
+  Loader2, CheckCircle2, X, Upload, FileText,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -213,15 +213,56 @@ interface ApplyForm {
 }
 const emptyApplyForm: ApplyForm = { name: '', email: '', phone: '', experience: '', resumeUrl: '', message: '' }
 
+/* Resume upload — PDF/DOC/DOCX only, 5MB cap (mirrors the /api/upload whitelist). */
+const RESUME_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+]
+const RESUME_MAX_MB = 5
+
+function validateResumeFile(file: File): string | null {
+  if (!RESUME_TYPES.includes(file.type)) return 'Resume must be a PDF, DOC or DOCX file'
+  if (file.size > RESUME_MAX_MB * 1024 * 1024) return `Resume must be ${RESUME_MAX_MB}MB or smaller`
+  return null
+}
+
 function ApplyDialog({ jobTitle, onClose }: { jobTitle: string; onClose: () => void }) {
   const [form, setForm] = useState<ApplyForm>(emptyApplyForm)
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
+  const [resumeUploading, setResumeUploading] = useState(false)
+  const resumeInputRef = useRef<HTMLInputElement>(null)
 
   const set = (key: keyof ApplyForm) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setForm(f => ({ ...f, [key]: e.target.value }))
+
+  // Pick a resume file → validate → upload → store the returned URL.
+  const handleResumeFile = async (file: File) => {
+    setError('')
+    const problem = validateResumeFile(file)
+    if (problem) { setError(problem); return }
+    setResumeUploading(true)
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', body })
+      const data = await res.json().catch(() => null)
+      if (!res.ok) throw new Error(data?.error || 'Upload failed')
+      setForm(f => ({ ...f, resumeUrl: data.url as string }))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Resume upload failed')
+    } finally {
+      setResumeUploading(false)
+      if (resumeInputRef.current) resumeInputRef.current.value = ''
+    }
+  }
+
+  // Everything after the last / in the stored resume URL, for display.
+  const resumeFilename = form.resumeUrl ? decodeURIComponent(form.resumeUrl.split('/').pop() || '') : ''
+  const resumeIsUpload = form.resumeUrl.startsWith('/api/images/')
 
   const submit = async () => {
     setError('')
@@ -300,8 +341,43 @@ function ApplyDialog({ jobTitle, onClose }: { jobTitle: string; onClose: () => v
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium">Resume link (optional)</Label>
-              <Input value={form.resumeUrl} onChange={set('resumeUrl')} placeholder="https://drive.google.com/… or LinkedIn profile" className="rounded-md h-9 text-sm" />
+              <Label className="text-xs font-medium">Resume (optional)</Label>
+              <input
+                ref={resumeInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                className="hidden"
+                onChange={e => { const f = e.target.files?.[0]; if (f) void handleResumeFile(f); e.target.value = '' }}
+              />
+              {form.resumeUrl && resumeIsUpload ? (
+                <div className="flex items-center justify-between gap-2 rounded-md border border-green-200 bg-green-50 px-3 py-2.5">
+                  <span className="flex items-center gap-2 min-w-0 text-xs text-green-700">
+                    <FileText className="w-4 h-4 shrink-0" />
+                    <span className="truncate font-medium">{resumeFilename.includes('.') ? resumeFilename : 'Resume uploaded (PDF)'}</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setForm(f => ({ ...f, resumeUrl: '' }))}
+                    className="text-xs text-red-600 hover:text-red-700 shrink-0 font-medium"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={resumeUploading}
+                  onClick={() => resumeInputRef.current?.click()}
+                  className="w-full rounded-md h-9 text-sm justify-start text-[#6B7280]"
+                >
+                  {resumeUploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Upload className="w-4 h-4 mr-2" />}
+                  {resumeUploading ? 'Uploading…' : 'Upload resume file (PDF / DOC)'}
+                </Button>
+              )}
+              <Input value={form.resumeUrl} onChange={set('resumeUrl')} placeholder="…or paste a link (Drive, LinkedIn profile)" className="rounded-md h-9 text-sm" disabled={resumeUploading} />
+              <p className="text-[11px] text-[#6B7280]">PDF, DOC or DOCX up to {RESUME_MAX_MB}MB.</p>
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-medium">Message *</Label>

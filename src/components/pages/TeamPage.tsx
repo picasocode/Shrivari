@@ -39,10 +39,10 @@ const leaders = [
   { name: 'Mr. Rengarajan', designation: 'Managing Director', photo: '/images/team/team-rangarajan.jpg' },
   { name: 'Mr. Sivagami Nathan', designation: 'Executive Director', photo: '/images/team/team-sivagaminathan.jpg' },
   { name: 'Mr. Rakesh Kumar', designation: 'Operations Director', photo: '/images/team/team-rakesh-kumar.jpg' },
+  { name: 'Miss Harini', designation: 'Director', photo: '/images/team/team-harini.jpg' },
   { name: 'Mr. Ambalarajan', designation: 'Director - Projects', photo: '/images/team/team-ambalarajan.jpg' },
   { name: 'Mr. Anand Purushothaman', designation: 'Technical Director', photo: '/images/team/team-anand-purushothaman.jpg' },
   { name: 'Mr. Manjari', designation: 'Project Director', photo: '/images/team/team-manjari.jpg' },
-  { name: 'Mrs. Harini', designation: 'Director', photo: '/images/team/team-harini.jpg' },
 ]
 
 /* ─── Main Component ─── */

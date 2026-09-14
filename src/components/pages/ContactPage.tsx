@@ -77,7 +77,7 @@ const OFFICES: Office[] = [
     address: 'C-37, Thiru-Vi-Ka Industrial Estate, Guindy – 600 032, Chennai, Tamil Nadu',
     city: 'Chennai',
     state: 'Tamil Nadu',
-    phones: ['044 2250 0241', '044 2250 0813', '044 4350 2914'],
+    phones: ['044 2250 0913', '044 2250 0241', '044 4350 2914'],
     emails: ['enquiries@shrivaarielectricals.com'],
     kind: 'head',
   },
