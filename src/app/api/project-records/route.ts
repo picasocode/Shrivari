@@ -128,6 +128,52 @@ async function loadRecords(): Promise<{ records: ProjectRecord[]; source: "supab
   return { records: jsonCache, source: "json" };
 }
 
+/** Admin "Add Record" — create a new portfolio record (public Projects page list). */
+export async function POST(request: NextRequest) {
+  try {
+    await ensureBootstrap();
+    const body = await request.json();
+
+    const str = (v: unknown, max = 300) =>
+      typeof v === "string" ? v.trim().slice(0, max) : "";
+
+    // Explicit sno if valid; otherwise continue after the current highest.
+    const snoRaw = parseInt(String(body?.sno ?? ""), 10);
+    let sno = Number.isFinite(snoRaw) && snoRaw > 0 ? snoRaw : NaN;
+    if (!Number.isFinite(sno)) {
+      const last = await db.projectRecord.findFirst({
+        orderBy: { sno: "desc" },
+        select: { sno: true },
+      });
+      sno = (last?.sno ?? 0) + 1;
+    }
+
+    const created = await db.projectRecord.create({
+      data: {
+        sno,
+        customerName: str(body?.customerName),
+        voltageLevel: str(body?.voltageLevel),
+        industry: str(body?.industry),
+        scopeOfWork: str(body?.scopeOfWork, 2000),
+        location: str(body?.location),
+        state: str(body?.state),
+        projectValue: str(body?.projectValue),
+        year: str(body?.year),
+        imageUrl: str(body?.imageUrl, 512),
+        active: true,
+      },
+    });
+
+    return NextResponse.json(created, { status: 201 });
+  } catch (error) {
+    console.error("Error creating project record:", error);
+    return NextResponse.json(
+      { error: "Failed to create record" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

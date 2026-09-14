@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, User, ArrowRight, ArrowLeft, Clock, BookOpen, ChevronRight, AlertCircle } from 'lucide-react'
+import { Calendar, User, ArrowRight, ArrowLeft, Clock, BookOpen, ChevronRight, AlertCircle, Share2, Link2, Check, Mail, MessageCircle, Linkedin, Twitter, Facebook } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
@@ -35,6 +35,35 @@ const TAG_COLORS: Record<string, string> = {
   Insights: 'bg-violet-100 text-violet-800',
 }
 
+/* ─── Share helpers (copyToClipboard kept in sync with BlogPage) ─── */
+function getPostUrl(slug: string): string {
+  if (typeof window === 'undefined') return ''
+  return `${window.location.origin}${window.location.pathname}#blog-post?slug=${encodeURIComponent(slug)}`
+}
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch { /* fall through to legacy path */ }
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 /* ─── Markdown renderers — styled to the site's editorial look ─── */
 const markdownComponents = {
   h1: (props: React.ComponentProps<'h1'>) => <h2 {...props} className="text-2xl md:text-3xl font-bold text-[#1A1A2E] mt-10 mb-4 leading-tight" style={{ fontFamily: 'Georgia, Cambria, serif' }} />,
@@ -57,6 +86,73 @@ const markdownComponents = {
   img: ({ alt = '', ...props }: React.ComponentProps<'img'>) => (
     <img {...props} alt={alt} className="rounded-xl my-6 w-full object-cover" loading="lazy" />
   ),
+}
+
+/* ─── Share bar — WhatsApp / LinkedIn / X / Facebook / Email / Copy link ─── */
+function ShareBar({ title, slug, excerpt }: { title: string; slug: string; excerpt?: string }) {
+  const [copied, setCopied] = useState(false)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Clear the "Copied!" timer on unmount
+  useEffect(() => () => {
+    if (copyTimer.current) clearTimeout(copyTimer.current)
+  }, [])
+
+  const openShare = (href: string) => {
+    window.open(href, '_blank', 'noopener,noreferrer')
+  }
+
+  const handleCopy = async () => {
+    const ok = await copyToClipboard(getPostUrl(slug))
+    if (!ok) return
+    setCopied(true)
+    if (copyTimer.current) clearTimeout(copyTimer.current)
+    copyTimer.current = setTimeout(() => setCopied(false), 2000)
+  }
+
+  const btnCls = 'w-9 h-9 rounded-full border border-slate-200 bg-white text-[#6B7280] hover:border-[#E8751A] hover:text-[#E8751A] inline-flex items-center justify-center transition-colors'
+
+  return (
+    <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3">
+      <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#1A1A2E]">
+        <Share2 className="w-4 h-4 text-[#E8751A]" />
+        Share this article
+      </span>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" aria-label="Share on WhatsApp" title="Share on WhatsApp" className={btnCls}
+          onClick={() => openShare(`https://wa.me/?text=${encodeURIComponent(`${title} — ${getPostUrl(slug)}`)}`)}
+        >
+          <MessageCircle className="w-4 h-4" />
+        </button>
+        <button type="button" aria-label="Share on LinkedIn" title="Share on LinkedIn" className={btnCls}
+          onClick={() => openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getPostUrl(slug))}`)}
+        >
+          <Linkedin className="w-4 h-4" />
+        </button>
+        <button type="button" aria-label="Share on X (Twitter)" title="Share on X (Twitter)" className={btnCls}
+          onClick={() => openShare(`https://twitter.com/intent/tweet?url=${encodeURIComponent(getPostUrl(slug))}&text=${encodeURIComponent(title)}`)}
+        >
+          <Twitter className="w-4 h-4" />
+        </button>
+        <button type="button" aria-label="Share on Facebook" title="Share on Facebook" className={btnCls}
+          onClick={() => openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getPostUrl(slug))}`)}
+        >
+          <Facebook className="w-4 h-4" />
+        </button>
+        <button type="button" aria-label="Share via Email" title="Share via Email" className={btnCls}
+          onClick={() => { window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${excerpt ? `${excerpt}\n\n` : ''}${getPostUrl(slug)}`)}` }}
+        >
+          <Mail className="w-4 h-4" />
+        </button>
+        <button type="button" aria-label="Copy link" title="Copy link" className={btnCls} onClick={handleCopy}>
+          {copied ? <Check className="w-4 h-4 text-green-600" /> : <Link2 className="w-4 h-4" />}
+        </button>
+        <span aria-live="polite" className={`text-xs font-medium transition-opacity ${copied ? 'text-green-600 opacity-100' : 'opacity-0'}`}>
+          Copied!
+        </span>
+      </div>
+    </div>
+  )
 }
 
 export default function BlogPostPage({ slug }: { slug: string }) {
@@ -204,6 +300,9 @@ export default function BlogPostPage({ slug }: { slug: string }) {
             {post.content || ''}
           </ReactMarkdown>
         </motion.div>
+
+        {/* Share bar */}
+        <ShareBar title={post.title} slug={post.slug} excerpt={post.excerpt || undefined} />
 
         {/* Author box */}
         {post.author && (

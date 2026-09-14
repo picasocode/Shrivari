@@ -8,7 +8,7 @@ import {
   ListChecks, Search, Info, Image as ImageIcon, LayoutDashboard,
   Briefcase, Zap, Cpu, Gauge, Activity, MonitorPlay, CircuitBoard,
   ShieldCheck, Factory, Award, Boxes, FileCheck, Hammer, FlaskConical,
-  Building2, Globe, Target, Sparkles, GraduationCap, Lightbulb,
+  Building2, Globe, Target, Sparkles, GraduationCap, Lightbulb, Download,
 } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import dynamic from 'next/dynamic'
@@ -38,6 +38,7 @@ import {
   type Career, type ManufacturingItem,
 } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+import { downloadCsv } from '@/lib/csv'
 
 // Rich text (WYSIWYG markdown) editor for blog posts — client-side only.
 const RichTextEditor = dynamic(() => import('./RichTextEditor'), {
@@ -331,17 +332,22 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
 /* ═══════════════════════════════════════════
    SHARED TABLE WRAPPER
    ═══════════════════════════════════════════ */
-function SectionWrapper({ title, loading, error, onRetry, onAdd, children }: {
-  title: string; loading: boolean; error: boolean; onRetry: () => void; onAdd?: () => void; children: React.ReactNode
+function SectionWrapper({ title, loading, error, onRetry, onAdd, onExport, children }: {
+  title: string; loading: boolean; error: boolean; onRetry: () => void; onAdd?: () => void; onExport?: () => void; children: React.ReactNode
 }) {
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
         <h2 className="text-2xl font-bold text-[#1A1A2E]">{title}</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" onClick={onRetry} className="rounded-md text-xs">
             <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
           </Button>
+          {onExport && (
+            <Button variant="outline" size="sm" onClick={onExport} className="rounded-md text-xs" title="Download the current (filtered) list as a CSV file">
+              <Download className="w-3.5 h-3.5 mr-1" /> CSV
+            </Button>
+          )}
           {onAdd && (
             <Button size="sm" onClick={onAdd} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md text-xs">
               <Plus className="w-3.5 h-3.5 mr-1" /> Add
@@ -401,37 +407,111 @@ function rowMatches(fields: (string | number | boolean | undefined | null)[], qu
   return fields.some(f => String(f ?? '').toLowerCase().includes(q))
 }
 
-/** Dropdown filter for a single-key facet (status, category, …). */
-function FilterSelect({ value, onChange, options, label }: {
+/* ═══════════════════════════════════════════
+   PER-FIELD FILTERS — every field gets its own filter control
+   (a wrap-around strip above each table / card list; filters AND together
+   with the search box)
+   ═══════════════════════════════════════════ */
+interface FieldFilterDef {
+  key: string
+  label: string
+  kind: 'text' | 'select'
+  get: (row: any) => string
+  /** Options for kind='select' (without the leading All entry). */
+  options?: string[]
+  /** Label of the All entry (defaults to `All ${label}`). */
+  allLabel?: string
+}
+
+/** True when a row passes every active per-field filter (AND logic). */
+function columnFilterMatch(row: any, defs: FieldFilterDef[], values: Record<string, string>): boolean {
+  for (const d of defs) {
+    const v = (values[d.key] ?? '').trim()
+    if (!v || v === 'all') continue
+    const actual = d.get(row) ?? ''
+    if (d.kind === 'select') {
+      if (actual !== v) return false
+    } else if (!actual.toLowerCase().includes(v.toLowerCase())) {
+      return false
+    }
+  }
+  return true
+}
+
+/** Unique, sorted values of a field — the options for a select filter. */
+function uniqueValues(rows: any[], get: (row: any) => string): string[] {
+  const seen: string[] = []
+  for (const r of rows) {
+    const v = (get(r) ?? '').trim()
+    if (v && !seen.includes(v)) seen.push(v)
+  }
+  return seen.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+}
+
+/** One per-field filter control (text input or select with a leading All entry). */
+function FieldFilterControl({ def, value, onChange, className }: {
+  def: FieldFilterDef
   value: string
   onChange: (v: string) => void
-  options: { value: string; label: string }[]
-  label: string
+  className?: string
 }) {
+  if (def.kind === 'text') {
+    return (
+      <Input
+        value={value === 'all' ? '' : value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={`${def.label}…`}
+        aria-label={`Filter by ${def.label}`}
+        className={`h-7 rounded-md text-xs bg-white ${className ?? ''}`}
+      />
+    )
+  }
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="sm:w-[150px] h-9 rounded-md text-xs bg-white">
-        <SelectValue placeholder={label} />
+    <Select value={value || 'all'} onValueChange={onChange}>
+      <SelectTrigger className={`h-7 rounded-md text-[11px] bg-white w-[150px] ${className ?? ''}`} aria-label={`Filter by ${def.label}`}>
+        <SelectValue placeholder={def.label} />
       </SelectTrigger>
-      <SelectContent>
-        {options.map(o => (
-          <SelectItem key={o.value} value={o.value} className="text-xs">{o.label}</SelectItem>
+      <SelectContent className="z-[160]">
+        <SelectItem value="all" className="text-xs">{def.allLabel ?? `All ${def.label}`}</SelectItem>
+        {(def.options ?? []).map(o => (
+          <SelectItem key={o} value={o} className="text-xs">{o}</SelectItem>
         ))}
       </SelectContent>
     </Select>
   )
 }
 
-const STATUS_OPTIONS: { value: string; label: string }[] = [
-  { value: 'all', label: 'All statuses' },
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-]
-
-function statusFilterMatch(item: { active?: boolean; published?: boolean }, filter: string): boolean {
-  if (filter === 'all') return true
-  const flag = item.published !== undefined ? item.published : item.active !== false
-  return filter === 'active' ? flag : !flag
+/** Wrap-around strip of per-field filters (one control per field) shown above every admin list. */
+function FieldFilterStrip({ defs, values, onChange, onClear }: {
+  defs: FieldFilterDef[]
+  values: Record<string, string>
+  onChange: (key: string, v: string) => void
+  onClear: () => void
+}) {
+  if (!defs.length) return null
+  const anyActive = defs.some(d => {
+    const v = (values[d.key] ?? '').trim()
+    return v !== '' && v !== 'all'
+  })
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-4">
+      <span className="text-[11px] font-semibold uppercase tracking-wide text-[#9CA3AF] shrink-0">Filters</span>
+      {defs.map(d => (
+        <FieldFilterControl
+          key={d.key}
+          def={d}
+          value={values[d.key] ?? ''}
+          onChange={v => onChange(d.key, v)}
+          className={d.kind === 'text' ? 'w-[128px]' : ''}
+        />
+      ))}
+      {anyActive && (
+        <Button variant="ghost" size="sm" onClick={onClear} className="h-7 rounded-md text-xs text-[#6B7280] hover:text-[#E8751A] px-2">
+          <X className="w-3 h-3 mr-1" /> Clear
+        </Button>
+      )}
+    </div>
+  )
 }
 
 /* ═══════════════════════════════════════════
@@ -724,13 +804,24 @@ function ProductsSection() {
   const [editing, setEditing] = useState<Product | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
+
+  const productFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (p: Product) => p.name },
+    { key: 'slug', label: 'Slug', kind: 'text', get: (p: Product) => p.slug },
+    { key: 'category', label: 'Category', kind: 'select', get: (p: Product) => p.category, options: uniqueValues(items, (p: Product) => p.category), allLabel: 'All categories' },
+    { key: 'description', label: 'Description', kind: 'text', get: (p: Product) => p.description },
+    { key: 'features', label: 'Features', kind: 'text', get: (p: Product) => p.features },
+    { key: 'image', label: 'Image', kind: 'select', get: (p: Product) => (p.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
+    { key: 'order', label: 'Order', kind: 'select', get: (p: Product) => String(p.order), options: uniqueValues(items, (p: Product) => String(p.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (p: Product) => (p.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
 
   const filtered = useMemo(() => items.filter(p =>
     rowMatches([p.name, p.slug, p.category, p.description], search) &&
-    (category === 'all' || p.category === category)
-  ), [items, search, category])
+    columnFilterMatch(p, productFilterDefs, colFilters)
+  ), [items, search, colFilters, productFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this product?')) return
@@ -756,20 +847,9 @@ function ProductsSection() {
   }
 
   return (
-    <SectionWrapper title="Products" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search products…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect
-          value={category}
-          onChange={setCategory}
-          label="Category"
-          options={[
-            { value: 'all', label: 'All categories' },
-            { value: 'LT Panels', label: 'LT Panels' },
-            { value: 'HT Panels', label: 'HT Panels' },
-            { value: 'Busducts', label: 'Busducts' },
-          ]}
-        />
-      </FilterBar>
+    <SectionWrapper title="Products" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('products', filtered)}>
+      <FilterBar placeholder="Search products…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={productFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -851,12 +931,24 @@ function ServicesSection() {
   const [editing, setEditing] = useState<Service | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
+  const serviceFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (s: Service) => s.name },
+    { key: 'slug', label: 'Slug', kind: 'text', get: (s: Service) => s.slug },
+    { key: 'description', label: 'Description', kind: 'text', get: (s: Service) => s.description },
+    { key: 'icon', label: 'Icon', kind: 'select', get: (s: Service) => s.icon, options: uniqueValues(items, (s: Service) => s.icon), allLabel: 'All icons' },
+    { key: 'features', label: 'Features', kind: 'text', get: (s: Service) => s.features },
+    { key: 'image', label: 'Image', kind: 'select', get: (s: Service) => (s.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
+    { key: 'order', label: 'Order', kind: 'select', get: (s: Service) => String(s.order), options: uniqueValues(items, (s: Service) => String(s.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (s: Service) => (s.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
+
   const filtered = useMemo(() => items.filter(s =>
-    rowMatches([s.name, s.slug, s.description], search) && statusFilterMatch(s, status)
-  ), [items, search, status])
+    rowMatches([s.name, s.slug, s.description], search) &&
+    columnFilterMatch(s, serviceFilterDefs, colFilters)
+  ), [items, search, colFilters, serviceFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this service?')) return
@@ -882,10 +974,9 @@ function ServicesSection() {
   }
 
   return (
-    <SectionWrapper title="Services" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search services…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
-      </FilterBar>
+    <SectionWrapper title="Services" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('services', filtered)}>
+      <FilterBar placeholder="Search services…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={serviceFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -962,12 +1053,23 @@ function ClientsSection() {
   const [editing, setEditing] = useState<Client | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
+  const clientFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (c: Client) => c.name },
+    { key: 'industry', label: 'Industry', kind: 'select', get: (c: Client) => c.industry, options: uniqueValues(items, (c: Client) => c.industry), allLabel: 'All industries' },
+    { key: 'location', label: 'Location', kind: 'text', get: (c: Client) => c.location },
+    { key: 'description', label: 'Description', kind: 'text', get: (c: Client) => c.description },
+    { key: 'logo', label: 'Logo', kind: 'select', get: (c: Client) => (c.logoUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All logos' },
+    { key: 'order', label: 'Order', kind: 'select', get: (c: Client) => String(c.order), options: uniqueValues(items, (c: Client) => String(c.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (c: Client) => (c.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
+
   const filtered = useMemo(() => items.filter(c =>
-    rowMatches([c.name, c.industry, c.location], search) && statusFilterMatch(c, status)
-  ), [items, search, status])
+    rowMatches([c.name, c.industry, c.location], search) &&
+    columnFilterMatch(c, clientFilterDefs, colFilters)
+  ), [items, search, colFilters, clientFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this client?')) return
@@ -993,10 +1095,9 @@ function ClientsSection() {
   }
 
   return (
-    <SectionWrapper title="Clients" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search clients…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
-      </FilterBar>
+    <SectionWrapper title="Clients" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('clients', filtered)}>
+      <FilterBar placeholder="Search clients…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={clientFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -1072,12 +1173,25 @@ function TestimonialsSection() {
   const [editing, setEditing] = useState<Testimonial | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
+  const testimonialFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (t: Testimonial) => t.name },
+    { key: 'company', label: 'Company', kind: 'select', get: (t: Testimonial) => t.company, options: uniqueValues(items, (t: Testimonial) => t.company), allLabel: 'All companies' },
+    { key: 'designation', label: 'Designation', kind: 'text', get: (t: Testimonial) => t.designation },
+    { key: 'content', label: 'Content', kind: 'text', get: (t: Testimonial) => t.content },
+    { key: 'rating', label: 'Rating', kind: 'select', get: (t: Testimonial) => String(t.rating), options: uniqueValues(items, (t: Testimonial) => String(t.rating)), allLabel: 'All ratings' },
+    { key: 'video', label: 'Video', kind: 'select', get: (t: Testimonial) => (t.videoUrl ? 'YouTube' : 'None'), options: ['YouTube', 'None'], allLabel: 'All videos' },
+    { key: 'avatar', label: 'Avatar', kind: 'select', get: (t: Testimonial) => (t.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All avatars' },
+    { key: 'order', label: 'Order', kind: 'select', get: (t: Testimonial) => String(t.order), options: uniqueValues(items, (t: Testimonial) => String(t.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (t: Testimonial) => (t.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
+
   const filtered = useMemo(() => items.filter(t =>
-    rowMatches([t.name, t.company, t.designation, t.content], search) && statusFilterMatch(t, status)
-  ), [items, search, status])
+    rowMatches([t.name, t.company, t.designation, t.content], search) &&
+    columnFilterMatch(t, testimonialFilterDefs, colFilters)
+  ), [items, search, colFilters, testimonialFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this testimonial?')) return
@@ -1103,10 +1217,9 @@ function TestimonialsSection() {
   }
 
   return (
-    <SectionWrapper title="Testimonials" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search testimonials…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
-      </FilterBar>
+    <SectionWrapper title="Testimonials" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('testimonials', filtered)}>
+      <FilterBar placeholder="Search testimonials…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={testimonialFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -1219,12 +1332,23 @@ function BlogsSection() {
   const [editing, setEditing] = useState<Blog | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
+  const blogFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'title', label: 'Title', kind: 'text', get: (b: Blog) => b.title },
+    { key: 'slug', label: 'Slug', kind: 'text', get: (b: Blog) => b.slug },
+    { key: 'author', label: 'Author', kind: 'select', get: (b: Blog) => b.author, options: uniqueValues(items, (b: Blog) => b.author), allLabel: 'All authors' },
+    { key: 'excerpt', label: 'Excerpt', kind: 'text', get: (b: Blog) => b.excerpt },
+    { key: 'content', label: 'Content', kind: 'text', get: (b: Blog) => b.content },
+    { key: 'cover', label: 'Cover', kind: 'select', get: (b: Blog) => (b.coverImageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All covers' },
+    { key: 'published', label: 'Status', kind: 'select', get: (b: Blog) => (b.published ? 'Published' : 'Draft'), options: ['Published', 'Draft'], allLabel: 'All posts' },
+  ], [items])
+
   const filtered = useMemo(() => items.filter(b =>
-    rowMatches([b.title, b.author, b.slug, b.excerpt], search) && statusFilterMatch(b, status)
-  ), [items, search, status])
+    rowMatches([b.title, b.author, b.slug, b.excerpt], search) &&
+    columnFilterMatch(b, blogFilterDefs, colFilters)
+  ), [items, search, colFilters, blogFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this blog post?')) return
@@ -1250,19 +1374,9 @@ function BlogsSection() {
   }
 
   return (
-    <SectionWrapper title="Blog Posts" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
-      <FilterBar placeholder="Search posts…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect
-          value={status}
-          onChange={setStatus}
-          label="Status"
-          options={[
-            { value: 'all', label: 'All posts' },
-            { value: 'active', label: 'Published' },
-            { value: 'inactive', label: 'Draft' },
-          ]}
-        />
-      </FilterBar>
+    <SectionWrapper title="Blog Posts" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('blog-posts', filtered)}>
+      <FilterBar placeholder="Search posts…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={blogFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -1369,12 +1483,24 @@ function ManufacturingSection() {
   const [editing, setEditing] = useState<ManufacturingItem | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
+  const manufacturingFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (m: ManufacturingItem) => m.name },
+    { key: 'tagline', label: 'Tagline', kind: 'text', get: (m: ManufacturingItem) => m.tagline },
+    { key: 'description', label: 'Description', kind: 'text', get: (m: ManufacturingItem) => m.description },
+    { key: 'features', label: 'Features', kind: 'text', get: (m: ManufacturingItem) => m.features },
+    { key: 'icon', label: 'Icon', kind: 'select', get: (m: ManufacturingItem) => m.icon, options: uniqueValues(items, (m: ManufacturingItem) => m.icon), allLabel: 'All icons' },
+    { key: 'image', label: 'Image', kind: 'select', get: (m: ManufacturingItem) => (m.image ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
+    { key: 'order', label: 'Order', kind: 'select', get: (m: ManufacturingItem) => String(m.order), options: uniqueValues(items, (m: ManufacturingItem) => String(m.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (m: ManufacturingItem) => (m.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
+
   const filtered = useMemo(() => items.filter(m =>
-    rowMatches([m.name, m.tagline, m.description], search) && statusFilterMatch(m, status)
-  ), [items, search, status])
+    rowMatches([m.name, m.tagline, m.description], search) &&
+    columnFilterMatch(m, manufacturingFilterDefs, colFilters)
+  ), [items, search, colFilters, manufacturingFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this manufacturing card? The public page falls back to bundled defaults only when the catalog is empty.')) return
@@ -1400,11 +1526,10 @@ function ManufacturingSection() {
   }
 
   return (
-    <SectionWrapper title="Manufacturing Cards" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+    <SectionWrapper title="Manufacturing Cards" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('manufacturing-cards', filtered)}>
       <p className="text-xs text-[#6B7280] mb-3">These cards power the public Manufacturing page — edit names, photos, descriptions and features here.</p>
-      <FilterBar placeholder="Search cards…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect value={status} onChange={setStatus} label="Status" options={STATUS_OPTIONS} />
-      </FilterBar>
+      <FilterBar placeholder="Search cards…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={manufacturingFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
@@ -1564,7 +1689,7 @@ function CareersSection() {
   const [editing, setEditing] = useState<Career | null>(null)
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
-  const [department, setDepartment] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
 
   const departments = useMemo(() => {
@@ -1573,10 +1698,22 @@ function CareersSection() {
     return seen
   }, [items])
 
+  const careerFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'title', label: 'Title', kind: 'text', get: (c: Career) => c.title },
+    { key: 'department', label: 'Department', kind: 'select', get: (c: Career) => c.department, options: departments, allLabel: 'All departments' },
+    { key: 'location', label: 'Location', kind: 'select', get: (c: Career) => c.location, options: uniqueValues(items, (c: Career) => c.location), allLabel: 'All locations' },
+    { key: 'experience', label: 'Experience', kind: 'text', get: (c: Career) => c.experience },
+    { key: 'type', label: 'Type', kind: 'select', get: (c: Career) => c.type, options: uniqueValues(items, (c: Career) => c.type), allLabel: 'All types' },
+    { key: 'icon', label: 'Icon', kind: 'select', get: (c: Career) => c.icon, options: uniqueValues(items, (c: Career) => c.icon), allLabel: 'All icons' },
+    { key: 'accent', label: 'Accent', kind: 'text', get: (c: Career) => c.accent },
+    { key: 'order', label: 'Order', kind: 'select', get: (c: Career) => String(c.order), options: uniqueValues(items, (c: Career) => String(c.order)), allLabel: 'All orders' },
+    { key: 'active', label: 'Status', kind: 'select', get: (c: Career) => (c.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items, departments])
+
   const filtered = useMemo(() => items.filter(c =>
     rowMatches([c.title, c.department, c.location, c.experience, c.type], search) &&
-    (department === 'all' || c.department === department) && statusFilterMatch(c, 'all')
-  ), [items, search, department])
+    columnFilterMatch(c, careerFilterDefs, colFilters)
+  ), [items, search, colFilters, careerFilterDefs])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this job opening? It will disappear from the public Careers page.')) return
@@ -1602,16 +1739,10 @@ function CareersSection() {
   }
 
   return (
-    <SectionWrapper title="Careers" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)}>
+    <SectionWrapper title="Careers" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('careers', filtered)}>
       <p className="text-xs text-[#6B7280] mb-3">Job openings shown on the public Careers page — add, edit or deactivate positions anytime.</p>
-      <FilterBar placeholder="Search openings…" search={search} onSearch={setSearch} count={filtered.length} total={items.length}>
-        <FilterSelect
-          value={department}
-          onChange={setDepartment}
-          label="Department"
-          options={[{ value: 'all', label: 'All departments' }, ...departments.map(d => ({ value: d, label: d }))]}
-        />
-      </FilterBar>
+      <FilterBar placeholder="Search openings…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={careerFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       {items.length === 0 && !loading ? (
         <p className="text-[#6B7280] text-center py-12">No openings yet — click Add to post one.</p>
       ) : (
@@ -1813,7 +1944,8 @@ function RecordsSection() {
   const [source, setSource] = useState<'supabase' | 'json'>('supabase')
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
-  const [voltageFilter, setVoltageFilter] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
+  const [creating, setCreating] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [drafts, setDrafts] = useState<Record<string, string>>({})
@@ -1915,7 +2047,7 @@ function RecordsSection() {
     }
   }
 
-  // Voltage facet from the loaded page of records; filter is client-side
+  // Voltage facet from the loaded page of records; options for the voltage filter
   const voltages = useMemo(() => {
     const seen: string[] = []
     for (const r of records) {
@@ -1925,9 +2057,23 @@ function RecordsSection() {
     return seen.sort((a, b) => parseFloat(a) - parseFloat(b))
   }, [records])
 
+  const recordFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'customer', label: 'Customer', kind: 'text', get: (r: ProjectRecordItem) => r.customer },
+    { key: 'voltage', label: 'Voltage', kind: 'select', get: (r: ProjectRecordItem) => r.voltage, options: voltages, allLabel: 'All voltages' },
+    { key: 'industry', label: 'Industry', kind: 'select', get: (r: ProjectRecordItem) => r.industry, options: uniqueValues(records, (r: ProjectRecordItem) => r.industry), allLabel: 'All industries' },
+    { key: 'scope', label: 'Scope', kind: 'text', get: (r: ProjectRecordItem) => r.scope },
+    { key: 'location', label: 'Location', kind: 'text', get: (r: ProjectRecordItem) => r.location },
+    { key: 'state', label: 'State', kind: 'select', get: (r: ProjectRecordItem) => r.state, options: uniqueValues(records, (r: ProjectRecordItem) => r.state), allLabel: 'All states' },
+    { key: 'value', label: 'Value', kind: 'text', get: (r: ProjectRecordItem) => r.value },
+    { key: 'year', label: 'Year', kind: 'select', get: (r: ProjectRecordItem) => r.year, options: uniqueValues(records, (r: ProjectRecordItem) => r.year), allLabel: 'All years' },
+    { key: 'image', label: 'Image', kind: 'select', get: (r: ProjectRecordItem) => (r.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
+  ], [records, voltages])
+
   const visibleRecords = useMemo(() =>
-    voltageFilter === 'all' ? records : records.filter(r => (r.voltage ?? '').trim() === voltageFilter)
-  , [records, voltageFilter])
+    records.filter(r => columnFilterMatch(r, recordFilterDefs, colFilters))
+  , [records, colFilters, recordFilterDefs])
+
+  const nextSno = useMemo(() => records.reduce((m, r) => Math.max(m, r.sno || 0), 0) + 1, [records])
 
   return (
     <>
@@ -1938,14 +2084,24 @@ function RecordsSection() {
         className="hidden"
         onChange={e => { const f = e.target.files?.[0]; if (f) void handleRecordUpload(f); e.target.value = '' }}
       />
-      <div className="flex items-center justify-between mb-6">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
+        <div className="min-w-0">
           <h2 className="text-2xl font-bold text-[#1A1A2E]">Project Records</h2>
           <p className="text-xs text-[#6B7280] mt-1">The portfolio list on the public Projects page — set each record&apos;s image URL.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!loading && !error && (
             <Badge variant="secondary" className="text-xs rounded">{records.length} record{records.length === 1 ? '' : 's'}</Badge>
+          )}
+          {!loading && !error && (
+            <Button variant="outline" size="sm" onClick={() => downloadCsv('project-records', visibleRecords)} className="rounded-md text-xs" title="Download the current (filtered) list as a CSV file">
+              <Download className="w-3.5 h-3.5 mr-1" /> CSV
+            </Button>
+          )}
+          {source === 'supabase' && !loading && !error && (
+            <Button size="sm" onClick={() => setCreating(true)} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md text-xs">
+              <Plus className="w-3.5 h-3.5 mr-1" /> Add Record
+            </Button>
           )}
           <Button variant="outline" size="sm" onClick={load} className="rounded-md text-xs">
             <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
@@ -1970,17 +2126,9 @@ function RecordsSection() {
             className="rounded-md h-9 text-sm pl-9 bg-white"
           />
         </div>
-        <FilterSelect
-          value={voltageFilter}
-          onChange={setVoltageFilter}
-          label="Voltage"
-          options={[
-            { value: 'all', label: 'All voltages' },
-            ...voltages.map(v => ({ value: v, label: `${v} KV` })),
-          ]}
-        />
         <span className="text-xs text-[#9CA3AF] sm:ml-auto shrink-0">{visibleRecords.length} of {records.length}</span>
       </div>
+      <FieldFilterStrip defs={recordFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
 
       {loading ? (
         <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm divide-y divide-[#E5E7EB]">
@@ -2078,7 +2226,115 @@ function RecordsSection() {
       {!loading && !error && records.length > 0 && source === 'supabase' && (
         <p className="mt-3 text-xs text-[#6B7280]">Changes save directly to the database and appear on the public Projects page immediately.</p>
       )}
+
+      {creating && (
+        <RecordDialog
+          nextSno={nextSno}
+          onClose={() => setCreating(false)}
+          onCreated={rec => {
+            setRecords(prev => [...prev, rec].sort((a, b) => a.sno - b.sno))
+            setCreating(false)
+          }}
+        />
+      )}
     </>
+  )
+}
+
+/* ─── Add Record dialog (POST /api/project-records) ─── */
+function RecordDialog({ nextSno, onClose, onCreated }: {
+  nextSno: number
+  onClose: () => void
+  onCreated: (record: ProjectRecordItem) => void
+}) {
+  const { notify } = useToast()
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState({
+    sno: String(nextSno), customer: '', voltage: '', industry: '', scope: '',
+    location: '', state: '', value: '', year: '', imageUrl: '',
+  })
+
+  const set = (key: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm(f => ({ ...f, [key]: e.target.value }))
+
+  const handleCreate = async () => {
+    if (!form.customer.trim()) {
+      notify('error', 'Customer name is required')
+      return
+    }
+    setSaving(true)
+    try {
+      const created = await fetchAPI<ProjectRecordRow>('/project-records', {
+        method: 'POST',
+        body: JSON.stringify({
+          sno: parseInt(form.sno, 10) || undefined,
+          customerName: form.customer,
+          voltageLevel: form.voltage,
+          industry: form.industry,
+          scopeOfWork: form.scope,
+          location: form.location,
+          state: form.state,
+          projectValue: form.value,
+          year: form.year,
+          imageUrl: form.imageUrl,
+        }),
+      })
+      // Map the Prisma row (camelCase columns) back to the API record shape.
+      const mapped: ProjectRecordItem = {
+        id: created.id,
+        sno: created.sno ?? (parseInt(form.sno, 10) || nextSno),
+        customer: created.customerName ?? form.customer,
+        voltage: created.voltageLevel ?? form.voltage,
+        industry: created.industry ?? form.industry,
+        scope: created.scopeOfWork ?? form.scope,
+        location: created.location ?? form.location,
+        state: created.state ?? form.state,
+        value: created.projectValue ?? form.value,
+        year: created.year ?? form.year,
+        imageUrl: created.imageUrl ?? form.imageUrl,
+      }
+      notify('success', 'Record added — it is live on the public Projects page')
+      onCreated(mapped)
+    } catch (e) {
+      notify('error', `Create failed: ${(e as Error).message}`)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={v => { if (!v) onClose() }}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
+        <DialogHeader><DialogTitle>Add Project Record</DialogTitle></DialogHeader>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">S.No</Label><Input type="number" value={form.sno} onChange={set('sno')} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Customer *</Label><Input value={form.customer} onChange={set('customer')} placeholder="Customer name" className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Voltage (KV)</Label><Input value={form.voltage} onChange={set('voltage')} placeholder="e.g. 110" className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Industry</Label><Input value={form.industry} onChange={set('industry')} placeholder="e.g. Automotive" className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Scope of Work</Label><Textarea value={form.scope} onChange={set('scope')} rows={3} className="rounded-md text-sm resize-none" placeholder="HT & LT electrical works…" /></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Location</Label><Input value={form.location} onChange={set('location')} placeholder="e.g. Sriperumbudur" className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">State</Label><Input value={form.state} onChange={set('state')} placeholder="e.g. Tamil Nadu" className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Project Value</Label><Input value={form.value} onChange={set('value')} placeholder="e.g. ₹ 2.5 Cr" className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Year</Label><Input value={form.year} onChange={set('year')} placeholder="e.g. 2024" className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <ImageUpload label="Image URL (optional)" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button onClick={handleCreate} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add Record'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -2113,7 +2369,7 @@ function ApplicationsSection() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetchAPI<JobApplication[]>('/applications')
@@ -2129,10 +2385,21 @@ function ApplicationsSection() {
       .catch(() => { setError(true); setLoading(false) })
   }, [])
 
+  const applicationFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (a: JobApplication) => a.name },
+    { key: 'email', label: 'Email', kind: 'text', get: (a: JobApplication) => a.email },
+    { key: 'phone', label: 'Phone', kind: 'text', get: (a: JobApplication) => a.phone },
+    { key: 'jobTitle', label: 'Role', kind: 'select', get: (a: JobApplication) => a.jobTitle, options: uniqueValues(applications, (a: JobApplication) => a.jobTitle), allLabel: 'All roles' },
+    { key: 'experience', label: 'Experience', kind: 'text', get: (a: JobApplication) => a.experience },
+    { key: 'resume', label: 'Resume', kind: 'select', get: (a: JobApplication) => (a.resumeUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All resumes' },
+    { key: 'message', label: 'Message', kind: 'text', get: (a: JobApplication) => a.message },
+    { key: 'status', label: 'Status', kind: 'select', get: (a: JobApplication) => (APPLICATION_STATUSES.find(s => s.value === a.status)?.label ?? a.status), options: APPLICATION_STATUSES.map(s => s.label), allLabel: 'All statuses' },
+  ], [applications])
+
   const filtered = useMemo(() => applications.filter(a =>
     rowMatches([a.name, a.email, a.phone, a.jobTitle, a.message], search) &&
-    (status === 'all' || a.status === status)
-  ), [applications, search, status])
+    columnFilterMatch(a, applicationFilterDefs, colFilters)
+  ), [applications, search, colFilters, applicationFilterDefs])
 
   const setStatusFor = async (application: JobApplication, next: string) => {
     const prev = application.status
@@ -2162,24 +2429,15 @@ function ApplicationsSection() {
   }
 
   return (
-    <SectionWrapper title="Job Applications" loading={loading} error={error} onRetry={load}>
+    <SectionWrapper title="Job Applications" loading={loading} error={error} onRetry={load} onExport={() => downloadCsv('job-applications', filtered)}>
       <FilterBar
         placeholder="Search name, email, role…"
         search={search}
         onSearch={setSearch}
         count={filtered.length}
         total={applications.length}
-      >
-        <FilterSelect
-          value={status}
-          onChange={setStatus}
-          label="Status"
-          options={[
-            { value: 'all', label: 'All statuses' },
-            ...APPLICATION_STATUSES.map(s => ({ value: s.value, label: s.label })),
-          ]}
-        />
-      </FilterBar>
+      />
+      <FieldFilterStrip defs={applicationFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       {filtered.length === 0 ? (
         <p className="text-[#6B7280] text-center py-12">No applications match.</p>
       ) : (
@@ -2253,7 +2511,7 @@ function MessagesSection() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetchAPI<ContactMessage[]>('/contact/messages')
@@ -2261,10 +2519,19 @@ function MessagesSection() {
       .catch(() => { setError(true); setLoading(false) })
   }, [])
 
+  const messageFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (m: ContactMessage) => m.name },
+    { key: 'email', label: 'Email', kind: 'text', get: (m: ContactMessage) => m.email },
+    { key: 'phone', label: 'Phone', kind: 'text', get: (m: ContactMessage) => m.phone },
+    { key: 'subject', label: 'Subject', kind: 'text', get: (m: ContactMessage) => m.subject },
+    { key: 'message', label: 'Message', kind: 'text', get: (m: ContactMessage) => m.message },
+    { key: 'read', label: 'Status', kind: 'select', get: (m: ContactMessage) => (m.read ? 'Read' : 'Unread'), options: ['Unread', 'Read'], allLabel: 'All messages' },
+  ], [])
+
   const filtered = useMemo(() => messages.filter(m =>
     rowMatches([m.name, m.email, m.phone, m.subject, m.message], search) &&
-    (status === 'all' || (status === 'unread' ? !m.read : m.read))
-  ), [messages, search, status])
+    columnFilterMatch(m, messageFilterDefs, colFilters)
+  ), [messages, search, colFilters, messageFilterDefs])
 
   const load = useCallback(() => {
     setLoading(true)
@@ -2285,19 +2552,9 @@ function MessagesSection() {
   }
 
   return (
-    <SectionWrapper title="Contact Messages" loading={loading} error={error} onRetry={load}>
-      <FilterBar placeholder="Search messages…" search={search} onSearch={setSearch} count={filtered.length} total={messages.length}>
-        <FilterSelect
-          value={status}
-          onChange={setStatus}
-          label="Status"
-          options={[
-            { value: 'all', label: 'All messages' },
-            { value: 'unread', label: 'Unread' },
-            { value: 'read', label: 'Read' },
-          ]}
-        />
-      </FilterBar>
+    <SectionWrapper title="Contact Messages" loading={loading} error={error} onRetry={load} onExport={() => downloadCsv('contact-messages', filtered)}>
+      <FilterBar placeholder="Search messages…" search={search} onSearch={setSearch} count={filtered.length} total={messages.length} />
+      <FieldFilterStrip defs={messageFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       {filtered.length === 0 ? (
         <p className="text-[#6B7280] text-center py-12">No messages match.</p>
       ) : (

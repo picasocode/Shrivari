@@ -41,9 +41,13 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (resumeUrl && !/^https?:\/\//i.test(String(resumeUrl))) {
+    if (
+      resumeUrl &&
+      !/^https?:\/\//i.test(String(resumeUrl)) &&
+      !String(resumeUrl).startsWith("/api/images/")
+    ) {
       return NextResponse.json(
-        { error: "Resume link must start with http:// or https://" },
+        { error: "Resume link must start with http://, https:// or /api/images/" },
         { status: 400 }
       );
     }

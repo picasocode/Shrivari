@@ -9,12 +9,17 @@ export const runtime = "nodejs";
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = new Set([
+  // images (admin image fields)
   "image/jpeg",
   "image/png",
   "image/webp",
   "image/gif",
   "image/avif",
   "image/svg+xml",
+  // documents (careers resume upload)
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
 
 function safeName(name: string): string {
@@ -22,7 +27,7 @@ function safeName(name: string): string {
     .replace(/[^\w.\- ]+/g, "_")
     .replace(/\s+/g, " ")
     .trim();
-  return (cleaned || "image").slice(0, 180);
+  return (cleaned || "file").slice(0, 180);
 }
 
 // Best-effort mirror of every upload into the repo-root upload/ folder, so
@@ -55,13 +60,13 @@ export async function POST(request: NextRequest) {
     }
     if (!ALLOWED_TYPES.has(file.type)) {
       return NextResponse.json(
-        { error: "Only JPG, PNG, WebP, GIF, AVIF or SVG images are allowed" },
+        { error: "Only JPG, PNG, WebP, GIF, AVIF, SVG, PDF or DOC/DOCX files are allowed" },
         { status: 415 }
       );
     }
     if (file.size > MAX_BYTES) {
       return NextResponse.json(
-        { error: "Image must be 5MB or smaller" },
+        { error: "File must be 5MB or smaller" },
         { status: 413 }
       );
     }

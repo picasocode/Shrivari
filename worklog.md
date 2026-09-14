@@ -2677,3 +2677,22 @@ Stage Summary:
 - Admin lost the dead Settings and Projects menus; Dashboard's Projects card became a live Job Applications tracker
 - Public site now displays every admin-managed field that was missing: product feature lists expand via the + chip, testimonials show star ratings and avatar photos
 - All admin tables scroll horizontally on phones instead of clipping
+
+---
+Task ID: 29-b
+Agent: general-purpose subagent
+Task: Blog share option (WhatsApp/LinkedIn/X/Facebook/Email/Copy link) on blog post page + copy-link on blog cards
+
+Work Log:
+- Read worklog tail + BlogPostPage.tsx / BlogPage.tsx / Router.tsx; site uses hash routing so the canonical shareable post URL is `${origin}${pathname}#blog-post?slug=<encodeURIComponent(slug)>` (matches Router buildHash)
+- BlogPostPage.tsx: added getPostUrl(slug) helper (SSR-safe via typeof window guard) + copyToClipboard helper (navigator.clipboard first, try/catch fallback to hidden-textarea + document.execCommand('copy')); both top-level, copyToClipboard duplicated in BlogPage "kept in sync" like the existing readingTime/categoryTag pattern
+- Added ShareBar component (plain div, no motion needed): "Share this article" label with coral Share2 icon + 6 buttons — WhatsApp (wa.me/?text=, MessageCircle icon since lucide has no WhatsApp), LinkedIn (share-offsite/?url=, Linkedin), X (twitter.com/intent/tweet?url=&text=, Twitter), Facebook (sharer/sharer.php?u=, Facebook), Email (mailto:?subject=&body= via window.location.href), Copy link (Link2 -> Check icon swap + aria-live "Copied!" text for ~2s, timer cleared on unmount). All share URLs built inside click handlers with encodeURIComponent (SSR-safe, no hydration mismatch); social opens via window.open(_blank, noopener,noreferrer)
+- Verified lucide-react 0.525.0 exports Linkedin/Twitter/Facebook/MessageCircle/Share2/Link2/Check/Mail before importing (no new icon packs, no new deps)
+- Placement: share bar sits right after the markdown article body and just before the author box; subtle style per spec (w-9 h-9 rounded-full border border-slate-200 bg-white text-[#6B7280] hover:border-[#E8751A] hover:text-[#E8751A], aria-label + title on every button, flex-wrap for mobile)
+- BlogPage.tsx: added per-card copy-link icon button in the card footer next to "Read"/"Read More" on BOTH the featured card (w-8 h-8) and grid cards (w-7 h-7), title="Copy link", e.stopPropagation() so it doesn't trigger card navigation, same clipboard logic with copiedId state (check icon turns green ~2s); existing layout untouched otherwise
+- Only these 2 files touched (concurrent main-agent files avoided); no dev server run, no global lint/tsc (per constraints) — instead both files parse-verified with local esbuild (SYNTAX OK) and diff re-read line by line
+
+Stage Summary:
+- Blog post page now has a full share bar (WhatsApp/LinkedIn/X/Facebook/Email + Copy link with transient "Copied!" state) between the article body and the author box, styled to the navy/coral house style with aria-labels everywhere
+- Every blog card on the all-blogs page (featured + grid) gained a non-invasive copy-link icon button using the same hash-URL clipboard logic
+- No new dependencies, no layout breakage; share URLs are hash-routing-correct and encodeURIComponent-ed throughout

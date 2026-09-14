@@ -569,8 +569,8 @@ export default function ServicesPage() {
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-[#152D4F]/15">
                 <Image
-                  src={services[0].image}
-                  alt="Electrical engineering"
+                  src="/images/services/services-hero.jpg"
+                  alt="Shri Vaari Electricals — engineering team reviewing electrical drawings"
                   fill
                   className="object-cover"
                 />
@@ -969,7 +969,7 @@ export default function ServicesPage() {
                   </div>
                 </a>
                 <a
-                  href="mailto:info@shri_vaari_electricals.com"
+                  href="mailto:enquiries@shrivaarielectricals.com"
                   className="flex items-center gap-3 mb-5 group"
                 >
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
@@ -978,7 +978,7 @@ export default function ServicesPage() {
                   <div>
                     <p className="text-xs text-white/50">Email a brief</p>
                     <p className="text-white font-semibold group-hover:text-[#E8751A] transition-colors">
-                      info@shri_vaari_electricals.com
+                      enquiries@shrivaarielectricals.com
                     </p>
                   </div>
                 </a>

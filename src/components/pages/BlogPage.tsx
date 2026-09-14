@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Calendar, User, ArrowRight, Clock, BookOpen, ChevronRight, Mail } from 'lucide-react'
+import { Calendar, User, ArrowRight, Clock, BookOpen, ChevronRight, Mail, Link2, Check } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -54,17 +54,48 @@ const TAG_COLORS: Record<string, string> = {
   Insights: 'bg-violet-100 text-violet-800',
 }
 
+/* ─── Clipboard copy with legacy fallback (kept in sync with BlogPostPage) ─── */
+async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch { /* fall through to legacy path */ }
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 export default function BlogPage() {
   const { navigate } = useRouter()
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     fetchBlogs(true)
       .then(data => { setBlogs(data); setLoading(false) })
       .catch(() => setLoading(false))
+  }, [])
+
+  // Clear the copy-link "Copied" timer on unmount
+  useEffect(() => () => {
+    if (copyTimer.current) clearTimeout(copyTimer.current)
   }, [])
 
   const formatDate = (dateStr: string) =>
@@ -76,6 +107,16 @@ export default function BlogPage() {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault()
     if (email.trim()) { setSubscribed(true); setEmail('') }
+  }
+
+  const handleCopyLink = async (b: Blog) => {
+    if (typeof window === 'undefined') return
+    const url = `${window.location.origin}${window.location.pathname}#blog-post?slug=${encodeURIComponent(b.slug)}`
+    const ok = await copyToClipboard(url)
+    if (!ok) return
+    setCopiedId(b.id)
+    if (copyTimer.current) clearTimeout(copyTimer.current)
+    copyTimer.current = setTimeout(() => setCopiedId(null), 2000)
   }
 
   return (
@@ -179,9 +220,20 @@ export default function BlogPage() {
                           <span className="text-sm font-medium text-[#1A1A2E]">{featured.author}</span>
                         </div>
                       )}
-                      <span className="flex items-center gap-1.5 text-[#E8751A] font-semibold text-sm group-hover:gap-2.5 transition-all">
-                        Read More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          title="Copy link"
+                          aria-label={`Copy link to "${featured.title}"`}
+                          onClick={(e) => { e.stopPropagation(); handleCopyLink(featured) }}
+                          className="w-8 h-8 rounded-full border border-[#E5E7EB] bg-white text-[#9CA3AF] hover:border-[#E8751A] hover:text-[#E8751A] inline-flex items-center justify-center transition-colors shrink-0"
+                        >
+                          {copiedId === featured.id ? <Check className="w-4 h-4 text-green-600" /> : <Link2 className="w-4 h-4" />}
+                        </button>
+                        <span className="flex items-center gap-1.5 text-[#E8751A] font-semibold text-sm group-hover:gap-2.5 transition-all">
+                          Read More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
                     </div>
                   </CardContent>
                 </div>
@@ -248,9 +300,20 @@ export default function BlogPage() {
                               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(b.createdAt)}</span>
                               {b.author && <span className="flex items-center gap-1"><User className="w-3 h-3" />{b.author}</span>}
                             </div>
-                            <span className="flex items-center gap-1 text-[#E8751A] font-semibold text-xs group-hover:gap-2 transition-all">
-                              Read <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                            </span>
+                            <div className="flex items-center gap-2.5">
+                              <button
+                                type="button"
+                                title="Copy link"
+                                aria-label={`Copy link to "${b.title}"`}
+                                onClick={(e) => { e.stopPropagation(); handleCopyLink(b) }}
+                                className="w-7 h-7 rounded-full border border-[#E5E7EB] bg-white text-[#9CA3AF] hover:border-[#E8751A] hover:text-[#E8751A] inline-flex items-center justify-center transition-colors shrink-0"
+                              >
+                                {copiedId === b.id ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Link2 className="w-3.5 h-3.5" />}
+                              </button>
+                              <span className="flex items-center gap-1 text-[#E8751A] font-semibold text-xs group-hover:gap-2 transition-all">
+                                Read <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                              </span>
+                            </div>
                           </div>
                         </CardContent>
                       </div>
