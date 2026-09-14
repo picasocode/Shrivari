@@ -4,8 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import {
-  ChevronRight, ArrowRight, Zap, Cpu, Gauge, Activity,
-  RefreshCw, MonitorPlay, CircuitBoard, ShieldCheck,
+  ChevronRight, ArrowRight, ShieldCheck,
   CheckCircle2, Factory, Award, Boxes, FileCheck, Settings,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -28,17 +27,6 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
       {children}
     </motion.div>
   )
-}
-
-/* ─── Icon registry — admin picks an icon by name, the page resolves it ─── */
-export const MANUFACTURING_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Zap, Cpu, Gauge, Activity, RefreshCw, MonitorPlay, CircuitBoard,
-  ShieldCheck, Factory, Settings, Award, Boxes, FileCheck, CheckCircle2,
-}
-
-export function ManufacturingIcon({ name, className }: { name: string; className?: string }) {
-  const Icon = MANUFACTURING_ICONS[name] || Factory
-  return <Icon className={className} />
 }
 
 function parseFeatures(features: string): string[] {
@@ -369,10 +357,6 @@ export default function ManufacturingPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       {/* Coral accent line */}
                       <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#E8751A] group-hover:w-full transition-all duration-500 ease-out" />
-                      {/* Icon badge */}
-                      <div className="absolute top-4 right-4 w-11 h-11 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md">
-                        <ManufacturingIcon name={product.icon} className="w-5 h-5 text-[#E8751A]" />
-                      </div>
                     </div>
 
                     {/* Content */}
