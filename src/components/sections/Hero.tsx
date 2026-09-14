@@ -56,8 +56,8 @@ export default function Hero() {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
         </div>
       ))}
-      {/* Subtle neutral dark overlay for text readability (no blue tint) */}
-      <div className="absolute inset-0 bg-black/45" />
+      {/* Lighter neutral overlay — images stay bright, text still readable */}
+      <div className="absolute inset-0 bg-black/25" />
 
       {/* Content */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 w-full py-16 md:py-24">

@@ -149,7 +149,7 @@ function LogoItem({ client }: { client: Client }) {
     <div className="flex items-center justify-center p-2.5">
       <div
         title={client.name}
-        className="relative flex items-center justify-center w-full max-w-[210px] h-32 md:h-40 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-6 md:p-8"
+        className="relative flex items-center justify-center w-full max-w-[250px] h-36 md:h-48 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-5 md:p-7"
       >
         {client.logoUrl && !errored ? (
           <img
@@ -377,7 +377,7 @@ export default function ClientsPage() {
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-32 md:h-40 mx-auto w-full max-w-[210px] rounded-xl border border-slate-200 bg-slate-50 animate-pulse"
+                  className="h-36 md:h-48 mx-auto w-full max-w-[250px] rounded-xl border border-slate-200 bg-slate-50 animate-pulse"
                 />
               ))}
             </div>
