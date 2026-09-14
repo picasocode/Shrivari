@@ -2696,3 +2696,31 @@ Stage Summary:
 - Blog post page now has a full share bar (WhatsApp/LinkedIn/X/Facebook/Email + Copy link with transient "Copied!" state) between the article body and the author box, styled to the navy/coral house style with aria-labels everywhere
 - Every blog card on the all-blogs page (featured + grid) gained a non-invasive copy-link icon button using the same hash-URL clipboard logic
 - No new dependencies, no layout breakage; share URLs are hash-routing-correct and encodeURIComponent-ed throughout
+
+---
+Task ID: 29 (main)
+Agent: main (Z.ai Code)
+Task: Complete all remaining Task 29 items and push — service-page email fix, landline correction, Miss Harini 4th, bigger client logo cards, three image swaps, admin per-field filters, records add-new, CSV export everywhere, careers resume upload, blog share, plus mobile header wrap fixes.
+
+Work Log:
+- Resumed from prior session's uncommitted working tree (most Task 29 features already scaffolded); audited every file with git diff, then verified each item end-to-end instead of re-implementing
+- Fixed a real golden-path bug: POST /api/applications rejected the new /api/images/<id> resume URLs (validation only allowed http/https) — applications with an uploaded resume always failed with 400; now accepts http(s) OR /api/images/ prefixed URLs
+- CareersPage polish: uploaded-resume chip now shows "Resume uploaded (PDF)" when the stored URL has no real filename (cuid only)
+- Admin responsive fix: SectionWrapper + Project Records header rows clipped their button groups (CSV / Add Record / Refresh) at 390px; switched both to flex-col sm:flex-row with flex-wrap so buttons wrap under the title instead of overflowing
+- Verified (agent-browser, desktop 1440x900 + mobile 390x844, dev server port 3001, sqlite test DB):
+  - Home About section renders the new team photo (people-1.jpg?v=2, engineering team at a substation)
+  - Services hero renders the new services-hero.jpg (engineering team reviewing drawings); Liaison with Utilities card + service detail render the replaced utility-liaison.jpg (Indian engineers + utility official handshake — "Chinese guy" image gone)
+  - Every mailto on ServicesPage/ServiceDetailPage = enquiries@shrivaarielectricals.com; footer landline = 044 2250 0913; ContactPage Chennai office first phone = 044 2250 0913
+  - Clients page: logos in large bordered cards (rounded-xl border shadow-md, hover shadow-xl lift, max-w 210px, h-32/40)
+  - Team page: Miss Harini is 4th of 7 leaders
+  - Careers: Apply dialog upload button → picked PDF → uploaded → green chip → submitted → 201 in DB (cleaned up test rows)
+  - Blog post: "Share this article" bar (WhatsApp/LinkedIn/X/Facebook/Email/Copy link — Copy shows "Copied!"); all 4 blog cards have copy-link buttons
+  - Products: "+2 more" chip expands the full feature list to "Show less"
+  - Admin: nav has no Settings/Projects; Applications section is list-only (status select + delete + CSV); per-field filter strips on every section (products 4 fields, records 9, applications 8, messages 6, etc.); Category filter live-test 16→3; CSV button click error-free; Add Record dialog creates a record (159→160, verified via API search + auto-sno, test row removed)
+  - 0 page errors / 0 console errors; bun run lint 0/0
+- Restored prisma/schema.prisma to mysql (with JobApplication + Media) and regenerated the client before commit; verified /upload/ still root-anchored in .gitignore and the api/upload route is NOT ignored
+
+Stage Summary:
+- Pushed 6e2c5fb "Task 29 — …" (19 files, +805/−187) to origin/main; GitHub API confirms remote main = 6e2c5fb, src/lib/csv.ts + services-hero.jpg present, upload/ folder intact
+- All Task 28 + Task 29 items now complete: applications system with resume upload, per-field filters on every admin table, records add-new, CSV export on every section, blog share, content/contact/photo corrections
+- Artifacts: src/app/api/applications/route.ts (resume URL fix), src/lib/csv.ts (new), src/components/admin/AdminPanel.tsx (filters/CSV/add/responsive headers), CareersPage/BlogPage/BlogPostPage/ClientsPage/ServicesPage/ServiceDetailPage/HomePage/TeamPage/ContactPage/Footer updates, 3 new/replaced images
