@@ -198,7 +198,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
-              className="h-10 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
           </button>
 
@@ -523,7 +523,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                   <img
                     src="/images/logo.png"
                     alt="Shri Vaari Electricals"
-                    className="h-10 w-auto object-contain"
+                    className="h-12 w-auto object-contain"
                   />
                 </div>
                 <div className="p-4 space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto">

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import {
   ChevronRight, ChevronDown, ChevronLeft, ArrowRight, Eye, X, ShieldCheck,
-  BadgeCheck, Leaf, Gauge, FileBadge2, Lock,
+  BadgeCheck, Leaf, Lock,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
@@ -61,11 +61,6 @@ const policyPillars = [
     icon: Leaf,
     title: 'Environmental Care',
     text: 'Responsible manufacturing under ISO 14001:2015 — minimising our environmental footprint across every project we execute.',
-  },
-  {
-    icon: Gauge,
-    title: 'Energy Efficiency',
-    text: 'ISO 50001:2018 certified energy management — helping our customers and our own facilities use power smarter and cleaner.',
   },
 ]
 
@@ -182,11 +177,11 @@ export default function QualityPage() {
           </FadeIn>
 
           {/* Pillars */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {policyPillars.map((pillar, i) => {
               const Icon = pillar.icon
               return (
-                <FadeIn key={pillar.title} delay={(i % 4) * 0.08}>
+                <FadeIn key={pillar.title} delay={(i % 3) * 0.08}>
                   <div className="h-full bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ background: `${CORAL}14` }}>
                       <Icon className="w-5 h-5" style={{ color: CORAL }} />
