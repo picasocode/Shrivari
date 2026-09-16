@@ -1,16 +1,15 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Phone, LogOut, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes, Layers } from 'lucide-react'
+import { Menu, Phone, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes, Layers, FileBadge2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { useRouter, type PageName } from '@/components/Router'
 import { AnimatePresence, motion } from 'framer-motion'
 
 interface NavbarProps {
   onAdminClick: () => void
   isLoggedIn?: boolean
-  onLogout?: () => void
 }
 
 const serviceDropdownItems = [
@@ -33,6 +32,7 @@ const companyDropdownItems = [
   { label: 'Team', slug: 'team', icon: Users, desc: 'Meet the leadership driving our success' },
   { label: 'Key Sectors We Serve', slug: 'sectors', icon: LayoutGrid, desc: 'Industries and sectors we power across India' },
   { label: 'Careers', slug: 'careers', icon: Briefcase, desc: 'Join our 364+ strong team and grow with us' },
+  { label: 'Quality and Policy', slug: 'quality', icon: FileBadge2, desc: 'Our quality commitment and ISO certifications — view online' },
 ]
 
 const productDropdownItems = [
@@ -58,7 +58,7 @@ const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
   { label: 'Contact', page: 'contact' },
 ]
 
-export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarProps) {
+export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
   const { router, navigate } = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -163,7 +163,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
   }
 
   const isServicesActive = router.page === 'services' || router.page === 'service-detail' || router.page === 'manufacturing'
-  const isCompanyActive = router.page === 'about' || router.page === 'team' || router.page === 'sectors' || router.page === 'careers'
+  const isCompanyActive = router.page === 'about' || router.page === 'team' || router.page === 'sectors' || router.page === 'careers' || router.page === 'quality'
   const isClientsActive = router.page === 'clients' || router.page === 'projects'
   const isProductsActive = router.page === 'products'
 
@@ -198,7 +198,7 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
-              className="h-8 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </button>
 
@@ -487,23 +487,13 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
           {/* CTA + Mobile */}
           <div className="flex items-center gap-3">
             {isLoggedIn ? (
-              <>
-                <Button
-                  onClick={onAdminClick}
-                  className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-5 h-9 transition-colors"
-                >
-                  <Shield className="w-3.5 h-3.5 mr-1.5" />
-                  Dashboard
-                </Button>
-                <Button
-                  onClick={onLogout}
-                  variant="outline"
-                  className="hidden md:inline-flex border-[#E5E7EB] text-[#6B7280] hover:text-red-600 hover:border-red-200 text-xs font-semibold rounded-md px-5 h-9 transition-colors"
-                >
-                  <LogOut className="w-3.5 h-3.5 mr-1.5" />
-                  Logout
-                </Button>
-              </>
+              <Button
+                onClick={onAdminClick}
+                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-5 h-9 transition-colors"
+              >
+                <Shield className="w-3.5 h-3.5 mr-1.5" />
+                Dashboard
+              </Button>
             ) : (
               <Button
                 onClick={onAdminClick}
@@ -527,11 +517,13 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-white w-[280px] p-0">
+                <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+                <SheetDescription className="sr-only">Browse pages of the Shri Vaari Electricals website</SheetDescription>
                 <div className="p-5 border-b border-gray-100">
                   <img
                     src="/images/logo.png"
                     alt="Shri Vaari Electricals"
-                    className="h-8 w-auto object-contain"
+                    className="h-10 w-auto object-contain"
                   />
                 </div>
                 <div className="p-4 space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto">
@@ -758,16 +750,10 @@ export default function Navbar({ onAdminClick, isLoggedIn, onLogout }: NavbarPro
                 </div>
                 <div className="p-4 border-t border-gray-100 space-y-2">
                   {isLoggedIn ? (
-                    <>
-                      <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white rounded-md text-sm">
-                        <Shield className="w-3.5 h-3.5 mr-1.5" />
-                        Dashboard
-                      </Button>
-                      <Button onClick={() => { onLogout?.(); setMobileOpen(false) }} variant="outline" className="w-full border-[#E5E7EB] text-[#6B7280] rounded-md text-sm">
-                        <LogOut className="w-3.5 h-3.5 mr-1.5" />
-                        Logout
-                      </Button>
-                    </>
+                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white rounded-md text-sm">
+                      <Shield className="w-3.5 h-3.5 mr-1.5" />
+                      Dashboard
+                    </Button>
                   ) : (
                     <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white rounded-md text-sm">
                       <Shield className="w-3.5 h-3.5 mr-1.5" />

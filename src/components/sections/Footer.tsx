@@ -2,7 +2,7 @@
 
 import {
   Phone, Mail, MapPin, Clock, Globe,
-  Linkedin, Youtube, Facebook, Instagram, Twitter,
+  Linkedin, Youtube, Instagram,
   ArrowRight, Award,
 } from 'lucide-react'
 import { useRouter, type PageName } from '@/components/Router'
@@ -14,16 +14,15 @@ const quickLinks: { label: string; page: PageName }[] = [
   { label: 'Products', page: 'products' },
   { label: 'Projects', page: 'projects' },
   { label: 'Manufacturing', page: 'manufacturing' },
+  { label: 'Quality and Policy', page: 'quality' },
   { label: 'Careers', page: 'careers' },
   { label: 'Contact', page: 'contact' },
 ]
 
 const socialLinks = [
-  { label: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com' },
-  { label: 'YouTube', icon: Youtube, href: 'https://www.youtube.com' },
-  { label: 'Facebook', icon: Facebook, href: 'https://www.facebook.com' },
-  { label: 'Instagram', icon: Instagram, href: 'https://www.instagram.com' },
-  { label: 'Twitter', icon: Twitter, href: 'https://www.twitter.com' },
+  { label: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/shri-vaari-electricals-pvt-ltd/' },
+  { label: 'YouTube', icon: Youtube, href: 'https://www.youtube.com/watch?v=PMmcF3lzoKk' },
+  { label: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/shrivaari_electricals' },
 ]
 
 export default function Footer() {

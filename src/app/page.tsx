@@ -20,6 +20,7 @@ import ContactPage from '@/components/pages/ContactPage'
 import SectorsPage from '@/components/pages/SectorsPage'
 import CareersPage from '@/components/pages/CareersPage'
 import TeamPage from '@/components/pages/TeamPage'
+import QualityPage from '@/components/pages/QualityPage'
 import AdminPanel from '@/components/admin/AdminPanel'
 import LoginPage from '@/components/pages/LoginPage'
 
@@ -53,6 +54,7 @@ function AppContent() {
     sectors: <SectorsPage />,
     careers: <CareersPage />,
     team: <TeamPage />,
+    quality: <QualityPage />,
     // #admin deep link: logged-in users get the panel, everyone else the login/setup screen
     admin: user
       ? <AdminPanel onClose={() => { window.location.hash = 'home' }} />
@@ -73,7 +75,6 @@ function AppContent() {
       <Navbar
         onAdminClick={handleAdminClick}
         isLoggedIn={!!user}
-        onLogout={() => { setShowAdmin(false); setShowLogin(false) }}
       />
       <main className="flex-1">{pages[router.page] || <HomePage />}</main>
       <Footer />

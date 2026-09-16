@@ -659,7 +659,7 @@ export async function GET() {
         order: 5,
       },
       {
-        name: "Mr. Manjari",
+        name: "Mr. Bhupal Manjari",
         designation: "Project Director",
         responsibility: "EHV Projects",
         experience: 40,
