@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, createContext, useContext } from 'react'
 
-export type PageName = 'home' | 'about' | 'team' | 'sectors' | 'careers' | 'products' | 'manufacturing' | 'services' | 'clients' | 'projects' | 'testimonials' | 'blog' | 'contact' | 'admin' | 'blog-post' | 'service-detail'
+export type PageName = 'home' | 'about' | 'team' | 'sectors' | 'careers' | 'products' | 'manufacturing' | 'services' | 'clients' | 'projects' | 'testimonials' | 'blog' | 'contact' | 'admin' | 'blog-post' | 'service-detail' | 'quality'
 
 interface RouterState {
   page: PageName
@@ -23,7 +23,7 @@ const RouterContext = createContext<RouterContextType>({
 
 export const useRouter = () => useContext(RouterContext)
 
-const VALID_PAGES: PageName[] = ['home', 'about', 'team', 'sectors', 'careers', 'products', 'manufacturing', 'services', 'clients', 'projects', 'testimonials', 'blog', 'contact', 'admin', 'blog-post', 'service-detail']
+const VALID_PAGES: PageName[] = ['home', 'about', 'team', 'sectors', 'careers', 'products', 'manufacturing', 'services', 'clients', 'projects', 'testimonials', 'blog', 'contact', 'admin', 'blog-post', 'service-detail', 'quality']
 
 /** Parse a location.hash into { page, params }.
  *  Supported formats:
