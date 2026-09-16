@@ -10,11 +10,25 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
+import { fetchClients, type Client } from '@/lib/api'
 import { CLIENT_GALLERY, CATEGORY_LABELS, type GalleryClient } from '@/lib/client-gallery'
 
 /* ─── Tokens (used very sparingly — coral hairlines + navy text only) ─── */
 const CORAL = '#E8751A'
 const INK = '#1A1A2E'
+
+/* ─── Unified display item: numbered official logos + named admin clients ─── */
+interface DisplayClient {
+  key: string
+  name: string
+  src: string | null
+  label: string
+}
+
+/* ─── Legacy logo paths from the old mismatched seeding — those files no
+   longer exist, so any DB record still pointing at /images/clients/ is
+   skipped instead of rendering a broken image on the public page. */
+const LEGACY_LOGO_PREFIX = '/images/clients/'
 
 /* ─── FadeIn Helper ─── */
 function FadeIn({
@@ -66,32 +80,49 @@ function AnimatedCounter({ target, duration = 1.6 }: { target: number; duration?
   return <span ref={ref}>{count}</span>
 }
 
+/* ─── Clean monogram from a client name (fallback when a logo is missing) ─── */
+function buildMonogram(name: string): string {
+  const parts = (name || '?').trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  if (parts[0].length <= 4) {
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase()
+  }
+  return parts[0].slice(0, 2).toUpperCase()
+}
+
 /* ─── A single logo item for a clean carded grid ───
-   Each logo sits in a BIG bordered card with a soft shadow (and a slightly
-   deeper shadow on hover). Every logo is forced into the same fixed card
-   size so all appear at the exact same visual size. These are EXACTLY the
-   logos from the company's official clients page — fully downloaded and
-   self-hosted, no hotlinking. */
-function LogoItem({ client, label }: { client: GalleryClient; label: string }) {
+   Each card shows the logo plus its client name ("Client 1 … Client 161"
+   for the official gallery logos; the real name for admin-added clients).
+   Logo fills the card area (object-contain — never cropped) with the name
+   as a small caption underneath; missing logos fall back to a monogram. */
+function LogoItem({ client }: { client: DisplayClient }) {
   const [errored, setErrored] = useState(false)
+  const showImage = client.src && !errored
 
   return (
     <div className="flex items-center justify-center p-2.5">
       <div
-        title={`Our client — ${label}`}
-        className="relative flex items-center justify-center w-full max-w-[250px] h-36 md:h-48 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-5 md:p-7"
+        title={client.name}
+        className="relative flex flex-col items-center justify-center w-full max-w-[250px] h-36 md:h-48 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-4 md:p-5"
       >
-        {!errored ? (
-          <img
-            src={client.src}
-            alt={`Shrivaari Electricals client logo — ${label} sector`}
-            onError={() => setErrored(true)}
-            className="max-w-full max-h-full w-auto h-auto object-contain"
-            loading="lazy"
-          />
-        ) : (
-          <Building2 className="w-10 h-10 text-slate-300" />
-        )}
+        <div className="flex-1 min-h-0 w-full flex items-center justify-center">
+          {showImage ? (
+            <img
+              src={client.src as string}
+              alt={`${client.name} — ${client.label}`}
+              onError={() => setErrored(true)}
+              className="max-w-full max-h-full w-auto h-auto object-contain"
+              loading="lazy"
+            />
+          ) : (
+            <span className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-700 select-none">
+              {buildMonogram(client.name)}
+            </span>
+          )}
+        </div>
+        <p className="w-full mt-2 text-center text-[11px] md:text-xs font-semibold tracking-wide text-slate-500 truncate">
+          {client.name}
+        </p>
       </div>
     </div>
   )
@@ -103,8 +134,29 @@ const PAGE_SIZE = 50
 /* ─── Main Component ─── */
 export default function ClientsPage() {
   const { navigate } = useRouter()
+  const [adminClients, setAdminClients] = useState<Client[]>([])
   const [activeFilter, setActiveFilter] = useState('All')
   const [currentPage, setCurrentPage] = useState(1)
+
+  /* Admin-added clients (with real names) load from the DB and are listed
+     after the official numbered gallery. Legacy records pointing at the
+     removed /images/clients/ files are ignored. */
+  useEffect(() => {
+    let mounted = true
+    fetchClients(true)
+      .then(data => {
+        if (!mounted || !data) return
+        setAdminClients(
+          data.filter(c => !c.logoUrl || !c.logoUrl.startsWith(LEGACY_LOGO_PREFIX))
+        )
+      })
+      .catch(() => {
+        /* gallery alone is already complete — admin list is a bonus */
+      })
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   /* Categories in first-appearance order (mirrors the official grouping) */
   const categories = useMemo(() => {
@@ -115,22 +167,40 @@ export default function ClientsPage() {
     return seen
   }, [])
 
-  const filteredClients = useMemo(
-    () =>
-      activeFilter === 'All'
-        ? CLIENT_GALLERY
-        : CLIENT_GALLERY.filter(c => c.category === activeFilter),
-    [activeFilter]
-  )
+  /* Merge: numbered official gallery first, then named admin clients */
+  const allClients = useMemo<DisplayClient[]>(() => {
+    const gallery: DisplayClient[] = CLIENT_GALLERY.map((c: GalleryClient) => ({
+      key: c.id,
+      name: c.name,
+      src: c.src,
+      label: CATEGORY_LABELS[c.category] || c.category,
+    }))
+    const extras: DisplayClient[] = adminClients.map(c => ({
+      key: `db-${c.id}`,
+      name: c.name,
+      src: c.logoUrl || null,
+      label: c.industry || 'Partner',
+    }))
+    return [...gallery, ...extras]
+  }, [adminClients])
+
+  const filteredClients = useMemo(() => {
+    if (activeFilter === 'All') return allClients
+    const label = CATEGORY_LABELS[activeFilter]
+    return allClients.filter(c => {
+      /* gallery items filter by slug; admin clients by their industry name */
+      return c.label === label || c.label === activeFilter
+    })
+  }, [allClients, activeFilter])
 
   const stats = useMemo(() => {
     return [
-      { label: 'Trusted Clients', value: CLIENT_GALLERY.length, suffix: '+' },
+      { label: 'Trusted Clients', value: allClients.length, suffix: '+' },
       { label: 'Industries Served', value: categories.length, suffix: '' },
       { label: 'Projects Delivered', value: 500, suffix: '+' },
       { label: 'Years of Trust', value: 29, suffix: '+' },
     ]
-  }, [categories])
+  }, [allClients, categories])
 
   const listedClients = filteredClients
 
@@ -270,7 +340,8 @@ export default function ClientsPage() {
       </section>
 
       {/* ════════════════ CLIENT LOGOS — BIG CARDED GRID, 5 PER ROW, PAGINATED ════════════════ */}
-      {/* Each logo in a bordered, shadowed card of identical size. 5 per row × 10 rows = 50 per page. */}
+      {/* Each card: logo + client name caption. Official gallery (Client 1…161)
+          first, then any clients added with a name from the admin panel. */}
       <section id="client-logos" className="bg-white py-12 md:py-16">
         <div className="max-w-[1400px] mx-auto px-5 lg:px-8">
           {/* Section label */}
@@ -290,11 +361,7 @@ export default function ClientsPage() {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
               {pageClients.map(c => (
-                <LogoItem
-                  key={c.id}
-                  client={c}
-                  label={CATEGORY_LABELS[c.category] || c.category}
-                />
+                <LogoItem key={c.key} client={c} />
               ))}
             </div>
           )}
