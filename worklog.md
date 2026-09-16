@@ -2743,3 +2743,25 @@ Work Log:
 Stage Summary:
 - Pushed dbbf2a2 "UI polish: brighter home hero overlay, bigger client logo cards, electrical-themed About image, remove manufacturing card icon badges" (5 files, +7/−23 + new jpg) to origin/main
 - GitHub API confirmed remote main = dbbf2a2, upload/ folder still present (1 file), electrical-controls.jpg live via raw HTTP 200
+---
+Task ID: 31+32
+Agent: Z.ai Code (main)
+Task: 31) Product page + Manufacturing page images → uniform 1:1 with corner Shri Vaari logo watermark, full image preserved (no cropping); 32) Clients page — logos were mismatched with names / hotlinked from old site → download all logos from https://www.shrivaarielectricals.com/clients.html and use ONLY those.
+
+Work Log:
+- Fetched official clients.html; extracted 161 unique client logos (img/client/{1..136,169..194}.jpg) and downloaded all into public/images/clients-site/ (630×400 JPEGs, ~2.6MB total)
+- Scraped industry-client.html category mapping (192 li blocks) → per-logo industry slug; generated src/lib/client-gallery.ts (CLIENT_GALLERY 161 entries + CATEGORY_LABELS, 23 categories; logo 42 → 'general')
+- Rewrote ClientsPage.tsx: removed DB fetch + 50-brand FALLBACK_CLIENTS + resolveClientLogo; page now renders ONLY the official logo gallery (logo-only cards like the old site — official page shows no names), industry filter pills mirroring official grouping, pagination 50/page (4 pages), stats = 161 clients / 23 industries; kept Task 30 card sizing (max-w-[250px] h-36 md:h-48 p-5 md:p-7) and coral/navy design language
+- Simplified /api/clients route: removed uncommitted "logo self-heal" (its name→logo map is obsolete since public page no longer reads DB logos; admin-managed DB clients unaffected for home section/admin)
+- Deleted untracked leftovers: public/images/clients/ (50 wrong-brand PNGs) and src/lib/client-logos.ts
+- Task 31: PIL batch (23 files = 14 products/*.jpg + 9 manufacturing product shots apfc/cr/cr-panel-svepl/mcc/pcc/plc/scada-panel/sync/vfd): contain-fit to 1024×1024 white canvas (FULL image, zero crop), LANCZOS resample, logo.png scaled to 26% width @85% opacity on rounded white pill (165α), bottom-right corner, saved JPEG q92
+- Frontend: ProductsPage + ManufacturingPage product-card containers object-cover → object-contain (+ bg-slate-50) so full photo + corner watermark always visible
+- Env: sqlite conversion for local test (db:push + generate), dev server on 3001
+- Verified agent-browser (fresh session — sandbox now reaps background processes between tool calls; server restarted per call): desktop 1440×900 — clients grid 50/page first=/images/clients-site/1.jpg, 0 broken after scroll, filter "Power & Energy" → 7 logos, pagination page 2 → starts at 51.jpg "Showing 51–100 of 161"; products cards watermark visible full-bleed; manufacturing System Portfolio cards OK; mobile 390×844 — no horizontal overflow (scrollW=390), 2-col grid clean. errors=0, console=0 (excluding known benign warnings). bun run lint: 0 errors / 0 warnings
+- Restored prisma/schema.prisma to mysql from git HEAD (this session's earlier /tmp backup had captured an already-sqlite tree from a stale prior session), verified provider="mysql" before commit
+- Commit a4d8eb9 → pushed main; GitHub API: remote HEAD a4d8eb9, upload/ intact, public/images/clients-site = 161 files on remote
+
+Stage Summary:
+- Clients page now shows EXACTLY the official 161 client logos, self-hosted, with official industry grouping filter — no mismatched names, no third-party logos, no hotlinking
+- All product/manufacturing product imagery is uniform 1024×1024 (1:1), full photo preserved via contain-padding (explicit user requirement: never crop), with semi-transparent Shri Vaari corner watermark
+- Remote main: a4d8eb9 (code+assets) — this worklog record pushed separately
