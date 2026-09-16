@@ -2802,3 +2802,21 @@ Stage Summary:
 - Remote main: 9d5dc18 (14 files, +434/-46; certificates + QualityPage new)
 - GitHub API: HEAD 9d5dc18, upload/ intact (1 file unchanged), public/images/certificates = 7 files, QualityPage raw 200
 - Menu label uses client's exact wording "Quality and Policy"; YouTube used as social link, not embedded
+
+---
+Task ID: 35
+Agent: Z.ai Code (main)
+Task: User review feedback on Quality and Policy page — remove "Energy Efficiency" section; make navbar logo bigger
+
+Work Log:
+- Sandbox had been reset; re-cloned repo (Task 33/34 already on remote: 4bf5a71/9d5dc18 + worklog commits)
+- QualityPage.tsx: removed 4th pillar "Energy Efficiency" (icon Gauge) — policyPillars now 3 items (Quality First / Safety Always / Environmental Care), grid lg:grid-cols-4 -> lg:grid-cols-3, stagger delay (i%4)->(i%3); dropped unused Gauge/FileBadge2 icon imports
+- Navbar.tsx: desktop logo h-10 -> h-14 (40->56px, fits inside unchanged h-16 row so fixed header stays 100px = no page layout shift); mobile sheet logo h-10 -> h-12
+- Rest of user-pasted content verified already matching live page (title, "Our Commitment to Excellence", ISO intro, 3 pillar texts)
+- bun install (fresh clone) + lint 0/0; sqlite local verify on 3001 with fresh agent-browser session: Energy Efficiency absent (desktop+mobile), exactly 3 pillar h3s, 3-col grid (392px x3), logo 56px, header height still 100px, no horizontal overflow at 390px, 0 page errors / 0 console errors (only pre-existing framer-motion non-static-position warning)
+- Restored mysql schema from git HEAD, removed .env pre-commit
+
+Stage Summary:
+- Remote main: ef0a1b5 (2 files, +5/-10)
+- GitHub API: HEAD ef0a1b5 confirmed, upload/ intact (1 item)
+- Energy Efficiency section removed per client request; ISO 50001 certificate kept in gallery (real certificate, user only asked to remove the section)
