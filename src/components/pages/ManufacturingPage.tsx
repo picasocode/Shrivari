@@ -343,12 +343,14 @@ export default function ManufacturingPage() {
                     transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                     className="group relative h-full overflow-hidden rounded-2xl bg-white border border-slate-200 hover:border-[#E8751A]/40 shadow-sm hover:shadow-2xl hover:shadow-[#E8751A]/10 transition-all duration-500"
                   >
-                    {/* Image — uniform square on every card (SAS-card geometry) */}
-                    <div className="relative overflow-hidden aspect-square">
+                    {/* Image — uniform square on every card (SAS-card geometry).
+                        object-contain so the FULL product photo is always visible
+                        (never cropped) and the corner watermark stays in view. */}
+                    <div className="relative overflow-hidden aspect-square bg-slate-50">
                       <motion.img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         initial={false}
                         whileHover={{ scale: 1.08 }}
                         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
