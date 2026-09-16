@@ -2765,3 +2765,20 @@ Stage Summary:
 - Clients page now shows EXACTLY the official 161 client logos, self-hosted, with official industry grouping filter — no mismatched names, no third-party logos, no hotlinking
 - All product/manufacturing product imagery is uniform 1024×1024 (1:1), full photo preserved via contain-padding (explicit user requirement: never crop), with semi-transparent Shri Vaari corner watermark
 - Remote main: a4d8eb9 (code+assets) — this worklog record pushed separately
+---
+Task ID: 33
+Agent: Z.ai Code (main)
+Task: Clients page — put numbered names (1, 2, 3…) on the current gallery logos (admin has no names for them); clients added later via the admin panel must show with their real names.
+
+Work Log:
+- Added name field to all 161 gallery entries in src/lib/client-gallery.ts: 'Client 1' … 'Client 161' numbered sequentially in official display order
+- Rewrote ClientsPage card: flex-col layout, logo area (object-contain, never cropped) + name caption underneath (text-[11px] md:text-xs, truncate); card size from Task 30 kept (h-36 md:h-48, p-4/5)
+- Merge strategy: static numbered gallery first, then active DB clients fetched via fetchClients(true) appended with their real names; records whose logoUrl points at the deleted legacy /images/clients/ prefix are skipped (prevents broken images); missing-logo records render a monogram fallback (buildMonogram restored)
+- Industry filter pills now include admin clients whose industry string matches the pill label; stats 'Trusted Clients' = gallery + admin count
+- Local sqlite test with seeded test records via POST /api/clients: 'Sundaram Textiles' (logoUrl /images/logo.png) appeared as card 162 after Client 161; appears in 'Metal & Steel' filter (9 results); 'No Logo Traders' (empty logo) rendered monogram 'NL'
+- Verified agent-browser desktop 1440×900 (captions Client 1..161, page 4 = 151-161 + admin clients, filters OK) and mobile 390×844 (2-col, scrollW=390, no overflow); errors=0, console=0 (excluding known benign warnings); bun run lint 0/0; schema restored to mysql before commit
+- Commit 4bf5a71 → pushed; GitHub API: remote HEAD 4bf5a71, upload/ intact
+
+Stage Summary:
+- Public clients page: every current logo labeled 'Client N' (official order), admin panel remains the place to add other clients with real names/logos which appear after the gallery
+- Remote main: 4bf5a71
