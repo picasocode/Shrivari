@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import {
   ChevronRight,
@@ -10,69 +10,11 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
-import { fetchClients, type Client } from '@/lib/api'
+import { CLIENT_GALLERY, CATEGORY_LABELS, type GalleryClient } from '@/lib/client-gallery'
 
 /* ─── Tokens (used very sparingly — coral hairlines + navy text only) ─── */
 const CORAL = '#E8751A'
 const INK = '#1A1A2E'
-
-/* ─── Fallback clients with REAL brand logo URLs (Google favicon API). ───
-   Used when the Supabase API is unavailable. In production, real logos
-   come from the Client table's logoUrl field. Each logo has an
-   onError → monogram fallback for resilience. */
-const FAV = (d: string) => `https://www.google.com/s2/favicons?domain=${d}&sz=128`
-const FALLBACK_CLIENTS: Client[] = [
-  { id: 'f1', name: 'Ashok Leyland', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('ashokleyland.com'), description: '', order: 1, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f2', name: 'TVS Motor', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('tvsmotor.com'), description: '', order: 2, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f3', name: 'Tata Motors', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('tatamotors.com'), description: '', order: 3, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f4', name: 'Mahindra', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('mahindra.com'), description: '', order: 4, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f5', name: 'Bajaj Auto', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('bajajauto.com'), description: '', order: 5, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f6', name: 'Hyundai Motor', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('hyundai.com'), description: '', order: 6, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f7', name: 'Maruti Suzuki', industry: 'Auto & Ancillary', location: '', logoUrl: FAV('marutisuzuki.com'), description: '', order: 7, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f8', name: 'Larsen & Toubro', industry: 'Engineering', location: '', logoUrl: FAV('larsentoubro.com'), description: '', order: 8, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f9', name: 'Bharat Forge', industry: 'Forging', location: '', logoUrl: FAV('bharatforge.com'), description: '', order: 9, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f10', name: 'Cummins India', industry: 'Engineering', location: '', logoUrl: FAV('cummins.com'), description: '', order: 10, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f11', name: 'Schneider Electric', industry: 'Electronics', location: '', logoUrl: FAV('se.com'), description: '', order: 11, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f12', name: 'Siemens', industry: 'Electronics', location: '', logoUrl: FAV('siemens.com'), description: '', order: 12, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f13', name: 'ABB', industry: 'Electronics', location: '', logoUrl: FAV('abb.com'), description: '', order: 13, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f14', name: 'Havells', industry: 'Electronics', location: '', logoUrl: FAV('havells.com'), description: '', order: 14, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f15', name: 'Crompton', industry: 'Electronics', location: '', logoUrl: FAV('crompton.co.in'), description: '', order: 15, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f16', name: 'BHEL', industry: 'Power Equipment', location: '', logoUrl: FAV('bhel.in'), description: '', order: 16, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f17', name: 'Tata Power', industry: 'Power & Energy', location: '', logoUrl: FAV('tatapower.com'), description: '', order: 17, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f18', name: 'Adani Power', industry: 'Power & Energy', location: '', logoUrl: FAV('adani.com'), description: '', order: 18, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f19', name: 'NTPC', industry: 'Power & Energy', location: '', logoUrl: FAV('ntpc.co.in'), description: '', order: 19, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f20', name: 'Power Grid', industry: 'Power & Energy', location: '', logoUrl: FAV('powergrid.in'), description: '', order: 20, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f21', name: 'JSW Steel', industry: 'Metal', location: '', logoUrl: FAV('jsw.in'), description: '', order: 21, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f22', name: 'Tata Steel', industry: 'Metal', location: '', logoUrl: FAV('tatasteel.com'), description: '', order: 22, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f23', name: 'Vedanta', industry: 'Metal', location: '', logoUrl: FAV('vedantaresources.com'), description: '', order: 23, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f24', name: 'Hindalco', industry: 'Metal', location: '', logoUrl: FAV('hindalco.com'), description: '', order: 24, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f25', name: 'SAIL', industry: 'Metal', location: '', logoUrl: FAV('sail.co.in'), description: '', order: 25, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f26', name: 'Reliance Industries', industry: 'Petroleum', location: '', logoUrl: FAV('ril.com'), description: '', order: 26, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f27', name: 'IOCL', industry: 'Petroleum', location: '', logoUrl: FAV('iocl.com'), description: '', order: 27, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f28', name: 'BPCL', industry: 'Petroleum', location: '', logoUrl: FAV('bharatpetroleum.com'), description: '', order: 28, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f29', name: 'HPCL', industry: 'Petroleum', location: '', logoUrl: FAV('hpcl.co.in'), description: '', order: 29, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f30', name: 'ONGC', industry: 'Petroleum', location: '', logoUrl: FAV('ongcindia.com'), description: '', order: 30, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f31', name: 'Tata Chemicals', industry: 'Chemicals', location: '', logoUrl: FAV('tatachemicals.com'), description: '', order: 31, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f32', name: 'UPL', industry: 'Chemicals', location: '', logoUrl: FAV('upl-ltd.com'), description: '', order: 32, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f33', name: 'Pidilite', industry: 'Chemicals', location: '', logoUrl: FAV('pidilite.com'), description: '', order: 33, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f34', name: 'TCS', industry: 'IT', location: '', logoUrl: FAV('tcs.com'), description: '', order: 34, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f35', name: 'Infosys', industry: 'IT', location: '', logoUrl: FAV('infosys.com'), description: '', order: 35, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f36', name: 'Wipro', industry: 'IT', location: '', logoUrl: FAV('wipro.com'), description: '', order: 36, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f37', name: 'HCL Tech', industry: 'IT', location: '', logoUrl: FAV('hcltech.com'), description: '', order: 37, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f38', name: 'Tech Mahindra', industry: 'IT', location: '', logoUrl: FAV('techmahindra.com'), description: '', order: 38, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f39', name: 'Apollo Hospitals', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('apollohospitals.com'), description: '', order: 39, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f40', name: 'Fortis Healthcare', industry: 'Hospitals & Institutions', location: '', logoUrl: FAV('fortishealthcare.com'), description: '', order: 40, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f41', name: 'Cipla', industry: 'Pharma', location: '', logoUrl: FAV('cipla.com'), description: '', order: 41, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f42', name: 'Sun Pharma', industry: 'Pharma', location: '', logoUrl: FAV('sunpharma.com'), description: '', order: 42, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f43', name: 'Dr. Reddy\'s', industry: 'Pharma', location: '', logoUrl: FAV('drreddys.com'), description: '', order: 43, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f44', name: 'Lupin', industry: 'Pharma', location: '', logoUrl: FAV('lupin.com'), description: '', order: 44, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f45', name: 'DLF', industry: 'Real Estate', location: '', logoUrl: FAV('dlf.in'), description: '', order: 45, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f46', name: 'Godrej Properties', industry: 'Real Estate', location: '', logoUrl: FAV('godrejproperties.com'), description: '', order: 46, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f47', name: 'ITC', industry: 'Food Industry', location: '', logoUrl: FAV('itcportal.com'), description: '', order: 47, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f48', name: 'Britannia', industry: 'Food Industry', location: '', logoUrl: FAV('britannia.co.in'), description: '', order: 48, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f49', name: 'UltraTech', industry: 'Cement', location: '', logoUrl: FAV('ultratechcement.com'), description: '', order: 49, active: true, createdAt: '', updatedAt: '' },
-  { id: 'f50', name: 'Ambuja', industry: 'Cement', location: '', logoUrl: FAV('ambujacement.com'), description: '', order: 50, active: true, createdAt: '', updatedAt: '' },
-]
 
 /* ─── FadeIn Helper ─── */
 function FadeIn({
@@ -124,45 +66,31 @@ function AnimatedCounter({ target, duration = 1.6 }: { target: number; duration?
   return <span ref={ref}>{count}</span>
 }
 
-/* ─── Build a clean monogram from a client name (logo-style mark) ─── */
-function buildMonogram(name: string): string {
-  const parts = (name || '?').trim().split(/\s+/)
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
-  // Single short word + next word → combine initials (e.g. "Adani Power" → "AP")
-  if (parts[0].length <= 4) {
-    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase()
-  }
-  return parts[0].slice(0, 2).toUpperCase()
-}
-
 /* ─── A single logo item for a clean carded grid ───
    Each logo sits in a BIG bordered card with a soft shadow (and a slightly
    deeper shadow on hover). Every logo is forced into the same fixed card
-   size so all 50 appear at the exact same visual size (no matter the
-   source favicon's intrinsic size). Falls back to a clean monogram if the
-   image fails. */
-function LogoItem({ client }: { client: Client }) {
+   size so all appear at the exact same visual size. These are EXACTLY the
+   logos from the company's official clients page — fully downloaded and
+   self-hosted, no hotlinking. */
+function LogoItem({ client, label }: { client: GalleryClient; label: string }) {
   const [errored, setErrored] = useState(false)
-  const monogram = useMemo(() => buildMonogram(client.name), [client.name])
 
   return (
     <div className="flex items-center justify-center p-2.5">
       <div
-        title={client.name}
+        title={`Our client — ${label}`}
         className="relative flex items-center justify-center w-full max-w-[250px] h-36 md:h-48 rounded-xl border border-slate-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-slate-300 transition-all duration-300 p-5 md:p-7"
       >
-        {client.logoUrl && !errored ? (
+        {!errored ? (
           <img
-            src={client.logoUrl}
-            alt={client.name}
+            src={client.src}
+            alt={`Shrivaari Electricals client logo — ${label} sector`}
             onError={() => setErrored(true)}
             className="max-w-full max-h-full w-auto h-auto object-contain"
             loading="lazy"
           />
         ) : (
-          <span className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-700 select-none">
-            {monogram}
-          </span>
+          <Building2 className="w-10 h-10 text-slate-300" />
         )}
       </div>
     </div>
@@ -175,52 +103,35 @@ const PAGE_SIZE = 50
 /* ─── Main Component ─── */
 export default function ClientsPage() {
   const { navigate } = useRouter()
-  const [clients, setClients] = useState<Client[]>([])
-  const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('All')
   const [currentPage, setCurrentPage] = useState(1)
 
-  useEffect(() => {
-    let mounted = true
-    fetchClients(true)
-      .then(data => {
-        if (!mounted) return
-        setClients(data && data.length ? data : FALLBACK_CLIENTS)
-        setLoading(false)
-      })
-      .catch(() => {
-        if (!mounted) return
-        setClients(FALLBACK_CLIENTS)
-        setLoading(false)
-      })
-    return () => {
-      mounted = false
+  /* Categories in first-appearance order (mirrors the official grouping) */
+  const categories = useMemo(() => {
+    const seen: string[] = []
+    for (const c of CLIENT_GALLERY) {
+      if (!seen.includes(c.category)) seen.push(c.category)
     }
+    return seen
   }, [])
-
-  const industries = useMemo(
-    () => [...new Set(clients.map(c => c.industry).filter(Boolean))],
-    [clients]
-  )
 
   const filteredClients = useMemo(
     () =>
       activeFilter === 'All'
-        ? clients
-        : clients.filter(c => c.industry === activeFilter),
-    [clients, activeFilter]
+        ? CLIENT_GALLERY
+        : CLIENT_GALLERY.filter(c => c.category === activeFilter),
+    [activeFilter]
   )
 
   const stats = useMemo(() => {
     return [
-      { label: 'Trusted Clients', value: clients.length, suffix: '+' },
-      { label: 'Industries Served', value: industries.length, suffix: '' },
+      { label: 'Trusted Clients', value: CLIENT_GALLERY.length, suffix: '+' },
+      { label: 'Industries Served', value: categories.length, suffix: '' },
       { label: 'Projects Delivered', value: 500, suffix: '+' },
       { label: 'Years of Trust', value: 29, suffix: '+' },
     ]
-  }, [clients, industries])
+  }, [categories])
 
-  // Clients are listed in a static grid — 4 per row, paginated.
   const listedClients = filteredClients
 
   // Pagination: slice the filtered list to the current page
@@ -231,8 +142,8 @@ export default function ClientsPage() {
   const pageClients = listedClients.slice(startIdx, endIdx)
 
   // Change filter AND reset to page 1 in the same handler (avoids effect-based setState)
-  const handleFilterChange = (ind: string) => {
-    setActiveFilter(ind)
+  const handleFilterChange = (cat: string) => {
+    setActiveFilter(cat)
     setCurrentPage(1)
   }
 
@@ -330,34 +241,33 @@ export default function ClientsPage() {
         </div>
       </section>
 
-      {/* ════════════════ FILTER — minimal pills, no background fill ════════════════ */}
-      {!loading && industries.length > 0 && (
-        <section className="bg-white">
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-10">
-            <FadeIn>
-              <div className="flex flex-wrap justify-center gap-2">
-                {['All', ...industries].map(ind => {
-                  const active = activeFilter === ind
-                  return (
-                    <button
-                      key={ind}
-                      onClick={() => handleFilterChange(ind)}
-                      className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border"
-                      style={{
-                        background: active ? INK : 'transparent',
-                        color: active ? '#FFFFFF' : '#6B7280',
-                        borderColor: active ? INK : '#E5E7EB',
-                      }}
-                    >
-                      {ind}
-                    </button>
-                  )
-                })}
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      )}
+      {/* ════════════════ FILTER — minimal pills, mirrors official industry grouping ════════════════ */}
+      <section className="bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-10">
+          <FadeIn>
+            <div className="flex flex-wrap justify-center gap-2">
+              {['All', ...categories].map(cat => {
+                const active = activeFilter === cat
+                const label = cat === 'All' ? 'All' : CATEGORY_LABELS[cat] || cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleFilterChange(cat)}
+                    className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border"
+                    style={{
+                      background: active ? INK : 'transparent',
+                      color: active ? '#FFFFFF' : '#6B7280',
+                      borderColor: active ? INK : '#E5E7EB',
+                    }}
+                  >
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* ════════════════ CLIENT LOGOS — BIG CARDED GRID, 5 PER ROW, PAGINATED ════════════════ */}
       {/* Each logo in a bordered, shadowed card of identical size. 5 per row × 10 rows = 50 per page. */}
@@ -372,16 +282,7 @@ export default function ClientsPage() {
             <span className="h-px w-8 bg-slate-300" />
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-6">
-              {Array.from({ length: 10 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-36 md:h-48 mx-auto w-full max-w-[250px] rounded-xl border border-slate-200 bg-slate-50 animate-pulse"
-                />
-              ))}
-            </div>
-          ) : pageClients.length === 0 ? (
+          {listedClients.length === 0 ? (
             <div className="text-center py-20">
               <Building2 className="w-12 h-12 mx-auto mb-4 text-slate-300" />
               <p className="text-slate-500 text-lg">No clients found.</p>
@@ -389,21 +290,27 @@ export default function ClientsPage() {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-4">
               {pageClients.map(c => (
-                <LogoItem key={c.id} client={c} />
+                <LogoItem
+                  key={c.id}
+                  client={c}
+                  label={CATEGORY_LABELS[c.category] || c.category}
+                />
               ))}
             </div>
           )}
 
           {/* Range + count footer */}
-          {!loading && listedClients.length > 0 && (
+          {listedClients.length > 0 && (
             <p className="text-center text-xs text-slate-400 mt-10 tracking-wide">
               Showing {startIdx + 1}–{Math.min(endIdx, listedClients.length)} of {listedClients.length} clients
-              {activeFilter !== 'All' ? ` in ${activeFilter}` : ' across all industries'}
+              {activeFilter !== 'All'
+                ? ` in ${CATEGORY_LABELS[activeFilter] || activeFilter}`
+                : ' across all industries'}
             </p>
           )}
 
           {/* Pagination controls — only if more than one page */}
-          {!loading && totalPages > 1 && (
+          {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-8">
               <button
                 onClick={() => goToPage(safePage - 1)}
