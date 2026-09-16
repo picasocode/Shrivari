@@ -2782,3 +2782,23 @@ Work Log:
 Stage Summary:
 - Public clients page: every current logo labeled 'Client N' (official order), admin panel remains the place to add other clients with real names/logos which appear after the gallery
 - Remote main: 4bf5a71
+
+---
+Task ID: 34
+Agent: Z.ai Code (main)
+Task: Quality and Policy page in Company dropdown + view-only certificate gallery from uploaded zip + social media links + remove navbar Logout + bigger logo + team name corrections
+
+Work Log:
+- Extracted uploaded zip (7 single-page A4 PDFs) -> converted to 150-DPI JPEGs via PyMuPDF -> public/images/certificates/ (ISO 9001/14001/45001/50001, CE, RoHS, ZED Bronze)
+- Router.tsx + page.tsx: added 'quality' route; new src/components/pages/QualityPage.tsx (navy hero, policy statement with ISO scope, 4 pillars, certificate grid, CTA)
+- View-only enforcement: contextmenu blocked on section/cards/lightbox, draggable=false, drag-start prevented, no download links; lightbox with prev/next, Esc/arrow keys, scroll lock, counter
+- Navbar: "Quality and Policy" added to Company dropdown; Logout removed (desktop + mobile) — admin panel keeps its own logout; logo h-8 -> h-10; mobile sheet a11y fix (sr-only SheetTitle/Description silences Radix DialogTitle error)
+- Footer: real social links (LinkedIn company page, YouTube video PMmcF3lzoKk, Instagram shrivaari_electricals); dead Facebook/Twitter placeholders removed; "Quality and Policy" added to quick links
+- TeamPage + seed: 'Miss Harini' -> 'Mrs. Harini', 'Mr. Manjari' -> 'Mr. Bhupal Manjari'
+- Verified 3001 desktop 1440x900 + mobile 390x844 (fresh sessions, clean .next): 7 certs render, lightbox works, contextmenu blocked (defaultPrevented=YES via dispatched events), no mobile overflow (sw=390), logged-in navbar has Dashboard but no Logout, 0 console errors; lint 0/0
+- Schema restored to mysql (git HEAD) pre-commit; .env/db gitignored
+
+Stage Summary:
+- Remote main: 9d5dc18 (14 files, +434/-46; certificates + QualityPage new)
+- GitHub API: HEAD 9d5dc18, upload/ intact (1 file unchanged), public/images/certificates = 7 files, QualityPage raw 200
+- Menu label uses client's exact wording "Quality and Policy"; YouTube used as social link, not embedded
