@@ -167,7 +167,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
       <nav className="max-w-[1440px] mx-auto px-4 sm:px-5 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo — on the LEFT for all viewports */}
-          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5 -ml-1 lg:-ml-2 pr-4">
+          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5 -ml-2 lg:-ml-6 pr-6 lg:pr-12">
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"

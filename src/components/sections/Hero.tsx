@@ -9,7 +9,7 @@ const slides = [
   {
     image: '/images/hero-office.jpg',
     title: 'Powering India\'s Electrical POWER Infrastructure',
-    subtitle: 'EPC Solutions upto 400KV',
+    subtitle: 'EPC Solutions upto 400kV',
     desc: 'From design to commissioning — comprehensive electrical systems & solutions for industries across India with close to three decades of excellence.',
   },
   {

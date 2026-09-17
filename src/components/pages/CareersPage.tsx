@@ -45,11 +45,11 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
 const whyJoinData = [
   {
     title: 'Work on Mega Projects',
-    desc: 'Be part of 400KV substations, 450MW solar plants, and EHV switchyards that power entire regions. Real infrastructure, real impact.',
+    desc: 'Be part of 400kV substations, 450MW solar plants, and EHV switchyards that power entire regions. Real infrastructure, real impact.',
     icon: Zap,
     accent: '#E8751A',
     bgAccent: '#FFF7ED',
-    stat: '400KV',
+    stat: '400kV',
     statLabel: 'Max Voltage',
   },
   {
