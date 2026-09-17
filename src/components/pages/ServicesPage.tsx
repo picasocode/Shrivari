@@ -326,6 +326,9 @@ function ServiceShowcase({
 }) {
   const Icon = iconMap[service.name] || PenTool
   const isEven = index % 2 === 0
+  const [showAllCapabilities, setShowAllCapabilities] = useState(false)
+  const visibleCapabilities = showAllCapabilities ? service.capabilities : service.capabilities.slice(0, 4)
+  const hiddenCount = service.capabilities.length - 4
 
   return (
     <motion.article
@@ -386,22 +389,36 @@ function ServiceShowcase({
           {service.description}
         </p>
 
-        {/* Capability chips */}
+        {/* Capability chips — "+N more capabilities" expands in place (click again to collapse) */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {service.capabilities.slice(0, 4).map((c, i) => (
+          {visibleCapabilities.map((c, i) => (
             <span
-              key={i}
+              key={`${c}-${i}`}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F7F9FC] border border-gray-200 text-xs font-medium text-[#152D4F]"
             >
               <Check className="w-3 h-3 text-[#E8751A]" />
               {c.length > 38 ? `${c.slice(0, 38)}…` : c}
             </span>
           ))}
-          {service.capabilities.length > 4 && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/30 text-xs font-semibold text-[#E8751A]">
-              <Plus className="w-3 h-3" />
-              {service.capabilities.length - 4} more capabilities
-            </span>
+          {hiddenCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAllCapabilities((v) => !v)}
+              aria-expanded={showAllCapabilities}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/30 text-xs font-semibold text-[#E8751A] hover:bg-[#E8751A]/20 transition-colors cursor-pointer"
+            >
+              {showAllCapabilities ? (
+                <>
+                  <span className="text-sm leading-none">−</span>
+                  Show less
+                </>
+              ) : (
+                <>
+                  <Plus className="w-3 h-3" />
+                  {hiddenCount} more capabilities
+                </>
+              )}
+            </button>
           )}
         </div>
 
@@ -460,7 +477,7 @@ export default function ServicesPage() {
           style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
         />
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[110px] pb-16 lg:pb-20">
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[126px] pb-16 lg:pb-20">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}

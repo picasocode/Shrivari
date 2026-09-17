@@ -284,7 +284,7 @@ export default function AboutPage() {
           ═══════════════════════════════════════════════════════ */}
       <Journey
         label="Our Journey"
-        title="We have best team and best process"
+        title="Three Decades of Engineering Milestones"
         description="From a small firm in 1998 to a ₹200+ Crore enterprise — every milestone is a story of passion, value engineering and the relentless pursuit of excellence."
         ctaText="Get Started"
         onCtaClick={() => navigate('contact')}

@@ -62,18 +62,18 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
   const { router, navigate } = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [servicesOpen, setServicesOpen] = useState(false)
-  const [companyOpen, setCompanyOpen] = useState(false)
-  const [clientsOpen, setClientsOpen] = useState(false)
-  const [productsOpen, setProductsOpen] = useState(false)
-  const [mobileServicesExpanded, setMobileServicesExpanded] = useState(false)
-  const [mobileCompanyExpanded, setMobileCompanyExpanded] = useState(false)
-  const [mobileClientsExpanded, setMobileClientsExpanded] = useState(false)
-  const [mobileProductsExpanded, setMobileProductsExpanded] = useState(false)
+  /* Single-source dropdown state — only ONE menu can be open at a time (desktop + mobile) */
+  const [openMenu, setOpenMenu] = useState<'services' | 'company' | 'clients' | 'products' | null>(null)
+  const [mobileExpanded, setMobileExpanded] = useState<'services' | 'company' | 'clients' | 'products' | null>(null)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const companyTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const clientsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const productsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const servicesOpen = openMenu === 'services'
+  const companyOpen = openMenu === 'company'
+  const clientsOpen = openMenu === 'clients'
+  const productsOpen = openMenu === 'products'
+  const mobileServicesExpanded = mobileExpanded === 'services'
+  const mobileCompanyExpanded = mobileExpanded === 'company'
+  const mobileClientsExpanded = mobileExpanded === 'clients'
+  const mobileProductsExpanded = mobileExpanded === 'products'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -82,72 +82,45 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
   }, [])
 
   const handleNavigate = (page: PageName, params?: Record<string, string>) => {
-    setServicesOpen(false)
-    setCompanyOpen(false)
-    setClientsOpen(false)
-    setProductsOpen(false)
-    setMobileServicesExpanded(false)
-    setMobileCompanyExpanded(false)
-    setMobileClientsExpanded(false)
-    setMobileProductsExpanded(false)
-    navigate(page, params)
-  }
-
-  const handleMouseEnterServices = () => {
     if (dropdownTimeoutRef.current) {
       clearTimeout(dropdownTimeoutRef.current)
       dropdownTimeoutRef.current = null
     }
-    setServicesOpen(true)
+    setOpenMenu(null)
+    setMobileExpanded(null)
+    navigate(page, params)
   }
 
-  const handleMouseLeaveServices = () => {
+  /* Open one dropdown and instantly close any other — fixes multiple menus staying open */
+  const openDropdown = (menu: 'services' | 'company' | 'clients' | 'products') => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current)
+      dropdownTimeoutRef.current = null
+    }
+    setOpenMenu(menu)
+  }
+
+  const scheduleCloseDropdown = () => {
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current)
     dropdownTimeoutRef.current = setTimeout(() => {
-      setServicesOpen(false)
+      setOpenMenu(null)
+      dropdownTimeoutRef.current = null
     }, 150)
   }
 
-  const handleMouseEnterCompany = () => {
-    if (companyTimeoutRef.current) {
-      clearTimeout(companyTimeoutRef.current)
-      companyTimeoutRef.current = null
-    }
-    setCompanyOpen(true)
+  /* Mobile accordion — opening one section closes the others */
+  const toggleMobileExpanded = (menu: 'services' | 'company' | 'clients' | 'products') => {
+    setMobileExpanded((prev) => (prev === menu ? null : menu))
   }
 
-  const handleMouseLeaveCompany = () => {
-    companyTimeoutRef.current = setTimeout(() => {
-      setCompanyOpen(false)
-    }, 150)
-  }
-
-  const handleMouseEnterClients = () => {
-    if (clientsTimeoutRef.current) {
-      clearTimeout(clientsTimeoutRef.current)
-      clientsTimeoutRef.current = null
-    }
-    setClientsOpen(true)
-  }
-
-  const handleMouseLeaveClients = () => {
-    clientsTimeoutRef.current = setTimeout(() => {
-      setClientsOpen(false)
-    }, 150)
-  }
-
-  const handleMouseEnterProducts = () => {
-    if (productsTimeoutRef.current) {
-      clearTimeout(productsTimeoutRef.current)
-      productsTimeoutRef.current = null
-    }
-    setProductsOpen(true)
-  }
-
-  const handleMouseLeaveProducts = () => {
-    productsTimeoutRef.current = setTimeout(() => {
-      setProductsOpen(false)
-    }, 150)
-  }
+  const handleMouseEnterServices = () => openDropdown('services')
+  const handleMouseLeaveServices = () => scheduleCloseDropdown()
+  const handleMouseEnterCompany = () => openDropdown('company')
+  const handleMouseLeaveCompany = () => scheduleCloseDropdown()
+  const handleMouseEnterClients = () => openDropdown('clients')
+  const handleMouseLeaveClients = () => scheduleCloseDropdown()
+  const handleMouseEnterProducts = () => openDropdown('products')
+  const handleMouseLeaveProducts = () => scheduleCloseDropdown()
 
   const handleProductClick = (tab: string) => {
     handleNavigate('products', { tab })
@@ -192,13 +165,13 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
 
       {/* Main nav */}
       <nav className="max-w-[1280px] mx-auto px-5 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo — on the LEFT for all viewports */}
           <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5">
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
-              className="h-14 w-auto object-contain"
+              className="h-16 w-auto object-contain max-w-[58vw] lg:max-w-none"
             />
           </button>
 
@@ -523,7 +496,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                   <img
                     src="/images/logo.png"
                     alt="Shri Vaari Electricals"
-                    className="h-12 w-auto object-contain"
+                    className="h-14 w-auto object-contain"
                   />
                 </div>
                 <div className="p-4 space-y-0.5 max-h-[calc(100vh-200px)] overflow-y-auto">
@@ -531,7 +504,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                     link.page === 'services' ? (
                       <div key={link.page}>
                         <button
-                          onClick={() => setMobileServicesExpanded(!mobileServicesExpanded)}
+                          onClick={() => toggleMobileExpanded('services')}
                           className={`w-full flex items-center justify-between px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
                             isServicesActive
                               ? 'text-[#E8751A] bg-[#E8751A]/5'
@@ -557,7 +530,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                     <SheetClose asChild key={item.slug}>
                                       <button
                                         onClick={() => {
-                                          setMobileServicesExpanded(false)
+                                          setMobileExpanded(null)
                                           handleNavigate('service-detail', { slug: item.slug })
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
@@ -571,7 +544,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                 <SheetClose asChild>
                                   <button
                                     onClick={() => {
-                                      setMobileServicesExpanded(false)
+                                      setMobileExpanded(null)
                                       handleNavigate('services')
                                     }}
                                     className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-semibold text-[#E8751A] hover:bg-[#E8751A]/5 transition-colors"
@@ -588,7 +561,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                     ) : link.hasDropdown && link.page === 'about' ? (
                       <div key={link.page}>
                         <button
-                          onClick={() => setMobileCompanyExpanded(!mobileCompanyExpanded)}
+                          onClick={() => toggleMobileExpanded('company')}
                           className={`w-full flex items-center justify-between px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
                             isCompanyActive
                               ? 'text-[#E8751A] bg-[#E8751A]/5'
@@ -614,7 +587,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                     <SheetClose asChild key={item.slug}>
                                       <button
                                         onClick={() => {
-                                          setMobileCompanyExpanded(false)
+                                          setMobileExpanded(null)
                                           handleNavigate(item.slug as PageName)
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
@@ -633,7 +606,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                     ) : link.hasDropdown && link.page === 'clients' ? (
                       <div key={link.page}>
                         <button
-                          onClick={() => setMobileClientsExpanded(!mobileClientsExpanded)}
+                          onClick={() => toggleMobileExpanded('clients')}
                           className={`w-full flex items-center justify-between px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
                             isClientsActive
                               ? 'text-[#E8751A] bg-[#E8751A]/5'
@@ -659,7 +632,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                     <SheetClose asChild key={item.slug}>
                                       <button
                                         onClick={() => {
-                                          setMobileClientsExpanded(false)
+                                          setMobileExpanded(null)
                                           handleNavigate(item.slug as PageName)
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
@@ -678,7 +651,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                     ) : link.hasDropdown && link.page === 'products' ? (
                       <div key={link.page}>
                         <button
-                          onClick={() => setMobileProductsExpanded(!mobileProductsExpanded)}
+                          onClick={() => toggleMobileExpanded('products')}
                           className={`w-full flex items-center justify-between px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
                             isProductsActive
                               ? 'text-[#E8751A] bg-[#E8751A]/5'
@@ -704,7 +677,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                     <SheetClose asChild key={item.tab}>
                                       <button
                                         onClick={() => {
-                                          setMobileProductsExpanded(false)
+                                          setMobileExpanded(null)
                                           handleProductClick(item.tab)
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-left text-[13px] text-[#374151] hover:bg-[#F0F4F8] hover:text-[#E8751A] transition-colors"
@@ -718,7 +691,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                                 <SheetClose asChild>
                                   <button
                                     onClick={() => {
-                                      setMobileProductsExpanded(false)
+                                      setMobileExpanded(null)
                                       handleNavigate('products')
                                     }}
                                     className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-semibold text-[#E8751A] hover:bg-[#E8751A]/5 transition-colors"

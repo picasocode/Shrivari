@@ -230,7 +230,7 @@ export default function ClientsPage() {
     <div className="bg-white min-h-screen">
       {/* ════════════════ HERO — minimal, white, no background fill ════════════════ */}
       <section className="bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-14 md:pb-20">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-14 md:pb-20">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}

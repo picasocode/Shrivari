@@ -224,7 +224,7 @@ export default function HomePage() {
               </div>
               <Button
                 variant="outline"
-                onClick={() => navigate('services')}
+                onClick={() => navigate('clients')}
                 className="hidden md:inline-flex border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />

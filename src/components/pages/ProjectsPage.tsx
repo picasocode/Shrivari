@@ -220,7 +220,7 @@ export default function ProjectsPage() {
           })}
         </div>
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-16">
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-16">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
