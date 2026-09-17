@@ -2820,3 +2820,25 @@ Stage Summary:
 - Remote main: ef0a1b5 (2 files, +5/-10)
 - GitHub API: HEAD ef0a1b5 confirmed, upload/ intact (1 item)
 - Energy Efficiency section removed per client request; ISO 50001 certificate kept in gallery (real certificate, user only asked to remove the section)
+
+---
+Task ID: 36
+Agent: Z.ai Code (main)
+Task: 9-item update round — banner side crop, projects view-all target, quality paragraph removal, bigger logo, journey redesign, 2 image swaps, single-open menus, capabilities expand fix
+
+Work Log:
+- Banner slide 1 (hero-office.jpg): cropped 1252x832 -> 734x734 via PIL (removed left pink building + right neighbor building, trimmed sky; "SHRI VAARI ELECTRICALS PVT. LTD." signage fully in frame) — verified in hero at 1440x900
+- HomePage Ongoing Projects "View All": navigate('services') -> navigate('clients'); browser click confirmed hash #clients
+- QualityPage: removed "Our Commitment to Excellence" intro paragraph (heading + 3 pillars + certificates untouched)
+- Navbar logo bigger again: main row h-16 -> h-20, logo h-14 -> h-16 (64px, max-w-[58vw] guard on phones), mobile sheet logo h-12 -> h-14; header total now 116px -> sed pt-[100px]->pt-[116px] (11 files) and pt-[110px]->pt-[126px] (2 files)
+- Journey (About page) redesigned: rewrote sections/Journey.tsx from horizontal card scroller to vertical alternating timeline (center rail desktop / left rail mobile, icon nodes, big year typography opposite side, MILESTONE badges, hover accents, "The journey continues" end cap); same fetchMilestones + fallback, same props; AboutPage title -> "Three Decades of Engineering Milestones"; fixed missing ShieldCheck import caught at runtime
+- Our Principles "Engineering Excellence" image: generated + swapped (engineers reviewing blueprints among electrical panels)
+- ServiceDetail "Liaison with Utilities" image: generated + swapped (helmeted engineers reviewing SLD at outdoor substation); first gen had wrong ethnicity -> regenerated with Indian engineers
+- Navbar dropdowns: replaced 4 independent boolean states with single openMenu state + one timeout — hovering Products then Services leaves exactly 1 panel open (verified via real-mouse hover: 1 -> 1, panel is Services); mobile accordions made exclusive via single mobileExpanded state (opening Company closed Services, verified in sheet)
+- ServicesPage: "+N more capabilities" was a static span (dead) -> real toggle button; click expands chips 4 -> 8 with aria-expanded + "Show less" (browser-verified)
+- Verified: lint 0/0, 0 page errors, console only pre-existing next/image "sizes" warnings; mobile 390 no overflow; journey/liaison/images all load; mysql schema restored from git HEAD pre-commit
+
+Stage Summary:
+- Remote main: 76a5ed3 (20 files, +185/-240, incl. 3 images)
+- GitHub API: HEAD 76a5ed3 confirmed, upload/ intact (1 item), hero-office.jpg raw 200
+- Note: header is now 116px (was 100px) — all page top paddings updated in same commit
