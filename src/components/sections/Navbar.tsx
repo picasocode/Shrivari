@@ -150,7 +150,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
     >
       {/* Top bar */}
       <div className="bg-[#0D1D3A] text-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 flex items-center justify-between h-9 text-xs">
+        <div className="max-w-[1440px] mx-auto px-5 lg:px-8 flex items-center justify-between h-9 text-xs">
           <div className="flex items-center gap-4">
             <a href="tel:+919941905833" className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors">
               <Phone className="w-3 h-3" /> +91 9941905833
@@ -164,10 +164,10 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
       </div>
 
       {/* Main nav */}
-      <nav className="max-w-[1280px] mx-auto px-5 lg:px-8">
+      <nav className="max-w-[1440px] mx-auto px-4 sm:px-5 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo — on the LEFT for all viewports */}
-          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5">
+          <button onClick={() => handleNavigate('home')} className="flex items-center gap-2.5 -ml-1 lg:-ml-2 pr-4">
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
