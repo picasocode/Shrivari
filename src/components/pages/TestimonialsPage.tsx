@@ -122,7 +122,7 @@ export default function TestimonialsPage() {
       {/* ════════════════════════════════════════════
           HERO — Warm navy-to-teal gradient with decorative quote
           ════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden pt-[100px] pb-20 md:pb-28">
+      <section className="relative overflow-hidden pt-[116px] pb-20 md:pb-28">
         {/* Background gradient */}
         <div
           className="absolute inset-0"

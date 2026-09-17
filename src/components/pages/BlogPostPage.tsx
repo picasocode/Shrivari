@@ -224,7 +224,7 @@ export default function BlogPostPage({ slug }: { slug: string }) {
       <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #1B3A5C 0%, #1B3A5C 40%, #152D4F 100%)' }}>
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 120px)' }} />
 
-        <div className="relative max-w-3xl mx-auto px-5 lg:px-8 pt-[100px] pb-12 md:pb-16">
+        <div className="relative max-w-3xl mx-auto px-5 lg:px-8 pt-[116px] pb-12 md:pb-16">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}

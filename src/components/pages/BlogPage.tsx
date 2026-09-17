@@ -128,7 +128,7 @@ export default function BlogPage() {
         {/* Decorative grid lines */}
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 120px)' }} />
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-16 md:pb-20">
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-16 md:pb-20">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-sm mb-8">

@@ -561,7 +561,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
           style={{ background: 'radial-gradient(circle, #E8751A 0%, transparent 65%)' }}
         />
 
-        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[110px] pb-14 lg:pb-16">
+        <div className="relative max-w-[1280px] mx-auto px-5 lg:px-8 pt-[126px] pb-14 lg:pb-16">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}

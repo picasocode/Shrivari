@@ -71,7 +71,7 @@ export default function TeamPage() {
         </motion.div>
 
         {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-20 md:pb-24">
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-20 md:pb-24">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

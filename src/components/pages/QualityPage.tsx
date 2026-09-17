@@ -107,7 +107,7 @@ export default function QualityPage() {
           <div className="absolute top-[10%] right-[5%] w-96 h-96 rounded-full blur-3xl" style={{ background: 'rgba(255,255,255,0.03)' }} />
         </motion.div>
 
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-20 md:pb-24">
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-20 md:pb-24">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -166,13 +166,6 @@ export default function QualityPage() {
               <h2 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight tracking-tight mb-5" style={{ color: INK }}>
                 Our Commitment to Excellence
               </h2>
-              <p className="text-sm md:text-base max-w-3xl mx-auto leading-relaxed" style={{ color: SLATE }}>
-                Shri Vaari Electricals Private Limited is committed to delivering reliable, safe and high-performance
-                electrical solutions. Our integrated management systems are certified to ISO 9001:2015, ISO 14001:2015,
-                ISO 45001:2018 and ISO 50001:2018 — covering the design, manufacture and supply of LT/HT electrical panels,
-                electrical contracts from design to commissioning, transformer erection, solar EPC projects and allied
-                services, together with annual maintenance of various electrical systems.
-              </p>
             </div>
           </FadeIn>
 

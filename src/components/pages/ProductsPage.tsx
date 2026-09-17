@@ -133,7 +133,7 @@ export default function ProductsPage() {
     <div className="bg-white min-h-screen">
       {/* ═══════════ HERO — minimal white ═══════════ */}
       <section className="bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[100px] pb-12 md:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-[116px] pb-12 md:pb-16">
           {/* Breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
