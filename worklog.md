@@ -2902,3 +2902,22 @@ Stage Summary:
 - Pushed: 4a0250d (39), 8b23307 + 9cb85d2 (40); lint 0/0 all rounds
 - Public clients page = exactly the 161 official logos, no names anywhere; admin DB fully generic
 - Enquiries now emailed when Mail Settings configured; navbar active-state fixed; Quality page certificates section removed
+
+---
+Task ID: 41
+Agent: Z.ai Code (main)
+Task: Move navbar logo further left and add space (user: "move the logo to more left to mee and add space")
+
+Work Log:
+- Sandbox was reset again; found intact clone at /home/z/shrivari-repo (HEAD d96d187, worklog Task 39+40 already committed there)
+- Edited src/components/sections/Navbar.tsx:
+  - Top bar container: max-w-[1280px] -> max-w-[1440px] (stays aligned with main nav)
+  - Main nav container: max-w-[1280px] -> max-w-[1440px] -> logo sits closer to left edge on wide screens
+  - Logo button: added -ml-1 lg:-ml-2 (nudge further left) and pr-4 (spacing gap toward the menu)
+  - Mobile nav padding px-4 sm:px-5 for slightly tighter left edge on small screens
+- Lint: 0 errors, 0 warnings; skipped browser testing per user's standing instruction
+- Commit 9c6f53e; pushed to main; GitHub API confirmed remote HEAD = 9c6f53e
+
+Stage Summary:
+- Navbar logo now sits further left on all viewports; more space between logo and menu
+- Remote main: 9c6f53e; deploy auto-picks up in ~3-5 min
