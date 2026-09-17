@@ -2842,3 +2842,22 @@ Stage Summary:
 - Remote main: 76a5ed3 (20 files, +185/-240, incl. 3 images)
 - GitHub API: HEAD 76a5ed3 confirmed, upload/ intact (1 item), hero-office.jpg raw 200
 - Note: header is now 116px (was 100px) — all page top paddings updated in same commit
+
+---
+Task ID: 37
+Agent: Z.ai Code (main)
+Task: 4-item round — clients page logos not loading from page 4 onwards, remove testimonial star ratings, SEO keywords, Shrivari logo favicon
+
+Work Log:
+- Root cause of "page 4 onwards logo not loading": 58 admin-panel clients are appended after the 161 official gallery logos (items 162+ = pages 4-5) and hotlinked logos from https://shrivaarielectricals.com/img/client/N.jpg — reachable from the sandbox but unreliable for visitors (live-site reproduction from sandbox showed 0 broken, so failure is visitor-side network dependence on a third-party host)
+- Mirrored all 58 hotlinked logos into public/images/clients-site/ext-N.jpg (PIL-verified valid JPEGs); new resolveClientLogoUrl() in src/lib/client-gallery.ts rewrites those hotlinks to same-origin mirrors in ClientsPage only (AdminPanel keeps raw URLs; home Clients section renders monograms already)
+- Second pre-existing bug found while verifying: hotlinks were assigned by POSITION in the old site's client strip, not by company identity — production currently shows e.g. Caparo's logo on the "Ashok Leyland" card. Identified all 58 mirrored logo artworks visually via labeled contact sheets; only 9 pairings verifiably correct (Ashok Leyland->2, TVS Srichakra->8 TVS Tyres, Sundaram Clayton->7, Delta->22, MM Forging->170 MMF, JSW Steel->87, Saint-Gobain->52, TCS->31, Sri Ramachandra->61). LOGO_BY_NAME curated map returns verified logos; all other position-based hotlinks resolve to null -> honest monogram fallback instead of a wrong company logo
+- Star ratings removed everywhere: HomePage 'Client Testimonials' preview (star row + Star import), sections/Testimonials.tsx (StarRating fn + usage + skeleton stars + import; file currently unused but kept consistent), TestimonialsPage.tsx (Stars fn + featured/grid usages + import). Verified 0 fill-amber / coral-fill / 'out of 5 stars' aria elements on home + testimonials page
+- SEO: layout.tsx metadata expanded — client's 10 primary keywords verbatim (Electrical EPC Company, Electrical Infrastructure Solutions, HT LT Panel Manufacturer, Substation EPC Contractor, Electrical Engineering Company, Industrial Electrification Company, AIS GIS Substation Solutions, Electrical Testing Commissioning, Solar EPC Company, Utility Liaison Services) + 15 supporting long-tail terms; metadataBase, canonical, OpenGraph/Twitter cards, robots max-image-preview, and JSON-LD ElectricalContractor schema (Chennai/Tamil Nadu, 3 social sameAs, 8 service offers). Verified in served HTML: new title, keywords, ld+json script
+- Favicon: src/app/icon.svg was the leftover Z.ai "Z" mark (reason for the request) — deleted it and unused public/logo.svg; generated Shrivari circular-emblem badge (crop of public/images/logo.png on white rounded square) via PIL: src/app/icon.png 48px + src/app/apple-icon.png 180px. Verified <link rel="icon"> / apple-touch-icon in head, /icon.svg now 404s
+- Verified on 3001 with fresh agent-browser sessions (sqlite mirror of production DB seeded with the same 58 client records): clients page 4 (151-200) + 5 (201-219): 0 broken images, 0 external requests, correct logos on verified cards + monograms elsewhere; desktop 1440x900 + mobile 390x844 no overflow (scrollW=390); lint 0/0; no page errors, console clean (only HMR log); mysql schema restored from git HEAD + .env removed pre-commit
+
+Stage Summary:
+- Remote main: 165c34b (68 files: 58 mirrored logos, layout.tsx SEO, 3 star-removal files, ClientsPage + client-gallery resolver, icon.png/apple-icon.png added, Z icon.svg + logo.svg deleted)
+- GitHub API: HEAD 165c34b confirmed, upload/ intact (1 item), raw spot-checks 200
+- Note: production DB records still carry the wrong hotlink URLs — the fix is frontend-side (resolver + curated map); if the client later confirms more name<->logo identities, add rows to LOGO_BY_NAME (all 58 mirrored files already in repo for future mapping)
