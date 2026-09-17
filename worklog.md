@@ -2861,3 +2861,21 @@ Stage Summary:
 - Remote main: 165c34b (68 files: 58 mirrored logos, layout.tsx SEO, 3 star-removal files, ClientsPage + client-gallery resolver, icon.png/apple-icon.png added, Z icon.svg + logo.svg deleted)
 - GitHub API: HEAD 165c34b confirmed, upload/ intact (1 item), raw spot-checks 200
 - Note: production DB records still carry the wrong hotlink URLs — the fix is frontend-side (resolver + curated map); if the client later confirms more name<->logo identities, add rows to LOGO_BY_NAME (all 58 mirrored files already in repo for future mapping)
+
+---
+Task ID: 38
+Agent: Z.ai Code (main)
+Task: Replace Mr. Sivagaminathan's team photo with real photo provided by user
+
+Work Log:
+- Sandbox was reset; re-cloned repo at HEAD 3c8b277 + bun install
+- Located reference: TeamPage.tsx line 40 (leaders array) → /images/team/team-sivagaminathan.jpg (only reference across src/)
+- Identified user's new photo: upload/WhatsApp Image 2026-09-17 at 11.57.46.jpeg (1541×1020 landscape, real office portrait)
+- PIL square crop (210,0,1230,1020) centered on subject → resize 480×480 (matches other team photos' format), quality 90
+- Replaced public/images/team/team-sivagaminathan.jpg in place — zero code change needed (same path referenced by TeamPage)
+- User explicitly requested no testing round ("don't waste time... just update the image and push"); skipped dev-server/browser verification per instruction
+- Committed 53fcbda + pushed; GitHub API confirmed HEAD=53fcbda, upload/ intact (pasted_image_1785328772465.png)
+
+Stage Summary:
+- Mr. Sivagaminathan (Executive Director) now shows real photo on Team page leadership grid
+- Remote main = 53fcbda; worklog updated
