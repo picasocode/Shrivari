@@ -660,7 +660,7 @@ export async function GET() {
     const sectors = [
       {
         name: "Power & Utilities",
-        description: "Complete electrical infrastructure for power generation, transmission, and distribution utilities including switchyards up to 400KV and SCADA-integrated substations.",
+        description: "Complete electrical infrastructure for power generation, transmission, and distribution utilities including switchyards up to 400kV and SCADA-integrated substations.",
         icon: "Zap",
         stat: "65+",
         statLabel: "Switchyards",
@@ -668,7 +668,7 @@ export async function GET() {
         gradientTo: "#2A5F9E",
         accent: "#1B3A5C",
         details: JSON.stringify([
-          "EHV Substations up to 400KV",
+          "EHV Substations up to 400kV",
           "Switchyard design & construction",
           "Power transformer installation",
           "SCADA & protection system integration",
@@ -913,7 +913,7 @@ export async function GET() {
       {
         year: "2023",
         title: "55+ EHV Projects",
-        description: "Completed 55+ EHV Projects including substations up to 400KV",
+        description: "Completed 55+ EHV Projects including substations up to 400kV",
         icon: "Building2",
         color: "#1B3A5C",
         order: 10,

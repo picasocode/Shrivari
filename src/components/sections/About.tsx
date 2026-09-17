@@ -10,9 +10,9 @@ const features = [
   {
     icon: Zap,
     title: 'EPC',
-    subtitle: 'Electrical Systems upto 400KV',
+    subtitle: 'Electrical Systems upto 400kV',
     description:
-      'Complete Engineering, Procurement and Construction services for electrical systems ranging from low voltage to Extra High Voltage up to 400KV.',
+      'Complete Engineering, Procurement and Construction services for electrical systems ranging from low voltage to Extra High Voltage up to 400kV.',
     color: '#2196F3',
   },
   {

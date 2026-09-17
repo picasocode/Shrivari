@@ -57,6 +57,10 @@ const policyPillars = [
 /* ─── Main Component ─── */
 export default function QualityPage() {
   const { navigate } = useRouter()
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
   return (
     <>
       {/* ═══════════════════════════════════════════════════════

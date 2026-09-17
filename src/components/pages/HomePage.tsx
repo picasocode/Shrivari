@@ -92,7 +92,7 @@ export default function HomePage() {
               { icon: TrendingUp, value: '28+', label: 'Years of Industry Experience', desc: 'Since 1998, trusted engineering partner' },
               { icon: Zap, value: '400 kV', label: 'Voltage Expertise', desc: 'EHV, HV, MV & LV systems' },
               { icon: Users, value: '>90%', label: 'Industrial Customers Served', desc: 'Of total projects executed' },
-              { icon: MapPinned, value: 'Pan-India', label: 'Execution Capability', desc: 'AP, Telangana, Goa, Karnataka, UP, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' },
+              { icon: MapPinned, value: 'Pan-India', label: 'Execution Capability', desc: 'TN, AP, Telangana, Goa, Karnataka, UP, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' },
               { icon: Factory, value: 'In-house', label: 'Engineering & Manufacturing', desc: 'No outsourcing — full control' },
             ].map((stat, i) => {
               const Icon = stat.icon
