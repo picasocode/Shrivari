@@ -135,7 +135,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
     handleNavigate('service-detail', { slug })
   }
 
-  const isServicesActive = router.page === 'services' || router.page === 'service-detail' || router.page === 'manufacturing'
+  const isServicesActive = router.page === 'services' || router.page === 'service-detail'
   const isCompanyActive = router.page === 'about' || router.page === 'team' || router.page === 'sectors' || router.page === 'careers' || router.page === 'quality'
   const isClientsActive = router.page === 'clients' || router.page === 'projects'
   const isProductsActive = router.page === 'products'
