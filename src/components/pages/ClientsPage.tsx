@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
 import { fetchClients, type Client } from '@/lib/api'
-import { CLIENT_GALLERY, CATEGORY_LABELS, type GalleryClient } from '@/lib/client-gallery'
+import { CLIENT_GALLERY, CATEGORY_LABELS, resolveClientLogoUrl, type GalleryClient } from '@/lib/client-gallery'
 
 /* ─── Tokens (used very sparingly — coral hairlines + navy text only) ─── */
 const CORAL = '#E8751A'
@@ -178,7 +178,9 @@ export default function ClientsPage() {
     const extras: DisplayClient[] = adminClients.map(c => ({
       key: `db-${c.id}`,
       name: c.name,
-      src: c.logoUrl || null,
+      /* Hotlinked external logos are rewritten to their local mirror so
+         cards never depend on a third-party host being reachable. */
+      src: resolveClientLogoUrl(c.logoUrl, c.name),
       label: c.industry || 'Partner',
     }))
     return [...gallery, ...extras]

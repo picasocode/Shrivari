@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Star, Quote, AlertCircle, RefreshCw, Play } from 'lucide-react'
+import { Quote, AlertCircle, RefreshCw, Play } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
@@ -22,32 +22,10 @@ function TestimonialSkeleton() {
         <Skeleton className="h-4 w-full mb-1" />
         <Skeleton className="h-4 w-5/6 mb-1" />
         <Skeleton className="h-4 w-4/6 mb-4" />
-        <div className="flex gap-1 mb-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="w-4 h-4 rounded-full" />
-          ))}
-        </div>
         <Skeleton className="h-4 w-1/3 mb-1" />
         <Skeleton className="h-3 w-1/4" />
       </CardContent>
     </Card>
-  )
-}
-
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`w-4 h-4 ${
-            i < rating
-              ? 'fill-amber-400 text-amber-400'
-              : 'fill-[#E8ECF0] text-[#E8ECF0]'
-          }`}
-        />
-      ))}
-    </div>
   )
 }
 
@@ -164,7 +142,6 @@ export default function Testimonials() {
                         <p className="text-[#2D3748] text-sm leading-relaxed flex-1 mb-4">
                           &ldquo;{testimonial.content}&rdquo;
                         </p>
-                        <StarRating rating={testimonial.rating} />
                         <div className="mt-3 pt-3 border-t border-[#E8ECF0]">
                           <p className="text-[#0D1B3E] font-medium text-sm">
                             {testimonial.name}

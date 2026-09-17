@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import {
-  ArrowRight, Star, MapPin, Award, TrendingUp, Zap, Users,
+  ArrowRight, MapPin, Award, TrendingUp, Zap, Users,
   MapPinned, Factory, Settings, ShieldCheck, Layers, Network,
   HardHat, Cpu, Target,
 } from 'lucide-react'
@@ -301,14 +301,6 @@ export default function HomePage() {
                 <FadeIn key={t.id} delay={i * 0.08}>
                   <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm h-full">
                     <CardContent className="p-6">
-                      <div className="flex gap-0.5 mb-4">
-                        {Array.from({ length: 5 }).map((_, si) => (
-                          <Star
-                            key={si}
-                            className={`w-4 h-4 ${si < t.rating ? 'text-[#E8751A] fill-[#E8751A]' : 'text-[#E5E7EB]'}`}
-                          />
-                        ))}
-                      </div>
                       <p className="text-[#1A1A2E] text-sm leading-relaxed mb-5 italic">
                         &ldquo;{t.content}&rdquo;
                       </p>

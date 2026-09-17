@@ -201,3 +201,48 @@ export const CATEGORY_LABELS: Record<string, string> = {
   real: 'Real Estate',
   textiles: 'Textiles',
 }
+
+/* ─── Logo URL resolver ───
+   Clients added/seeded via the admin panel used to hotlink their logos from
+   the old company site (https://shrivaarielectricals.com/img/client/N.jpg).
+   Depending on a third-party host for same-page images makes those cards
+   fail to load whenever that host is slow or unreachable for a visitor.
+   All of those logos are therefore mirrored into
+   /public/images/clients-site/ext-N.jpg and the URL is rewritten here so
+   the public pages only ever load same-origin images.
+
+   Those hotlinks were also assigned by POSITION in the old site's client
+   strip rather than by company identity, so most of them show a different
+   company's logo (e.g. "Ashok Leyland" pointed at Caparo's logo file).
+   LOGO_BY_NAME remaps the pairings that could be verified against the
+   actual logo artwork; every other position-based hotlink is untrusted and
+   resolves to null so the card falls back to its monogram instead of
+   displaying a wrong logo. */
+const EXTERNAL_LOGO_HOST = 'https://shrivaarielectricals.com/img/client/'
+
+/* Verified client-name -> mirrored logo artwork (identifiable brand marks) */
+const LOGO_BY_NAME: Record<string, string> = {
+  'Ashok Leyland': '/images/clients-site/ext-2.jpg',
+  'TVS Srichakra Ltd': '/images/clients-site/ext-8.jpg', // TVS Tyres
+  'Sundaram Clayton': '/images/clients-site/ext-7.jpg',
+  'Delta Electronics India': '/images/clients-site/ext-22.jpg',
+  'MM Forging': '/images/clients-site/ext-170.jpg', // MMF — MM Forgings
+  'JSW Steel': '/images/clients-site/ext-87.jpg',
+  'Saint-Gobain India': '/images/clients-site/ext-52.jpg',
+  'TCS (Tata Consultancy Services)': '/images/clients-site/ext-31.jpg',
+  'Sri Ramachandra Institute': '/images/clients-site/ext-61.jpg',
+}
+
+export function resolveClientLogoUrl(
+  url: string | null | undefined,
+  name?: string
+): string | null {
+  if (name && LOGO_BY_NAME[name]) return LOGO_BY_NAME[name]
+  if (!url) return null
+  if (url.startsWith(EXTERNAL_LOGO_HOST)) {
+    /* Position-based hotlink from the old seed — artwork identity unknown,
+       so it must not be displayed next to this client's name. */
+    return null
+  }
+  return url
+}
