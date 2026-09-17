@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import {
-  ChevronRight, ChevronDown, ChevronLeft, ArrowRight, Eye, X, ShieldCheck,
-  BadgeCheck, Leaf, Lock,
+  ChevronRight, ChevronDown, ArrowRight, ShieldCheck,
+  BadgeCheck, Leaf,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
@@ -35,16 +35,6 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
-/* ─── Certificates — rendered as view-only images (no download) ─── */
-const certificates = [
-  { title: 'ISO 9001:2015', subtitle: 'Quality Management System', src: '/images/certificates/cert-iso-9001.jpg' },
-  { title: 'ISO 14001:2015', subtitle: 'Environmental Management System', src: '/images/certificates/cert-iso-14001.jpg' },
-  { title: 'ISO 45001:2018', subtitle: 'Occupational Health & Safety', src: '/images/certificates/cert-iso-45001.jpg' },
-  { title: 'ISO 50001:2018', subtitle: 'Energy Management System', src: '/images/certificates/cert-iso-50001.jpg' },
-  { title: 'CE Certification', subtitle: 'European Conformity', src: '/images/certificates/cert-ce.jpg' },
-  { title: 'RoHS Compliance', subtitle: 'Restriction of Hazardous Substances', src: '/images/certificates/cert-rohs.jpg' },
-  { title: 'ZED Bronze', subtitle: 'MSME ZED Certification', src: '/images/certificates/cert-zed-bronze.jpg' },
-]
 
 const policyPillars = [
   {
@@ -67,32 +57,6 @@ const policyPillars = [
 /* ─── Main Component ─── */
 export default function QualityPage() {
   const { navigate } = useRouter()
-  const [lightbox, setLightbox] = useState<number | null>(null)
-
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-
-  /* Block the context menu on certificate imagery (view-only) */
-  const blockContext = useCallback((e: React.MouseEvent) => e.preventDefault(), [])
-
-  /* Lightbox keyboard controls + scroll lock */
-  useEffect(() => {
-    if (lightbox === null) return
-    document.body.style.overflow = 'hidden'
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightbox(null)
-      if (e.key === 'ArrowRight') setLightbox((i) => (i === null ? null : (i + 1) % certificates.length))
-      if (e.key === 'ArrowLeft') setLightbox((i) => (i === null ? null : (i - 1 + certificates.length) % certificates.length))
-    }
-    window.addEventListener('keydown', onKey)
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [lightbox === null])
-
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
@@ -190,80 +154,6 @@ export default function QualityPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 3: CERTIFICATES — VIEW-ONLY GALLERY (download blocked)
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white" onContextMenu={blockContext}>
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-10 md:mb-14">
-              <div className="inline-flex items-center gap-3 mb-5 justify-center">
-                <div className="w-8 h-[2px]" style={{ background: CORAL }} />
-                <span className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: NAVY_MID }}>Company Certificates</span>
-                <div className="w-8 h-[2px]" style={{ background: CORAL }} />
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight tracking-tight mb-4" style={{ color: INK }}>
-                Our Certifications
-              </h2>
-              <p className="text-sm md:text-base max-w-2xl mx-auto leading-relaxed" style={{ color: SLATE }}>
-                Internationally accredited certificates for our quality, environmental, safety and energy management systems.
-              </p>
-              <div className="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-full bg-slate-100 border border-slate-200">
-                <Lock className="w-3.5 h-3.5" style={{ color: NAVY_MID }} />
-                <span className="text-xs font-semibold" style={{ color: NAVY_MID }}>
-                  View only — downloading is disabled to protect document integrity
-                </span>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Certificate cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {certificates.map((cert, i) => (
-              <FadeIn key={cert.title} delay={(i % 4) * 0.08}>
-                <button
-                  onClick={() => setLightbox(i)}
-                  onContextMenu={blockContext}
-                  className="group w-full text-left bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden focus:outline-none focus-visible:ring-2"
-                  aria-label={`View ${cert.title} certificate`}
-                >
-                  {/* A4 thumbnail */}
-                  <div className="relative aspect-[210/297] overflow-hidden bg-slate-50 select-none">
-                    <img
-                      src={cert.src}
-                      alt={`${cert.title} — ${cert.subtitle}`}
-                      loading="lazy"
-                      draggable={false}
-                      onContextMenu={blockContext}
-                      onDragStart={(e) => e.preventDefault()}
-                      className="absolute inset-0 h-full w-full object-cover object-top pointer-events-none transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                    />
-                    {/* Hover view overlay */}
-                    <div className="absolute inset-0 bg-[#0C2340]/0 group-hover:bg-[#0C2340]/35 transition-colors duration-300 flex items-center justify-center">
-                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-xs font-semibold shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" style={{ color: NAVY_DEEP }}>
-                        <Eye className="w-4 h-4" style={{ color: CORAL }} />
-                        View Certificate
-                      </span>
-                    </div>
-                  </div>
-                  {/* Card footer */}
-                  <div className="p-4 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <div className="min-w-0">
-                      <h3 className="text-sm font-bold truncate" style={{ color: INK }}>{cert.title}</h3>
-                      <p className="text-xs truncate mt-0.5" style={{ color: SLATE }}>{cert.subtitle}</p>
-                    </div>
-                    <span className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 text-[10px] font-bold uppercase tracking-wide" style={{ color: NAVY_MID }}>
-                      <Lock className="w-3 h-3" />
-                      View Only
-                    </span>
-                  </div>
-                </button>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
           SECTION 4: CTA — navy, single coral button
           ═══════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden py-16 md:py-24" style={{ background: NAVY_DEEP }}>
@@ -314,77 +204,6 @@ export default function QualityPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════
-          LIGHTBOX — full-size view-only viewer (context menu blocked)
-          ═══════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {lightbox !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[90] bg-[#0C2340]/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10 select-none"
-            onContextMenu={blockContext}
-            onClick={() => setLightbox(null)}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${certificates[lightbox].title} certificate viewer`}
-          >
-            {/* Close */}
-            <button
-              onClick={() => setLightbox(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-              aria-label="Close certificate viewer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {/* View-only badge */}
-            <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15">
-              <Lock className="w-3.5 h-3.5 text-white/70" />
-              <span className="text-xs font-semibold text-white/80">View only</span>
-            </div>
-
-            {/* Prev / Next */}
-            <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + certificates.length) % certificates.length) }}
-              className="absolute left-3 md:left-6 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-              aria-label="Previous certificate"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % certificates.length) }}
-              className="absolute right-3 md:right-6 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-              aria-label="Next certificate"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            {/* Certificate image */}
-            <motion.img
-              key={certificates[lightbox].src}
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              src={certificates[lightbox].src}
-              alt={`${certificates[lightbox].title} — ${certificates[lightbox].subtitle}`}
-              draggable={false}
-              onDragStart={(e) => e.preventDefault()}
-              onContextMenu={blockContext}
-              onClick={(e) => e.stopPropagation()}
-              className="max-h-[82vh] max-w-full w-auto h-auto object-contain rounded-lg shadow-2xl"
-            />
-
-            {/* Caption */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
-              <p className="text-white text-sm font-semibold">{certificates[lightbox].title}</p>
-              <p className="text-white/50 text-xs mt-0.5">{certificates[lightbox].subtitle} · {lightbox + 1} / {certificates.length}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   )
 }

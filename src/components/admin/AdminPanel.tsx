@@ -155,7 +155,7 @@ function ImageUpload({ label, value, onChange }: { label: string; value: string;
 }
 
 /* ─── types ─── */
-type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'applications' | 'blogs' | 'records' | 'messages'
+type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'applications' | 'blogs' | 'records' | 'messages' | 'mail'
 
 interface ContactMessage {
   id: string
@@ -180,6 +180,7 @@ const navItems: { key: Section; label: string; icon: React.ComponentType<{ class
   { key: 'blogs', label: 'Blogs', icon: FileText },
   { key: 'records', label: 'Project Records', icon: ListChecks },
   { key: 'messages', label: 'Messages', icon: Mail },
+  { key: 'mail', label: 'Mail Settings', icon: Settings },
 ]
 
 /* ─── generic CRUD state ─── */
@@ -321,6 +322,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
             {activeSection === 'applications' && <ApplicationsSection />}
             {activeSection === 'records' && <RecordsSection />}
             {activeSection === 'messages' && <MessagesSection />}
+            {activeSection === 'mail' && <MailSettingsSection />}
           </div>
         </div>
       </div>
@@ -2586,6 +2588,163 @@ function MessagesSection() {
           ))}
         </div>
       )}
+    </SectionWrapper>
+  )
+}
+
+/* ═══════════════ MAIL SETTINGS SECTION ═══════════════
+   SMTP credentials used to email website enquiries to the company
+   mailbox. Built for Google Workspace: the username is the full mailbox
+   address and the password is a Google App Password (Google Account →
+   Security → 2-Step Verification → App passwords). Stored in the
+   SiteSetting table under the key "mail_settings". */
+interface MailSettingsForm {
+  host: string
+  port: string
+  user: string
+  pass: string
+  fromName: string
+  notifyTo: string
+}
+
+const MAIL_EMPTY: MailSettingsForm = {
+  host: 'smtp.gmail.com',
+  port: '587',
+  user: '',
+  pass: '',
+  fromName: 'Shri Vaari Electricals Website',
+  notifyTo: '',
+}
+
+function MailSettingsSection() {
+  const [form, setForm] = useState<MailSettingsForm>(MAIL_EMPTY)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState('')
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    setError(false)
+    try {
+      const s = await fetchAPI<Record<string, string>>('/settings')
+      try {
+        const ms = JSON.parse(s?.mail_settings || '{}')
+        setForm({
+          host: ms.host || MAIL_EMPTY.host,
+          port: String(ms.port ?? 587),
+          user: ms.user || '',
+          pass: ms.pass || '',
+          fromName: ms.fromName || MAIL_EMPTY.fromName,
+          notifyTo: ms.notifyTo || '',
+        })
+      } catch {
+        /* stored value unreadable — keep defaults */
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    load()
+  }, [load])
+
+  const set =
+    (k: keyof MailSettingsForm) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setForm(f => ({ ...f, [k]: e.target.value }))
+
+  const save = async () => {
+    setSaving(true)
+    setSaved(false)
+    setSaveError('')
+    try {
+      const port = Number(form.port) || 587
+      await fetchAPI('/settings', {
+        method: 'PUT',
+        body: JSON.stringify({
+          mail_settings: JSON.stringify({
+            host: form.host.trim() || 'smtp.gmail.com',
+            port,
+            secure: port === 465,
+            user: form.user.trim(),
+            pass: form.pass,
+            fromName: form.fromName.trim() || MAIL_EMPTY.fromName,
+            notifyTo: form.notifyTo.trim(),
+          }),
+        }),
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 5000)
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : 'Failed to save mail settings')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <SectionWrapper title="Mail Settings" loading={loading} error={error} onRetry={load}>
+      <div className="max-w-2xl space-y-5">
+        {/* Provider note */}
+        <div className="rounded-lg border border-slate-200 bg-white p-4">
+          <p className="text-sm font-semibold text-[#1A1A2E] mb-1">Google Workspace — App Password</p>
+          <p className="text-[13px] leading-relaxed text-[#6B7280]">
+            Enable 2-Step Verification on the mailbox, then create an App Password
+            (Google Account → Security → App passwords) and paste it below.
+            Host and port are pre-filled with Google&apos;s values (smtp.gmail.com / 587) — no SMTP
+            knowledge needed, only the mailbox address and app password.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">SMTP Host</Label>
+            <Input value={form.host} onChange={set('host')} placeholder="smtp.gmail.com" className="h-10 rounded-md" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">SMTP Port</Label>
+            <Input value={form.port} onChange={set('port')} placeholder="587" className="h-10 rounded-md" />
+            <p className="text-[11px] text-[#6B7280]">587 (recommended) or 465 — TLS is selected automatically for 465.</p>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">Mailbox (Google Workspace email)</Label>
+            <Input value={form.user} onChange={set('user')} placeholder="enquiries@shrivaarielectricals.com" className="h-10 rounded-md" type="email" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">App Password</Label>
+            <Input value={form.pass} onChange={set('pass')} placeholder="16-character app password" className="h-10 rounded-md" type="password" autoComplete="new-password" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">From Name</Label>
+            <Input value={form.fromName} onChange={set('fromName')} className="h-10 rounded-md" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-[13px] font-medium">Send Enquiries To</Label>
+            <Input value={form.notifyTo} onChange={set('notifyTo')} placeholder="enquiries@shrivaarielectricals.com" className="h-10 rounded-md" type="email" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 pt-1">
+          <Button
+            onClick={save}
+            disabled={saving}
+            className="rounded-md h-10 px-6 bg-[#0D1D3A] text-white hover:bg-[#15264a]"
+          >
+            {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+            Save Mail Settings
+          </Button>
+          {saved && (
+            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600">
+              <Check className="w-4 h-4" /> Saved — new enquiries will be emailed
+            </span>
+          )}
+          {saveError && <span className="text-sm text-red-600">{saveError}</span>}
+        </div>
+      </div>
     </SectionWrapper>
   )
 }
