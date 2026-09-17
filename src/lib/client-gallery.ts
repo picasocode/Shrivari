@@ -1,8 +1,12 @@
-/* ─── Real client logo gallery — exactly the logos shown on the company's
-   official clients page (shrivaarielectricals.com/clients.html), fully
-   downloaded into /public/images/clients-site/. No other logos are used.
-   Category slugs follow the old site's industry grouping so the filter
-   pills mirror the official classification. */
+/* ─── Client logo gallery — exactly the logos published on the company's
+   official clients page (shrivaarielectricals.com/clients.html), downloaded
+   into /public/images/clients-site/ as 1.jpg … 161.jpg (page order).
+   No other logos are used anywhere.
+
+   Client identities are intentionally NOT displayed:
+   - Public clients page renders logos only (no name captions).
+   - The `name` field carries a neutral placeholder ("Client 1", "Client 2", …)
+     which is also what the admin panel / database records use. */
 
 export interface GalleryClient {
   id: string
@@ -149,31 +153,31 @@ export const CLIENT_GALLERY: GalleryClient[] = [
   { id: 'c134', num: 134, name: 'Client 134', src: '/images/clients-site/134.jpg', category: 'food' },
   { id: 'c135', num: 135, name: 'Client 135', src: '/images/clients-site/135.jpg', category: 'metal' },
   { id: 'c136', num: 136, name: 'Client 136', src: '/images/clients-site/136.jpg', category: 'granites' },
-  { id: 'c169', num: 169, name: 'Client 137', src: '/images/clients-site/169.jpg', category: 'airport' },
-  { id: 'c170', num: 170, name: 'Client 138', src: '/images/clients-site/170.jpg', category: 'auto' },
-  { id: 'c171', num: 171, name: 'Client 139', src: '/images/clients-site/171.jpg', category: 'carbon' },
-  { id: 'c172', num: 172, name: 'Client 140', src: '/images/clients-site/172.jpg', category: 'chem' },
-  { id: 'c173', num: 173, name: 'Client 141', src: '/images/clients-site/173.jpg', category: 'chem' },
-  { id: 'c174', num: 174, name: 'Client 142', src: '/images/clients-site/174.jpg', category: 'chem' },
-  { id: 'c175', num: 175, name: 'Client 143', src: '/images/clients-site/175.jpg', category: 'commercial' },
-  { id: 'c176', num: 176, name: 'Client 144', src: '/images/clients-site/176.jpg', category: 'general' },
-  { id: 'c177', num: 177, name: 'Client 145', src: '/images/clients-site/177.jpg', category: 'it' },
-  { id: 'c178', num: 178, name: 'Client 146', src: '/images/clients-site/178.jpg', category: 'it' },
-  { id: 'c179', num: 179, name: 'Client 147', src: '/images/clients-site/179.jpg', category: 'engg' },
-  { id: 'c180', num: 180, name: 'Client 148', src: '/images/clients-site/180.jpg', category: 'engg' },
-  { id: 'c181', num: 181, name: 'Client 149', src: '/images/clients-site/181.jpg', category: 'engg' },
-  { id: 'c183', num: 183, name: 'Client 150', src: '/images/clients-site/183.jpg', category: 'govt' },
-  { id: 'c184', num: 184, name: 'Client 151', src: '/images/clients-site/184.jpg', category: 'electronics' },
-  { id: 'c185', num: 185, name: 'Client 152', src: '/images/clients-site/185.jpg', category: 'electronics' },
-  { id: 'c186', num: 186, name: 'Client 153', src: '/images/clients-site/186.jpg', category: 'hit' },
-  { id: 'c187', num: 187, name: 'Client 154', src: '/images/clients-site/187.jpg', category: 'hit' },
-  { id: 'c188', num: 188, name: 'Client 155', src: '/images/clients-site/188.jpg', category: 'commercial' },
-  { id: 'c189', num: 189, name: 'Client 156', src: '/images/clients-site/189.jpg', category: 'commercial' },
-  { id: 'c190', num: 190, name: 'Client 157', src: '/images/clients-site/190.jpg', category: 'commercial' },
-  { id: 'c191', num: 191, name: 'Client 158', src: '/images/clients-site/191.jpg', category: 'commercial' },
-  { id: 'c192', num: 192, name: 'Client 159', src: '/images/clients-site/192.jpg', category: 'commercial' },
-  { id: 'c193', num: 193, name: 'Client 160', src: '/images/clients-site/193.jpg', category: 'general' },
-  { id: 'c194', num: 194, name: 'Client 161', src: '/images/clients-site/194.jpg', category: 'metal' },
+  { id: 'c137', num: 137, name: 'Client 137', src: '/images/clients-site/137.jpg', category: 'airport' },
+  { id: 'c138', num: 138, name: 'Client 138', src: '/images/clients-site/138.jpg', category: 'auto' },
+  { id: 'c139', num: 139, name: 'Client 139', src: '/images/clients-site/139.jpg', category: 'carbon' },
+  { id: 'c140', num: 140, name: 'Client 140', src: '/images/clients-site/140.jpg', category: 'chem' },
+  { id: 'c141', num: 141, name: 'Client 141', src: '/images/clients-site/141.jpg', category: 'chem' },
+  { id: 'c142', num: 142, name: 'Client 142', src: '/images/clients-site/142.jpg', category: 'chem' },
+  { id: 'c143', num: 143, name: 'Client 143', src: '/images/clients-site/143.jpg', category: 'commercial' },
+  { id: 'c144', num: 144, name: 'Client 144', src: '/images/clients-site/144.jpg', category: 'general' },
+  { id: 'c145', num: 145, name: 'Client 145', src: '/images/clients-site/145.jpg', category: 'it' },
+  { id: 'c146', num: 146, name: 'Client 146', src: '/images/clients-site/146.jpg', category: 'it' },
+  { id: 'c147', num: 147, name: 'Client 147', src: '/images/clients-site/147.jpg', category: 'engg' },
+  { id: 'c148', num: 148, name: 'Client 148', src: '/images/clients-site/148.jpg', category: 'engg' },
+  { id: 'c149', num: 149, name: 'Client 149', src: '/images/clients-site/149.jpg', category: 'engg' },
+  { id: 'c150', num: 150, name: 'Client 150', src: '/images/clients-site/150.jpg', category: 'govt' },
+  { id: 'c151', num: 151, name: 'Client 151', src: '/images/clients-site/151.jpg', category: 'electronics' },
+  { id: 'c152', num: 152, name: 'Client 152', src: '/images/clients-site/152.jpg', category: 'electronics' },
+  { id: 'c153', num: 153, name: 'Client 153', src: '/images/clients-site/153.jpg', category: 'hit' },
+  { id: 'c154', num: 154, name: 'Client 154', src: '/images/clients-site/154.jpg', category: 'hit' },
+  { id: 'c155', num: 155, name: 'Client 155', src: '/images/clients-site/155.jpg', category: 'commercial' },
+  { id: 'c156', num: 156, name: 'Client 156', src: '/images/clients-site/156.jpg', category: 'commercial' },
+  { id: 'c157', num: 157, name: 'Client 157', src: '/images/clients-site/157.jpg', category: 'commercial' },
+  { id: 'c158', num: 158, name: 'Client 158', src: '/images/clients-site/158.jpg', category: 'commercial' },
+  { id: 'c159', num: 159, name: 'Client 159', src: '/images/clients-site/159.jpg', category: 'commercial' },
+  { id: 'c160', num: 160, name: 'Client 160', src: '/images/clients-site/160.jpg', category: 'general' },
+  { id: 'c161', num: 161, name: 'Client 161', src: '/images/clients-site/161.jpg', category: 'metal' },
 ]
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -202,47 +206,3 @@ export const CATEGORY_LABELS: Record<string, string> = {
   textiles: 'Textiles',
 }
 
-/* ─── Logo URL resolver ───
-   Clients added/seeded via the admin panel used to hotlink their logos from
-   the old company site (https://shrivaarielectricals.com/img/client/N.jpg).
-   Depending on a third-party host for same-page images makes those cards
-   fail to load whenever that host is slow or unreachable for a visitor.
-   All of those logos are therefore mirrored into
-   /public/images/clients-site/ext-N.jpg and the URL is rewritten here so
-   the public pages only ever load same-origin images.
-
-   Those hotlinks were also assigned by POSITION in the old site's client
-   strip rather than by company identity, so most of them show a different
-   company's logo (e.g. "Ashok Leyland" pointed at Caparo's logo file).
-   LOGO_BY_NAME remaps the pairings that could be verified against the
-   actual logo artwork; every other position-based hotlink is untrusted and
-   resolves to null so the card falls back to its monogram instead of
-   displaying a wrong logo. */
-const EXTERNAL_LOGO_HOST = 'https://shrivaarielectricals.com/img/client/'
-
-/* Verified client-name -> mirrored logo artwork (identifiable brand marks) */
-const LOGO_BY_NAME: Record<string, string> = {
-  'Ashok Leyland': '/images/clients-site/ext-2.jpg',
-  'TVS Srichakra Ltd': '/images/clients-site/ext-8.jpg', // TVS Tyres
-  'Sundaram Clayton': '/images/clients-site/ext-7.jpg',
-  'Delta Electronics India': '/images/clients-site/ext-22.jpg',
-  'MM Forging': '/images/clients-site/ext-170.jpg', // MMF — MM Forgings
-  'JSW Steel': '/images/clients-site/ext-87.jpg',
-  'Saint-Gobain India': '/images/clients-site/ext-52.jpg',
-  'TCS (Tata Consultancy Services)': '/images/clients-site/ext-31.jpg',
-  'Sri Ramachandra Institute': '/images/clients-site/ext-61.jpg',
-}
-
-export function resolveClientLogoUrl(
-  url: string | null | undefined,
-  name?: string
-): string | null {
-  if (name && LOGO_BY_NAME[name]) return LOGO_BY_NAME[name]
-  if (!url) return null
-  if (url.startsWith(EXTERNAL_LOGO_HOST)) {
-    /* Position-based hotlink from the old seed — artwork identity unknown,
-       so it must not be displayed next to this client's name. */
-    return null
-  }
-  return url
-}

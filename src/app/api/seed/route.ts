@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import { DEFAULT_PRODUCTS } from "@/lib/product-defaults";
+import { CLIENT_GALLERY, CATEGORY_LABELS } from "@/lib/client-gallery";
 
 // Track if seeding has been attempted in this process
 let seedAttempted = false;
@@ -226,42 +227,20 @@ export async function GET() {
     }
 
     // ============================================================
-    // 4. CLIENTS (25+)
+    // 4. CLIENTS — exactly the official gallery logos with neutral
+    //    placeholder names ("Client 1", "Client 2", …). No real client
+    //    identities are stored or displayed anywhere.
     // ============================================================
-    const clients = [
-      { name: "Ashok Leyland", industry: "Automobile", location: "Hosur", description: "Leading commercial vehicle manufacturer and one of India's largest truck and bus producers.", order: 1 },
-      { name: "TVS Srichakra Ltd", industry: "Manufacturing", location: "Madurai", description: "Major manufacturer of two-wheeler and three-wheeler tyres, part of the TVS Group.", order: 2 },
-      { name: "Delta Electronics India", industry: "Electronics", location: "Hosur", description: "Global leader in power and thermal management solutions and a major provider of industrial automation.", order: 3 },
-      { name: "M.J. Casting Limited", industry: "Manufacturing", location: "Hosur", description: "Specialized castings manufacturer serving the automotive and industrial sectors.", order: 4 },
-      { name: "Madras Security Printers", industry: "Printing & Security", location: "Chennai", description: "Government-approved security printing and document management company.", order: 5 },
-      { name: "PSG Institute of Technology", industry: "Education", location: "Coimbatore", description: "Premier engineering institution and one of the oldest technical schools in India.", order: 6 },
-      { name: "MM Forging", industry: "Forging & Manufacturing", location: "Viralimalai", description: "Leading manufacturer of forged and machined components for automotive and industrial applications.", order: 7 },
-      { name: "Solon India Pvt Ltd", industry: "Solar Energy", location: "Mothagam", description: "Solar energy developer specializing in large-scale photovoltaic power plants.", order: 8 },
-      { name: "TVS Motor Company", industry: "Automobile", location: "Hosur", description: "India's third-largest two-wheeler manufacturer and a key player in the TVS Group.", order: 9 },
-      { name: "Hyundai Motor India", industry: "Automobile", location: "Sriperumbudur", description: "India's second-largest car manufacturer and largest automobile exporter from India.", order: 10 },
-      { name: "Saint-Gobain India", industry: "Glass Manufacturing", location: "Sriperumbudur", description: "World leader in the habitat and construction markets, designing and manufacturing building materials.", order: 11 },
-      { name: "Titan Company Ltd", industry: "Watch & Jewellery Manufacturing", location: "Hosur", description: "India's leading manufacturer of watches, jewellery, and eyewear, a Tata Group company.", order: 12 },
-      { name: "Britannia Industries", industry: "Food Processing", location: "Chennai", description: "One of India's biggest food brands and leading dairy and bakery products company.", order: 13 },
-      { name: "LMW Ltd", industry: "Textile Machinery", location: "Coimbatore", description: "India's largest manufacturer of textile machinery and a leader in CNC machine tools.", order: 14 },
-      { name: "Elgi Equipments Ltd", industry: "Compressor Manufacturing", location: "Coimbatore", description: "Global leader in air compressors and automotive equipment manufacturing.", order: 15 },
-      { name: "Sundaram Clayton", industry: "Auto Components", location: "Chennai", description: "Leading manufacturer of brake systems and die-casting products for automotive OEMs.", order: 16 },
-      { name: "MRF Tyres", industry: "Tyre Manufacturing", location: "Tiruvottiyur", description: "India's largest tyre manufacturer with a strong global presence in over 65 countries.", order: 17 },
-      { name: "Crompton Greaves", industry: "Electrical Equipment", location: "Chennai", description: "Pioneer in electrical equipment manufacturing with a legacy spanning over 85 years.", order: 18 },
-      { name: "Grasim Industries", industry: "Cement & Fibre", location: "Nagpur", description: "Aditya Birla Group flagship company and India's largest cement producer.", order: 19 },
-      { name: "Dalmia Cement", industry: "Cement Manufacturing", location: "Dalmiapuram", description: "One of India's pioneering cement companies with a strong presence in South India.", order: 20 },
-      { name: "Reliance Industries", industry: "Petrochemical & Refining", location: "Jamnagar", description: "India's largest private sector company with businesses spanning energy, petrochemicals, and retail.", order: 21 },
-      { name: "Schneider Electric India", industry: "Energy Management", location: "Bangalore", description: "Global specialist in energy management and automation with strong presence in India.", order: 22 },
-      { name: "IOCL - Indian Oil Corporation", industry: "Oil & Gas", location: "Chennai", description: "India's largest commercial enterprise and flagship national oil company.", order: 23 },
-      { name: "ITC Limited", industry: "Diversified Conglomerate", location: "Chennai", description: "One of India's foremost private sector companies with diversified presence in FMCG, hotels, and paperboards.", order: 24 },
-      { name: "TATA Power", industry: "Power & Utilities", location: "Mumbai", description: "India's largest integrated power company and pioneer in the Indian power sector.", order: 25 },
-      { name: "NTPC Limited", industry: "Power Generation", location: "Hyderabad", description: "India's largest power generating company and a Maharatna CPSE.", order: 26 },
-      { name: "Bangalore International Airport", industry: "Infrastructure", location: "Bangalore", description: "Kempegowda International Airport, one of India's busiest airports handling 30+ million passengers.", order: 27 },
-      { name: "Chennai Petroleum Corporation", industry: "Oil Refining", location: "Chennai", description: "Major petroleum refining company and a subsidiary of IOCL serving South India.", order: 28 },
-    ];
+    const clients = CLIENT_GALLERY.map((c) => ({
+      name: c.name,
+      industry: CATEGORY_LABELS[c.category] || "",
+      location: "",
+      description: "",
+      logoUrl: c.src,
+      order: c.num,
+    }));
 
-    for (const client of clients) {
-      await db.client.create({ data: client });
-    }
+
 
     // ============================================================
     // 5. TESTIMONIALS (10+)
