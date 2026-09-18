@@ -267,7 +267,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="text-lg text-white/70 max-w-2xl mb-8"
           >
-            Explore our comprehensive portfolio of 2000+ projects executed across India — featuring detailed profiles of key electrical infrastructure projects. Search, filter, and discover detailed project information.
+            Explore our comprehensive portfolio of electrical infrastructure projects executed across diverse industries and states in India. Search, filter, and discover detailed project information.
           </motion.p>
 
         </div>
