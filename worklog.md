@@ -3024,3 +3024,19 @@ Work Log:
 Stage Summary:
 - Home hero slide 1 now shows the real company building (wide 1584x672 photo, signage visible); navy scrim keeps slide text readable on the left
 - Remote main: 4a70587
+
+---
+Task ID: 48
+Agent: Z.ai Code (main)
+Task: Remove black shade (dark scrim overlay) from home hero banner images
+
+Work Log:
+- User asked to remove the black shade over the banner images (the Task-43 readability overlay: bg-black/15 + navy gradient from-[#0A1628]/85)
+- Removed both overlay divs from src/components/sections/Hero.tsx — banner photos now render fully clear/bright
+- Added subtle text-shadow ([text-shadow:0_1px_3px_rgba(10,22,40,0.65),0_2px_14px_rgba(10,22,40,0.7)]) to subtitle, title and description so white text stays legible over the bright building photo without any overlay; desc opacity white/90 -> white/95
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed, pushed; verified remote main
+
+Stage Summary:
+- Hero banner images display with no dark overlay on any slide; readability now via text shadow only
+- Remote main: (see commit below)
