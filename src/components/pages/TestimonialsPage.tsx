@@ -271,17 +271,17 @@ export default function TestimonialsPage() {
                         style={{ background: 'linear-gradient(90deg, #1B3A5C, #E8751A)' }}
                       />
 
-                      <CardContent className="relative p-6">
+                      <CardContent className="relative p-6 flex flex-col h-full">
                         {/* Decorative small quote */}
                         <Quote className="absolute top-3 right-4 w-8 h-8 text-[#1B3A5C]/[0.07] fill-[#1B3A5C]/[0.07]" strokeWidth={1} />
 
                         {/* Quote text */}
-                        <p className="text-[#1A1A2E]/80 text-sm leading-relaxed mb-6 italic min-h-[4.5rem]">
+                        <p className="text-[#1A1A2E]/80 text-sm leading-relaxed mb-6 italic min-h-[4.5rem] flex-1">
                           &ldquo;{t.content}&rdquo;
                         </p>
 
                         {/* Person info */}
-                        <div className="flex items-center gap-3 pt-4 border-t border-[#E2E8F0]">
+                        <div className="flex items-center gap-3 pt-4 border-t border-[#E2E8F0] mt-auto">
                           {t.imageUrl ? (
                             <img src={t.imageUrl} alt={t.name} className="w-9 h-9 rounded-full object-cover border border-[#E2E8F0] shrink-0" />
                           ) : (

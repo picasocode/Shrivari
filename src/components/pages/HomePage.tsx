@@ -318,11 +318,11 @@ export default function HomePage() {
               {testimonials.map((t, i) => (
                 <FadeIn key={t.id} delay={i * 0.08}>
                   <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm h-full">
-                    <CardContent className="p-6">
-                      <p className="text-[#1A1A2E] text-sm leading-relaxed mb-5 italic">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <p className="text-[#1A1A2E] text-sm leading-relaxed mb-5 italic flex-1">
                         &ldquo;{t.content}&rdquo;
                       </p>
-                      <div className="border-t border-[#E5E7EB] pt-4 flex items-center gap-3">
+                      <div className="border-t border-[#E5E7EB] pt-4 flex items-center gap-3 mt-auto">
                         <InitialsAvatar name={t.name} />
                         <div className="min-w-0">
                           <p className="font-semibold text-[#1A1A2E] text-sm truncate">{t.name}</p>
