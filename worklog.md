@@ -3039,4 +3039,4 @@ Work Log:
 
 Stage Summary:
 - Hero banner images display with no dark overlay on any slide; readability now via text shadow only
-- Remote main: (see commit below)
+- Remote main: 7afbfb7
