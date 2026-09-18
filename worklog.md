@@ -3008,3 +3008,19 @@ Work Log:
 Stage Summary:
 - Home hero slide 4 banner replaced with user's image (1671x941, optimized 216KB); navy scrim overlay from Task 43 keeps slide text readable over the sunset side
 - Remote main: fcc9449
+
+---
+Task ID: 47
+Agent: Z.ai Code (main)
+Task: Replace first home-page hero banner with user-supplied company building photo
+
+Work Log:
+- User uploaded /home/z/my-project/upload/Image-2.png (1584x672 RGBA PNG, Shri Vaari Electricals office building with signage, tree-lined street)
+- First hero slide (slide 1: 'Powering India's Electrical Power Infrastructure') uses /images/hero-office.jpg (previously 734x734 square)
+- Composited RGBA onto white, converted to optimized progressive JPEG (quality 82, 290KB, 1584x672) with PIL; overwrote public/images/hero-office.jpg — no code change needed
+- Visually verified converted JPG (signage legible, wide banner)
+- lint 0/0; committed 4a70587, pushed; verified remote main HEAD = 4a70587
+
+Stage Summary:
+- Home hero slide 1 now shows the real company building (wide 1584x672 photo, signage visible); navy scrim keeps slide text readable on the left
+- Remote main: 4a70587
