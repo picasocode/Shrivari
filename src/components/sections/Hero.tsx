@@ -56,28 +56,24 @@ export default function Hero() {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
         </div>
       ))}
-      {/* Readable text: soft base + navy scrim on the left where text sits; images stay bright on the right */}
-      <div className="absolute inset-0 bg-black/15" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0A1628]/85 via-[#0A1628]/45 to-[#0A1628]/5" />
-
       {/* Content */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 w-full py-16 md:pt-20 md:pb-36">
         <div className="max-w-xl">
           <span
             key={`sub-${current}`}
-            className="inline-block text-white text-sm font-semibold mb-4 tracking-wide animate-fade-in-up"
+            className="inline-block text-white text-sm font-semibold mb-4 tracking-wide animate-fade-in-up [text-shadow:0_1px_3px_rgba(10,22,40,0.65),0_2px_14px_rgba(10,22,40,0.7)]"
           >
             {slides[current].subtitle}
           </span>
           <h1
             key={`title-${current}`}
-            className="text-[32px] md:text-[42px] lg:text-[52px] font-bold text-white leading-tight mb-5 tracking-tight animate-fade-in-up whitespace-pre-line"
+            className="text-[32px] md:text-[42px] lg:text-[52px] font-bold text-white leading-tight mb-5 tracking-tight animate-fade-in-up whitespace-pre-line [text-shadow:0_1px_3px_rgba(10,22,40,0.65),0_2px_14px_rgba(10,22,40,0.7)]"
           >
             {slides[current].title}
           </h1>
           <p
             key={`desc-${current}`}
-            className="text-white/90 text-base md:text-lg mb-8 leading-relaxed max-w-md animate-fade-in-up"
+            className="text-white/95 text-base md:text-lg mb-8 leading-relaxed max-w-md animate-fade-in-up [text-shadow:0_1px_3px_rgba(10,22,40,0.65),0_2px_14px_rgba(10,22,40,0.7)]"
           >
             {slides[current].desc}
           </p>
