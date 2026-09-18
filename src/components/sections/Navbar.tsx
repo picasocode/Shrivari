@@ -195,12 +195,12 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
-              className="h-16 w-auto object-contain max-w-[58vw] lg:max-w-none"
+              className="h-16 w-auto object-contain max-w-[58vw] min-[1366px]:max-w-[210px] 2xl:max-w-none"
             />
           </button>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden min-[1366px]:flex items-center gap-1 ml-auto">
             {navLinks.map((link) =>
               link.page === 'services' ? (
                 /* Services dropdown */
@@ -212,7 +212,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                 >
                   <button
                     onClick={() => handleNavigate('services')}
-                    className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                    className={`flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap 2xl:px-3.5 2xl:text-[13.5px] transition-colors rounded-md ${
                       isServicesActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
                         : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
@@ -282,7 +282,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                 >
                   <button
                     onClick={() => handleNavigate('about')}
-                    className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                    className={`flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap 2xl:px-3.5 2xl:text-[13.5px] transition-colors rounded-md ${
                       isCompanyActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
                         : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
@@ -343,7 +343,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                 >
                   <button
                     onClick={() => handleNavigate('clients')}
-                    className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                    className={`flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap 2xl:px-3.5 2xl:text-[13.5px] transition-colors rounded-md ${
                       isClientsActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
                         : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
@@ -404,7 +404,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                 >
                   <button
                     onClick={() => handleNavigate('products')}
-                    className={`flex items-center gap-1 px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                    className={`flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap 2xl:px-3.5 2xl:text-[13.5px] transition-colors rounded-md ${
                       isProductsActive
                         ? 'text-[#E8751A] bg-[#E8751A]/5'
                         : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
@@ -469,7 +469,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                 <button
                   key={link.page}
                   onClick={() => handleNavigate(link.page)}
-                  className={`px-3.5 py-2 text-[13.5px] font-medium transition-colors rounded-md ${
+                  className={`px-2.5 py-2 text-[13px] font-medium whitespace-nowrap 2xl:px-3.5 2xl:text-[13.5px] transition-colors rounded-md ${
                     router.page === link.page
                       ? 'text-[#E8751A] bg-[#E8751A]/5'
                       : 'text-[#374151] hover:text-[#1B3A5C] hover:bg-gray-50'
@@ -486,7 +486,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             {isLoggedIn ? (
               <Button
                 onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-5 h-9 transition-colors"
+                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
               >
                 <Shield className="w-3.5 h-3.5 mr-1.5" />
                 Dashboard
@@ -494,7 +494,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             ) : (
               <Button
                 onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-5 h-9 transition-colors"
+                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
               >
                 <Shield className="w-3.5 h-3.5 mr-1.5" />
                 Admin
@@ -502,14 +502,14 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             )}
             <Button
               onClick={() => handleNavigate('contact')}
-              className="hidden md:inline-flex bg-[#E8751A] hover:bg-[#D4691A] text-white text-xs font-semibold rounded-md px-5 h-9 transition-colors"
+              className="hidden md:inline-flex bg-[#E8751A] hover:bg-[#D4691A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
             >
               Get a Quote
             </Button>
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden text-[#374151] w-9 h-9">
+                <Button variant="ghost" size="icon" className="min-[1366px]:hidden text-[#374151] w-9 h-9">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
