@@ -3155,3 +3155,23 @@ Work Log:
 Stage Summary:
 - Name/avatar footer now bottom-aligned on all testimonial cards (home preview + testimonials page), matching card heights
 - Remote main: 0994eb1
+
+---
+Task ID: 56
+Agent: Z.ai Code (main)
+Task: Quality & Policy page — remove "Our Commitment to Excellence" pillars; add view-only certificates gallery from user zip
+
+Work Log:
+- User pasted the Quality First / Safety Always / Environmental Care section twice and asked to remove it; then asked to ADD certificates from 'Quality Policies - Company Certificates-20260916T071204Z-1-001.zip' as view-only, non-downloadable
+- Unzipped 7 single-page PDFs: ISO 9001/14001/45001/50001, CE, RoHS, ZED Bronze
+- Converted all to JPG @130dpi via pdftoppm (1075x1521) -> public/images/certificates/{iso-9001,iso-14001,iso-45001,iso-50001,ce-certificate,rohs-certificate,zed-bronze}.jpg; git rm'd old unused cert-*.jpg leftovers from Task 40
+- QualityPage.tsx rewrite: removed policyPillars const + Section 2 (commitment cards) and their now-unused icon imports (BadgeCheck/ShieldCheck/Leaf); replaced with 'Our Certifications' gallery — 7 cards (aspect 3/4 thumbnails rendered as CSS background-image, NOT <img>: no save-as/drag), hover zoom badge, click/Enter opens lightbox viewer
+- View-only protections: right-click (contextmenu) blocked on section + cards + lightbox; no <a>/<img> elements or download links anywhere; draggable=false; select-none; 'View only — downloading is disabled' badge with Lock icon (section + lightbox)
+- Lightbox: AnimatePresence fade, navy 94% backdrop (click outside closes), white bg-contain stage, X close button, Escape key closes, body scroll locked while open, title+subtitle caption
+- Kept Task-42-critical hero hooks (heroRef/useScroll/heroY/heroOpacity) untouched
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed 4cc34e7, pushed; verified remote main HEAD = 4cc34e7
+
+Stage Summary:
+- Quality & Policy page = hero -> view-only certificates gallery (7 certs) -> CTA; commitment section removed
+- Remote main: 4cc34e7
