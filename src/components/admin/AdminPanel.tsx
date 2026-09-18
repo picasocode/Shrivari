@@ -9,6 +9,7 @@ import {
   Briefcase, Zap, Cpu, Gauge, Activity, MonitorPlay, CircuitBoard,
   ShieldCheck, Factory, Award, Boxes, FileCheck, Hammer, FlaskConical,
   Building2, Globe, Target, Sparkles, GraduationCap, Lightbulb, Download,
+  FolderKanban,
 } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import dynamic from 'next/dynamic'
@@ -31,10 +32,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import {
   fetchProducts, fetchServices, fetchClients, fetchTestimonials,
   fetchBlogs, fetchAPI,
-  fetchCareers, fetchManufacturing,
+  fetchCareers, fetchManufacturing, fetchProjectsAll,
   createItem, updateItem, deleteItem,
   type Product, type Service, type Client, type Testimonial,
-  type Blog,
+  type Blog, type Project,
   type Career, type ManufacturingItem,
 } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
@@ -155,7 +156,7 @@ function ImageUpload({ label, value, onChange }: { label: string; value: string;
 }
 
 /* ─── types ─── */
-type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'testimonials' | 'careers' | 'applications' | 'blogs' | 'records' | 'messages' | 'mail'
+type Section = 'dashboard' | 'products' | 'manufacturing' | 'services' | 'clients' | 'projects' | 'testimonials' | 'careers' | 'applications' | 'blogs' | 'records' | 'messages' | 'mail'
 
 interface ContactMessage {
   id: string
@@ -174,6 +175,7 @@ const navItems: { key: Section; label: string; icon: React.ComponentType<{ class
   { key: 'manufacturing', label: 'Manufacturing', icon: Factory },
   { key: 'services', label: 'Services', icon: Wrench },
   { key: 'clients', label: 'Clients', icon: Users },
+  { key: 'projects', label: 'Ongoing Projects', icon: FolderKanban },
   { key: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
   { key: 'careers', label: 'Careers', icon: Briefcase },
   { key: 'applications', label: 'Applications', icon: UserPlus },
@@ -316,6 +318,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
             {activeSection === 'manufacturing' && <ManufacturingSection />}
             {activeSection === 'services' && <ServicesSection />}
             {activeSection === 'clients' && <ClientsSection />}
+            {activeSection === 'projects' && <OngoingProjectsSection />}
             {activeSection === 'testimonials' && <TestimonialsSection />}
             {activeSection === 'careers' && <CareersSection />}
             {activeSection === 'blogs' && <BlogsSection />}
@@ -681,6 +684,7 @@ function DashboardSection({ onNavigate }: { onNavigate: (section: Section) => vo
     { label: 'Manage Careers', icon: Briefcase, section: 'careers' },
     { label: 'Write a Blog Post', icon: FileText, section: 'blogs' },
     { label: 'Review Messages', icon: Mail, section: 'messages' },
+    { label: 'Ongoing Projects', icon: FolderKanban, section: 'projects' },
     { label: 'Project Records', icon: ListChecks, section: 'records' },
     { label: 'Job Applications', icon: UserPlus, section: 'applications' },
   ]
@@ -1157,6 +1161,158 @@ function ClientDialog({ item, onClose, onSave }: { item: Client | null; onClose:
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
           <ImageUpload label="Logo URL" value={form.logoUrl} onChange={url => setForm(f => ({ ...f, logoUrl: url }))} />
           <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active</Label></div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
+          <Button onClick={() => onSave(form)} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   ONGOING PROJECTS SECTION
+   Manages the Project model (category ongoing/completed)
+   that powers the Home page "Ongoing Projects" cards.
+   ═══════════════════════════════════════════ */
+function OngoingProjectsSection() {
+  const { items, setItems, loading, error, load } = useCrud<Project>(() => fetchProjectsAll())
+  const [editing, setEditing] = useState<Project | null>(null)
+  const [creating, setCreating] = useState(false)
+  const [search, setSearch] = useState('')
+  const [colFilters, setColFilters] = useState<Record<string, string>>({})
+  const { notify } = useToast()
+
+  const projectFilterDefs: FieldFilterDef[] = useMemo(() => [
+    { key: 'name', label: 'Name', kind: 'text', get: (p: Project) => p.name },
+    { key: 'client', label: 'Client', kind: 'text', get: (p: Project) => p.client },
+    { key: 'location', label: 'Location', kind: 'text', get: (p: Project) => p.location },
+    { key: 'category', label: 'Category', kind: 'select', get: (p: Project) => p.category, options: ['ongoing', 'completed'], allLabel: 'All categories' },
+    { key: 'image', label: 'Image', kind: 'select', get: (p: Project) => (p.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
+    { key: 'active', label: 'Status', kind: 'select', get: (p: Project) => (p.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
+  ], [items])
+
+  const filtered = useMemo(() => items.filter(p =>
+    rowMatches([p.name, p.client, p.location, p.description], search) &&
+    columnFilterMatch(p, projectFilterDefs, colFilters)
+  ), [items, search, colFilters, projectFilterDefs])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this project?')) return
+    try { await deleteItem('/projects', id); setItems(prev => prev.filter(p => p.id !== id)); notify('success', 'Project deleted') }
+    catch (e) { notify('error', `Delete failed: ${(e as Error).message}`) }
+  }
+
+  const handleSave = async (data: Partial<Project>) => {
+    if (!data.name?.trim() || !data.client?.trim() || !data.location?.trim() || !data.description?.trim()) {
+      notify('error', 'Name, Client, Location and Description are required')
+      return
+    }
+    try {
+      if (editing) {
+        const updated = await updateItem<Project>('/projects', editing.id, data)
+        setItems(prev => prev.map(p => p.id === editing.id ? updated : p))
+        notify('success', 'Project updated')
+      } else {
+        const created = await createItem<Project>('/projects', data)
+        setItems(prev => [...prev, created])
+        notify('success', 'Project created')
+      }
+      setEditing(null); setCreating(false)
+    } catch (e) {
+      notify('error', `Save failed: ${(e as Error).message}`)
+    }
+  }
+
+  return (
+    <SectionWrapper title="Ongoing Projects" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('ongoing-projects', filtered)}>
+      <FilterBar placeholder="Search projects…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
+      <FieldFilterStrip defs={projectFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
+      <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-[#F0F4F8]">
+              <TableHead className="text-xs font-semibold w-16">Image</TableHead>
+              <TableHead className="text-xs font-semibold">Name</TableHead>
+              <TableHead className="text-xs font-semibold hidden md:table-cell">Client</TableHead>
+              <TableHead className="text-xs font-semibold hidden lg:table-cell">Location</TableHead>
+              <TableHead className="text-xs font-semibold hidden md:table-cell">Category</TableHead>
+              <TableHead className="text-xs font-semibold hidden lg:table-cell">Order</TableHead>
+              <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 ? (
+              <TableRow><TableCell colSpan={7} className="text-center text-sm text-[#6B7280] py-8">No projects yet — click Add to create one.</TableCell></TableRow>
+            ) : filtered.map(p => (
+              <TableRow key={p.id}>
+                <TableCell>
+                  {p.imageUrl ? (
+                    <img src={p.imageUrl} alt={p.name} className="w-12 h-9 rounded object-cover border border-[#E5E7EB]" />
+                  ) : (
+                    <div className="w-12 h-9 rounded bg-[#F0F4F8] border border-[#E5E7EB] flex items-center justify-center"><ImageIcon className="w-4 h-4 text-[#94A3B8]" /></div>
+                  )}
+                </TableCell>
+                <TableCell className="font-medium text-sm">{p.name}</TableCell>
+                <TableCell className="hidden md:table-cell text-sm text-[#6B7280]">{p.client}</TableCell>
+                <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{p.location}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  <Badge variant="secondary" className={`text-xs rounded capitalize ${p.category === 'ongoing' ? 'bg-[#FFF7ED] text-[#E8751A]' : 'bg-[#F0F4F8] text-[#1F2937]'}`}>{p.category}</Badge>
+                  {!p.active && <Badge variant="secondary" className="text-xs rounded ml-1 bg-red-50 text-red-600">Hidden</Badge>}
+                </TableCell>
+                <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{p.order}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditing(p)}><Pencil className="w-3.5 h-3.5" /></Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700" onClick={() => handleDelete(p.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      {(editing || creating) && (
+        <ProjectDialog item={editing} onClose={() => { setEditing(null); setCreating(false) }} onSave={handleSave} />
+      )}
+    </SectionWrapper>
+  )
+}
+
+function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClose: () => void; onSave: (data: Partial<Project>) => void }) {
+  const [form, setForm] = useState(() =>
+    item
+      ? { name: item.name, client: item.client, location: item.location, description: item.description, imageUrl: item.imageUrl, category: item.category, order: item.order, active: item.active }
+      : { name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', order: 0, active: true }
+  )
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
+        <DialogHeader><DialogTitle>{item ? 'Edit Project' : 'Add Ongoing Project'}</DialogTitle></DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Project Name *</Label><Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Client *</Label><Input value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Location *</Label><Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Category</Label>
+              <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
+                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-white">
+                  <SelectItem value="ongoing">Ongoing</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
+          </div>
+          <div className="space-y-1.5"><Label className="text-xs font-medium">Description *</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>
+          <ImageUpload label="Project Image" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
+          <div className="flex items-center gap-2"><Switch checked={form.active} onCheckedChange={v => setForm(f => ({ ...f, active: v }))} /><Label className="text-xs font-medium">Active (visible on site)</Label></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>

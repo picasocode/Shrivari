@@ -259,7 +259,17 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.slice(0, 3).map((p, i) => (
                 <FadeIn key={p.id} delay={i * 0.08}>
-                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full">
+                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full overflow-hidden">
+                    {p.imageUrl && (
+                      <div className="relative h-44 w-full overflow-hidden">
+                        <img
+                          src={p.imageUrl}
+                          alt={p.name}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
                     <CardContent className="p-6">
                       <Badge className="bg-[#F0F4F8] text-[#1F2937] hover:bg-[#E5E7EB] mb-3 rounded text-xs font-semibold">{p.category || 'Ongoing'}</Badge>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
