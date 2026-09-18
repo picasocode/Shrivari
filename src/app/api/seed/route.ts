@@ -570,7 +570,7 @@ export async function GET() {
       { key: "social_twitter", value: "" },
       { key: "social_instagram", value: "" },
       { key: "meta_title", value: "Shri Vaari Electricals Pvt Ltd | HT/LT Panels, Switchyards, Solar EPC" },
-      { key: "meta_description", value: "Leading electrical engineering company in South India specializing in HT/LT panel manufacturing, EHV switchyards, solar EPC, and complete power infrastructure solutions. CRISIL BB+ rated, 29+ years experience." },
+      { key: "meta_description", value: "Leading electrical engineering company in South India specializing in HT/LT panel manufacturing, EHV switchyards, solar EPC, and complete power infrastructure solutions. CRISIL BB+ rated, 28+ years experience." },
       { key: "google_maps_embed", value: "" },
     ];
 
