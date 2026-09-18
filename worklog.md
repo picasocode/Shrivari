@@ -3215,3 +3215,21 @@ Stage Summary:
 - Menu name (navbar + footer) = "Quality Policy and Certificates"
 - Careers & Projects dark-band outline buttons now visible (white border/text on transparent bg)
 - Remote main: 6ef7b5d
+
+---
+Task ID: 59
+Agent: Z.ai Code (main)
+Task: About page — Projects Completed 1200+ -> 2000+ and Years 29+ -> 28+ everywhere; Team page — replace second team photo (Sivagami Nathan) with uploaded WhatsApp image
+
+Work Log:
+- AboutPage.tsx statsData: { value: 1200 -> 2000, maxVal: 1300 -> 2100, label 'Projects Completed' }; { value: 29 -> 28, label 'Years of Expertise' } (maxVal 32 kept)
+- Swept all src for stray "29": TeamPage.tsx hero "29-year journey" -> "28-year journey"; api/seed/route.ts meta_description "29+ years experience" -> "28+ years experience" (live DB value updates on next /api/seed re-run); no other 29-year references found
+- Team photo: uploaded 'WhatsApp Image 2026-09-17 at 11.57.46.jpeg' (1541x1020) — center-weighted square crop (230,0,1250,1020) -> 480x480 JPEG q87, overwrote public/images/team/team-sivagaminathan.jpg (Mr. Sivagami Nathan, Executive Director — 2nd leadership card); visually verified crop keeps face fully framed
+- Remaining "1200" matches confirmed to be SVG path coordinates only (no content)
+- lint clean; tsc no new errors
+- Committed e9cdd03, pushed; verified remote main HEAD = e9cdd03
+
+Stage Summary:
+- About counters now: 28+ Years / 364+ Team / 200+ Cr / 450+ MW / 10000+ LT Panels / 2000+ Projects Completed
+- Team page 2nd photo (Exec Director) = new office portrait, 480x480 consistent with other cards
+- Remote main: e9cdd03
