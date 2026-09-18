@@ -43,7 +43,7 @@ const productDropdownItems = [
 
 const clientsDropdownItems = [
   { label: 'Our Clients', slug: 'clients', icon: Users, desc: 'Trusted by leading industries across India' },
-  { label: 'Projects', slug: 'projects', icon: FolderKanban, desc: 'Browse 150+ executed projects with full details' },
+  { label: 'Projects', slug: 'projects', icon: FolderKanban, desc: 'Browse 2000+ executed projects with full details' },
 ]
 
 const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
