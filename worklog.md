@@ -2992,3 +2992,19 @@ Work Log:
 Stage Summary:
 - Projects hero description is now count-free and matches the user's requested sentence verbatim
 - Remote main: 45b2ff1
+
+---
+Task ID: 46
+Agent: Z.ai Code (main)
+Task: Replace last home-page hero banner with user-supplied image
+
+Work Log:
+- User uploaded /home/z/my-project/upload/Image-1.png (1671x941 PNG, panel manufacturing floor with busbar trunking + HT panels, substation & transmission towers at sunset)
+- Last hero slide (slide 4: 'Built In-House. / Tested End-to-End.', subtitle 'In-House Manufacturing Facility') uses /images/hero-4.jpg — theme matches the new image
+- Converted PNG -> optimized progressive JPEG (quality 82, 216KB) with PIL and overwrote public/images/hero-4.jpg; no code change needed (slide reference unchanged)
+- Visually verified converted JPG matches the original
+- lint 0/0; committed fcc9449, pushed; verified remote main HEAD = fcc9449
+
+Stage Summary:
+- Home hero slide 4 banner replaced with user's image (1671x941, optimized 216KB); navy scrim overlay from Task 43 keeps slide text readable over the sunset side
+- Remote main: fcc9449
