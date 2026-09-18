@@ -2940,3 +2940,25 @@ Stage Summary:
 - CRITICAL: production build un-broken; all queued features (mail settings, cleanup endpoint, navbar logo, quality page) finally deploy with this push
 - 400kV casing corrected site-wide; TN added to states; logo position + spacing improved
 - Remote main: 20e5cd6
+
+---
+Task ID: 43
+Agent: Z.ai Code (main)
+Task: Consultant-annotated fixes from 4 screenshots (400kV casing, TN, numbers consistency, hero readability, top-bar arrow, logo tagline, LT&HT panel image)
+
+Work Log:
+- kV casing: normalized every KV/Kv -> kV site-wide (Hero, About, Careers, ServiceDetail, ProjectsPage display + data/project-records.json + prisma/seed.ts)
+- Numbers consistency per 'please check all pages / fix the year': 29+ -> 28+ everywhere (Manufacturing x2, About x3, Careers, Team, Sectors, Navbar dropdown, ClientsPage 'Years of Trust'), matching Home's 'Since 1998'; projects count unified to 2000+ (ProjectsPage badge, hero slide 3 3000+ -> 2000+, Sectors ticker 1200+ -> 2000+); ProjectsPage stats relabeled '159 Featured Projects' + 'Years of Projects' 28+ (was distinct-year count 20)
+- Hero readability: added navy left scrim (from-[#0A1628]/85), kicker orange -> white, desc white/70 -> white/90, title 'POWER' -> 'Power', slide 4 title 'Built In-House.\nTested End-to-End.' with whitespace-pre-line (phrase no longer split), content raised via md:pt-20 md:pb-36 (away from building signage)
+- Navbar: collapsible top info bar — ChevronUp inside bar hides it (framer height animation), small navy ChevronDown tab appears top-right to restore
+- ManufacturingPage title: 'Engineered for Reliability. Built for Performance' (dot added inside orange-underline span)
+- Logo: PIL edit of logo.png tagline — erased 'Concept to commissioning', redrew 'Concept to Commissioning' (P052-Italic/Palatino clone, matched color 63/92/128, cap height and letter-spread to original width); verified visually
+- LT & HT Panel page: confirmed near-duplicate AI image (ht-lt-panel-manufacturing.png ~ manufacturing/hero.png theme); generated fresh distinct image ht-lt-panel-line.png (1344x768, bright test room, closed panels, no people) and pointed service data at it
+- Note: 'Certified Standards' label was already correct on live — annotation was a confirmation, no change
+- lint 0/0; tsc only pre-existing project-records/meta error (ignoreBuildErrors:true); skipped browser testing per standing instruction
+- Commit 0c9ca25; pushed; remote HEAD confirmed 0c9ca25
+
+Stage Summary:
+- All consultant-flagged inconsistencies resolved; single year claim (28+) and project claim (2000+) site-wide
+- Production build healthy; TN in Pan-India list already live from 20e5cd6
+- Remote main: 0c9ca25
