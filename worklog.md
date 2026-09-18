@@ -3233,3 +3233,24 @@ Stage Summary:
 - About counters now: 28+ Years / 364+ Team / 200+ Cr / 450+ MW / 10000+ LT Panels / 2000+ Projects Completed
 - Team page 2nd photo (Exec Director) = new office portrait, 480x480 consistent with other cards
 - Remote main: e9cdd03
+
+---
+Task ID: 60
+Agent: Z.ai Code (main)
+Task: Remove ALL CAGR site-wide; remove "180+ Yrs Combined Exp / Learn from Veterans" card; all project counts -> 2000+
+
+Work Log:
+- CareersPage.tsx hero stat pills: removed '{ value: "~23%", label: "CAGR" }' (now 364+ Team Members, 8 Branch Offices)
+- CareersPage.tsx whyJoinData: removed "Rapid Growth" card (23% CAGR desc + ~23% CAGR stat) — consistent with Task-57 precedent of deleting CAGR/CRISIL cards outright; removed "Learn from Veterans" card (180+ Yrs Combined Exp) per explicit user request; grid lg:grid-cols-3 -> lg:grid-cols-4 for the remaining 4 cards; section comment updated
+- Navbar.tsx Clients dropdown Projects desc: "Browse 150+ executed projects" -> "Browse 2000+ executed projects"
+- api/seed/route.ts: stat_projects "1200+" -> "2000+"; deleted stat_cagr setting line (verified no runtime consumers of either key)
+- Confirmed TrendingUp/GraduationCap imports still used elsewhere in CareersPage (revenue stat + icon registry)
+- Confirmed remaining "150+" hits (ServiceDetailPage/ServicesPage) are EMPLOYEE counts, not projects — untouched
+- lint clean; tsc no new errors
+- Committed 335dcad, pushed; verified remote main HEAD = 335dcad
+
+Stage Summary:
+- Site is now CAGR-free (Careers hero pill, benefits card, seed setting all removed)
+- Why Join SVEPL = 4 cards: Mega Projects / In-House Design / Pan-India / Safety First (grid 4-col on desktop)
+- All general project counts site-wide now read 2000+ (Hero, Home, Projects, Sectors, Navbar, seed)
+- Remote main: 335dcad
