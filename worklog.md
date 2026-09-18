@@ -2962,3 +2962,17 @@ Stage Summary:
 - All consultant-flagged inconsistencies resolved; single year claim (28+) and project claim (2000+) site-wide
 - Production build healthy; TN in Pan-India list already live from 20e5cd6
 - Remote main: 0c9ca25
+
+---
+Task ID: 44
+Agent: Z.ai Code (main)
+Task: Remove stats bar from Projects page hero (159 Total Projects / 26 Industries / 9 States / 20 Years tiles)
+
+Work Log:
+- Deleted const stats array and the stats-bar motion.div render block from src/components/pages/ProjectsPage.tsx (hero keeps badge, title, desc)
+- Verified all icons (FolderKanban, LayoutGrid, MapPin, Calendar) still used elsewhere in file — no import cleanup needed
+- tsc: only pre-existing project-records/meta error; lint 0/0
+- Commit + pushed; remote updated
+
+Stage Summary:
+- Projects page hero now: badge '2000+ Projects Executed' + title + description only; stats tiles removed
