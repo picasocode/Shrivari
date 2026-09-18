@@ -3057,3 +3057,19 @@ Work Log:
 Stage Summary:
 - Hero carousel: day HQ photo (slide 1) -> evening HQ photo (slide 2) -> panels -> projects -> manufacturing (slide 5)
 - Remote main: 45760b8
+
+---
+Task ID: 50
+Agent: Z.ai Code (main)
+Task: Undo Task 49 (evening HQ banner) and reorder hero banners to 1-4-2-3
+
+Work Log:
+- User: "undo last change make the bannar orfer to 1 4 2 3"
+- Removed slide 2 (hero-office-night.jpg, evening HQ photo added in Task 49) from slides array; deleted public/images/hero-office-night.jpg
+- Reordered remaining 4 slides to user's requested order: 1) hero-office day HQ building, 2) hero-4 manufacturing 'Built In-House.', 3) hero-2 panels, 4) hero-3 projects
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed f138266, pushed; verified remote main HEAD = f138266
+
+Stage Summary:
+- Hero carousel is 4 slides again in order: day building -> manufacturing -> panels -> projects; evening photo removed from repo
+- Remote main: f138266
