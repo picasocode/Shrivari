@@ -155,6 +155,11 @@ export async function fetchProjects(category?: string): Promise<Project[]> {
   return fetchAPI(`/projects${query}`);
 }
 
+// Admin view — includes inactive rows
+export async function fetchProjectsAll(): Promise<Project[]> {
+  return fetchAPI('/projects?all=1');
+}
+
 export async function fetchSettings(): Promise<SiteSettings> {
   return fetchAPI('/settings');
 }

@@ -5,8 +5,11 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    // ?all=1 — admin view: include inactive rows too
+    const all = searchParams.get("all") === "1";
 
-    const where: Record<string, unknown> = { active: true };
+    const where: Record<string, unknown> = {};
+    if (!all) where.active = true;
     if (category && (category === "ongoing" || category === "completed")) {
       where.category = category;
     }
