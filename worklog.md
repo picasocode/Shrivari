@@ -3254,3 +3254,26 @@ Stage Summary:
 - Why Join SVEPL = 4 cards: Mega Projects / In-House Design / Pan-India / Safety First (grid 4-col on desktop)
 - All general project counts site-wide now read 2000+ (Hero, Home, Projects, Sectors, Navbar, seed)
 - Remote main: 335dcad
+
+---
+Task ID: 61
+Agent: Z.ai Code (main)
+Task: Crop + replace site logo with uploaded image; Admin panel — new dedicated "Ongoing Projects" tab with parameters + image upload
+
+Work Log:
+- LOGO: uploaded 'WhatsApp Image 2026-09-18 at 14.09.13.jpeg' (369x221 white bg). Python/PIL: tight content bbox crop (25,75,293,153), white unmatte (alpha from min-channel distance, un-premultiplied color) -> transparent RGBA, Lanczos upscale to 727px wide, palette-quantized 256c -> public/images/logo.png (55KB, was 727x191 now 727x214). Verified composite on white (navbar) + navy (footer) — no halos. NOTE: /n.png references seen earlier were an rg -r flag artifact; real path /images/logo.png used by Navbar x2, Footer, layout.tsx metadata — all covered by the single file swap
+- ADMIN API: /api/projects GET now supports ?all=1 (admin sees inactive rows; public requests unchanged — still active-only)
+- lib/api.ts: added fetchProjectsAll()
+- AdminPanel.tsx: imported FolderKanban + fetchProjectsAll + type Project; added 'projects' to Section union type; new sidebar tab 'Ongoing Projects' (FolderKanban icon) between Clients and Testimonials; render switch + dashboard quickActions entry
+- OngoingProjectsSection: full CRUD via useCrud + /projects endpoints; table with image thumbnail, name, client, location, category badge (ongoing=coral/completed=navy, Hidden badge when inactive), order, edit/delete; search + column filters (name/client/location/category/image/active); CSV export
+- ProjectDialog: fields Project Name*, Client*, Location*, Category select (Ongoing/Completed, default Ongoing), Order, Description*, ImageUpload (preview + /api/upload -> /api/images/<id>), Active switch; required-field validation via toast
+- HomePage.tsx ongoing cards: render p.imageUrl as h-44 object-cover header image when present (hover zoom), card overflow-hidden
+- MultiEdit caveat hit: first atomic batch partially applied edit #1 only — re-applied remaining edits individually and verified
+- lint clean; tsc only pre-existing errors after adding 'projects' to Section type
+- Committed 9999e5a, pushed; verified remote main HEAD = 9999e5a
+
+Stage Summary:
+- New transparent logo live at /images/logo.png (navbar, footer, OG metadata)
+- Admin > Ongoing Projects: add/edit/delete ongoing & completed projects with full parameters + image upload (DB-backed, survives deploys)
+- Home page Ongoing Projects cards now display uploaded images
+- Remote main: 9999e5a
