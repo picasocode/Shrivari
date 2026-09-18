@@ -103,7 +103,7 @@ export default function TeamPage() {
             <div className="w-16 h-[2px] mb-6" style={{ background: CORAL }} />
 
             <p className="text-sm md:text-base text-white/45 max-w-xl leading-relaxed">
-              Meet the people behind SVEPL&apos;s 29-year journey — from managing EHV projects to pioneering renewable energy solutions across South India.
+              Meet the people behind SVEPL&apos;s 28-year journey — from managing EHV projects to pioneering renewable energy solutions across South India.
             </p>
           </motion.div>
         </motion.div>

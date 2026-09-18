@@ -83,12 +83,12 @@ function BarCounter({ value, suffix, label, maxVal, delay = 0, icon: Icon }: { v
 
 /* ─── Data ─── */
 const statsData = [
-  { value: 29, suffix: '+', label: 'Years of Expertise', maxVal: 32, icon: Clock },
+  { value: 28, suffix: '+', label: 'Years of Expertise', maxVal: 32, icon: Clock },
   { value: 364, suffix: '+', label: 'Team Members', maxVal: 400, icon: Users },
   { value: 200, suffix: '+ Cr', label: 'Annual Revenue', maxVal: 220, icon: TrendingUp },
   { value: 450, suffix: '+ MW', label: 'Solar Capacity', maxVal: 500, icon: Sun },
   { value: 10000, suffix: '+', label: 'LT Panels Installed', maxVal: 11000, icon: Factory },
-  { value: 1200, suffix: '+', label: 'Projects Completed', maxVal: 1300, icon: Building2 },
+  { value: 2000, suffix: '+', label: 'Projects Completed', maxVal: 2100, icon: Building2 },
 ]
 
 const MISSION_POINTS = [
