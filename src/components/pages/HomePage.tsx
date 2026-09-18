@@ -35,6 +35,24 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
+/* ─── initials avatar — navy circle with person's initials (matches testimonials page) ─── */
+function InitialsAvatar({ name }: { name: string }) {
+  const initials = name
+    .split(' ')
+    .map(w => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+  return (
+    <div
+      className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm shrink-0"
+      style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #2D6A8A 100%)', color: '#FFFFFF' }}
+    >
+      {initials}
+    </div>
+  )
+}
+
 export default function HomePage() {
   const { navigate } = useRouter()
   const [settings, setSettings] = useState<SiteSettings | null>(null)
@@ -92,7 +110,7 @@ export default function HomePage() {
               { icon: TrendingUp, value: '28+', label: 'Years of Industry Experience', desc: 'Since 1998, trusted engineering partner' },
               { icon: Zap, value: '400 kV', label: 'Voltage Expertise', desc: 'EHV, HV, MV & LV systems' },
               { icon: Users, value: '>90%', label: 'Industrial Customers Served', desc: 'Of total projects executed' },
-              { icon: MapPinned, value: 'Pan-India', label: 'Execution Capability', desc: 'TN, AP, Telangana, Goa, Karnataka, UP, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' },
+              { icon: MapPinned, value: 'Pan-India', label: 'Execution Capability', desc: 'Tamil Nadu, Andhra Pradesh, Telangana, Goa, Karnataka, Uttar Pradesh, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' },
               { icon: Factory, value: 'In-house', label: 'Engineering & Manufacturing', desc: 'No outsourcing — full control' },
             ].map((stat, i) => {
               const Icon = stat.icon
@@ -224,7 +242,7 @@ export default function HomePage() {
               </div>
               <Button
                 variant="outline"
-                onClick={() => navigate('clients')}
+                onClick={() => navigate('projects')}
                 className="hidden md:inline-flex border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
               >
                 View All <ArrowRight className="ml-2 w-4 h-4" />
@@ -264,7 +282,7 @@ export default function HomePage() {
           <div className="md:hidden mt-6 text-center">
             <Button
               variant="outline"
-              onClick={() => navigate('services')}
+              onClick={() => navigate('projects')}
               className="border-[#E5E7EB] text-[#1F2937] rounded-md"
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
@@ -304,9 +322,12 @@ export default function HomePage() {
                       <p className="text-[#1A1A2E] text-sm leading-relaxed mb-5 italic">
                         &ldquo;{t.content}&rdquo;
                       </p>
-                      <div className="border-t border-[#E5E7EB] pt-4">
-                        <p className="font-semibold text-[#1A1A2E] text-sm">{t.name}</p>
-                        <p className="text-[#6B7280] text-xs">{t.designation}{t.designation && t.company ? ', ' : ''}{t.company}</p>
+                      <div className="border-t border-[#E5E7EB] pt-4 flex items-center gap-3">
+                        <InitialsAvatar name={t.name} />
+                        <div className="min-w-0">
+                          <p className="font-semibold text-[#1A1A2E] text-sm truncate">{t.name}</p>
+                          <p className="text-[#6B7280] text-xs truncate">{t.designation}{t.designation && t.company ? ', ' : ''}{t.company}</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
