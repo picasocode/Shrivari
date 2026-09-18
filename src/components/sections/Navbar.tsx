@@ -32,7 +32,7 @@ const companyDropdownItems = [
   { label: 'Team', slug: 'team', icon: Users, desc: 'Meet the leadership driving our success' },
   { label: 'Key Sectors We Serve', slug: 'sectors', icon: LayoutGrid, desc: 'Industries and sectors we power across India' },
   { label: 'Careers', slug: 'careers', icon: Briefcase, desc: 'Join our 364+ strong team and grow with us' },
-  { label: 'Quality and Policy', slug: 'quality', icon: FileBadge2, desc: 'Our quality commitment and ISO certifications — view online' },
+  { label: 'Quality Policy and Certificates', slug: 'quality', icon: FileBadge2, desc: 'Our quality policy, ISO certifications and CPRI type test reports — view online' },
 ]
 
 const productDropdownItems = [

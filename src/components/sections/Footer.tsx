@@ -14,7 +14,7 @@ const quickLinks: { label: string; page: PageName }[] = [
   { label: 'Products', page: 'products' },
   { label: 'Projects', page: 'projects' },
   { label: 'Manufacturing', page: 'manufacturing' },
-  { label: 'Quality and Policy', page: 'quality' },
+  { label: 'Quality Policy and Certificates', page: 'quality' },
   { label: 'Careers', page: 'careers' },
   { label: 'Contact', page: 'contact' },
 ]

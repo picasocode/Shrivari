@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import {
-  ChevronRight, ChevronDown, ArrowRight, X, Lock, ZoomIn,
+  ChevronRight, ChevronDown, ArrowRight, X, Lock, ZoomIn, FileCheck2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from '@/components/Router'
@@ -104,7 +104,7 @@ export default function QualityPage() {
             </h1>
             <div className="w-16 h-[2px] mb-6" style={{ background: CORAL }} />
             <p className="text-sm md:text-base text-white/45 max-w-xl leading-relaxed">
-              Our certified commitment to quality, safety, environment and energy management — backed by internationally accredited ISO certifications.
+              Our certified commitment to quality, safety, environment and energy management — backed by internationally accredited ISO certifications and CPRI type test reports.
             </p>
           </motion.div>
         </motion.div>
@@ -176,6 +176,48 @@ export default function QualityPage() {
                     <h3 className="text-sm font-bold" style={{ color: INK }}>{cert.title}</h3>
                     <p className="text-xs mt-1 leading-relaxed" style={{ color: SLATE }}>{cert.subtitle}</p>
                   </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          SECTION 3: CPRI CERTIFICATES — type test reports
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="text-center mb-10 md:mb-12">
+              <div className="inline-flex items-center gap-3 mb-5 justify-center">
+                <div className="w-8 h-[2px]" style={{ background: CORAL }} />
+                <span className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: NAVY_MID }}>Type Test Reports</span>
+                <div className="w-8 h-[2px]" style={{ background: CORAL }} />
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight tracking-tight mb-4" style={{ color: INK }}>
+                CPRI Certificates
+              </h2>
+              <p className="text-sm md:text-base max-w-3xl mx-auto leading-relaxed" style={{ color: SLATE }}>
+                We have CPRI type test reports for panels like 11kV &amp; 33kV Indoor panels, C&amp;R panels, LT &amp; HT Outdoor Busduct and LT Indoor and Outdoor panels — obtained from Bangalore.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { title: '11kV & 33kV Indoor Panels', desc: 'Type tested at CPRI for indoor switchgear applications' },
+              { title: 'C&R Panels', desc: 'Control & Relay panels verified for protection schemes' },
+              { title: 'LT & HT Outdoor Busduct', desc: 'Busduct systems type tested for outdoor duty' },
+              { title: 'LT Indoor & Outdoor Panels', desc: 'Low tension panels certified for all environments' },
+            ].map((item, i) => (
+              <FadeIn key={item.title} delay={i * 0.06}>
+                <div className="h-full bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 text-center">
+                  <div className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(232,117,26,0.1)' }}>
+                    <FileCheck2 className="w-6 h-6" style={{ color: CORAL }} />
+                  </div>
+                  <h3 className="text-sm font-bold mb-2" style={{ color: INK }}>{item.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: SLATE }}>{item.desc}</p>
                 </div>
               </FadeIn>
             ))}
