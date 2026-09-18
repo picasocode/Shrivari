@@ -62,15 +62,6 @@ const whyJoinData = [
     statLabel: 'In-House',
   },
   {
-    title: 'Rapid Growth',
-    desc: 'With a 23% CAGR and an expanding team, SVEPL offers accelerated career growth. Your ambitions will always find room here.',
-    icon: TrendingUp,
-    accent: '#0D9488',
-    bgAccent: '#F0FDFA',
-    stat: '~23%',
-    statLabel: 'CAGR',
-  },
-  {
     title: 'Pan-India Presence',
     desc: '8 branch offices across South India and international projects in 6 countries. Relocation and travel opportunities that broaden your horizons.',
     icon: Globe,
@@ -87,15 +78,6 @@ const whyJoinData = [
     bgAccent: '#FEF2F2',
     stat: '2000+',
     statLabel: 'CEIG/CEA Approvals',
-  },
-  {
-    title: 'Learn from Veterans',
-    desc: 'Our leadership brings 180+ years of combined experience. Work alongside industry veterans who mentor the next generation of engineers.',
-    icon: GraduationCap,
-    accent: '#B45309',
-    bgAccent: '#FFFBEB',
-    stat: '180+',
-    statLabel: 'Yrs Combined Exp',
   },
 ]
 
@@ -576,7 +558,6 @@ export default function CareersPage() {
           >
             {[
               { value: '364+', label: 'Team Members', icon: Users },
-              { value: '~23%', label: 'CAGR', icon: TrendingUp },
               { value: '8', label: 'Branch Offices', icon: Building2 },
             ].map((stat) => (
               <div key={stat.label} className="flex items-center gap-3 bg-white/[0.06] backdrop-blur-sm rounded-xl px-5 py-3 border border-white/[0.08]">
@@ -633,7 +614,7 @@ export default function CareersPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 2: WHY JOIN SVEPL — 6 benefit cards
+          SECTION 2: WHY JOIN SVEPL — 4 benefit cards
           ═══════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24 bg-white relative overflow-hidden">
         {/* Decorative background */}
@@ -654,7 +635,7 @@ export default function CareersPage() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyJoinData.map((item, i) => (
               <FadeIn key={item.title} delay={i * 0.08}>
                 <Card className="group bg-white rounded-xl border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full card-hover">
