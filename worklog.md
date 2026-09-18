@@ -3175,3 +3175,22 @@ Work Log:
 Stage Summary:
 - Quality & Policy page = hero -> view-only certificates gallery (7 certs) -> CTA; commitment section removed
 - Remote main: 4cc34e7
+
+---
+Task ID: 57
+Agent: Z.ai Code (main)
+Task: About page — remove CRISIL Rating & Revenue CAGR cards and the paragraph's last line (CAGR sentence); Quality page — certificate zoom must show ONLY the certificate image, no white space left/right
+
+Work Log:
+- AboutPage.tsx "Numbers That Tell Our Story" section: deleted the grid-cols-2 card row (CRISIL Rating BB+ card, Revenue CAGR ~23% card) and removed the paragraph's last sentence "A CAGR of ~23% speaks to our consistent growth trajectory."; kept bar counters (Years of Expertise / Team Members / Annual Revenue / Solar / LT Panels / Projects Completed) untouched
+- QualityPage.tsx certificate lightbox: replaced bg-contain stage div (which painted white letterbox bands left/right of the portrait certs via backgroundColor:#FFFFFF) with a real <img> sized exactly to the image (max-w-full max-h-full w-auto h-auto object-contain, py-2 stage) — image fills frame edge-to-edge, no white space
+- View-only protections preserved/kept: contextmenu blocked, draggable=false + onDragStart preventDefault, select-none, pointer-events-none on img (click-through to stage stopPropagation still works), no download UI anywhere
+- Verified all 7 cert JPGs are portrait 1075-1105x1521 -> fit-height rendering leaves no side bands
+- Shield/TrendingUp imports still used elsewhere (CTA + statsData) — no import cleanup needed
+- lint clean; tsc only pre-existing errors (skills/* scripts + api/project-records/meta/route.ts) — none in edited files
+- Committed 22625cd, pushed; verified remote main HEAD = 22625cd
+
+Stage Summary:
+- About page Numbers section now = badge + heading + one-line paragraph + 6 animated bar counters (CRISIL/CAGR cards and CAGR sentence gone)
+- Certificate zoom = edge-to-edge certificate image on navy backdrop, zero white letterboxing, still strictly view-only
+- Remote main: 22625cd
