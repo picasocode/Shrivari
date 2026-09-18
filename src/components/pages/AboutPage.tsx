@@ -710,21 +710,9 @@ export default function AboutPage() {
                 Numbers That Tell<br />Our Story
               </h2>
               <div className="section-bar mb-4" />
-              <p className="text-[#6B7280] text-sm leading-relaxed max-w-md mb-6">
-                Nearly three decades of relentless commitment reflected in every project delivered, every team member empowered, and every client relationship sustained. A CAGR of ~23% speaks to our consistent growth trajectory.
+              <p className="text-[#6B7280] text-sm leading-relaxed max-w-md">
+                Nearly three decades of relentless commitment reflected in every project delivered, every team member empowered, and every client relationship sustained.
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] shadow-sm">
-                  <Shield className="w-5 h-5 text-[#E8751A] mb-2" />
-                  <p className="text-[#1A1A2E] text-sm font-semibold">CRISIL Rating</p>
-                  <p className="text-[#E8751A] text-lg font-bold">BB+</p>
-                </div>
-                <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] shadow-sm">
-                  <TrendingUp className="w-5 h-5 text-[#0D9488] mb-2" />
-                  <p className="text-[#1A1A2E] text-sm font-semibold">Revenue CAGR</p>
-                  <p className="text-[#0D9488] text-lg font-bold">~23%</p>
-                </div>
-              </div>
             </FadeIn>
 
             {/* Right — Bar counters */}
