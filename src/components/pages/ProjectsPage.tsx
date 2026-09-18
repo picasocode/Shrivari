@@ -179,14 +179,6 @@ export default function ProjectsPage() {
 
   const hasActiveFilters = search || industryFilter !== 'All' || stateFilter !== 'All' || yearFilter !== 'All' || voltageFilter !== 'All'
 
-  /* ─── Stats ─── */
-  const stats = [
-    { label: 'Featured Projects', value: meta?.total ?? 0, icon: FolderKanban, color: 'text-[#1B3A5C]', bg: 'bg-[#1B3A5C]/10' },
-    { label: 'Industries Served', value: meta?.industries.length ?? 0, icon: LayoutGrid, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
-    { label: 'States Covered', value: meta?.states.length ?? 0, icon: MapPin, color: 'text-[#1B3A5C]', bg: 'bg-[#1B3A5C]/10' },
-    { label: 'Years of Projects', value: '28+', icon: Calendar, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
-  ]
-
   return (
     <>
       {/* ══════════════════════════════════════════════
@@ -278,23 +270,6 @@ export default function ProjectsPage() {
             Explore our comprehensive portfolio of 2000+ projects executed across India — featuring detailed profiles of key electrical infrastructure projects. Search, filter, and discover detailed project information.
           </motion.p>
 
-          {/* Stats bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-3xl"
-          >
-            {stats.map((stat, i) => (
-              <div key={i} className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-lg p-3 sm:p-4">
-                <div className={`w-8 h-8 rounded-md ${stat.bg} flex items-center justify-center mb-2`}>
-                  <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                </div>
-                <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs text-white/60">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
         </div>
 
         {/* Bottom wave separator */}
