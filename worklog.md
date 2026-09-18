@@ -3040,3 +3040,20 @@ Work Log:
 Stage Summary:
 - Hero banner images display with no dark overlay on any slide; readability now via text shadow only
 - Remote main: 7afbfb7
+
+---
+Task ID: 49
+Agent: Z.ai Code (main)
+Task: Add user-supplied evening HQ building photo as an additional home hero banner
+
+Work Log:
+- User uploaded Image-2-Green.png (1586x672 RGBA, same building at dusk with green-lit trees and illuminated signage) — "add this image too in the banner"
+- Composited RGBA onto white, converted to optimized progressive JPEG (quality 82, 216KB) -> public/images/hero-office-night.jpg
+- Inserted as slide 2 of Hero.tsx slides array (right after the daytime building slide): title 'A Trusted Name in Electrical EPC', subtitle 'Head Office — Chennai, Tamil Nadu', desc about Chennai HQ delivering substations/panels/solar end-to-end
+- Carousel now 5 slides; auto-rotate + dots update automatically (slides.length driven)
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed 45760b8, pushed; verified remote main HEAD = 45760b8
+
+Stage Summary:
+- Hero carousel: day HQ photo (slide 1) -> evening HQ photo (slide 2) -> panels -> projects -> manufacturing (slide 5)
+- Remote main: 45760b8
