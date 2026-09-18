@@ -3194,3 +3194,24 @@ Stage Summary:
 - About page Numbers section now = badge + heading + one-line paragraph + 6 animated bar counters (CRISIL/CAGR cards and CAGR sentence gone)
 - Certificate zoom = edge-to-edge certificate image on navy backdrop, zero white letterboxing, still strictly view-only
 - Remote main: 22625cd
+
+---
+Task ID: 58
+Agent: Z.ai Code (main)
+Task: Quality page — add "CPRI Certificates" section with type-test-report content; rename menu item to "Quality Policy and Certificates"; fix invisible white-on-white outline buttons (user screenshot: Careers hero blank button)
+
+Work Log:
+- QualityPage.tsx: new Section 3 "CPRI Certificates" between cert gallery and CTA — eyebrow 'Type Test Reports', verbatim user paragraph (11kV & 33kV Indoor panels, C&R panels, LT & HT Outdoor Busduct, LT Indoor & Outdoor panels — obtained from Bangalore), plus 4 FileCheck2 cards (coral-tinted circle icon, one per panel type, grid 1/2/4 cols); hero subtitle extended with "and CPRI type test reports"
+- Navbar.tsx Company dropdown: 'Quality and Policy' -> 'Quality Policy and Certificates'; desc -> 'Our quality policy, ISO certifications and CPRI type test reports — view online'
+- Footer.tsx: same label rename
+- CareersPage.tsx hero "Contact HR" outline button: was shadcn outline variant (bg-background=white) + text-white => invisible blank white pill (user screenshot); fixed with bg-transparent + border-white/30 + hover:text-white (twMerge strips bg-background)
+- ProjectsPage.tsx CTA band "View Our Clients": same invisible pattern, same bg-transparent fix
+- Audited all pages for the same bug: TestimonialsPage/TeamPage/QualityPage already had bg-transparent or inline style; HomePage/AboutPage outline buttons are dark-text-on-light (fine)
+- lint clean; tsc only pre-existing errors (examples/websocket, api/project-records/meta)
+- Committed 6ef7b5d, pushed; verified remote main HEAD = 6ef7b5d
+
+Stage Summary:
+- Quality page flow = hero -> view-only certificates gallery -> CPRI Certificates (text + 4 panel-type cards) -> CTA
+- Menu name (navbar + footer) = "Quality Policy and Certificates"
+- Careers & Projects dark-band outline buttons now visible (white border/text on transparent bg)
+- Remote main: 6ef7b5d
