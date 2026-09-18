@@ -3107,3 +3107,19 @@ Work Log:
 Stage Summary:
 - All 4 banners identical 1584x672; uniform light black shade (25%) over banners for text readability, text-shadow retained
 - Remote main: 598441f
+
+---
+Task ID: 53
+Agent: Z.ai Code (main)
+Task: Home page fixes — TN/AP full forms, Ongoing Projects View All target, initials avatars on client testimonial cards
+
+Work Log:
+- Key Statistics Pan-India card (HomePage.tsx line 95): 'TN, AP, ... UP, ...' -> 'Tamil Nadu, Andhra Pradesh, Telangana, Goa, Karnataka, Uttar Pradesh, Maharashtra, Assam, Pondicherry, West Bengal, Gujarat, Odisha' (UP also expanded for consistency; Pondicherry left as-is)
+- Ongoing Projects 'View All': desktop button was navigate('clients') and mobile was navigate('services') — both corrected to navigate('projects')
+- Added local InitialsAvatar component (navy gradient circle, first-2-words initials, matches TestimonialsPage existing pattern) and rebuilt testimonial card footer: avatar left, name (semibold, truncate) + designation, company (gray, truncate) right — per user's reference image (Dr. Meena Krishnan / DM style)
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed 05f0680, pushed; verified remote main HEAD = 05f0680
+
+Stage Summary:
+- Home Key Statistics shows full state names; Ongoing Projects View All (desktop+mobile) goes to Projects page; Client Testimonials cards now show initials avatars like the reference
+- Remote main: 05f0680
