@@ -2976,3 +2976,19 @@ Work Log:
 
 Stage Summary:
 - Projects page hero now: badge '2000+ Projects Executed' + title + description only; stats tiles removed
+
+---
+Task ID: 45
+Agent: Z.ai Code (main)
+Task: Projects page hero description — remove project count ("159 …" / "2000+ …") per user request
+
+Work Log:
+- User quoted legacy hero sentence rendered as "…portfolio of 159 electrical infrastructure projects executed across diverse industries and states in India…" (pre-Task-43 dynamic {meta?.total} text) and asked to change it to the same sentence without any count
+- Replaced current hero description in src/components/pages/ProjectsPage.tsx (line 270) with the user's exact target sentence: "Explore our comprehensive portfolio of electrical infrastructure projects executed across diverse industries and states in India. Search, filter, and discover detailed project information."
+- meta API/filters untouched (meta?.total still used only for the functional "Showing X of Y projects" filter counter)
+- lint 0/0; tsc: only pre-existing project-records/meta error (ignored by build config)
+- Committed 45b2ff1, pushed; verified remote main HEAD = 45b2ff1
+
+Stage Summary:
+- Projects hero description is now count-free and matches the user's requested sentence verbatim
+- Remote main: 45b2ff1
