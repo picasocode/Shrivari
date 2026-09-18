@@ -3073,3 +3073,19 @@ Work Log:
 Stage Summary:
 - Hero carousel is 4 slides again in order: day building -> manufacturing -> panels -> projects; evening photo removed from repo
 - Remote main: f138266
+
+---
+Task ID: 51
+Agent: Z.ai Code (main)
+Task: Update banner 2 (manufacturing slide) with user-supplied panoramic image
+
+Work Log:
+- User uploaded 1584-674(1).png (1584x672, same panel-manufacturing + busbar + substation sunset scene as the Task-46 image but wider panoramic crop) — "update this image in the 2 banner"
+- Slide 2 of hero carousel = hero-4.jpg ('Built In-House. / Tested End-to-End.')
+- Composited RGBA onto white, converted to optimized progressive JPEG (quality 82, 174KB, 1584x672), overwrote public/images/hero-4.jpg; no code change (slide reference unchanged)
+- Visually verified converted JPG
+- lint 0/0; committed cd45a26, pushed; verified remote main HEAD = cd45a26
+
+Stage Summary:
+- Banner 2 now uses the 1584x672 panoramic version (replaces the taller 1671x941 crop from Task 46)
+- Remote main: cd45a26
