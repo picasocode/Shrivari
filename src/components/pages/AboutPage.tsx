@@ -182,7 +182,7 @@ export default function AboutPage() {
             transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
             className="text-lg sm:text-xl md:text-2xl text-black font-light mb-3 tracking-wide"
           >
-            Shri Vaari Electricals Pvt Ltd — 29+ Years of Engineering Excellence
+            Shri Vaari Electricals Pvt Ltd — 28+ Years of Engineering Excellence
           </motion.p>
 
           <motion.p
@@ -256,7 +256,7 @@ export default function AboutPage() {
                         <Clock className="w-5 h-5 text-[#E8751A]" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold text-[#1A1A2E] leading-tight">29+ Years</p>
+                        <p className="text-lg font-bold text-[#1A1A2E] leading-tight">28+ Years</p>
                         <p className="text-xs text-[#6B7280]">of Engineering Excellence</p>
                       </div>
                     </div>
@@ -754,7 +754,7 @@ export default function AboutPage() {
           <FadeIn>
             <div className="inline-flex items-center gap-2 bg-white border border-[#E5E7EB] rounded-full px-4 py-1.5 mb-6 shadow-sm">
               <Shield className="w-4 h-4 text-[#E8751A]" />
-              <span className="text-[#4B5563] text-xs font-medium">29+ Years of Trusted Partnerships</span>
+              <span className="text-[#4B5563] text-xs font-medium">28+ Years of Trusted Partnerships</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A2E] mb-4 leading-tight">
               Join Our Journey

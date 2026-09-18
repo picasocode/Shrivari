@@ -18,9 +18,9 @@ const features = [
   {
     icon: Factory,
     title: 'Manufacturing',
-    subtitle: 'Panel Boards 415V to 33KV',
+    subtitle: 'Panel Boards 415V to 33kV',
     description:
-      'State-of-the-art manufacturing facility for LT and HT Panel Boards, from 415V distribution panels to 33KV switchgear panels with ISI certification.',
+      'State-of-the-art manufacturing facility for LT and HT Panel Boards, from 415V distribution panels to 33kV switchgear panels with ISI certification.',
     color: '#0D1B3E',
   },
   {

@@ -108,28 +108,28 @@ export const DEFAULT_PRODUCTS: DefaultProduct[] = [
     "imageUrl": "/images/products/busducts.jpg"
   },
   {
-    "name": "11 KV Panel",
+    "name": "11 kV Panel",
     "slug": "11-kv-panel",
     "category": "HT Panels",
-    "description": "11 KV HT Panels are designed for receiving and distributing high tension power at 11kV voltage level. These panels feature vacuum circuit breakers, current and voltage transformers, and comprehensive protection relays for safe and reliable medium voltage power distribution in industrial and commercial facilities.",
+    "description": "11 kV HT Panels are designed for receiving and distributing high tension power at 11kV voltage level. These panels feature vacuum circuit breakers, current and voltage transformers, and comprehensive protection relays for safe and reliable medium voltage power distribution in industrial and commercial facilities.",
     "features": "[\"VCB rated up to 630A/1250A\",\"Current transformer and potential transformer integration\",\"Numerical relay protection (overcurrent, earth fault)\",\"Busbar rating up to 1250A\",\"Interlocked and safety-grounded design\",\"Indoor and outdoor configurations\"]",
     "order": 10,
     "imageUrl": "/images/products/11-kv-panel.jpg"
   },
   {
-    "name": "22 KV Panel",
+    "name": "22 kV Panel",
     "slug": "22-kv-panel",
     "category": "HT Panels",
-    "description": "22 KV HT Panels are engineered for medium voltage power distribution at the 22kV level. These panels are commonly used in large industrial plants and utility substations, featuring advanced vacuum circuit breaker technology and sophisticated protection systems for critical power infrastructure.",
+    "description": "22 kV HT Panels are engineered for medium voltage power distribution at the 22kV level. These panels are commonly used in large industrial plants and utility substations, featuring advanced vacuum circuit breaker technology and sophisticated protection systems for critical power infrastructure.",
     "features": "[\"VCB with high breaking capacity\",\"Comprehensive protection scheme\",\"Auto-reclosing functionality\",\"SCADA integration ready\",\"Seismic-qualified construction\",\"Type tested as per IS/IEC standards\"]",
     "order": 11,
     "imageUrl": "/images/products/22-kv-panel.jpg"
   },
   {
-    "name": "33 KV Panel",
+    "name": "33 kV Panel",
     "slug": "33-kv-panel",
     "category": "HT Panels",
-    "description": "33 KV HT Panels are the highest voltage class panels in our product range, designed for heavy industrial applications and utility substations. These panels incorporate state-of-the-art vacuum/SF6 circuit breakers, advanced numerical relays, and robust busbar systems for mission-critical power distribution.",
+    "description": "33 kV HT Panels are the highest voltage class panels in our product range, designed for heavy industrial applications and utility substations. These panels incorporate state-of-the-art vacuum/SF6 circuit breakers, advanced numerical relays, and robust busbar systems for mission-critical power distribution.",
     "features": "[\"VCB/SF6 circuit breaker options\",\"Busbar ratings up to 2000A\",\"Advanced numerical protection relays\",\"Differential protection for transformers\",\"Auto-changeover and interlocking\",\"Complete switchyard solutions\"]",
     "order": 12,
     "imageUrl": "/images/products/33-kv-panel.jpg"

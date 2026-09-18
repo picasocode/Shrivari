@@ -2165,7 +2165,7 @@ function RecordsSection() {
               const canSave = !!r.id && source === 'supabase' && dirty && !saving
               const thumb = (r.imageUrl ?? '').trim()
               const thumbBroken = brokenThumbs[`${key}:${thumb}`]
-              const meta = [r.voltage ? `${r.voltage} KV` : '', r.industry, r.location].filter(Boolean).join(' · ')
+              const meta = [r.voltage ? `${r.voltage} kV` : '', r.industry, r.location].filter(Boolean).join(' · ')
               return (
                 <div key={key} className="p-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-4 hover:bg-[#F0F4F8]/60 transition-colors">
                   {/* Thumbnail (64px) */}
@@ -2315,7 +2315,7 @@ function RecordDialog({ nextSno, onClose, onCreated }: {
             <div className="space-y-1.5"><Label className="text-xs font-medium">Customer *</Label><Input value={form.customer} onChange={set('customer')} placeholder="Customer name" className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">Voltage (KV)</Label><Input value={form.voltage} onChange={set('voltage')} placeholder="e.g. 110" className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">Voltage (kV)</Label><Input value={form.voltage} onChange={set('voltage')} placeholder="e.g. 110" className="rounded-md h-9 text-sm" /></div>
             <div className="space-y-1.5"><Label className="text-xs font-medium">Industry</Label><Input value={form.industry} onChange={set('industry')} placeholder="e.g. Automotive" className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Scope of Work</Label><Textarea value={form.scope} onChange={set('scope')} rows={3} className="rounded-md text-sm resize-none" placeholder="HT & LT electrical works…" /></div>

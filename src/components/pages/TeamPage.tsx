@@ -238,7 +238,7 @@ export default function TeamPage() {
             <FadeIn delay={0.4}>
               <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-10 pt-8 border-t border-white/10">
                 {[
-                  { label: '29+ Years', icon: Clock },
+                  { label: '28+ Years', icon: Clock },
                   { label: '364+ Team', icon: Users },
                   { label: '8 Offices', icon: Building2 },
                   { label: '6 Countries', icon: Globe },

@@ -955,7 +955,7 @@ export default function CareersPage() {
 
                   <div className="space-y-4">
                     {[
-                      { value: '29+', label: 'Years of Excellence', icon: Award },
+                      { value: '28+', label: 'Years of Excellence', icon: Award },
                       { value: '364+', label: 'Team Members', icon: Users },
                       { value: '₹200+ Cr', label: 'Annual Revenue', icon: TrendingUp },
                       { value: '8', label: 'Branch Offices', icon: Building2 },

@@ -75,7 +75,7 @@ const STATS = [
   { value: '20,000', suffix: ' sq ft', label: 'Manufacturing Facility' },
   { value: '10,000', suffix: '+', label: 'LT Panels Installed' },
   { value: 'IEC', suffix: '-61439', label: 'Certified Standards' },
-  { value: '29', suffix: '+ Years', label: 'Manufacturing Experience' },
+  { value: '28', suffix: '+ Years', label: 'Manufacturing Experience' },
 ]
 
 export default function ManufacturingPage() {
@@ -168,7 +168,7 @@ export default function ManufacturingPage() {
             >
               Engineered for{' '}
               <span className="relative inline-block">
-                Reliability
+                Reliability.
                 <motion.span
                   className="absolute -bottom-1 left-0 h-1 rounded-full bg-[#E8751A]"
                   initial={{ width: 0 }}
@@ -291,7 +291,7 @@ export default function ManufacturingPage() {
                   { icon: ShieldCheck, label: 'IEC-61439 Certified' },
                   { icon: Boxes, label: 'Custom Design' },
                   { icon: Settings, label: 'In-house Testing' },
-                  { icon: Award, label: '29+ Years Experience' },
+                  { icon: Award, label: '28+ Years Experience' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-2.5 bg-[#F8FAFC] rounded-lg border border-[#E5E7EB] px-3 py-2.5">
                     <item.icon className="w-4 h-4 text-[#E8751A] flex-shrink-0" />

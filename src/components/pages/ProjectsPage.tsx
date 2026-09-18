@@ -181,10 +181,10 @@ export default function ProjectsPage() {
 
   /* ─── Stats ─── */
   const stats = [
-    { label: 'Total Projects', value: meta?.total ?? 0, icon: FolderKanban, color: 'text-[#1B3A5C]', bg: 'bg-[#1B3A5C]/10' },
+    { label: 'Featured Projects', value: meta?.total ?? 0, icon: FolderKanban, color: 'text-[#1B3A5C]', bg: 'bg-[#1B3A5C]/10' },
     { label: 'Industries Served', value: meta?.industries.length ?? 0, icon: LayoutGrid, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
     { label: 'States Covered', value: meta?.states.length ?? 0, icon: MapPin, color: 'text-[#1B3A5C]', bg: 'bg-[#1B3A5C]/10' },
-    { label: 'Years of Projects', value: meta?.years.length ?? 0, icon: Calendar, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
+    { label: 'Years of Projects', value: '28+', icon: Calendar, color: 'text-[#E8751A]', bg: 'bg-[#E8751A]/10' },
   ]
 
   return (
@@ -247,7 +247,7 @@ export default function ProjectsPage() {
           >
             <Badge className="mb-5 bg-[#E8751A]/15 text-[#E8751A] border border-[#E8751A]/30 px-4 py-1.5 text-sm font-semibold rounded-full backdrop-blur-sm">
               <FolderKanban className="w-3.5 h-3.5 mr-1.5" />
-              {meta?.total ?? '—'} Projects Executed
+              2000+ Projects Executed
             </Badge>
           </motion.div>
 
@@ -275,7 +275,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.5, delay: 0.25 }}
             className="text-lg text-white/70 max-w-2xl mb-8"
           >
-            Explore our comprehensive portfolio of {meta?.total ?? '150+'} electrical infrastructure projects executed across diverse industries and states in India. Search, filter, and discover detailed project information.
+            Explore our comprehensive portfolio of 2000+ projects executed across India — featuring detailed profiles of key electrical infrastructure projects. Search, filter, and discover detailed project information.
           </motion.p>
 
           {/* Stats bar */}
@@ -384,7 +384,7 @@ export default function ProjectsPage() {
                   >
                     <option value="All">All Voltages</option>
                     {meta?.voltages.map(v => (
-                      <option key={v} value={v}>{v} KV</option>
+                      <option key={v} value={v}>{v} kV</option>
                     ))}
                   </select>
 
@@ -509,7 +509,7 @@ export default function ProjectsPage() {
                               {p.voltage ? (
                                 <Badge className="bg-[#1B3A5C]/10 text-[#1B3A5C] border-0 text-xs font-semibold">
                                   <Zap className="w-3 h-3 mr-1" />
-                                  {p.voltage} KV
+                                  {p.voltage} kV
                                 </Badge>
                               ) : (
                                 <span className="text-gray-300 text-xs">—</span>
@@ -584,7 +584,7 @@ export default function ProjectsPage() {
                         {p.voltage && (
                           <Badge className="absolute right-3 top-3 bg-white/95 text-[#1B3A5C] border-0 text-xs font-semibold shadow-sm">
                             <Zap className="w-3 h-3 mr-1 text-[#E8751A]" />
-                            {p.voltage} KV
+                            {p.voltage} kV
                           </Badge>
                         )}
                         {p.year && (

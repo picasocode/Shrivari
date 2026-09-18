@@ -244,11 +244,11 @@ async function main() {
 
   const htProducts = [
     {
-      name: "11 KV Panel",
+      name: "11 kV Panel",
       slug: "11-kv-panel",
       category: "HT Panels",
       description:
-        "11 KV HT Panels are designed for receiving and distributing high tension power at 11kV voltage level. These panels feature vacuum circuit breakers, current and voltage transformers, and comprehensive protection relays for safe and reliable medium voltage power distribution in industrial and commercial facilities.",
+        "11 kV HT Panels are designed for receiving and distributing high tension power at 11kV voltage level. These panels feature vacuum circuit breakers, current and voltage transformers, and comprehensive protection relays for safe and reliable medium voltage power distribution in industrial and commercial facilities.",
       features: JSON.stringify([
         "VCB rated up to 630A/1250A",
         "Current transformer and potential transformer integration",
@@ -261,11 +261,11 @@ async function main() {
       order: 10,
     },
     {
-      name: "22 KV Panel",
+      name: "22 kV Panel",
       slug: "22-kv-panel",
       category: "HT Panels",
       description:
-        "22 KV HT Panels are engineered for medium voltage power distribution at the 22kV level. These panels are commonly used in large industrial plants and utility substations, featuring advanced vacuum circuit breaker technology and sophisticated protection systems for critical power infrastructure.",
+        "22 kV HT Panels are engineered for medium voltage power distribution at the 22kV level. These panels are commonly used in large industrial plants and utility substations, featuring advanced vacuum circuit breaker technology and sophisticated protection systems for critical power infrastructure.",
       features: JSON.stringify([
         "VCB with high breaking capacity",
         "Comprehensive protection scheme",
@@ -278,11 +278,11 @@ async function main() {
       order: 11,
     },
     {
-      name: "33 KV Panel",
+      name: "33 kV Panel",
       slug: "33-kv-panel",
       category: "HT Panels",
       description:
-        "33 KV HT Panels are the highest voltage class panels in our product range, designed for heavy industrial applications and utility substations. These panels incorporate state-of-the-art vacuum/SF6 circuit breakers, advanced numerical relays, and robust busbar systems for mission-critical power distribution.",
+        "33 kV HT Panels are the highest voltage class panels in our product range, designed for heavy industrial applications and utility substations. These panels incorporate state-of-the-art vacuum/SF6 circuit breakers, advanced numerical relays, and robust busbar systems for mission-critical power distribution.",
       features: JSON.stringify([
         "VCB/SF6 circuit breaker options",
         "Busbar ratings up to 2000A",
@@ -455,20 +455,20 @@ async function main() {
     { name: "Ashok Leyland", industry: "Auto & Ancillary", location: "Hosur", description: "Leading commercial vehicle manufacturer — HT switchyard & panel supply", logoUrl: "https://shrivaarielectricals.com/img/client/1.jpg", order: 1 },
     { name: "TVS Motor Company", industry: "Auto & Ancillary", location: "Hosur", description: "Two-wheeler & three-wheeler major — complete electrification projects", logoUrl: "https://shrivaarielectricals.com/img/client/2.jpg", order: 2 },
     { name: "Hyundai Motor India", industry: "Auto & Ancillary", location: "Sriperumbudur", description: "Passenger car giant — substation & HT panel installation", logoUrl: "https://shrivaarielectricals.com/img/client/3.jpg", order: 3 },
-    { name: "TVS Srichakra Ltd", industry: "Auto & Ancillary", location: "Madurai", description: "Tyre & rubber products — 11KV VCB panels & protection systems", logoUrl: "https://shrivaarielectricals.com/img/client/4.jpg", order: 4 },
+    { name: "TVS Srichakra Ltd", industry: "Auto & Ancillary", location: "Madurai", description: "Tyre & rubber products — 11kV VCB panels & protection systems", logoUrl: "https://shrivaarielectricals.com/img/client/4.jpg", order: 4 },
     { name: "Sundaram Clayton", industry: "Auto & Ancillary", location: "Chennai", description: "Auto components & braking systems — LT panel supply", logoUrl: "https://shrivaarielectricals.com/img/client/5.jpg", order: 5 },
     { name: "MRF Tyres", industry: "Auto & Ancillary", location: "Tiruvottiyur", description: "Tyre manufacturing leader — PCC & MCC panels", logoUrl: "https://shrivaarielectricals.com/img/client/6.jpg", order: 6 },
     { name: "Renault Nissan Automotive", industry: "Auto & Ancillary", location: "Chennai", description: "Car manufacturing JV — power distribution panels", logoUrl: "https://shrivaarielectricals.com/img/client/7.jpg", order: 7 },
 
     // ── Engineering ──
-    { name: "Delta Electronics India", industry: "Engineering", location: "Hosur", description: "Power electronics & automation — 11KV transformer & VCB panels", logoUrl: "https://shrivaarielectricals.com/img/client/22.jpg", order: 8 },
+    { name: "Delta Electronics India", industry: "Engineering", location: "Hosur", description: "Power electronics & automation — 11kV transformer & VCB panels", logoUrl: "https://shrivaarielectricals.com/img/client/22.jpg", order: 8 },
     { name: "Crompton Greaves", industry: "Engineering", location: "Chennai", description: "Electrical equipment manufacturer — HT panel & switchyard projects", logoUrl: "https://shrivaarielectricals.com/img/client/23.jpg", order: 9 },
     { name: "Elgi Equipments Ltd", industry: "Engineering", location: "Coimbatore", description: "Compressor & automotive equipment — complete LT panel solutions", logoUrl: "https://shrivaarielectricals.com/img/client/24.jpg", order: 10 },
     { name: "LMW Ltd", industry: "Engineering", location: "Coimbatore", description: "Textile machinery manufacturer — PCC & MCC panel supply", logoUrl: "https://shrivaarielectricals.com/img/client/25.jpg", order: 11 },
     { name: "Bosch Ltd", industry: "Engineering", location: "Bangalore", description: "Technology & services company — industrial electrification", logoUrl: "https://shrivaarielectricals.com/img/client/26.jpg", order: 12 },
 
     // ── Forging ──
-    { name: "MM Forging", industry: "Forging", location: "Viralimalai", description: "Steel forging major — 132KV/11KV switchyard construction & AMC", logoUrl: "https://shrivaarielectricals.com/img/client/36.jpg", order: 13 },
+    { name: "MM Forging", industry: "Forging", location: "Viralimalai", description: "Steel forging major — 132kV/11kV switchyard construction & AMC", logoUrl: "https://shrivaarielectricals.com/img/client/36.jpg", order: 13 },
     { name: "Bharat Forge", industry: "Forging", location: "Pune", description: "Forging & automotive components — HT panel supply", logoUrl: "https://shrivaarielectricals.com/img/client/37.jpg", order: 14 },
     { name: "Ramakrishna Forgings", industry: "Forging", location: "Hyderabad", description: "Forging products manufacturer — substation installation", logoUrl: "https://shrivaarielectricals.com/img/client/38.jpg", order: 15 },
 
@@ -478,28 +478,28 @@ async function main() {
     { name: "Samsung India Electronics", industry: "Electronics", location: "Sriperumbudur", description: "Consumer electronics — HT/LT panel installation", logoUrl: "https://shrivaarielectricals.com/img/client/8.jpg", order: 18 },
 
     // ── Power & Energy ──
-    { name: "Solon India Pvt Ltd", industry: "Power & Energy", location: "Mothagam", description: "Solar energy company — 33KV bay extension for 10MW solar plant", logoUrl: "https://shrivaarielectricals.com/img/client/45.jpg", order: 19 },
+    { name: "Solon India Pvt Ltd", industry: "Power & Energy", location: "Mothagam", description: "Solar energy company — 33kV bay extension for 10MW solar plant", logoUrl: "https://shrivaarielectricals.com/img/client/45.jpg", order: 19 },
     { name: "TNEB (Tamil Nadu Electricity Board)", industry: "Power & Energy", location: "Chennai", description: "State utility — grid connectivity & substation projects", logoUrl: "https://shrivaarielectricals.com/img/client/46.jpg", order: 20 },
     { name: "Adani Green Energy", industry: "Power & Energy", location: "Mumbai", description: "Renewable energy — solar switchyard & evacuation systems", logoUrl: "https://shrivaarielectricals.com/img/client/47.jpg", order: 21 },
     { name: "NTPC Ltd", industry: "Power & Energy", location: "New Delhi", description: "Power generation — switchyard & protection panel supply", logoUrl: "https://shrivaarielectricals.com/img/client/48.jpg", order: 22 },
 
     // ── Metal ──
-    { name: "M.J. Casting Limited", industry: "Metal", location: "Hosur", description: "Castings & foundry — 33KV 1250A VCB panel with SCADA integration", logoUrl: "https://shrivaarielectricals.com/img/client/86.jpg", order: 23 },
+    { name: "M.J. Casting Limited", industry: "Metal", location: "Hosur", description: "Castings & foundry — 33kV 1250A VCB panel with SCADA integration", logoUrl: "https://shrivaarielectricals.com/img/client/86.jpg", order: 23 },
     { name: "JSW Steel", industry: "Metal", location: "Salem", description: "Steel manufacturing — HT switchyard & panel retrofitting", logoUrl: "https://shrivaarielectricals.com/img/client/87.jpg", order: 24 },
     { name: "Tata Steel", industry: "Metal", location: "Jamshedpur", description: "Steel major — LT panel supply & AMC services", logoUrl: "https://shrivaarielectricals.com/img/client/88.jpg", order: 25 },
 
     // ── Chemicals ──
     { name: "Grasim Industries", industry: "Chemicals", location: "Nagpur", description: "Cement, fibre & chemicals — panel supply & electrification", logoUrl: "https://shrivaarielectricals.com/img/client/108.jpg", order: 26 },
     { name: "Coromandel International", industry: "Chemicals", location: "Chennai", description: "Fertilizers & chemicals — HT panel & protection systems", logoUrl: "https://shrivaarielectricals.com/img/client/172.jpg", order: 27 },
-    { name: "Chemplast Sanmar", industry: "Chemicals", location: "Cuddalore", description: "PVC & specialty chemicals — 11KV electrification project", logoUrl: "https://shrivaarielectricals.com/img/client/173.jpg", order: 28 },
+    { name: "Chemplast Sanmar", industry: "Chemicals", location: "Cuddalore", description: "PVC & specialty chemicals — 11kV electrification project", logoUrl: "https://shrivaarielectricals.com/img/client/173.jpg", order: 28 },
 
     // ── Commercial ──
-    { name: "Madras Security Printers", industry: "Commercial", location: "Chennai", description: "Security printing — 11KV/433V electrification project", logoUrl: "https://shrivaarielectricals.com/img/client/78.jpg", order: 29 },
+    { name: "Madras Security Printers", industry: "Commercial", location: "Chennai", description: "Security printing — 11kV/433V electrification project", logoUrl: "https://shrivaarielectricals.com/img/client/78.jpg", order: 29 },
     { name: "ITC Grand Chola", industry: "Commercial", location: "Chennai", description: "Luxury hotel — DG synchronization & APFC panels", logoUrl: "https://shrivaarielectricals.com/img/client/79.jpg", order: 30 },
     { name: "Prestige Group", industry: "Commercial", location: "Bangalore", description: "Real estate developer — LT panel supply for commercial buildings", logoUrl: "https://shrivaarielectricals.com/img/client/80.jpg", order: 31 },
 
     // ── Hospitals & Institutions ──
-    { name: "PSG Institute of Technology", industry: "Hospitals & Institutions", location: "Coimbatore", description: "Engineering institution — 11KV campus electrification", logoUrl: "https://shrivaarielectricals.com/img/client/60.jpg", order: 32 },
+    { name: "PSG Institute of Technology", industry: "Hospitals & Institutions", location: "Coimbatore", description: "Engineering institution — 11kV campus electrification", logoUrl: "https://shrivaarielectricals.com/img/client/60.jpg", order: 32 },
     { name: "Apollo Hospitals", industry: "Hospitals & Institutions", location: "Chennai", description: "Healthcare chain — DG sync panels & backup power systems", logoUrl: "https://shrivaarielectricals.com/img/client/61.jpg", order: 33 },
     { name: "Sri Ramachandra Institute", industry: "Hospitals & Institutions", location: "Chennai", description: "Medical university — HT/LT panel installation", logoUrl: "https://shrivaarielectricals.com/img/client/62.jpg", order: 34 },
     { name: "VIT University", industry: "Hospitals & Institutions", location: "Vellore", description: "Technical university — substation & campus electrification", logoUrl: "https://shrivaarielectricals.com/img/client/63.jpg", order: 35 },
@@ -577,7 +577,7 @@ async function main() {
       company: "PSG Institute of Technology",
       designation: "Director - Infrastructure",
       content:
-        "The 11KV electrification project executed by Shri Vaari for our campus was completed on time and within budget. Their technical team demonstrated deep understanding of our requirements and provided innovative solutions. The after-sales support has been outstanding, making them our go-to electrical contractor.",
+        "The 11kV electrification project executed by Shri Vaari for our campus was completed on time and within budget. Their technical team demonstrated deep understanding of our requirements and provided innovative solutions. The after-sales support has been outstanding, making them our go-to electrical contractor.",
       rating: 5,
       order: 2,
     },
@@ -604,7 +604,7 @@ async function main() {
       company: "Solon India Pvt Ltd",
       designation: "Project Director",
       content:
-        "The 33KV bay extension for our 10MW solar project was a complex undertaking, but Shri Vaari delivered it flawlessly. Their understanding of solar grid integration requirements and their liaison capabilities with utility companies made the entire process smooth. A truly dependable EPC partner.",
+        "The 33kV bay extension for our 10MW solar project was a complex undertaking, but Shri Vaari delivered it flawlessly. Their understanding of solar grid integration requirements and their liaison capabilities with utility companies made the entire process smooth. A truly dependable EPC partner.",
       rating: 4,
       order: 5,
     },
@@ -613,7 +613,7 @@ async function main() {
       company: "MM Forging",
       designation: "Chief Technical Officer",
       content:
-        "Shri Vaari has been instrumental in setting up our 132KV switchyard and it has been running without any issues since commissioning. Their project management is commendable—they kept us informed at every stage and delivered the project ahead of schedule. Their AMC service ensures our systems run at peak performance year-round.",
+        "Shri Vaari has been instrumental in setting up our 132kV switchyard and it has been running without any issues since commissioning. Their project management is commendable—they kept us informed at every stage and delivered the project ahead of schedule. Their AMC service ensures our systems run at peak performance year-round.",
       rating: 5,
       order: 6,
     },
@@ -859,74 +859,74 @@ Don't let energy inefficiencies drain your profits. Contact Shri Vaari Electrica
 
   const projects = [
     {
-      name: "11KV/433V Electrification",
+      name: "11kV/433V Electrification",
       client: "Madras Security Printers",
       location: "Chennai",
       description:
-        "Complete electrification project including 11KV VCB panels, 11KV/433V transformers, LT panels, and cabling for the printing facility. Project involves design, supply, installation, testing, and commissioning of the entire electrical system.",
+        "Complete electrification project including 11kV VCB panels, 11kV/433V transformers, LT panels, and cabling for the printing facility. Project involves design, supply, installation, testing, and commissioning of the entire electrical system.",
       category: "ongoing",
       order: 1,
     },
     {
-      name: "33KV 1250A VCB Panel",
+      name: "33kV 1250A VCB Panel",
       client: "M.J. Casting Limited",
       location: "Hosur",
       description:
-        "Supply and installation of 33KV 1250A VCB panel with complete protection scheme including numerical relays, CT/PT, and SCADA integration for the foundry facility.",
+        "Supply and installation of 33kV 1250A VCB panel with complete protection scheme including numerical relays, CT/PT, and SCADA integration for the foundry facility.",
       category: "ongoing",
       order: 2,
     },
     {
-      name: "11KV/433V Electrification",
+      name: "11kV/433V Electrification",
       client: "PSG Institute of Technology",
       location: "Coimbatore",
       description:
-        "Campus-wide electrification project for the engineering institute including 11KV switchyard, distribution transformers, LT panels, and internal cabling for multiple buildings.",
+        "Campus-wide electrification project for the engineering institute including 11kV switchyard, distribution transformers, LT panels, and internal cabling for multiple buildings.",
       category: "ongoing",
       order: 3,
     },
     {
-      name: "110KV/11KV Switchyard",
+      name: "110kV/11kV Switchyard",
       client: "Ashok Leyland",
       location: "Hosur",
       description:
-        "Design, engineering, and construction of 110KV/11KV switchyard including power transformers, VCB panels, control panels, protection systems, and complete switchyard civil works.",
+        "Design, engineering, and construction of 110kV/11kV switchyard including power transformers, VCB panels, control panels, protection systems, and complete switchyard civil works.",
       category: "ongoing",
       order: 4,
     },
     {
-      name: "132KV/11KV Switchyard",
+      name: "132kV/11kV Switchyard",
       client: "MM Forging",
       location: "Viralimalai",
       description:
-        "Complete 132KV/11KV switchyard construction including power transformer, SF6 breaker, isolators, CT/PT, protection panels, and control room with SCADA system for the forging plant.",
+        "Complete 132kV/11kV switchyard construction including power transformer, SF6 breaker, isolators, CT/PT, protection panels, and control room with SCADA system for the forging plant.",
       category: "ongoing",
       order: 5,
     },
     {
-      name: "33KV Bay Extension for 10MW Solar",
+      name: "33kV Bay Extension for 10MW Solar",
       client: "Solon India",
       location: "Mothagam",
       description:
-        "33KV bay extension work for 10MW solar power plant integration, including VCB panels, protection relays, metering panels, and grid connectivity as per TNEB requirements.",
+        "33kV bay extension work for 10MW solar power plant integration, including VCB panels, protection relays, metering panels, and grid connectivity as per TNEB requirements.",
       category: "ongoing",
       order: 6,
     },
     {
-      name: "11KV VCB Panels",
+      name: "11kV VCB Panels",
       client: "TVS Srichakra",
       location: "Madurai",
       description:
-        "Supply and commissioning of 11KV VCB panels with numerical protection relays, auto-reclosing facility, and SCADA communication for the tyre manufacturing facility.",
+        "Supply and commissioning of 11kV VCB panels with numerical protection relays, auto-reclosing facility, and SCADA communication for the tyre manufacturing facility.",
       category: "ongoing",
       order: 7,
     },
     {
-      name: "11KV Transformer/VCB Panels",
+      name: "11kV Transformer/VCB Panels",
       client: "Delta Electronics",
       location: "Hosur",
       description:
-        "Complete 11KV switchboard with transformer feed VCB panels, metering panels, and protection systems for the electronics manufacturing unit. Includes CEIG approval and TNEB liaison.",
+        "Complete 11kV switchboard with transformer feed VCB panels, metering panels, and protection systems for the electronics manufacturing unit. Includes CEIG approval and TNEB liaison.",
       category: "ongoing",
       order: 8,
     },
@@ -1127,7 +1127,7 @@ Don't let energy inefficiencies drain your profits. Contact Shri Vaari Electrica
     {
       year: "2023",
       title: "55+ EHV Projects",
-      description: "Completed 55+ EHV Projects including substations up to 400KV",
+      description: "Completed 55+ EHV Projects including substations up to 400kV",
       icon: "Building2",
       color: "#1B3A5C",
       order: 10,
@@ -1153,14 +1153,14 @@ Don't let energy inefficiencies drain your profits. Contact Shri Vaari Electrica
   const sectors = [
     {
       name: "Power & Utilities",
-      description: "Complete electrical infrastructure for power generation, transmission, and distribution utilities including switchyards up to 400KV and SCADA-integrated substations.",
+      description: "Complete electrical infrastructure for power generation, transmission, and distribution utilities including switchyards up to 400kV and SCADA-integrated substations.",
       icon: "Zap",
       stat: "65+",
       statLabel: "Switchyards",
       gradientFrom: "#1B3A5C",
       gradientTo: "#2A5F9E",
       accent: "#1B3A5C",
-      details: JSON.stringify(["EHV Substations up to 400KV", "Switchyard design & construction", "Power transformer installation", "SCADA & protection system integration"]),
+      details: JSON.stringify(["EHV Substations up to 400kV", "Switchyard design & construction", "Power transformer installation", "SCADA & protection system integration"]),
       order: 1,
     },
     {
