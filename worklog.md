@@ -3317,3 +3317,26 @@ Stage Summary:
 - Breakpoint map: <1024 hamburger+CTA; 1024–1365 hamburger+CTA (fixed overflow zone); ≥1366 full desktop nav; ≥1536 roomier sizing
 - Clients page 2000+ was already live from Task 62
 - Remote main: 2d7667a
+
+---
+Task ID: 64
+Agent: Z.ai Code (main)
+Task: Push current production DB data into the NEW Hostinger MySQL database (u399217778_shrivaari_db @ srv2124.hstgr.io)
+
+Work Log:
+- Sandbox had reset; re-cloned repo (remote main = a4b39da, Tasks 62/63 intact)
+- Confirmed schema at HEAD is provider="mysql" (Task 06bdb52 era); local prisma/db/custom.db is an empty 0-row placeholder — live data lives only on the old production MySQL (creds never committed by design)
+- srv2124.hstgr.io:3306 initially blocked (Hostinger Remote MySQL list empty per user screenshot); phpMyAdmin direct URL not reachable; sandbox outbound 3306 verified OK via db4free.net control test
+- Harvested ALL current production data via public GET APIs (no middleware; only auth routes are protected) with retry loops for the slow old DB: settings(22), products(16), services(13), clients(94), testimonials(2), blogs(3), branches(8), milestones(11), sectors(10), team(6), manufacturing(14), careers(8), applications(0), contact messages(2), projects(8), project-records(159), plus 28 referenced /api/images/<id> blobs (43.7MB originals, all validated with PIL)
+- Built /home/z/my-project/db-migration/build_dump.py: parses schema.prisma → Prisma-faithful MySQL DDL (VARCHAR(191)/TEXT/DATETIME(3)/LONGBLOB, uniques, Session FK) + INSERTs with MySQL escaping; API field remap for ProjectRecord (customer→customerName, voltage→voltageLevel, scope→scopeOfWork, value→projectValue); fresh pbkdf2 admin User row (same salt:hash scheme as src/lib/password.ts); media as X'hex'; Media INSERTs batch=1 (max_allowed_packet safety)
+- Generated two variants: shrivaari_import.sql (5.9MB, media recompressed ≤1600px q82) and shrivaari_import_fullres.sql (89.6MB, originals)
+- Remote access was enabled on Hostinger side mid-task → 3306 became reachable; ran push.mjs (mysql2, statement-split on ';\n' — safe since esc() emits no raw newlines): 91 statements, 19 tables created, 405 rows
+- Verified server-side: ALL 18 table counts match harvest exactly; Media SUM(size)=45,847,020 bytes = byte-exact match with downloaded originals
+- No app code changed (zero production risk); admin user recreated in new DB: admin@shrivaari.com with owner-provided password (new hash — old hashes not exposed via API)
+- Credentials kept OUT of repo/worklog; scripts with creds live only in sandbox /home/z/my-project/db-migration/
+
+Stage Summary:
+- NEW DB u399217778_shrivaari_db @ srv2124.hstgr.io now holds the complete current production dataset (18 tables, 405 rows, 28 original images)
+- Remaining user step: point the production app env DATABASE_URL at the new DB (mysql://u399217778_shrivaaricom:<pass>@srv2124.hstgr.io:3306/u399217778_shrivaari_db) in Hostinger panel and restart the Node app; old DB untouched until then
+- Recommend rotating the DB password shared in chat afterwards
+- Remote main: worklog-only commit on top of a4b39da
