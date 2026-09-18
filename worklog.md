@@ -3139,3 +3139,19 @@ Work Log:
 Stage Summary:
 - Hero fills viewport height minus header on md+; white bottom space eliminated for all slides
 - Remote main: f64dab5
+
+---
+Task ID: 55
+Agent: Z.ai Code (main)
+Task: Pin testimonial card name/avatar footer to the bottom of the card
+
+Work Log:
+- User screenshot: home Client Testimonials cards had footers at different heights (floating after quote length); wanted name row always at card bottom
+- HomePage.tsx card: CardContent -> 'p-6 flex flex-col h-full', quote <p> -> flex-1, footer row -> mt-auto; grid stretch + h-full Card gives equal-height cards, footer pinned to bottom
+- TestimonialsPage.tsx grid card: same treatment (CardContent relative p-6 flex flex-col h-full; quote flex-1 keeps min-h; person info mt-auto) for consistency
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed 0994eb1, pushed; verified remote main HEAD = 0994eb1
+
+Stage Summary:
+- Name/avatar footer now bottom-aligned on all testimonial cards (home preview + testimonials page), matching card heights
+- Remote main: 0994eb1
