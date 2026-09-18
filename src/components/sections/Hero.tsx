@@ -45,7 +45,7 @@ export default function Hero() {
   }, [next])
 
   return (
-    <section className="relative min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden pt-[116px]">
+    <section className="relative min-h-[600px] md:min-h-[700px] md:h-[calc(100svh-128px)] flex items-center overflow-hidden pt-[116px]">
       {/* BG Images — crossfade with CSS only, no flash */}
       {slides.map((slide, i) => (
         <div
