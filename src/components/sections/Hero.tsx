@@ -56,6 +56,8 @@ export default function Hero() {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
         </div>
       ))}
+      {/* Light black shade for text readability */}
+      <div className="absolute inset-0 bg-black/25" />
       {/* Content */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 w-full py-16 md:pt-20 md:pb-36">
         <div className="max-w-xl">
