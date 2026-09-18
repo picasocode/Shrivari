@@ -3089,3 +3089,21 @@ Work Log:
 Stage Summary:
 - Banner 2 now uses the 1584x672 panoramic version (replaces the taller 1671x941 crop from Task 46)
 - Remote main: cd45a26
+
+---
+Task ID: 52
+Agent: Z.ai Code (main)
+Task: Normalize all hero banners to a fixed size and add a light black shade
+
+Work Log:
+- User: "make all the banner size fied and seed add light black shade" -> fixed size + light black shade
+- Measured banners: hero-office/hero-4 at 1584x672, hero-2/hero-3 at 1344x768 (mixed aspect ratios caused inconsistent bg-cover zoom/crop)
+- Center-cropped/resized ALL four to fixed 1584x672 (PIL ImageOps.fit, LANCZOS, quality 82 progressive): hero-2 215KB, hero-3 135KB, others unchanged dims
+- Visually verified hero-2 and hero-3 crops — subjects intact
+- Hero.tsx: re-added single light overlay <div className="absolute inset-0 bg-black/25" /> above content (replaces nothing; Task 48 removed the heavy /85 navy scrim, kept text-shadow)
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed 598441f, pushed; verified remote main HEAD = 598441f
+
+Stage Summary:
+- All 4 banners identical 1584x672; uniform light black shade (25%) over banners for text readability, text-shadow retained
+- Remote main: 598441f
