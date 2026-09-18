@@ -263,13 +263,15 @@ export default function QualityPage() {
               </button>
             </div>
             <div
-              className="relative max-w-3xl w-full flex-1 min-h-0 flex items-center justify-center py-12"
+              className="relative w-full flex-1 min-h-0 flex items-center justify-center py-2"
               onClick={(e) => e.stopPropagation()}
             >
-              <div
-                className="w-full h-full rounded-lg shadow-2xl bg-contain bg-center bg-no-repeat select-none"
-                style={{ backgroundImage: `url(${certificates[viewing].src})`, backgroundColor: '#FFFFFF' }}
+              <img
+                src={certificates[viewing].src}
+                alt={certificates[viewing].title}
+                className="max-w-full max-h-full w-auto h-auto object-contain shadow-2xl select-none pointer-events-none"
                 draggable={false}
+                onDragStart={(e) => e.preventDefault()}
               />
             </div>
             <div className="text-center" onClick={(e) => e.stopPropagation()}>
