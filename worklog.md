@@ -3123,3 +3123,19 @@ Work Log:
 Stage Summary:
 - Home Key Statistics shows full state names; Ongoing Projects View All (desktop+mobile) goes to Projects page; Client Testimonials cards now show initials avatars like the reference
 - Remote main: 05f0680
+
+---
+Task ID: 54
+Agent: Z.ai Code (main)
+Task: Remove white bottom space under home banner 2 (Built In-House slide)
+
+Work Log:
+- User screenshot (1917x907) analysis: header (topbar 36 + navbar 100) ends y=136; hero image spans 136->862 = 726px (slide 2's two-line title grows the content-driven section past min-h 700); white band 862->907 is NOT in the image (pixel-scanned hero-4.jpg bottom rows: dark floor; upload alpha fully opaque) — it is the top padding of the next Key Statistics section peeking above the fold
+- Fix: Hero section now md:h-[calc(100svh-128px)] (fills remaining viewport below the ~136px header, 8px safety margin) with min-h-600/700 retained as floor; min-height overrides calc on short viewports so content never clips; mobile unchanged (no fixed height)
+- Result: banner bottom lands exactly at/below the fold on desktop — no white strip visible under banner 2 or any banner
+- lint 0/0; tsc only pre-existing project-records/meta error
+- Committed f64dab5, pushed; verified remote main HEAD = f64dab5
+
+Stage Summary:
+- Hero fills viewport height minus header on md+; white bottom space eliminated for all slides
+- Remote main: f64dab5
