@@ -141,7 +141,7 @@ export default function ClientsPage() {
       { label: 'Trusted Clients', value: allClients.length, suffix: '+' },
       { label: 'Industries Served', value: categories.length, suffix: '' },
       { label: 'Projects Delivered', value: 500, suffix: '+' },
-      { label: 'Years of Trust', value: 29, suffix: '+' },
+      { label: 'Years of Trust', value: 28, suffix: '+' },
     ]
   }, [allClients, categories])
 

@@ -8,25 +8,25 @@ import { useRouter } from '@/components/Router'
 const slides = [
   {
     image: '/images/hero-office.jpg',
-    title: 'Powering India\'s Electrical POWER Infrastructure',
+    title: 'Powering India\'s Electrical Power Infrastructure',
     subtitle: 'EPC Solutions upto 400kV',
     desc: 'From design to commissioning — comprehensive electrical systems & solutions for industries across India with close to three decades of excellence.',
   },
   {
     image: '/images/hero-2.jpg',
     title: 'Precision-Built Electrical Panels',
-    subtitle: 'LT & HT Panels — 415V to 33KV',
+    subtitle: 'LT & HT Panels — 415V to 33kV',
     desc: 'State-of-the-art manufacturing facility producing world-class LT & HT panels, switchboards, and control systems, fully compliant with applicable Indian and IEC standards.',
   },
   {
     image: '/images/hero-3.jpg',
     title: 'Trusted Engineering Excellence',
-    subtitle: '3000+ Projects Delivered Successfully',
-    desc: 'Leading industries and solar EPCS rely on us for Transmission & Distribution, switchyard construction, industrial electrification, solar projects and various service including civil and structural works for switch boards & substations up to 400Kv.',
+    subtitle: '2000+ Projects Delivered Successfully',
+    desc: 'Leading industries and solar EPCS rely on us for Transmission & Distribution, switchyard construction, industrial electrification, solar projects and various service including civil and structural works for switch boards & substations up to 400kV.',
   },
   {
     image: '/images/hero-4.jpg',
-    title: 'Built In-House. Tested End-to-End.',
+    title: 'Built In-House.\nTested End-to-End.',
     subtitle: 'In-House Manufacturing Facility',
     desc: 'Every panel is designed, fabricated, wired and tested under one roof — full control over quality, customization and delivery timelines.',
   },
@@ -56,27 +56,28 @@ export default function Hero() {
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
         </div>
       ))}
-      {/* Lighter neutral overlay — images stay bright, text still readable */}
-      <div className="absolute inset-0 bg-black/25" />
+      {/* Readable text: soft base + navy scrim on the left where text sits; images stay bright on the right */}
+      <div className="absolute inset-0 bg-black/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A1628]/85 via-[#0A1628]/45 to-[#0A1628]/5" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 w-full py-16 md:py-24">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-5 lg:px-8 w-full py-16 md:pt-20 md:pb-36">
         <div className="max-w-xl">
           <span
             key={`sub-${current}`}
-            className="inline-block text-[#E8751A] text-sm font-semibold mb-4 tracking-wide animate-fade-in-up"
+            className="inline-block text-white text-sm font-semibold mb-4 tracking-wide animate-fade-in-up"
           >
             {slides[current].subtitle}
           </span>
           <h1
             key={`title-${current}`}
-            className="text-[32px] md:text-[42px] lg:text-[52px] font-bold text-white leading-tight mb-5 tracking-tight animate-fade-in-up"
+            className="text-[32px] md:text-[42px] lg:text-[52px] font-bold text-white leading-tight mb-5 tracking-tight animate-fade-in-up whitespace-pre-line"
           >
             {slides[current].title}
           </h1>
           <p
             key={`desc-${current}`}
-            className="text-white/70 text-base md:text-lg mb-8 leading-relaxed max-w-md animate-fade-in-up"
+            className="text-white/90 text-base md:text-lg mb-8 leading-relaxed max-w-md animate-fade-in-up"
           >
             {slides[current].desc}
           </p>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Phone, Shield, ChevronDown, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes, Layers, FileBadge2 } from 'lucide-react'
+import { Menu, Phone, Shield, ChevronDown, ChevronUp, PenTool, Hammer, FlaskConical, BarChart3, ShieldCheck, FileCheck, Building2, Sun, ArrowRight, Users, Briefcase, LayoutGrid, Info, FolderKanban, Factory, Zap, CircuitBoard, Boxes, Layers, FileBadge2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { useRouter, type PageName } from '@/components/Router'
@@ -28,7 +28,7 @@ const serviceDropdownItems = [
 ]
 
 const companyDropdownItems = [
-  { label: 'About Us', slug: 'about', icon: Info, desc: 'Our story, mission, vision and 29+ years of excellence' },
+  { label: 'About Us', slug: 'about', icon: Info, desc: 'Our story, mission, vision and 28+ years of excellence' },
   { label: 'Team', slug: 'team', icon: Users, desc: 'Meet the leadership driving our success' },
   { label: 'Key Sectors We Serve', slug: 'sectors', icon: LayoutGrid, desc: 'Industries and sectors we power across India' },
   { label: 'Careers', slug: 'careers', icon: Briefcase, desc: 'Join our 364+ strong team and grow with us' },
@@ -61,6 +61,7 @@ const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
 export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
   const { router, navigate } = useRouter()
   const [scrolled, setScrolled] = useState(false)
+  const [topBarOpen, setTopBarOpen] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   /* Single-source dropdown state — only ONE menu can be open at a time (desktop + mobile) */
   const [openMenu, setOpenMenu] = useState<'services' | 'company' | 'clients' | 'products' | null>(null)
@@ -148,8 +149,13 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
           : 'bg-white/95 backdrop-blur-sm'
       }`}
     >
-      {/* Top bar */}
-      <div className="bg-[#0D1D3A] text-white">
+      {/* Top bar — collapsible via the arrow on the right */}
+      <motion.div
+        initial={false}
+        animate={{ height: topBarOpen ? 36 : 0, opacity: topBarOpen ? 1 : 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        className="overflow-hidden bg-[#0D1D3A] text-white"
+      >
         <div className="max-w-[1440px] mx-auto px-5 lg:px-8 flex items-center justify-between h-9 text-xs">
           <div className="flex items-center gap-4">
             <a href="tel:+919941905833" className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors">
@@ -159,9 +165,27 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
               enquiries@shrivaarielectricals.com
             </a>
           </div>
-          <span className="text-white/60 hidden md:inline">Mon–Sat: 9:30 AM – 6:30 PM</span>
+          <div className="flex items-center gap-2">
+            <span className="text-white/60 hidden md:inline">Mon–Sat: 9:30 AM – 6:30 PM</span>
+            <button
+              onClick={() => setTopBarOpen(false)}
+              aria-label="Hide top bar"
+              className="w-6 h-6 rounded flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <ChevronUp className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
+      {!topBarOpen && (
+        <button
+          onClick={() => setTopBarOpen(true)}
+          aria-label="Show top bar"
+          className="absolute right-3 top-1.5 z-20 w-7 h-7 rounded-md bg-[#0D1D3A]/90 text-white/80 hover:text-white flex items-center justify-center shadow-sm transition-colors"
+        >
+          <ChevronDown className="w-3.5 h-3.5" />
+        </button>
+      )}
 
       {/* Main nav */}
       <nav className="max-w-[1440px] mx-auto px-4 sm:px-5 lg:px-8">

@@ -280,7 +280,7 @@ const SECTORS: Sector[] = [
       'Sri Kanniga Parameshwari Textiles',
       'Sri Parameshwari Spinning Mills',
       'Pachaiyappas – Kancheepuram',
-      'RMKV Silks – Tirunelveli',
+      'RMkV Silks – Tirunelveli',
     ],
   },
   {
@@ -581,7 +581,7 @@ export default function SectorsPage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.12em] uppercase text-white"
               style={{ backgroundColor: CORAL }}
             >
-              27 Sectors • 1200+ Projects • 29+ Years
+              27 Sectors • 2000+ Projects • 28+ Years
             </span>
           </FadeIn>
 
