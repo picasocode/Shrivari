@@ -611,7 +611,7 @@ export default function CareersPage() {
             <Button
               onClick={() => navigate('contact')}
               variant="outline"
-              className="border-white/20 text-white hover:bg-white/10 rounded-lg px-7 h-12 text-sm font-semibold transition-colors"
+              className="border-white/30 text-white bg-transparent hover:bg-white/10 hover:text-white rounded-lg px-7 h-12 text-sm font-semibold transition-colors"
             >
               Contact HR
             </Button>

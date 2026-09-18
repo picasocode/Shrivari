@@ -673,7 +673,7 @@ export default function ProjectsPage() {
                 Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
               <Button variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 hover:border-white rounded-lg px-8 h-12 font-semibold text-sm transition-colors"
+                className="border-2 border-white text-white bg-transparent hover:bg-white/10 hover:text-white hover:border-white rounded-lg px-8 h-12 font-semibold text-sm transition-colors"
                 onClick={() => navigate('clients')}>
                 View Our Clients
               </Button>
