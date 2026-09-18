@@ -13,6 +13,12 @@ const slides = [
     desc: 'From design to commissioning — comprehensive electrical systems & solutions for industries across India with close to three decades of excellence.',
   },
   {
+    image: '/images/hero-office-night.jpg',
+    title: 'A Trusted Name in Electrical EPC',
+    subtitle: 'Head Office — Chennai, Tamil Nadu',
+    desc: 'From our Chennai headquarters, our in-house engineering teams deliver substations, panels, solar and electrification projects end-to-end across India.',
+  },
+  {
     image: '/images/hero-2.jpg',
     title: 'Precision-Built Electrical Panels',
     subtitle: 'LT & HT Panels — 415V to 33kV',
