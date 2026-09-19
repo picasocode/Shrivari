@@ -3439,3 +3439,18 @@ Stage Summary:
 - Footer bottom-right now reads "Design & Developed by GlobantisLabs" (link); old About|Services|Contact removed
 - Breakpoint map now: <1440px -> burger drawer (covers phones, tablets, small laptops incl. 1366x768); >=1440px -> full desktop nav pinned right
 - Remote main: f7a862f
+
+---
+Task ID: 70
+Agent: Z.ai Code (main)
+Task: Navbar spacing + push cluster further right (user screenshot: Home..Get a Quote group)
+
+Work Log:
+- Desktop nav container gap-1 -> gap-1.5: even breathing room between all 9 links (26px visual spacing incl. px-2.5 padding)
+- CTA+burger container: added ml-2 (balanced Contact->Dashboard separation) and min-[1440px]:-mr-2 -> min-[1440px]:-mr-4 (whole Home..Get-a-Quote cluster sits 16px from right edge at >=1440px)
+- lint pass; tsc only 5 known pre-existing files
+- Push + fetch-verified
+
+Stage Summary:
+- Nav row evenly spaced; right cluster visibly closer to right edge on desktop
+- Remote main: worklog commit on navbar fix commit
