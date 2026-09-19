@@ -148,12 +148,16 @@ export default function Footer() {
           <p className="text-white/40 text-xs text-center md:text-left">
             © {new Date().getFullYear()} Shri Vaari Electricals Private Limited. All rights reserved.
           </p>
-          <div className="flex items-center gap-4 text-xs text-white/40">
-            <button onClick={() => navigate('about')} className="hover:text-white/70 transition-colors">About</button>
-            <span className="text-white/20">|</span>
-            <button onClick={() => navigate('services')} className="hover:text-white/70 transition-colors">Services</button>
-            <span className="text-white/20">|</span>
-            <button onClick={() => navigate('contact')} className="hover:text-white/70 transition-colors">Contact</button>
+          <div className="flex items-center gap-1.5 text-xs text-white/40">
+            <span>Design &amp; Developed by</span>
+            <a
+              href="https://globantislabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-white/60 hover:text-[#E8751A] transition-colors"
+            >
+              GlobantisLabs
+            </a>
           </div>
         </div>
       </div>
