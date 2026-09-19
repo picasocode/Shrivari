@@ -3401,3 +3401,23 @@ Stage Summary:
 - Shipped /api/health (2881523) as permanent deployment diagnostic
 - Waiting on user action: pick Fix A (switch to verified new DB) or Fix B (reset original user password); then restart and /api/health should flip to ok:true
 - Remote main: 2881523 on top of 322c3d0
+
+---
+Task ID: 68
+Agent: Z.ai Code (main)
+Task: Re-verify Fix A end-to-end after user still seeing 500s (auth/setup, settings, products) on production
+
+Work Log:
+- Probed live /api/health twice: stable "Authentication failed ... credentials for `u399217778_shrivaari_com` are not valid", latencyMs=4 -> production env STILL points at the ORIGINAL DB user; MySQL reachable (4ms) but rejects its password; no config change applied since Task 67
+- Sandbox direct test against NEW DB (u399217778_shrivaari_db): all 18 table counts match Task 64 exactly (SiteSetting 22, Product 16, Service 13, Client 94, Testimonial 2, Blog 3, Branch 8, Milestone 11, Sector 10, TeamMember 6, ManufacturingItem 14, Career 8, ContactMessage 2, JobApplication 0, Project 8, ProjectRecord 159, User 1, Media 28 = 45,847,020 bytes)
+- Admin row re-verified: usr_admin_svepl / SVEPL Admin / admin@shrivaari.com / role=admin / active=1
+- Login-path proof: recomputed pbkdf2-sha512 (10000 iters, 64B) of the owner-provided password against the stored salt:hash using the exact scheme from src/lib/password.ts -> PASSWORD MATCHES; admin login will succeed once the app connects to this DB
+- Note: srv2124.hstgr.io:3306 flapped for sandbox IPs (1 ETIMEDOUT then success on retry) - Hostinger Remote MySQL ACL instability for external probes only; production app server unaffected (its 4ms auth-rejection proves connectivity)
+- No code change; worklog-only commit
+
+Stage Summary:
+- Everything verified good EXCEPT production DATABASE_URL, which still names old user u399217778_shrivaari_com whose password MySQL rejects
+- User action (Fix A, verified ready): set DATABASE_URL to mysql://u399217778_shrivaaricom:Adminm%40il3103@srv2124.hstgr.io:3306/u399217778_shrivaari_db (password URL-encoded @ -> %40), save, RESTART the Node app, then GET /api/health must return {"ok":true}
+- Alternative (Fix B): reset password of u399217778_shrivaari_com in hPanel Databases, update DATABASE_URL encoding every special char, restart
+- Data caveat: new DB is the Task-64 harvest snapshot; admin-panel edits made after that snapshot exist only in the old DB (admin panel was unreachable during the outage, so edits are unlikely)
+- Remote main: worklog commit on 8f920d9
