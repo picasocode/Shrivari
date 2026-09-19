@@ -195,12 +195,12 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
             <img
               src="/images/logo.png"
               alt="Shri Vaari Electricals"
-              className="h-16 w-auto object-contain max-w-[58vw] min-[1366px]:max-w-[210px] 2xl:max-w-none"
+              className="h-16 w-auto object-contain max-w-[58vw] min-[1440px]:max-w-[210px] 2xl:max-w-none"
             />
           </button>
 
           {/* Desktop nav */}
-          <div className="hidden min-[1366px]:flex items-center gap-1 ml-auto">
+          <div className="hidden min-[1440px]:flex items-center gap-1 ml-auto">
             {navLinks.map((link) =>
               link.page === 'services' ? (
                 /* Services dropdown */
@@ -482,7 +482,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
           </div>
 
           {/* CTA + Mobile */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-[1440px]:-mr-2">
             {isLoggedIn ? (
               <Button
                 onClick={onAdminClick}
@@ -509,7 +509,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="min-[1366px]:hidden text-[#374151] w-9 h-9">
+                <Button variant="ghost" size="icon" className="min-[1440px]:hidden text-[#374151] w-9 h-9">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
