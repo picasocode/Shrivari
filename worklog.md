@@ -3421,3 +3421,21 @@ Stage Summary:
 - Alternative (Fix B): reset password of u399217778_shrivaari_com in hPanel Databases, update DATABASE_URL encoding every special char, restart
 - Data caveat: new DB is the Task-64 harvest snapshot; admin-panel edits made after that snapshot exist only in the old DB (admin panel was unreachable during the outage, so edits are unlikely)
 - Remote main: worklog commit on 8f920d9
+
+---
+Task ID: 69
+Agent: Z.ai Code (main)
+Task: Footer credit (GlobantisLabs) + navbar burger breakpoint for small laptops; user declared DB issue SOLVED on their side, no DB work allowed
+
+Work Log:
+- User: "Forgot about all the things... no DB all is solved" -> zero DB/env changes; pulled latest (remote was fbf2ed3, already current)
+- Footer.tsx bottom bar: removed the About | Services | Contact button group; replaced with "Design & Developed by GlobantisLabs" linking to https://globantislabs.com (target=_blank, hover to brand orange)
+- Navbar.tsx: desktop-nav/burger threshold min-[1366px] -> min-[1440px] (3 spots: desktop nav container, burger trigger, logo width cap) -> classic 1366x768 small laptops now get the hamburger drawer; full nav only >=1440px; fit budget at 1440: inner ~1388px vs content ~1211px (177px slack)
+- Navbar.tsx CTA+burger container: added min-[1440px]:-mr-2 -> Home..Get-a-Quote cluster nudged slightly right at full-desktop widths
+- lint pass; tsc: only the 5 known pre-existing error files (examples/, skills/, project-records/meta)
+- Commit f7a862f pushed; fetch-verified origin/main = f7a862f
+
+Stage Summary:
+- Footer bottom-right now reads "Design & Developed by GlobantisLabs" (link); old About|Services|Contact removed
+- Breakpoint map now: <1440px -> burger drawer (covers phones, tablets, small laptops incl. 1366x768); >=1440px -> full desktop nav pinned right
+- Remote main: f7a862f
