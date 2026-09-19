@@ -3378,3 +3378,26 @@ Stage Summary:
 - Direction changed: production stays on the ORIGINAL DB (u399217778_shrivaaridb); DATABASE_URL = owner-provided, already properly encoded
 - Task 64's new DB is now a redundant (verified) backup snapshot
 - Remote main = worklog commit on 4716a16
+
+---
+Task ID: 67
+Agent: Z.ai Code (main)
+Task: Definitive root-cause of ongoing empty-data + admin-login failure via new /api/health diagnostic endpoint
+
+Work Log:
+- Sandbox reset again; re-cloned repo (remote main = 322c3d0) and reinstalled deps
+- Probed live site: all DB-backed APIs still 500/timeout, /api/auth/login times out, homepage 200 -> Node app process alive, only DB layer failing
+- Added public sanitized /api/health route (SELECT 1 race 8s; returns dbUrlSet, dbHost, Prisma error code/message with mysql:// and password= redacted; commit 2881523) and deployed via auto-deploy
+- /api/health on production returned the REAL error, stable across repeated probes: "Authentication failed against database server, the provided database credentials for `u399217778_shrivaari_com` are not valid" at 4-68ms latency
+- Diagnosis now definitive: app server CAN reach srv2124.hstgr.io:3306 (ACL fine, URL parses fine, DATABASE_URL set) but MySQL REJECTS the password for user u399217778_shrivaari_com (the ORIGINAL DB user). Wrong/changed/mangled password - NOT an ACL, DNS, encoding-parse, or code problem
+- Intermittent endpoint timeouts are secondary: connection pool contention while every request first fails auth; resolves once auth succeeds
+- Fix A (fastest, credentials verified): point DATABASE_URL at the Task-64-verified new DB mysql://u399217778_shrivaaricom:Adminm%40il3103@srv2124.hstgr.io:3306/u399217778_shrivaari_db (19 tables/405 rows/28 byte-exact images verified in Task 64; admin admin@shrivaari.com / Adminm@il3103). Caveat: content edited AFTER the Sep 18 harvest would exist only in the original DB
+- Fix B (keep original DB): in hPanel reset the password for u399217778_shrivaari_com, then update DATABASE_URL percent-encoding every special char (@ %40, + %2B, # %23) and quote the value; restart app; admin login uses original admin credentials
+- Either fix + app restart; verify via GET /api/health expecting {"ok":true,...}, then data endpoints and admin login
+- No rollback performed; only additive /api/health route committed
+
+Stage Summary:
+- ROOT CAUSE CONFIRMED: MySQL auth rejection for user u399217778_shrivaari_com - the credentials in production DATABASE_URL are not valid for that user
+- Shipped /api/health (2881523) as permanent deployment diagnostic
+- Waiting on user action: pick Fix A (switch to verified new DB) or Fix B (reset original user password); then restart and /api/health should flip to ok:true
+- Remote main: 2881523 on top of 322c3d0
