@@ -200,7 +200,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
           </button>
 
           {/* Desktop nav */}
-          <div className="hidden min-[1440px]:flex items-center gap-1 ml-auto">
+          <div className="hidden min-[1440px]:flex items-center gap-1.5 ml-auto">
             {navLinks.map((link) =>
               link.page === 'services' ? (
                 /* Services dropdown */
@@ -482,7 +482,7 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
           </div>
 
           {/* CTA + Mobile */}
-          <div className="flex items-center gap-3 min-[1440px]:-mr-2">
+          <div className="flex items-center gap-3 ml-2 min-[1440px]:-mr-4">
             {isLoggedIn ? (
               <Button
                 onClick={onAdminClick}
