@@ -3498,3 +3498,21 @@ Stage Summary:
 - Old Project model remains in DB/API but has no admin UI and no site surface (harmless)
 - All 159 existing records default to On Home — admin should mark completed ones with one click
 - Remote main: 86d9fda
+
+---
+Task ID: 73
+Agent: Z.ai Code (main)
+Task: Project Records admin — status must be an inline dropdown (not the toggle pill) + add Edit option for records
+
+Work Log:
+- User: "The status must not be like this in admin panel, it needs inside dropdown kind of. Also add edit option in project records."
+- RecordsSection: per-row Home-status TOGGLE pill replaced with an inline <select> dropdown ("Ongoing — On Home" / "Completed — Off Home"); onChange PUTs /project-records/[id] {status} immediately (sanitized to ongoing|completed), row updates in place, success/error toast; while saving the dropdown is swapped for a "Saving…" chip with spinner; state togglingId -> statusSavingId; toggleStatus() -> changeStatus(record, next) with no-op guard when value unchanged
+- RecordsSection: new per-row "Edit" button (Pencil icon, outline) -> opens RecordDialog prefilled with ALL fields; new editingRecord state; dialog render condition now (creating || editingRecord); onSaved updates the row in place for edit mode and appends+sorts for create; also clears any stale inline image-URL draft for that record
+- RecordDialog: extended from create-only to Add/Edit dual mode — props now (record?, nextSno, onClose, onSaved); form initialized from the record incl. status; PUT /project-records/[id] for edit vs POST for create; new "Home Status" select in the form (Ongoing — shows on Home / Completed — hidden from Home) with helper text; S.No input disabled while editing (PUT route doesn't accept sno); title/button adapt ("Edit Project Record" / "Save Changes"); mapped row now carries status
+- No API/schema changes needed: PUT /api/project-records/[id] already whitelists all editable fields (customerName, voltageLevel, industry, scopeOfWork, location, state, projectValue, year, imageUrl, status)
+- lint pass; tsc only the 5 known pre-existing error files (examples/, skills/, project-records/meta); commit 13f3aac pushed, fetch-verified
+
+Stage Summary:
+- Project Records is now fully self-serve in ONE place: inline status dropdown per row, Edit dialog for every field, image upload/URL, add record
+- Home visibility still driven solely by record.status (ongoing -> Home 2x3 grid, completed -> Projects page only)
+- Remote main: 13f3aac
