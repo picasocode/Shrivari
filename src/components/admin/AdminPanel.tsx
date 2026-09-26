@@ -1955,7 +1955,8 @@ function RecordsSection() {
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [savingId, setSavingId] = useState<string | null>(null)
   const [uploadingId, setUploadingId] = useState<string | null>(null)
-  const [togglingId, setTogglingId] = useState<string | null>(null)
+  const [statusSavingId, setStatusSavingId] = useState<string | null>(null)
+  const [editingRecord, setEditingRecord] = useState<ProjectRecordItem | null>(null)
   const [brokenThumbs, setBrokenThumbs] = useState<Record<string, boolean>>({})
   const reqIdRef = useRef(0)
   const recordFileRef = useRef<HTMLInputElement>(null)
@@ -2030,23 +2031,24 @@ function RecordsSection() {
     }
   }
 
-  // Toggle a record's Home status (ongoing <-> completed) with one click.
-  const toggleStatus = async (record: ProjectRecordItem) => {
+  // Change a record's Home status from the inline dropdown (ongoing <-> completed).
+  const changeStatus = async (record: ProjectRecordItem, next: string) => {
     const id = record.id
     if (!id || source !== 'supabase') return
-    const next = record.status === 'ongoing' ? 'completed' : 'ongoing'
-    setTogglingId(id)
+    const status = next === 'completed' ? 'completed' : 'ongoing'
+    if ((record.status ?? 'ongoing') === status) return
+    setStatusSavingId(id)
     try {
       const updated = await fetchAPI<ProjectRecordRow>(`/project-records/${id}`, {
         method: 'PUT',
-        body: JSON.stringify({ status: next }),
+        body: JSON.stringify({ status }),
       })
-      setRecords(prev => prev.map(r => r.id === id ? { ...r, status: updated.status ?? next } : r))
-      notify('success', `${record.customer || `Record #${record.sno}`} marked ${next}`)
+      setRecords(prev => prev.map(r => r.id === id ? { ...r, status: updated.status ?? status } : r))
+      notify('success', `${record.customer || `Record #${record.sno}`} marked ${status}`)
     } catch (e) {
       notify('error', `Status update failed: ${(e as Error).message}`)
     } finally {
-      setTogglingId(null)
+      setStatusSavingId(null)
     }
   }
 
@@ -2114,7 +2116,7 @@ function RecordsSection() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
         <div className="min-w-0">
           <h2 className="text-2xl font-bold text-[#1A1A2E]">Project Records</h2>
-          <p className="text-xs text-[#6B7280] mt-1">The single project list — powers the public Projects page and the Home page Ongoing Projects (set image URL + Home status per record).</p>
+          <p className="text-xs text-[#6B7280] mt-1">The single project list — powers the public Projects page and the Home page Ongoing Projects. Pick the Home status from the dropdown, upload an image, or Edit a record to update every field.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {!loading && !error && (
@@ -2214,18 +2216,37 @@ function RecordsSection() {
                     </p>
                     <p className="text-xs text-[#6B7280] mt-0.5 truncate">{meta || '—'}</p>
                   </div>
-                  {/* Home status toggle */}
-                  <button
-                    onClick={() => toggleStatus(r)}
-                    disabled={!r.id || source !== 'supabase' || togglingId === r.id}
-                    title={r.status === 'completed' ? 'Mark as Ongoing — will show on the Home page' : 'Mark as Completed — hides from the Home page'}
-                    className={`shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${r.status === 'completed' ? 'bg-[#F0F4F8] text-[#6B7280] border-[#E5E7EB] hover:bg-[#E8F4FD] hover:text-[#2196F3] hover:border-[#2196F3]/30' : 'bg-[#E8F4FD] text-[#2196F3] border-[#2196F3]/30 hover:bg-[#F0F4F8] hover:text-[#6B7280]'}`}
+                  {/* Home status dropdown */}
+                  {statusSavingId === r.id ? (
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-[#E5E7EB] bg-[#F0F4F8] px-3 py-2 text-xs font-semibold text-[#6B7280]">
+                      <Loader2 className="w-3 h-3 animate-spin" /> Saving…
+                    </span>
+                  ) : (
+                    <select
+                      value={r.status === 'completed' ? 'completed' : 'ongoing'}
+                      onChange={e => void changeStatus(r, e.target.value)}
+                      disabled={!r.id || source !== 'supabase'}
+                      aria-label={`Home status for ${r.customer || `record #${r.sno}`}`}
+                      title="Home status — Ongoing shows on the Home page, Completed hides it"
+                      className="shrink-0 rounded-md border border-[#E5E7EB] bg-white px-2.5 py-2 text-xs font-semibold text-[#1A1A2E] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#E8751A]/40 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      <option value="ongoing">Ongoing — On Home</option>
+                      <option value="completed">Completed — Off Home</option>
+                    </select>
+                  )}
+                  {/* Edit record */}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setEditingRecord(r)}
+                    disabled={!r.id || source !== 'supabase'}
+                    title="Edit all fields of this record"
+                    className="rounded-md text-xs self-end md:self-auto shrink-0"
                   >
-                    {togglingId === r.id && <Loader2 className="w-3 h-3 animate-spin" />}
-                    {r.status === 'completed' ? 'Completed' : 'On Home'}
-                  </button>
+                    <Pencil className="w-3.5 h-3.5 mr-1" /> Edit
+                  </Button>
                   {/* Image URL editor (stacks on mobile, side-by-side from sm up) */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:w-[480px] shrink-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:w-[420px] shrink-0">
                     <Input
                       value={draft}
                       onChange={e => { if (r.id) setDraft(r.id, e.target.value) }}
@@ -2264,13 +2285,23 @@ function RecordsSection() {
         <p className="mt-3 text-xs text-[#6B7280]">Changes save directly to the database and appear on the public Projects page immediately.</p>
       )}
 
-      {creating && (
+      {(creating || editingRecord) && (
         <RecordDialog
+          record={editingRecord}
           nextSno={nextSno}
-          onClose={() => setCreating(false)}
-          onCreated={rec => {
-            setRecords(prev => [...prev, rec].sort((a, b) => a.sno - b.sno))
+          onClose={() => { setCreating(false); setEditingRecord(null) }}
+          onSaved={(rec, mode) => {
+            setRecords(prev => mode === 'create'
+              ? [...prev, rec].sort((a, b) => a.sno - b.sno)
+              : prev.map(r => (r.id === rec.id ? rec : r)))
+            setDrafts(prev => {
+              if (!rec.id) return prev
+              const next = { ...prev }
+              delete next[rec.id]
+              return next
+            })
             setCreating(false)
+            setEditingRecord(null)
           }}
         />
       )}
@@ -2278,63 +2309,82 @@ function RecordsSection() {
   )
 }
 
-/* ─── Add Record dialog (POST /api/project-records) ─── */
-function RecordDialog({ nextSno, onClose, onCreated }: {
+/* ─── Add / Edit Record dialog (POST /api/project-records, PUT /api/project-records/[id]) ─── */
+function RecordDialog({ record, nextSno, onClose, onSaved }: {
+  record?: ProjectRecordItem | null
   nextSno: number
   onClose: () => void
-  onCreated: (record: ProjectRecordItem) => void
+  onSaved: (record: ProjectRecordItem, mode: 'create' | 'edit') => void
 }) {
   const { notify } = useToast()
+  const editing = !!(record && record.id)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
-    sno: String(nextSno), customer: '', voltage: '', industry: '', scope: '',
-    location: '', state: '', value: '', year: '', imageUrl: '',
+    sno: String(record?.sno ?? nextSno), customer: record?.customer ?? '',
+    voltage: record?.voltage ?? '', industry: record?.industry ?? '',
+    scope: record?.scope ?? '', location: record?.location ?? '',
+    state: record?.state ?? '', value: record?.value ?? '',
+    year: record?.year ?? '', imageUrl: record?.imageUrl ?? '',
+    status: record?.status === 'completed' ? 'completed' : 'ongoing',
   })
 
   const set = (key: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setForm(f => ({ ...f, [key]: e.target.value }))
 
-  const handleCreate = async () => {
+  const handleSave = async () => {
     if (!form.customer.trim()) {
       notify('error', 'Customer name is required')
       return
     }
     setSaving(true)
     try {
-      const created = await fetchAPI<ProjectRecordRow>('/project-records', {
-        method: 'POST',
-        body: JSON.stringify({
-          sno: parseInt(form.sno, 10) || undefined,
-          customerName: form.customer,
-          voltageLevel: form.voltage,
-          industry: form.industry,
-          scopeOfWork: form.scope,
-          location: form.location,
-          state: form.state,
-          projectValue: form.value,
-          year: form.year,
-          imageUrl: form.imageUrl,
-        }),
-      })
+      const payload = {
+        customerName: form.customer,
+        voltageLevel: form.voltage,
+        industry: form.industry,
+        scopeOfWork: form.scope,
+        location: form.location,
+        state: form.state,
+        projectValue: form.value,
+        year: form.year,
+        imageUrl: form.imageUrl,
+        status: form.status,
+      }
+      const existingId = editing ? record?.id : undefined
+      let row: ProjectRecordRow
+      if (existingId) {
+        row = await fetchAPI<ProjectRecordRow>(`/project-records/${existingId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        })
+      } else {
+        row = await fetchAPI<ProjectRecordRow>('/project-records', {
+          method: 'POST',
+          body: JSON.stringify({ sno: parseInt(form.sno, 10) || undefined, ...payload }),
+        })
+      }
       // Map the Prisma row (camelCase columns) back to the API record shape.
       const mapped: ProjectRecordItem = {
-        id: created.id,
-        sno: created.sno ?? (parseInt(form.sno, 10) || nextSno),
-        customer: created.customerName ?? form.customer,
-        voltage: created.voltageLevel ?? form.voltage,
-        industry: created.industry ?? form.industry,
-        scope: created.scopeOfWork ?? form.scope,
-        location: created.location ?? form.location,
-        state: created.state ?? form.state,
-        value: created.projectValue ?? form.value,
-        year: created.year ?? form.year,
-        imageUrl: created.imageUrl ?? form.imageUrl,
+        id: row.id,
+        sno: row.sno ?? (parseInt(form.sno, 10) || nextSno),
+        customer: row.customerName ?? form.customer,
+        voltage: row.voltageLevel ?? form.voltage,
+        industry: row.industry ?? form.industry,
+        scope: row.scopeOfWork ?? form.scope,
+        location: row.location ?? form.location,
+        state: row.state ?? form.state,
+        value: row.projectValue ?? form.value,
+        year: row.year ?? form.year,
+        imageUrl: row.imageUrl ?? form.imageUrl,
+        status: row.status ?? form.status,
       }
-      notify('success', 'Record added — it is live on the public Projects page')
-      onCreated(mapped)
+      notify('success', editing
+        ? 'Record updated — changes are live on the public site'
+        : 'Record added — it is live on the public Projects page')
+      onSaved(mapped, editing ? 'edit' : 'create')
     } catch (e) {
-      notify('error', `Create failed: ${(e as Error).message}`)
+      notify('error', `${editing ? 'Update' : 'Create'} failed: ${(e as Error).message}`)
     } finally {
       setSaving(false)
     }
@@ -2343,10 +2393,10 @@ function RecordDialog({ nextSno, onClose, onCreated }: {
   return (
     <Dialog open onOpenChange={v => { if (!v) onClose() }}>
       <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-md">
-        <DialogHeader><DialogTitle>Add Project Record</DialogTitle></DialogHeader>
+        <DialogHeader><DialogTitle>{editing ? 'Edit Project Record' : 'Add Project Record'}</DialogTitle></DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5"><Label className="text-xs font-medium">S.No</Label><Input type="number" value={form.sno} onChange={set('sno')} className="rounded-md h-9 text-sm" /></div>
+            <div className="space-y-1.5"><Label className="text-xs font-medium">S.No</Label><Input type="number" value={form.sno} onChange={set('sno')} disabled={editing} title={editing ? 'S.No cannot be changed while editing' : undefined} className="rounded-md h-9 text-sm" /></div>
             <div className="space-y-1.5"><Label className="text-xs font-medium">Customer *</Label><Input value={form.customer} onChange={set('customer')} placeholder="Customer name" className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -2362,12 +2412,25 @@ function RecordDialog({ nextSno, onClose, onCreated }: {
             <div className="space-y-1.5"><Label className="text-xs font-medium">Project Value</Label><Input value={form.value} onChange={set('value')} placeholder="e.g. ₹ 2.5 Cr" className="rounded-md h-9 text-sm" /></div>
             <div className="space-y-1.5"><Label className="text-xs font-medium">Year</Label><Input value={form.year} onChange={set('year')} placeholder="e.g. 2024" className="rounded-md h-9 text-sm" /></div>
           </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium">Home Status</Label>
+            <select
+              value={form.status}
+              onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
+              aria-label="Home status"
+              className="w-full rounded-md border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#E8751A]/40"
+            >
+              <option value="ongoing">Ongoing — shows on the Home page</option>
+              <option value="completed">Completed — hidden from the Home page</option>
+            </select>
+            <p className="text-[11px] text-[#9CA3AF]">Ongoing records appear in the Home page Ongoing Projects grid; Completed ones appear only on the Projects page.</p>
+          </div>
           <ImageUpload label="Image URL (optional)" value={form.imageUrl} onChange={url => setForm(f => ({ ...f, imageUrl: url }))} />
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="rounded-md">Cancel</Button>
-          <Button onClick={handleCreate} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add Record'}
+          <Button onClick={handleSave} disabled={saving} className="bg-[#E8751A] hover:bg-[#D4691A] text-white rounded-md">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : editing ? 'Save Changes' : 'Add Record'}
           </Button>
         </DialogFooter>
       </DialogContent>
