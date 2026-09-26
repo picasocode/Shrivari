@@ -3516,3 +3516,20 @@ Stage Summary:
 - Project Records is now fully self-serve in ONE place: inline status dropdown per row, Edit dialog for every field, image upload/URL, add record
 - Home visibility still driven solely by record.status (ongoing -> Home 2x3 grid, completed -> Projects page only)
 - Remote main: 13f3aac
+
+---
+Task ID: 74
+Agent: Z.ai Code (main)
+Task: SQL — mark ALL project records completed ("sql make all completet in projec record record")
+
+Work Log:
+- User requested all Project Records set to completed via SQL (so the Home Ongoing grid starts empty and they can mark the real ongoing ones from the admin dropdown)
+- Wrote /home/z/dbcheck/complete-all.mjs (mysql2, 4x retry, auth-fail short-circuit) — table `ProjectRecord`, column `status`
+- Ran UPDATE `ProjectRecord` SET status='completed' WHERE status <> 'completed' on BOTH DBs: OLD/PRODUCTION (u399217778_shrivaaridb) before completed=1/ongoing=158 -> after completed=159 (158 updated); NEW/BACKUP (u399217778_shrivaari_db) before ongoing=159 -> after completed=159
+- Live verify: https://shrivaarielectricals.com/api/project-records?status=ongoing&limit=6 -> {"total":0,"records":[]}; homepage HTTP 200
+- No code/schema changes; no repo code commit — data-only operation
+
+Stage Summary:
+- All 159 project records now status=completed in production and backup DBs
+- Home page Ongoing Projects grid is now empty until admin marks specific records "Ongoing — On Home" from the new per-row dropdown (Task 73)
+- Remote main: 3166e44 (unchanged — data-only task)
