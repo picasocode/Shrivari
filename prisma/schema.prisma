@@ -101,6 +101,7 @@ model Project {
   description String   @db.Text
   imageUrl    String   @default("")
   category    String   @default("ongoing") // "ongoing" or "completed"
+  status      String   @default("ongoing") // "ongoing" -> shows in Home page Ongoing Projects sections
   order       Int      @default(0)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())

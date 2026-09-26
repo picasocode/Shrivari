@@ -1189,6 +1189,7 @@ function OngoingProjectsSection() {
     { key: 'client', label: 'Client', kind: 'text', get: (p: Project) => p.client },
     { key: 'location', label: 'Location', kind: 'text', get: (p: Project) => p.location },
     { key: 'category', label: 'Category', kind: 'select', get: (p: Project) => p.category, options: ['ongoing', 'completed'], allLabel: 'All categories' },
+    { key: 'status', label: 'Home Status', kind: 'select', get: (p: Project) => p.status, options: ['ongoing', 'completed'], allLabel: 'All home statuses' },
     { key: 'image', label: 'Image', kind: 'select', get: (p: Project) => (p.imageUrl ? 'Uploaded' : 'None'), options: ['Uploaded', 'None'], allLabel: 'All images' },
     { key: 'active', label: 'Status', kind: 'select', get: (p: Project) => (p.active ? 'Active' : 'Inactive'), options: ['Active', 'Inactive'], allLabel: 'All statuses' },
   ], [items])
@@ -1238,13 +1239,14 @@ function OngoingProjectsSection() {
               <TableHead className="text-xs font-semibold hidden md:table-cell">Client</TableHead>
               <TableHead className="text-xs font-semibold hidden lg:table-cell">Location</TableHead>
               <TableHead className="text-xs font-semibold hidden md:table-cell">Category</TableHead>
+              <TableHead className="text-xs font-semibold hidden md:table-cell">Home Status</TableHead>
               <TableHead className="text-xs font-semibold hidden lg:table-cell">Order</TableHead>
               <TableHead className="text-xs font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center text-sm text-[#6B7280] py-8">No projects yet — click Add to create one.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center text-sm text-[#6B7280] py-8">No projects yet — click Add to create one.</TableCell></TableRow>
             ) : filtered.map(p => (
               <TableRow key={p.id}>
                 <TableCell>
@@ -1260,6 +1262,9 @@ function OngoingProjectsSection() {
                 <TableCell className="hidden md:table-cell">
                   <Badge variant="secondary" className={`text-xs rounded capitalize ${p.category === 'ongoing' ? 'bg-[#FFF7ED] text-[#E8751A]' : 'bg-[#F0F4F8] text-[#1F2937]'}`}>{p.category}</Badge>
                   {!p.active && <Badge variant="secondary" className="text-xs rounded ml-1 bg-red-50 text-red-600">Hidden</Badge>}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  <Badge variant="secondary" className={`text-xs rounded capitalize ${p.status === 'ongoing' ? 'bg-[#E8F4FD] text-[#2196F3]' : 'bg-[#F0F4F8] text-[#6B7280]'}`}>{p.status === 'ongoing' ? 'On Home' : 'Off Home'}</Badge>
                 </TableCell>
                 <TableCell className="hidden lg:table-cell text-sm text-[#6B7280]">{p.order}</TableCell>
                 <TableCell className="text-right">
@@ -1283,8 +1288,8 @@ function OngoingProjectsSection() {
 function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClose: () => void; onSave: (data: Partial<Project>) => void }) {
   const [form, setForm] = useState(() =>
     item
-      ? { name: item.name, client: item.client, location: item.location, description: item.description, imageUrl: item.imageUrl, category: item.category, order: item.order, active: item.active }
-      : { name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', order: 0, active: true }
+      ? { name: item.name, client: item.client, location: item.location, description: item.description, imageUrl: item.imageUrl, category: item.category, status: item.status || 'ongoing', order: item.order, active: item.active }
+      : { name: '', client: '', location: '', description: '', imageUrl: '', category: 'ongoing', status: 'ongoing', order: 0, active: true }
   )
 
   return (
@@ -1308,6 +1313,18 @@ function ProjectDialog({ item, onClose, onSave }: { item: Project | null; onClos
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium">Status <span className="text-[#94A3B8]">(ongoing shows on Home)</span></Label>
+              <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v }))}>
+                <SelectTrigger className="rounded-md h-9 text-sm"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-white">
+                  <SelectItem value="ongoing">Ongoing — show on Home</SelectItem>
+                  <SelectItem value="completed">Completed — hide from Home</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5"><Label className="text-xs font-medium">Order</Label><Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="rounded-md h-9 text-sm" /></div>
           </div>
           <div className="space-y-1.5"><Label className="text-xs font-medium">Description *</Label><Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} className="rounded-md text-sm resize-none" /></div>

@@ -1,10 +1,14 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { ensureProjectStatusColumn, sanitizeProjectStatus } from "@/lib/project-migration";
 
 export async function GET(request: NextRequest) {
   try {
+    await ensureProjectStatusColumn();
+
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    const status = searchParams.get("status");
     // ?all=1 — admin view: include inactive rows too
     const all = searchParams.get("all") === "1";
 
@@ -12,6 +16,9 @@ export async function GET(request: NextRequest) {
     if (!all) where.active = true;
     if (category && (category === "ongoing" || category === "completed")) {
       where.category = category;
+    }
+    if (status === "ongoing" || status === "completed") {
+      where.status = status;
     }
 
     const projects = await db.project.findMany({
@@ -31,8 +38,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await ensureProjectStatusColumn();
+
     const body = await request.json();
-    const { name, client, location, description, imageUrl, category, order } =
+    const { name, client, location, description, imageUrl, category, status, order } =
       body;
 
     if (!name || !client || !location || !description) {
@@ -50,6 +59,7 @@ export async function POST(request: NextRequest) {
         description,
         imageUrl: imageUrl || "",
         category: category || "ongoing",
+        status: sanitizeProjectStatus(status ?? category ?? "ongoing"),
         order: order || 0,
       },
     });

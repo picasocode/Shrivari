@@ -1,11 +1,13 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { ensureProjectStatusColumn, sanitizeProjectStatus } from "@/lib/project-migration";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureProjectStatusColumn();
     const { id } = await params;
     const project = await db.project.findUnique({ where: { id } });
 
@@ -31,6 +33,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureProjectStatusColumn();
     const { id } = await params;
     const body = await request.json();
 
@@ -42,9 +45,12 @@ export async function PUT(
       );
     }
 
+    const data = { ...body };
+    if ("status" in data) data.status = sanitizeProjectStatus(data.status);
+
     const project = await db.project.update({
       where: { id },
-      data: body,
+      data,
     });
 
     return NextResponse.json(project);
@@ -62,6 +68,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureProjectStatusColumn();
     const { id } = await params;
 
     const existing = await db.project.findUnique({ where: { id } });

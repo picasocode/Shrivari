@@ -64,7 +64,7 @@ export default function HomePage() {
   useEffect(() => {
     Promise.all([
       fetchSettings().catch(() => null),
-      fetchProjects('ongoing').catch(() => []),
+      fetchProjects(undefined, 'ongoing').catch(() => []),
       fetchTestimonials(true).catch(() => []),
       fetchBlogs(true).catch(() => []),
     ]).then(([s, p, t, b]) => {
@@ -256,37 +256,39 @@ export default function HomePage() {
           ) : projects.length === 0 ? (
             <p className="text-[#6B7280]">No ongoing projects at the moment.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.slice(0, 3).map((p, i) => (
-                <FadeIn key={p.id} delay={i * 0.08}>
-                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full overflow-hidden">
-                    {p.imageUrl && (
-                      <div className="relative h-44 w-full overflow-hidden">
-                        <img
-                          src={p.imageUrl}
-                          alt={p.name}
-                          loading="lazy"
-                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                        />
-                      </div>
-                    )}
-                    <CardContent className="p-6">
-                      <Badge className="bg-[#F0F4F8] text-[#1F2937] hover:bg-[#E5E7EB] mb-3 rounded text-xs font-semibold">{p.category || 'Ongoing'}</Badge>
-                      <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
-                      <p className="text-[#6B7280] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7280]">
-                        {p.client && <span>Client: {p.client}</span>}
-                        {p.location && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-[#E8751A]" />
-                            {p.location}
-                          </span>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </FadeIn>
-              ))}
+            <div className="max-h-[640px] overflow-y-auto pr-1.5 -mr-1.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projects.map((p, i) => (
+                  <FadeIn key={p.id} delay={Math.min(i, 5) * 0.08}>
+                    <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full overflow-hidden">
+                      {p.imageUrl && (
+                        <div className="relative h-44 w-full overflow-hidden">
+                          <img
+                            src={p.imageUrl}
+                            alt={p.name}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      <CardContent className="p-6">
+                        <Badge className="bg-[#FFF7ED] text-[#E8751A] hover:bg-[#FFEDD5] mb-3 rounded text-xs font-semibold">{p.status === 'completed' ? 'Completed' : 'Ongoing'}</Badge>
+                        <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
+                        <p className="text-[#6B7280] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7280]">
+                          {p.client && <span>Client: {p.client}</span>}
+                          {p.location && (
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3.5 h-3.5 text-[#E8751A]" />
+                              {p.location}
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </FadeIn>
+                ))}
+              </div>
             </div>
           )}
           <div className="md:hidden mt-6 text-center">

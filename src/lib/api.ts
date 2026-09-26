@@ -75,6 +75,8 @@ export interface Project {
   description: string;
   imageUrl: string;
   category: string;
+  /** "ongoing" -> shown in Home page Ongoing Projects sections */
+  status: string;
   order: number;
   active: boolean;
   createdAt: string;
@@ -150,8 +152,11 @@ export async function fetchBlogs(publishedOnly?: boolean): Promise<Blog[]> {
   return fetchAPI(`/blogs${query}`);
 }
 
-export async function fetchProjects(category?: string): Promise<Project[]> {
-  const query = category ? `?category=${category}` : '';
+export async function fetchProjects(category?: string, status?: string): Promise<Project[]> {
+  const params: string[] = [];
+  if (category) params.push(`category=${category}`);
+  if (status) params.push(`status=${status}`);
+  const query = params.length ? `?${params.join('&')}` : '';
   return fetchAPI(`/projects${query}`);
 }
 
