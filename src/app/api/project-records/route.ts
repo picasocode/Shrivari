@@ -15,6 +15,7 @@ export interface ProjectRecord {
   value: string;
   year: string;
   imageUrl: string;
+  status: string;
 }
 
 /** Fallback: read the bundled JSON when the Supabase table is not yet created
@@ -41,6 +42,7 @@ function mapRow(row: any): ProjectRecord {
     value: row.projectValue ?? "",
     year: row.year ?? "",
     imageUrl: row.imageUrl ?? "",
+    status: row.status ?? "ongoing",
   };
 }
 
@@ -56,6 +58,19 @@ function mapRow(row: any): ProjectRecord {
 let bootstrapPromise: Promise<void> | null = null;
 
 async function bootstrapProjectRecordImages(): Promise<void> {
+  // 0. Self-migration for the `status` column (Home page Ongoing filter).
+  try {
+    await db.$executeRawUnsafe(
+      "ALTER TABLE `ProjectRecord` ADD COLUMN `status` VARCHAR(191) NOT NULL DEFAULT 'ongoing'"
+    );
+    console.log("[project-records] bootstrap: added status column");
+  } catch (err: any) {
+    const code = err?.code ?? err?.meta?.code;
+    if (code !== "P2010" && !String(err?.message).includes("duplicate column")) {
+      console.warn("[project-records] bootstrap status ALTER TABLE:", err?.message);
+    }
+  }
+
   // 1. Self-migration for pre-existing production tables.
   try {
     await db.$executeRawUnsafe(
@@ -160,6 +175,7 @@ export async function POST(request: NextRequest) {
         projectValue: str(body?.projectValue),
         year: str(body?.year),
         imageUrl: str(body?.imageUrl, 512),
+        status: body?.status === "completed" ? "completed" : "ongoing",
         active: true,
       },
     });
@@ -181,6 +197,7 @@ export async function GET(request: NextRequest) {
     const state = searchParams.get("state");
     const year = searchParams.get("year");
     const voltage = searchParams.get("voltage");
+    const status = searchParams.get("status");
     const search = searchParams.get("search")?.toLowerCase().trim();
     const limit = parseInt(searchParams.get("limit") || "0", 10);
 
@@ -198,6 +215,9 @@ export async function GET(request: NextRequest) {
     }
     if (voltage && voltage !== "All") {
       filtered = filtered.filter((r) => r.voltage === voltage);
+    }
+    if (status === "ongoing" || status === "completed") {
+      filtered = filtered.filter((r) => r.status === status);
     }
     if (search) {
       filtered = filtered.filter(

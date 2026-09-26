@@ -14,8 +14,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Hero from '@/components/sections/Hero'
 import { useRouter } from '@/components/Router'
 import {
-  fetchSettings, fetchProjects, fetchTestimonials, fetchBlogs,
-  type SiteSettings, type Project, type Testimonial, type Blog,
+  fetchSettings, fetchOngoingProjectRecords, fetchTestimonials, fetchBlogs,
+  type SiteSettings, type ProjectRecordCard, type Testimonial, type Blog,
 } from '@/lib/api'
 
 /* ─── fade-in wrapper ─── */
@@ -56,7 +56,7 @@ function InitialsAvatar({ name }: { name: string }) {
 export default function HomePage() {
   const { navigate } = useRouter()
   const [settings, setSettings] = useState<SiteSettings | null>(null)
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<ProjectRecordCard[]>([])
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
@@ -64,12 +64,12 @@ export default function HomePage() {
   useEffect(() => {
     Promise.all([
       fetchSettings().catch(() => null),
-      fetchProjects(undefined, 'ongoing').catch(() => []),
+      fetchOngoingProjectRecords().catch(() => []),
       fetchTestimonials(true).catch(() => []),
       fetchBlogs(true).catch(() => []),
     ]).then(([s, p, t, b]) => {
       setSettings(s)
-      setProjects(p as Project[])
+      setProjects(p)
       setTestimonials((t as Testimonial[]).slice(0, 3))
       setBlogs((b as Blog[]).slice(0, 3))
       setLoading(false)
@@ -256,39 +256,40 @@ export default function HomePage() {
           ) : projects.length === 0 ? (
             <p className="text-[#6B7280]">No ongoing projects at the moment.</p>
           ) : (
-            <div className="max-h-[640px] overflow-y-auto pr-1.5 -mr-1.5">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map((p, i) => (
-                  <FadeIn key={p.id} delay={Math.min(i, 5) * 0.08}>
-                    <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full overflow-hidden">
-                      {p.imageUrl && (
-                        <div className="relative h-44 w-full overflow-hidden">
-                          <img
-                            src={p.imageUrl}
-                            alt={p.name}
-                            loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                          />
-                        </div>
-                      )}
-                      <CardContent className="p-6">
-                        <Badge className="bg-[#FFF7ED] text-[#E8751A] hover:bg-[#FFEDD5] mb-3 rounded text-xs font-semibold">{p.status === 'completed' ? 'Completed' : 'Ongoing'}</Badge>
-                        <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.name}</h3>
-                        <p className="text-[#6B7280] text-sm mb-3 leading-relaxed line-clamp-3">{p.description}</p>
-                        <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7280]">
-                          {p.client && <span>Client: {p.client}</span>}
-                          {p.location && (
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 text-[#E8751A]" />
-                              {p.location}
-                            </span>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </FadeIn>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.slice(0, 6).map((p, i) => (
+                <FadeIn key={p.id || i} delay={Math.min(i, 5) * 0.08}>
+                  <Card className="bg-white rounded-lg border border-[#E5E7EB] shadow-sm card-hover h-full overflow-hidden">
+                    {p.imageUrl && (
+                      <div className="relative h-44 w-full overflow-hidden">
+                        <img
+                          src={p.imageUrl}
+                          alt={p.customer}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Badge className="bg-[#FFF7ED] text-[#E8751A] hover:bg-[#FFEDD5] rounded text-xs font-semibold">Ongoing</Badge>
+                        {p.year && <Badge className="bg-[#F0F4F8] text-[#1F2937] hover:bg-[#E5E7EB] rounded text-xs font-semibold">{p.year}</Badge>}
+                      </div>
+                      <h3 className="text-lg font-bold text-[#1A1A2E] mb-2">{p.customer}</h3>
+                      <p className="text-[#6B7280] text-sm mb-3 leading-relaxed line-clamp-3">{p.scope}</p>
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7280]">
+                        {p.voltage && <span className="flex items-center gap-1"><Zap className="w-3.5 h-3.5 text-[#E8751A]" />{p.voltage} kV</span>}
+                        {p.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3.5 h-3.5 text-[#E8751A]" />
+                            {p.location}
+                          </span>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
             </div>
           )}
           <div className="md:hidden mt-6 text-center">

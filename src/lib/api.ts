@@ -152,6 +152,27 @@ export async function fetchBlogs(publishedOnly?: boolean): Promise<Blog[]> {
   return fetchAPI(`/blogs${query}`);
 }
 
+export interface ProjectRecordCard {
+  id?: string;
+  sno: number;
+  customer: string;
+  voltage: string;
+  industry: string;
+  scope: string;
+  location: string;
+  state: string;
+  value: string;
+  year: string;
+  imageUrl: string;
+  status: string;
+}
+
+/** Home page Ongoing Projects cards — project records with status = "ongoing". */
+export async function fetchOngoingProjectRecords(limit = 6): Promise<ProjectRecordCard[]> {
+  const data = await fetchAPI<{ records: ProjectRecordCard[] }>(`/project-records?status=ongoing&limit=${limit}`);
+  return data.records || [];
+}
+
 export async function fetchProjects(category?: string, status?: string): Promise<Project[]> {
   const params: string[] = [];
   if (category) params.push(`category=${category}`);

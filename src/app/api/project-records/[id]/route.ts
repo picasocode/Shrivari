@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
  *
  * Supported fields (all optional — only provided keys are updated):
  *   imageUrl, customerName, voltageLevel, industry, scopeOfWork,
- *   location, state, projectValue, year
+ *   location, state, projectValue, year, status
  */
 const EDITABLE_FIELDS = [
   "imageUrl",
@@ -18,6 +18,7 @@ const EDITABLE_FIELDS = [
   "state",
   "projectValue",
   "year",
+  "status",
 ] as const;
 
 export async function GET(
@@ -60,6 +61,10 @@ export async function PUT(
       if (typeof value === "string") {
         data[field] = value.trim();
       }
+    }
+    // status is whitelisted to its two known values.
+    if ("status" in data) {
+      data.status = data.status === "completed" ? "completed" : "ongoing";
     }
 
     if (Object.keys(data).length === 0) {
