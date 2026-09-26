@@ -3454,3 +3454,26 @@ Work Log:
 Stage Summary:
 - Nav row evenly spaced; right cluster visibly closer to right edge on desktop
 - Remote main: worklog commit on navbar fix commit
+
+---
+Task ID: 71
+Agent: Z.ai Code (main)
+Task: Project.status parameter — admin-controlled, drives Home ongoing sections; scrollable Home ongoing list
+
+Work Log:
+- Sandbox reset; re-cloned (remote 31460af); production /api/health now {"ok":true} — user fixed DB themselves (old DB password works again)
+- User request: add extra parameter "status" to projects managed in admin panel; status=ongoing -> shows on Home page ongoing section (and other places); Home ongoing section needs scroll to view more projects
+- Schema: Project.status VARCHAR(191) default 'ongoing' added to schema.prisma
+- NEW src/lib/project-migration.ts: ensureProjectStatusColumn() — idempotent runtime guard (information_schema check -> ALTER TABLE ADD COLUMN + UPDATE status = category for existing rows), cached per process, called in all project API handlers; sanitizeProjectStatus() whitelists values. This makes the deploy self-migrating and P2022-proof on ANY target DB
+- API: GET /api/projects accepts ?status=ongoing|completed (category filter kept); POST accepts status; /api/projects/[id] PUT sanitizes status
+- src/lib/api.ts: Project.status typed; fetchProjects(category?, status?)
+- HomePage: ongoing fetch now status-driven (fetchProjects(undefined,'ongoing')); Ongoing Projects section replaced fixed 3-card grid with scrollable container (max-h-[640px] overflow-y-auto, global thin scrollbar) showing ALL ongoing projects; badge reflects status
+- AdminPanel OngoingProjectsSection: ProjectDialog gets Status select ("Ongoing — show on Home" / "Completed — hide from Home"); table adds Home Status column (On Home/Off Home badge), colSpan 7->8; filter strip gets Home Status def
+- Direct DB pre-migration via mysql2 (sandbox): OLD DB (u399217778_shrivaaridb) creds NOW VALID (user reset password) and its data differs from Task-64 snapshot -> confirmed production runs on OLD DB; status column added + mirrored from category on BOTH old and new DBs
+- lint pass; tsc only 5 known pre-existing files; commit 4dcff39 pushed, fetch-verified
+
+Stage Summary:
+- Admin can now set per-project Status; "ongoing" feeds Home ongoing sections; Home section scrolls through all ongoing projects
+- Production DB (old) already has the status column with category-mirrored values — zero-downtime deploy
+- Confirmed: production = OLD database (u399217778_shrivaaridb); new DB remains a verified backup snapshot
+- Remote main: 4dcff39
