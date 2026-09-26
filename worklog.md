@@ -3477,3 +3477,24 @@ Stage Summary:
 - Production DB (old) already has the status column with category-mirrored values — zero-downtime deploy
 - Confirmed: production = OLD database (u399217778_shrivaaridb); new DB remains a verified backup snapshot
 - Remote main: 4dcff39
+
+---
+Task ID: 72
+Agent: Z.ai Code (main)
+Task: Unify projects into Project Records — remove admin Ongoing Projects section, records status controls Home, Home ongoing 2x3 grid + View All to Projects page
+
+Work Log:
+- User: remove Ongoing Projects manager from admin; Project Records becomes the ONE place controlling everything via a status; Home ongoing = 2 rows x 3 cols; more -> Projects page shows all
+- Schema: ProjectRecord.status VARCHAR(191) default 'ongoing' added; prisma generate
+- project-records API: bootstrap self-migration extended (adds status column if missing, duplicate-safe); mapRow/interface include status; GET accepts ?status=ongoing|completed; POST accepts status; [id] PUT whitelists status (sanitized)
+- AdminPanel: OngoingProjectsSection + ProjectDialog + 'projects' Section key + menu/sidebar/quick-action entries + fetchProjectsAll/type Project imports REMOVED; RecordsSection gets per-row one-click Home-status toggle button (On Home <-> Completed, PUT /project-records/[id]), Home Status filter def, updated subtitle; ProjectRecordItem/Row types add status
+- api.ts: ProjectRecordCard type + fetchOngoingProjectRecords(limit=6)
+- HomePage: ongoing section now record-driven (status=ongoing, limit 6), fixed grid grid-cols-1/md:2/lg:3 = 2x3 on desktop, no scroll; card shows image, Ongoing + year badges, customer title, scope text, voltage + location meta; existing View All buttons navigate to Projects page (which already lists ALL records)
+- Direct DB pre-migration (old production + new backup): status column added; distribution ongoing=159 (admin can mark completed per record)
+- lint pass; tsc only 5 known pre-existing files; commit 86d9fda pushed, fetch-verified; live check: /api/project-records?status=ongoing&limit=6 returns 6 records, homepage 200
+
+Stage Summary:
+- ONE project system: Project Records (admin) with per-record Home status toggle drives Home (2x3 ongoing cards) and Projects page (all records)
+- Old Project model remains in DB/API but has no admin UI and no site surface (harmless)
+- All 159 existing records default to On Home — admin should mark completed ones with one click
+- Remote main: 86d9fda
