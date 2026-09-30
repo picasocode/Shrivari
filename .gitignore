@@ -51,7 +51,10 @@ prompt
 
 server.log
 # Skills directory
-/skills/tool-results/
+/skills/
+/examples/
+/*.png
+/prisma/db/*.db
 /upload/
 tool-results/
 
