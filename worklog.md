@@ -3533,3 +3533,22 @@ Stage Summary:
 - All 159 project records now status=completed in production and backup DBs
 - Home page Ongoing Projects grid is now empty until admin marks specific records "Ongoing — On Home" from the new per-row dropdown (Task 73)
 - Remote main: 3166e44 (unchanged — data-only task)
+
+---
+Task ID: 75
+Agent: Z.ai Code (main)
+Task: Office contact corrections from Forencis Sir (WhatsApp) — Goa, Trivandrum, Hyderabad — "update in all over the web page where the content was there"
+
+Work Log:
+- Sandbox reset again; re-cloned (remote a1f04c1) + bun install --frozen-lockfile
+- Repo-wide sweep: office addresses/phones exist ONLY in src/components/pages/ContactPage.tsx OFFICES constant (Branch DB model has no phone/address fields; site settings only carry Chennai HQ phone; seed Branch rows are city/state only)
+- HYDERABAD: user said 75400 88853 "instead 75400 88953" — 88953 was the pre-Task-12 value; current code/deploy already shows 75400 88853 (verified via git -S history: introduced 007f644, fixed in 14b0626). NO change needed
+- TRIVANDRUM fixed: survey nos "TC 17/837 (1), TRRA-165-A" -> "TC V/1837 (1), TRRA-185-A"; phone 95513 66895 -> 95513 66695 (address formatting kept consistent with other cards)
+- GOA fixed: "H.No. 53/1-B, Birnathem" -> "H.No. 51/1-B, Birmottem"; phones 96699 84281 / 92847 75364 -> 98809 94281 / 92847 76364
+- Post-edit sweep: zero occurrences of any stale value in src/, data/, prisma/
+- lint pass; tsc only the 5 known pre-existing error files; commit 7db13ce pushed, fetch-verified
+
+Stage Summary:
+- Contact page office directory now matches the corrected official details: Trivandrum (TC V/1837 (1), TRRA-185-A, Ph 95513 66695) and Goa (H.No. 51/1-B, Birmottem, Mob 98809 94281 / 92847 76364); Hyderabad already correct (75400 88853)
+- Deploy auto-applies in ~3-5 min; no DB changes required (office contact data is code-side only)
+- Remote main: 7db13ce
