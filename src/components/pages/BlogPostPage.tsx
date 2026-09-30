@@ -254,7 +254,7 @@ export default function BlogPostPage({ slug }: { slug: string }) {
               {post.author && (
                 <span className="flex items-center gap-2">
                   <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
-                    <img src="/images/logo.png" alt="Shri Vaari Electricals" className="w-5 h-5 object-contain" />
+                    <img src="/images/logo-round.png" alt="Shri Vaari Electricals" className="w-7 h-7 object-cover" />
                   </span>
                   {post.author}
                 </span>
@@ -308,7 +308,7 @@ export default function BlogPostPage({ slug }: { slug: string }) {
         {post.author && (
           <div className="mt-12 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB] p-6 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center overflow-hidden shrink-0">
-              <img src="/images/logo.png" alt="Shri Vaari Electricals" className="w-8 h-8 object-contain" />
+              <img src="/images/logo-round.png" alt="Shri Vaari Electricals" className="w-12 h-12 object-cover" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-[#9CA3AF] mb-0.5">Written by</p>

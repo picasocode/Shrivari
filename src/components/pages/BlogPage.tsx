@@ -214,8 +214,8 @@ export default function BlogPage() {
                     <div className="flex items-center justify-between">
                       {featured.author && (
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-[#1B3A5C] flex items-center justify-center text-white text-xs font-bold">
-                            {featured.author.charAt(0).toUpperCase()}
+                          <div className="w-8 h-8 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center overflow-hidden shrink-0">
+                            <img src="/images/logo-round.png" alt="Shri Vaari Electricals" className="w-8 h-8 object-cover" />
                           </div>
                           <span className="text-sm font-medium text-[#1A1A2E]">{featured.author}</span>
                         </div>

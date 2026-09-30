@@ -192,7 +192,7 @@ export default function AboutPage() {
             className="text-sm md:text-base text-black max-w-2xl mx-auto leading-relaxed"
           >
             From a small firm in Chennai to one of South India&apos;s most trusted electrical engineering companies —
-            with operations across 8 cities, projects in 4 countries, and a turnover of around ₹200 Crores.
+            with operations across 8 cities, projects in 5 countries, and a turnover of around ₹200 Crores.
           </motion.p>
 
         </motion.div>
