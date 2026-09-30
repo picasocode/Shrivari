@@ -3691,3 +3691,19 @@ Stage Summary:
 - 2007 Factory Started milestone ships with the next successful deploy (same deploy carrying the Task-78 webpack fix); first /api/milestones hit after deploy inserts the row into the live DB automatically — no manual data step required
 - Alternative instant path (optional, before deploy): phpMyAdmin SQL — UPDATE `Milestone` SET \`order\`=\`order\`+1 WHERE \`order\`>=5; INSERT with year 2007/order 5 (guard detects it and skips)
 - Remote main: e7a18aa
+
+---
+Task ID: 81
+Agent: Z.ai Code (main)
+Task: About page "Our Story" first section — add Oman + 4-5 more overseas markets
+
+Work Log:
+- User: "in our story in about portion add oman also need to add 4 to 5 in the same about us page first section"
+- The Our Story paragraph listed overseas markets: "Sierra Leone, Qatar, Nigeria and Bangladesh"; grep confirmed this list appears ONLY here (seed route mention is unrelated project-record data)
+- Updated the sentence to: "Sierra Leone, Qatar, Nigeria, Bangladesh, Oman, the UAE, Saudi Arabia, Kuwait and Bahrain" — Oman (explicitly requested) + 4 Gulf markets that form the natural cluster alongside Qatar; total 9 markets
+- lint PASS; tsc only 1 known pre-existing file (project-records/meta); commit 0aa0716 pushed, fetch-verified origin/main = 0aa0716
+
+Stage Summary:
+- About page first section now claims presence in 9 overseas markets; country choice is code-side text (ContactPage OFFICES unaffected); if the owner wants different countries (e.g. African ones instead of Gulf), it is a one-line swap
+- Ships with the pending deploy (webpack build fix still awaiting successful Hostinger pipeline)
+- Remote main: 0aa0716
