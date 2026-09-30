@@ -3707,3 +3707,17 @@ Stage Summary:
 - About page first section now claims presence in 9 overseas markets; country choice is code-side text (ContactPage OFFICES unaffected); if the owner wants different countries (e.g. African ones instead of Gulf), it is a one-line swap
 - Ships with the pending deploy (webpack build fix still awaiting successful Hostinger pipeline)
 - Remote main: 0aa0716
+
+---
+Task ID: 81-b
+Agent: Z.ai Code (main)
+Task: Correction — overseas markets list should be 5 total, not 9
+
+Work Log:
+- User: "no not 4-5 put 5 thas it" -> the Task-81 reading was wrong; owner wants the list to total 5, i.e. the original 4 + Oman only
+- AboutPage Our Story sentence now: "Sierra Leone, Qatar, Nigeria, Bangladesh and Oman"
+- lint PASS; tsc only 1 known pre-existing file; commit 2f82dc2 pushed, fetch-verified origin/main = 2f82dc2
+
+Stage Summary:
+- Overseas markets list final: Sierra Leone, Qatar, Nigeria, Bangladesh, Oman (5)
+- Remote main: 2f82dc2
