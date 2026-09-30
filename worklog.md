@@ -3579,3 +3579,19 @@ Stage Summary:
 - Navbar is admin-free; /admin is the direct admin entry
 - All 11 PDF corrections implemented except PDF 9 DB rename (ACL-blocked, retrying)
 - Remote main: 41701e1
+
+---
+Task ID: 76-b
+Agent: Z.ai Code (main)
+Task: PDF #9 testimonial name casing — sandbox IP blocked by Hostinger; shipped admin one-click fix instead
+
+Work Log:
+- POST /api/testimonials/normalize-names: admin-protected maintenance endpoint (title-cases ALL-CAPS testimonial names, preserves dotted initials "M.N.", idempotent); accepts admin session cookie (auth-token, verified against db.session) OR direct email+password (pbkdf2 verifyPassword)
+- AdminPanel TestimonialsSection: "Fix Name Case" button (top-right toolbar) -> calls endpoint with session cookie, toasts "X of Y updated", reloads list
+- Context: sandbox's fresh IP is TCP-blocked by Hostinger edge this session — MySQL direct AND https://shrivaarielectricals.com both time out from sandbox; verified site is UP worldwide via check-host.net (HTTP 200 from HU/JP/RS/SE nodes) — deploys unaffected
+- lint pass; tsc only 5 known pre-existing files; commits 8f165b3 + fd36028 pushed, fetch-verified
+
+Stage Summary:
+- User action: Admin -> Testimonials -> click "Fix Name Case" -> ALL-CAPS names become Title Case (e.g. M.N. RAJASEKARAN -> M.N. Rajasekaran)
+- Sandbox<->Hostinger connectivity currently blocked (web+mysql); monitor on next task — may need user to re-open Remote MySQL ACL for new IP if direct DB work is needed again
+- Remote main: fd36028
