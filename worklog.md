@@ -3656,3 +3656,19 @@ Stage Summary:
 - USER ACTION: re-trigger deploy in hPanel; npm install should pass WITHOUT the peer-deps fallback and build should complete; if a transient font-fetch error appears, just retry the deploy once
 - After deploy: verify /about serves 200 and /api/health {"ok":true}; clean URLs + all Task-76 corrections go live
 - Remote main: 5918c67
+
+---
+Task ID: 79
+Agent: Z.ai Code (main)
+Task: Deploy platform AI claims "missing package.json / repo has no source" — verified false; repo intact; trigger commit pushed
+
+Work Log:
+- User pasted new platform diagnosis claiming package.json missing and repo contains "only Git metadata files, no actual project source code"
+- Verification (all independent of the sandbox clone): git ls-remote -> refs/heads/main = 56b3c3b; git ls-tree origin/main lists package.json, package-lock.json, .npmrc, next.config.ts, src/, prisma/, public/ (full project); FRESH shallow clone from github.com -> 40 MB complete working tree with package.json + src/app|components|hooks (GitHub HTTP API check skipped: rate-limited for unauthenticated IP; git-protocol proof is the same channel the deploy platform uses)
+- Conclusion: repository side is healthy; the platform's diagnosis describes its own failed staging step (empty/corrupted staging dir after a clone failure), consistent with its previous vague truncated-log diagnosis
+- Pushed empty trigger commit (chore: trigger fresh deploy) so the next pipeline run gets a brand-new SHA instead of any cached state
+- No code changes in this task
+
+Stage Summary:
+- Repo provably intact at origin/main (now trigger commit); deploy platform needs a re-run; if "empty repo" repeats, user must clear the deploy cache / recreate the deployment in hPanel and confirm branch = main
+- Remote main: trigger commit on 56b3c3b
