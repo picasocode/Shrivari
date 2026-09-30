@@ -253,8 +253,8 @@ export default function BlogPostPage({ slug }: { slug: string }) {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
               {post.author && (
                 <span className="flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-[#E8751A] flex items-center justify-center text-white text-[11px] font-bold">
-                    {post.author.charAt(0).toUpperCase()}
+                  <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
+                    <img src="/images/logo.png" alt="Shri Vaari Electricals" className="w-5 h-5 object-contain" />
                   </span>
                   {post.author}
                 </span>
@@ -307,8 +307,8 @@ export default function BlogPostPage({ slug }: { slug: string }) {
         {/* Author box */}
         {post.author && (
           <div className="mt-12 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB] p-6 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#1B3A5C] flex items-center justify-center text-white font-bold text-lg shrink-0">
-              {post.author.charAt(0).toUpperCase()}
+            <div className="w-12 h-12 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center overflow-hidden shrink-0">
+              <img src="/images/logo.png" alt="Shri Vaari Electricals" className="w-8 h-8 object-contain" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-[#9CA3AF] mb-0.5">Written by</p>

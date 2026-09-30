@@ -415,7 +415,7 @@ export default function ManufacturingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {[
-              { src: '/images/manufacturing/shop-cnc-punching.webp', title: 'CNC Laser Punching', desc: 'Precision laser cutting and punching of panel components', pos: '50% 50%' },
+              { src: '/images/manufacturing/shop-cnc-punching.webp', title: 'CNC Laser Cutting & Punching', desc: 'Precision laser cutting and punching of panel components', pos: '50% 50%' },
               { src: '/images/manufacturing/shop-grinder.jpg', title: 'Sanding & Finishing', desc: 'Grinding and surface finishing of metal enclosures', pos: '50% 50%' },
               { src: '/images/manufacturing/shop-drill.jpg', title: 'Drilling Work', desc: 'Accurate drilling on structural metalwork', pos: '50% 50%' },
               { src: '/images/manufacturing/shop-welding.jpg', title: 'Welding & Fabrication', desc: 'Structural fabrication and welding with full safety protocol', pos: '50% 50%' },
@@ -448,6 +448,53 @@ export default function ManufacturingPage() {
                     </p>
                   </div>
                 </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          MANUFACTURING PROCESS — end-to-end in-house workflow
+          ═══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10">
+          <FadeIn>
+            <div className="text-center mb-12 md:mb-14">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-[11px] font-bold tracking-[0.2em] text-[#E8751A] uppercase">Step by Step</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#1A1A2E] mb-3 tracking-tight">
+                Manufacturing Process
+              </h2>
+              <p className="text-[#6B7280] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                Twelve controlled in-house stages take every panel from raw sheet to a tested, packing-ready product.
+              </p>
+            </div>
+          </FadeIn>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+            {[
+              'CNC Laser Cutting',
+              'CNC Bending',
+              'Fabrication',
+              '7-Tank',
+              'Powder Coating',
+              'Oven',
+              'Panel Assembly',
+              'Components Assembly',
+              'Busbar Punching, Cutting & Bending',
+              'Wiring',
+              'Testing',
+              'Packing',
+            ].map((step, i) => (
+              <FadeIn key={step} delay={(i % 4) * 0.08}>
+                <div className="h-full rounded-xl bg-white border border-[#E5E7EB] shadow-sm hover:shadow-md hover:border-[#E8751A]/40 transition-all p-4 md:p-5 flex items-start gap-3">
+                  <span className="shrink-0 w-8 h-8 rounded-lg bg-[#E8751A]/10 text-[#E8751A] font-bold text-sm flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <p className="text-sm md:text-[15px] font-semibold text-[#1A1A2E] leading-snug pt-1">{step}</p>
+                </div>
               </FadeIn>
             ))}
           </div>

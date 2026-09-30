@@ -25,14 +25,14 @@ export const useRouter = () => useContext(RouterContext)
 
 const VALID_PAGES: PageName[] = ['home', 'about', 'team', 'sectors', 'careers', 'products', 'manufacturing', 'services', 'clients', 'projects', 'testimonials', 'blog', 'contact', 'admin', 'blog-post', 'service-detail', 'quality']
 
-/** Parse a location.hash into { page, params }.
+/** Parse a URL path into { page, params }.
  *  Supported formats:
- *   - "#products"                     (plain page)
- *   - "#products?tab=ht"              (page + query params)
- *   - "#service-detail/SLUG"          (legacy slug format, kept for old links)
+ *   - "/products"                     (plain page)
+ *   - "/products?tab=ht"              (page + query params)
+ *   - "/service-detail/SLUG"          (legacy slug format, kept for old links)
  */
-function parseHash(hash: string): { page: PageName; params: Record<string, string> } | null {
-  const raw = hash.replace(/^#/, '') || 'home'
+export function parsePath(path: string): { page: PageName; params: Record<string, string> } | null {
+  const raw = (path.replace(/^\/+/, '').replace(/\/+$/, '') || 'home').split('#')[0]
 
   // Legacy "service-detail/SLUG" format
   if (raw.startsWith('service-detail/')) {
@@ -53,27 +53,31 @@ function parseHash(hash: string): { page: PageName; params: Record<string, strin
   return { page: page as PageName, params }
 }
 
-/** Build the canonical hash for a page + params. */
-function buildHash(page: PageName, params: Record<string, string>): string {
+/** Build the canonical clean path for a page + params (e.g. "/about", "/products?tab=ht"). */
+function buildPath(page: PageName, params: Record<string, string>): string {
   if (page === 'service-detail' && params.slug) {
-    // Keep the legacy "/slug" format for service detail pages
-    return `service-detail/${encodeURIComponent(params.slug)}`
+    return `/service-detail/${encodeURIComponent(params.slug)}`
   }
   const query = Object.entries(params)
     .filter(([, v]) => v !== undefined && v !== '')
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&')
-  return query ? `${page}?${query}` : page
+  const suffix = query ? `/${page}?${query}` : `/${page}`
+  return page === 'home' ? (query ? `/?${query}` : '/') : suffix
 }
 
-export function RouterProvider({ children }: { children: React.ReactNode }) {
-  const [router, setRouter] = useState<RouterState>({ page: 'home', params: {} })
+export function RouterProvider({ children, initialPath }: { children: React.ReactNode; initialPath?: string }) {
+  const [router, setRouter] = useState<RouterState>(() => {
+    const path = initialPath ?? (typeof window !== 'undefined' ? window.location.pathname + window.location.search : '/')
+    return parsePath(path) ?? { page: 'home', params: {} }
+  })
 
   const navigate = useCallback((page: PageName, params: Record<string, string> = {}) => {
     setRouter({ page, params })
-    const nextHash = buildHash(page, params)
-    if (window.location.hash !== `#${nextHash}`) {
-      window.location.hash = nextHash
+    const nextPath = buildPath(page, params)
+    const current = window.location.pathname + window.location.search
+    if (current !== nextPath) {
+      window.history.pushState({}, '', nextPath)
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
@@ -83,13 +87,27 @@ export function RouterProvider({ children }: { children: React.ReactNode }) {
   }, [navigate])
 
   useEffect(() => {
-    const handleHash = () => {
-      const parsed = parseHash(window.location.hash)
-      if (parsed) setRouter(parsed)
+    // Legacy hash links (#/about, #about, #products?tab=ht) → clean paths.
+    const legacy = window.location.hash
+    let legacyTimer: ReturnType<typeof setTimeout> | undefined
+    if (legacy && legacy !== '#') {
+      legacyTimer = setTimeout(() => {
+        const raw = legacy.replace(/^#\/?/, '')
+        const parsed = parsePath('/' + raw)
+        if (parsed) {
+          window.history.replaceState({}, '', raw ? `/${raw}` : '/')
+          setRouter(parsed)
+        }
+      }, 0)
     }
-    handleHash()
-    window.addEventListener('hashchange', handleHash)
-    return () => window.removeEventListener('hashchange', handleHash)
+    const handlePop = () => {
+      setRouter(parsePath(window.location.pathname + window.location.search) ?? { page: 'home', params: {} })
+    }
+    window.addEventListener('popstate', handlePop)
+    return () => {
+      if (legacyTimer) clearTimeout(legacyTimer)
+      window.removeEventListener('popstate', handlePop)
+    }
   }, [])
 
   return (

@@ -88,9 +88,9 @@ const OFFICES: Office[] = [
     address: 'Plot No. D9, Phase I, IDA Pashamailaram, Pattancheru, Sangareddy District, Telangana – 502 307',
     city: 'Hyderabad',
     state: 'Telangana',
-    phones: ['75400 88853'],
+    phones: ['75400 88953'],
     emails: ['enquiries@shrivaarielectrotech.com'],
-    kind: 'regional',
+    kind: 'manufacturing',
   },
   {
     id: 'bangalore',

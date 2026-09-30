@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { RouterProvider, useRouter } from '@/components/Router'
 import { AuthProvider, useAuth } from '@/lib/auth'
 import Navbar from '@/components/sections/Navbar'
@@ -25,18 +24,8 @@ import AdminPanel from '@/components/admin/AdminPanel'
 import LoginPage from '@/components/pages/LoginPage'
 
 function AppContent() {
-  const [showAdmin, setShowAdmin] = useState(false)
-  const [showLogin, setShowLogin] = useState(false)
-  const { router } = useRouter()
+  const { router, goHome } = useRouter()
   const { user, loading } = useAuth()
-
-  const handleAdminClick = () => {
-    if (user) {
-      setShowAdmin(true)
-    } else {
-      setShowLogin(true)
-    }
-  }
 
   const pages: Record<string, React.ReactNode> = {
     home: <HomePage />,
@@ -55,10 +44,10 @@ function AppContent() {
     careers: <CareersPage />,
     team: <TeamPage />,
     quality: <QualityPage />,
-    // #admin deep link: logged-in users get the panel, everyone else the login/setup screen
+    // /admin deep link: logged-in users get the panel, everyone else the login/setup screen
     admin: user
-      ? <AdminPanel onClose={() => { window.location.hash = 'home' }} />
-      : <LoginPage onClose={() => { window.location.hash = 'home' }} />,
+      ? <AdminPanel onClose={goHome} />
+      : <LoginPage onClose={goHome} />,
   }
 
   // Don't render until auth is checked
@@ -72,25 +61,16 @@ function AppContent() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar
-        onAdminClick={handleAdminClick}
-        isLoggedIn={!!user}
-      />
+      <Navbar />
       <main className="flex-1">{pages[router.page] || <HomePage />}</main>
       <Footer />
-      {showLogin && !user && (
-        <LoginPage onClose={() => setShowLogin(false)} />
-      )}
-      {showAdmin && user && (
-        <AdminPanel onClose={() => setShowAdmin(false)} />
-      )}
     </div>
   )
 }
 
-export default function Home() {
+export default function AppRoot({ initialPath }: { initialPath?: string }) {
   return (
-    <RouterProvider>
+    <RouterProvider initialPath={initialPath}>
       <AuthProvider>
         <AppContent />
       </AuthProvider>

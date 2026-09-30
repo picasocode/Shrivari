@@ -7,11 +7,6 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescrip
 import { useRouter, type PageName } from '@/components/Router'
 import { AnimatePresence, motion } from 'framer-motion'
 
-interface NavbarProps {
-  onAdminClick: () => void
-  isLoggedIn?: boolean
-}
-
 const serviceDropdownItems = [
   { label: 'Design & Engineering', slug: 'design-engineering', icon: PenTool, desc: 'Complete electrical system design from concept to detailed engineering' },
   { label: 'Project Execution', slug: 'project-execution', icon: Hammer, desc: 'End-to-end project execution from procurement to commissioning' },
@@ -58,7 +53,7 @@ const navLinks: { label: string; page: PageName; hasDropdown?: boolean }[] = [
   { label: 'Contact', page: 'contact' },
 ]
 
-export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
+export default function Navbar() {
   const { router, navigate } = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [topBarOpen, setTopBarOpen] = useState(true)
@@ -483,23 +478,6 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
 
           {/* CTA + Mobile */}
           <div className="flex items-center gap-3 ml-2 min-[1440px]:-mr-4">
-            {isLoggedIn ? (
-              <Button
-                onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
-              >
-                <Shield className="w-3.5 h-3.5 mr-1.5" />
-                Dashboard
-              </Button>
-            ) : (
-              <Button
-                onClick={onAdminClick}
-                className="hidden md:inline-flex bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
-              >
-                <Shield className="w-3.5 h-3.5 mr-1.5" />
-                Admin
-              </Button>
-            )}
             <Button
               onClick={() => handleNavigate('contact')}
               className="hidden md:inline-flex bg-[#E8751A] hover:bg-[#D4691A] text-white text-xs font-semibold rounded-md px-4 h-9 2xl:px-5 transition-colors"
@@ -746,17 +724,6 @@ export default function Navbar({ onAdminClick, isLoggedIn }: NavbarProps) {
                   )}
                 </div>
                 <div className="p-4 border-t border-gray-100 space-y-2">
-                  {isLoggedIn ? (
-                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white rounded-md text-sm">
-                      <Shield className="w-3.5 h-3.5 mr-1.5" />
-                      Dashboard
-                    </Button>
-                  ) : (
-                    <Button onClick={() => { onAdminClick(); setMobileOpen(false) }} className="w-full bg-[#1B3A5C] hover:bg-[#0D1D3A] text-white rounded-md text-sm">
-                      <Shield className="w-3.5 h-3.5 mr-1.5" />
-                      Admin Login
-                    </Button>
-                  )}
                   <Button onClick={() => { handleNavigate('contact'); setMobileOpen(false) }} variant="outline" className="w-full border-[#E8751A] text-[#E8751A] rounded-md text-sm">
                     Get a Quote
                   </Button>

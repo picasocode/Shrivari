@@ -262,13 +262,21 @@ export default function AboutPage() {
                     </div>
                   </div>
                 </div>
-                {/* Inset credential detail — ISO 9001:2015 signage */}
-                <div className="absolute -bottom-6 -right-4 md:-right-6 w-28 h-28 md:w-36 md:h-36 rounded-lg overflow-hidden border-4 border-white shadow-xl hidden sm:block z-10">
-                  <img
-                    src="/images/about/credential-badge.jpg"
-                    alt="SVEPL ISO 9001:2015 certified signage"
-                    className="w-full h-full object-cover"
-                  />
+                {/* Inset credential detail — logo + certified address, fully visible */}
+                <div className="absolute -bottom-6 -right-4 md:-right-6 w-52 md:w-64 rounded-xl bg-white shadow-xl border border-[#E5E7EB] p-4 hidden sm:block z-10">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src="/images/logo.png"
+                      alt="Shri Vaari Electricals logo"
+                      className="h-11 w-auto object-contain shrink-0"
+                    />
+                    <span className="inline-flex items-center rounded-full bg-[#E8751A]/10 px-2.5 py-1 text-[10px] font-bold text-[#E8751A] uppercase tracking-wide shrink-0">
+                      ISO 9001:2015
+                    </span>
+                  </div>
+                  <p className="mt-2.5 text-xs text-[#374151] leading-relaxed">
+                    C-37, Thiru-Vi-Ka Industrial Estate, Guindy, Chennai – 600 032
+                  </p>
                 </div>
               </div>
             </FadeIn>
@@ -657,7 +665,7 @@ export default function AboutPage() {
               </h2>
               <p className="text-[#6B7280] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
                 Three decades of engineering excellence, recognised by industry
-                bodies and partners — a few of the accolades that line our walls.
+                bodies and partners — our trophies, awards and certifications.
               </p>
             </div>
           </FadeIn>
@@ -665,7 +673,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-4xl mx-auto">
             {[
               { src: '/images/about/awards-1.jpg', caption: 'Trophies & industry awards' },
-              { src: '/images/about/awards-2.jpg', caption: 'ISO & compliance certificates' },
+              { src: '/images/about/awards-2.jpg', caption: 'Awards & mementos' },
             ].map((item, i) => (
               <FadeIn key={item.caption} delay={i * 0.1}>
                 <motion.div
@@ -689,6 +697,34 @@ export default function AboutPage() {
                     </span>
                   </div>
                 </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Clear, scanned certificates — each shown separately */}
+          <FadeIn>
+            <div className="text-center mt-14 mb-8">
+              <h3 className="text-xl md:text-2xl font-bold text-[#1A1A2E] mb-2 tracking-tight">Our Certifications</h3>
+              <p className="text-[#6B7280] text-sm md:text-base">Scanned copies of our ISO, ZED, CE and RoHS certificates.</p>
+            </div>
+          </FadeIn>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+            {[
+              { src: '/images/certificates/iso-9001.jpg', label: 'ISO 9001:2015 — Quality Management' },
+              { src: '/images/certificates/iso-14001.jpg', label: 'ISO 14001:2015 — Environmental Management' },
+              { src: '/images/certificates/iso-45001.jpg', label: 'ISO 45001:2018 — Occupational Health & Safety' },
+              { src: '/images/certificates/iso-50001.jpg', label: 'ISO 50001:2018 — Energy Management' },
+              { src: '/images/certificates/zed-bronze.jpg', label: 'ZED Bronze — MSME Certification' },
+              { src: '/images/certificates/ce-certificate.jpg', label: 'CE Certification' },
+              { src: '/images/certificates/rohs-certificate.jpg', label: 'RoHS Compliance' },
+            ].map((cert, i) => (
+              <FadeIn key={cert.src} delay={(i % 4) * 0.08}>
+                <div className="h-full rounded-xl bg-white border border-[#E5E7EB] shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
+                  <div className="h-56 md:h-64 p-3 flex items-center justify-center bg-white">
+                    <img src={cert.src} alt={`${cert.label} — SVEPL certificate`} className="max-h-full w-auto object-contain" loading="lazy" />
+                  </div>
+                  <p className="px-4 py-3 text-xs font-semibold text-[#1A1A2E] text-center border-t border-[#E5E7EB] leading-snug">{cert.label}</p>
+                </div>
               </FadeIn>
             ))}
           </div>

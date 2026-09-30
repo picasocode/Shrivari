@@ -43,10 +43,12 @@ export default function Footer() {
             </h4>
             <p className="text-white/50 text-sm leading-relaxed mb-4">
               Shri Vaari Electricals has successfully partnered with leading industrial and infrastructure organizations such as{' '}
-              <span className="text-[#E8751A] font-semibold">SCHNEIDER ELECTRIC</span>{' '}
+              <span className="text-[#3DCD58] font-semibold">SCHNEIDER ELECTRIC</span>{' '}
               by delivering reliable, safe, and high-performance electrical engineering solutions.
             </p>
-            <img src="/images/logo.png" alt="Shri Vaari Electricals" className="h-9 w-auto object-contain mt-2" />
+            <div className="mt-3 inline-flex items-center rounded-lg bg-white px-3.5 py-2.5 shadow-md">
+              <img src="/images/logo.png" alt="Shri Vaari Electricals" className="h-10 w-auto object-contain" />
+            </div>
           </div>
 
           {/* ─── Quick Links ─── */}
