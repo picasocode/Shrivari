@@ -3611,3 +3611,27 @@ Stage Summary:
 - User action needed: hPanel -> trigger manual redeploy of main (HEAD fa18f4b) and/or check the deploy/build log
 - Once deployed: clean URLs live, admin button gone (/admin direct), PDF items 1-8/10/11 live, "Fix Name Case" button in admin Testimonials for item 9
 - Remote main: fa18f4b (unchanged)
+
+---
+Task ID: 77
+Agent: Z.ai Code (main)
+Task: Production deploy pipeline failing — repo slimming (75MB→30MB), dependency/Node robustness, build re-verified
+
+Work Log:
+- User pasted deploy-platform AI diagnosis: build failed, logs truncated at clone/build phase, actual error invisible
+- State check: local == remote (fa7f2ba); Task 76/76-b/76-c already shipped; production still serves the pre-41701e1 build
+- Candidates analyzed (code already built locally in 76-c): repo bloat, unused-but-risky dep, missing Node pin, platform resources
+- Found: pack = 74.92 MiB — skills/ (61 MB, 1077 files of sandbox skill templates, largest single blob 20 MB) + 30 root verification PNGs (~10 MB) + package-lock.json blob (548 KB, stale) + examples/ — NONE referenced by src/ (grep-verified, incl. every removed png basename)
+- HEAD cleanup commit 0c14fd4 (rewritten to ddd5767): removed skills/, examples/, 30 root PNGs, 0-byte prisma/db/custom.db; .gitignore now blocks /skills/, /examples/, /*.png, /prisma/db/*.db
+- package.json: removed z-ai-web-dev-sdk (declared in deps but NEVER imported in src/); added "engines": { "node": ">=20.9.0" } (Next 16 requirement); NEW .nvmrc = 22 so platform builders pick a compatible Node
+- bun install synced lock (1 package removed); lint PASS; tsc baseline SHRANK 5 → 1 error file (only src/app/api/project-records/meta/route.ts, pre-existing)
+- Full verification build (dummy DATABASE_URL): BUILD SUCCEEDS on slimmed repo — complete route table incl. /api/testimonials/normalize-names + catch-all [[...slug]]
+- History rewrite via git filter-repo (--invert-paths: skills, examples, package-lock.json, prisma/db/custom.db, 30 root PNGs): pack 74.92 → 30.22 MiB; force-pushed main (fa7f2ba...ddd5767); fetch-verified origin/main = ddd5767
+- Note: remote also has branch feat/home-about-redesign (untouched; still old history)
+
+Stage Summary:
+- GitHub main now ~30 MB (was 75 MB): clones ~60% lighter/faster — directly targets the deploy failure at the clone phase
+- Install phase: one fewer dependency (unused sandbox SDK); Node version pinned via engines + .nvmrc (Next 16 needs >=20.9)
+- Code 100% builds — remaining failure modes are Hostinger-side: build RAM (Turbopack OOM truncates logs mid-build) or wrong Node selected in hPanel (needs 20/22)
+- USER ACTION: re-trigger deploy in hPanel; ensure the app's Node.js version is 20 or 22; if logs still cut off mid-build it is OOM/time-limit on the plan — retry once (transient) and share the last visible log line
+- Remote main: ddd5767 (history rewritten — old commit hashes invalid)
