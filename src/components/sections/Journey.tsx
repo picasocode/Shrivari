@@ -24,12 +24,13 @@ const FALLBACK_MILESTONES: Milestone[] = [
   { id: 'm2', year: '1999', title: 'AMC Services', description: 'Initiated Annual Maintenance Contract services for industrial clients.', icon: 'ShieldCheck', color: '#1B3A5C', order: 2, active: true, createdAt: '', updatedAt: '' },
   { id: 'm3', year: '2003', title: 'New Facility', description: 'Built a state-of-the-art 20,000 sq ft manufacturing unit at Guindy.', icon: 'Factory', color: '#1B3A5C', order: 3, active: true, createdAt: '', updatedAt: '' },
   { id: 'm4', year: '2005', title: 'Pvt Ltd Entity', description: 'Formally incorporated as a Private Limited industrial corporation.', icon: 'Building2', color: '#1B3A5C', order: 4, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm5', year: '2009', title: 'First EHV Project', description: 'Successfully executed our landmark Extra High Voltage project.', icon: 'Zap', color: '#1B3A5C', order: 5, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm6', year: '2014', title: 'Solar Division', description: 'Expanded into turnkey Solar Power Plant EPC solutions.', icon: 'Sun', color: '#1B3A5C', order: 6, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm7', year: '2015', title: 'Schneider Partner', description: 'Formed strategic alliance for high-voltage power distribution.', icon: 'Handshake', color: '#1B3A5C', order: 7, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm8', year: '2018', title: '₹100+ Cr Turnover', description: 'Crossed the major revenue milestone of ₹100+ Crores.', icon: 'TrendingUp', color: '#1B3A5C', order: 8, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm9', year: '2023', title: '55+ EHV Projects', description: 'Completed over 55+ major EHV infrastructure projects.', icon: 'Award', color: '#1B3A5C', order: 9, active: true, createdAt: '', updatedAt: '' },
-  { id: 'm10', year: '2025', title: 'IEC-61439 Certified', description: 'LT Switchgear panels certified to international IEC standards.', icon: 'BadgeCheck', color: '#1B3A5C', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm4b', year: '2007', title: 'Factory Started', description: 'Factory started at Chettipedu, Sriperumbudur TK, Kancheepuram.', icon: 'Factory', color: '#1B3A5C', order: 5, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm5', year: '2009', title: 'First EHV Project', description: 'Successfully executed our landmark Extra High Voltage project.', icon: 'Zap', color: '#1B3A5C', order: 6, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm6', year: '2014', title: 'Solar Division', description: 'Expanded into turnkey Solar Power Plant EPC solutions.', icon: 'Sun', color: '#1B3A5C', order: 7, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm7', year: '2015', title: 'Schneider Partner', description: 'Formed strategic alliance for high-voltage power distribution.', icon: 'Handshake', color: '#1B3A5C', order: 8, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm8', year: '2018', title: '₹100+ Cr Turnover', description: 'Crossed the major revenue milestone of ₹100+ Crores.', icon: 'TrendingUp', color: '#1B3A5C', order: 9, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm9', year: '2023', title: '55+ EHV Projects', description: 'Completed over 55+ major EHV infrastructure projects.', icon: 'Award', color: '#1B3A5C', order: 10, active: true, createdAt: '', updatedAt: '' },
+  { id: 'm10', year: '2025', title: 'IEC-61439 Certified', description: 'LT Switchgear panels certified to international IEC standards.', icon: 'BadgeCheck', color: '#1B3A5C', order: 11, active: true, createdAt: '', updatedAt: '' },
 ]
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
