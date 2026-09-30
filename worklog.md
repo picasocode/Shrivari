@@ -3721,3 +3721,17 @@ Work Log:
 Stage Summary:
 - Overseas markets list final: Sierra Leone, Qatar, Nigeria, Bangladesh, Oman (5)
 - Remote main: 2f82dc2
+
+---
+Task ID: 82
+Agent: Z.ai Code (main)
+Task: Home page "Blog & Insights" — add Read More to each blog card
+
+Work Log:
+- HomePage renders its OWN inline blog preview (not the Blog.tsx section, whose cards already had a Read More popup) — the home cards had no read-more and were not clickable
+- Added a "Read More" link (coral #E8751A, ArrowRight with hover slide, aria-label per post) under the excerpt on each card; onClick navigate('blog-post', { slug: b.slug }) — same route BlogPage uses
+- lint PASS; tsc only 1 known pre-existing file; commit pushed, fetch-verified
+
+Stage Summary:
+- Each Home blog card now opens its full post page (/blog?slug=...) via Read More; ships with the pending deploy
+- Remote main: see git log (code commit + this worklog commit)
