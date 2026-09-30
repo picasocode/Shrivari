@@ -3735,3 +3735,19 @@ Work Log:
 Stage Summary:
 - Each Home blog card now opens its full post page (/blog?slug=...) via Read More; ships with the pending deploy
 - Remote main: see git log (code commit + this worklog commit)
+
+---
+Task ID: 83
+Agent: Z.ai Code (main)
+Task: About "4 countries" -> "5 countries"; blog author avatar = circular-cropped Shrivari logo
+
+Work Log:
+- AboutPage Our Story line now reads "with operations across 8 cities, projects in 5 countries, and a turnover of around ₹200 Crores."
+- Generated public/images/logo-round.png (512x512): sharp crop of the logo's round emblem (ring bbox x=8..223, y=10..203 measured via raw-pixel scan; square crop 213x213 centered on ring center), resized, circular SVG alpha mask applied
+- BlogPostPage hero meta avatar + "Written by" author box now use logo-round.png filling the white circle (object-cover)
+- BlogPage featured-post author chip replaced initial-letter circle with logo-round.png avatar (white bg + subtle border)
+- lint PASS; tsc only 1 known pre-existing file; commit 2fb1062 pushed, fetch-verified origin/main = 2fb1062
+
+Stage Summary:
+- "5 countries" live in code; default blog author avatar is now the circular Shrivari emblem (logo-round.png) in 3 places (post hero, author box, featured card)
+- Ships with the pending Hostinger deploy (Tasks 77-83 backlog)
