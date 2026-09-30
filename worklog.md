@@ -3672,3 +3672,22 @@ Work Log:
 Stage Summary:
 - Repo provably intact at origin/main (now trigger commit); deploy platform needs a re-run; if "empty repo" repeats, user must clear the deploy cache / recreate the deployment in hPanel and confirm branch = main
 - Remote main: trigger commit on 56b3c3b
+
+---
+Task ID: 80
+Agent: Z.ai Code (main)
+Task: Add "2007 — Factory start at Chettipedu, Sriperumbudur TK, Kancheepuram" to the Our Journey timeline (Three Decades of Engineering Milestones)
+
+Work Log:
+- Timeline is DB-driven (Milestone table, orderBy order asc) with a hardcoded FALLBACK_MILESTONES list in Journey.tsx only used when the API fails/returns empty; NO admin UI exists for milestones
+- Sandbox -> Hostinger: MySQL direct ETIMEDOUT (edge ACL again) AND https://shrivaarielectricals.com unreachable (000) — no direct DB or live-API insert possible this session
+- Chosen mechanism: repo's established idempotent runtime-bootstrap pattern — GET /api/milestones now calls ensureFactoryMilestone() (cached promise per process): if no row with year='2007' OR description containing 'Chettipedu' exists -> updateMany order>=5 increment+1 (opens chronological slot) -> create { year 2007, title 'Factory Started', description 'Factory started at Chettipedu, Sriperumbudur TK, Kancheepuram.', icon Factory, order 5, active }; on error resets its cache to retry next request. Runs on both DBs whenever the app serves them; skips itself if the user adds the row manually (no duplicate risk)
+- Journey.tsx FALLBACK_MILESTONES: inserted m4b (2007, order 5), renumbered m5..m10 to orders 6..11 so code fallback matches the DB sequence
+- Placement: 2007 renders between 2005 'Pvt Ltd Entity' (order 4) and 2009 'First EHV Project' (now order 6)
+- lint PASS; tsc only 1 known pre-existing file (project-records/meta); commit e7a18aa pushed, fetch-verified origin/main = e7a18aa
+- Caveat noted: if the owner ever deletes this milestone via future tooling, a server restart re-inserts it (bootstrap nature) — remove the guard at that point
+
+Stage Summary:
+- 2007 Factory Started milestone ships with the next successful deploy (same deploy carrying the Task-78 webpack fix); first /api/milestones hit after deploy inserts the row into the live DB automatically — no manual data step required
+- Alternative instant path (optional, before deploy): phpMyAdmin SQL — UPDATE `Milestone` SET \`order\`=\`order\`+1 WHERE \`order\`>=5; INSERT with year 2007/order 5 (guard detects it and skips)
+- Remote main: e7a18aa
