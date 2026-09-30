@@ -7,23 +7,31 @@ import { verifyPassword } from "@/lib/password";
  * normalizes fully-uppercase testimonial author names to Title Case.
  * Dotted initials are preserved ("M.N. RAJASEKARAN" -> "M.N. Rajasekaran").
  *
- * Protected: requires the admin email + password (verified with the same
- * pbkdf2 scheme as /api/auth/login). Idempotent — a second run changes nothing.
+ * Protected: accepts either the admin session cookie (auth-token) or admin
+ * email + password (verified with the same pbkdf2 scheme as /api/auth/login).
+ * Idempotent — a second run changes nothing.
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => ({}));
     const email = String(body?.email ?? "");
     const password = String(body?.password ?? "");
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password are required" },
-        { status: 400 }
-      );
-    }
 
-    const user = await db.user.findUnique({ where: { email } });
-    if (!user || !user.active || !verifyPassword(password, user.password)) {
+    // Auth: (1) admin session cookie from the admin panel, or (2) direct credentials.
+    let authed = false;
+    const token = request.cookies.get("auth-token")?.value;
+    if (token) {
+      const session = await db.session.findUnique({
+        where: { token },
+        include: { user: true },
+      });
+      if (session && session.expiresAt >= new Date()) authed = true;
+    }
+    if (!authed && email && password) {
+      const user = await db.user.findUnique({ where: { email } });
+      if (user && user.active && verifyPassword(password, user.password)) authed = true;
+    }
+    if (!authed) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

@@ -1174,6 +1174,7 @@ function TestimonialsSection() {
   const { items, setItems, loading, error, load } = useCrud<Testimonial>(() => fetchTestimonials())
   const [editing, setEditing] = useState<Testimonial | null>(null)
   const [creating, setCreating] = useState(false)
+  const [fixingNames, setFixingNames] = useState(false)
   const [search, setSearch] = useState('')
   const [colFilters, setColFilters] = useState<Record<string, string>>({})
   const { notify } = useToast()
@@ -1201,6 +1202,21 @@ function TestimonialsSection() {
     catch (e) { notify('error', `Delete failed: ${(e as Error).message}`) }
   }
 
+  // One-click: convert fully-uppercase author names (e.g. "M.N. RAJASEKARAN")
+  // to consistent Title Case ("M.N. Rajasekaran") via the maintenance API.
+  const fixNameCase = async () => {
+    setFixingNames(true)
+    try {
+      const res = await fetchAPI<{ checked: number; updatedCount: number }>('/testimonials/normalize-names', { method: 'POST', body: JSON.stringify({}) })
+      notify('success', `Name casing fixed — ${res.updatedCount} of ${res.checked} updated`)
+      if (res.updatedCount > 0) load()
+    } catch (e) {
+      notify('error', `Fix failed: ${(e as Error).message}`)
+    } finally {
+      setFixingNames(false)
+    }
+  }
+
   const handleSave = async (data: Partial<Testimonial>) => {
     try {
       if (editing) {
@@ -1220,6 +1236,19 @@ function TestimonialsSection() {
 
   return (
     <SectionWrapper title="Testimonials" loading={loading} error={error} onRetry={load} onAdd={() => setCreating(true)} onExport={() => downloadCsv('testimonials', filtered)}>
+      <div className="flex justify-end mb-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fixNameCase}
+          disabled={fixingNames}
+          title="Convert fully-uppercase author names (e.g. M.N. RAJASEKARAN) to consistent Title Case"
+          className="rounded-md text-xs"
+        >
+          {fixingNames ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Check className="w-3.5 h-3.5 mr-1" />}
+          Fix Name Case
+        </Button>
+      </div>
       <FilterBar placeholder="Search testimonials…" search={search} onSearch={setSearch} count={filtered.length} total={items.length} />
       <FieldFilterStrip defs={testimonialFilterDefs} values={colFilters} onChange={(k, v) => setColFilters(prev => ({ ...prev, [k]: v }))} onClear={() => setColFilters({})} />
       <div className="bg-white rounded-md border border-[#E5E7EB] shadow-sm overflow-x-auto">
