@@ -234,7 +234,7 @@ export default function AboutPage() {
               </h2>
               <div className="section-bar mb-6" />
               <p className="text-[#374151] leading-relaxed">
-                A professionally managed, multi-location engineering firm with market leadership in India, we have established a significant position in overseas markets such as Sierra Leone, Qatar, Nigeria and Bangladesh in the EPC field (Engineering, Procurement and Construction).
+                A professionally managed, multi-location engineering firm with market leadership in India, we have established a significant position in overseas markets such as Sierra Leone, Qatar, Nigeria, Bangladesh, Oman, the UAE, Saudi Arabia, Kuwait and Bahrain in the EPC field (Engineering, Procurement and Construction).
               </p>
             </FadeIn>
 
