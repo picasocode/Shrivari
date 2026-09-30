@@ -3635,3 +3635,24 @@ Stage Summary:
 - Code 100% builds — remaining failure modes are Hostinger-side: build RAM (Turbopack OOM truncates logs mid-build) or wrong Node selected in hPanel (needs 20/22)
 - USER ACTION: re-trigger deploy in hPanel; ensure the app's Node.js version is 20 or 22; if logs still cut off mid-build it is OOM/time-limit on the plan — retry once (transient) and share the last visible log line
 - Remote main: ddd5767 (history rewritten — old commit hashes invalid)
+
+---
+Task ID: 78
+Agent: Z.ai Code (main)
+Task: Hostinger deploy build failure — full log now available; switch build to webpack, pin Next, make npm deterministic
+
+Work Log:
+- User pasted COMPLETE Hostinger build log (build 01a0f1b1, checkout cadd687): clone OK (1m 9s, slimmed repo worked), Node 22 OK, npm install ERESOLVE (nodemailer@10 vs next-auth@4.24 peerOptional nodemailer@^7) auto-retried with --legacy-peer-deps OK, then BUILD FATAL: Turbopack panic "Failed to write app endpoint /icon.png/route" — while processing src/app/globals.css the PostCSS loader spawns a Node worker process which "exited before we could connect" (exit 0). npm had floated next ^16.1.1 -> 16.3.7
+- Root causes addressed:
+  1) Turbopack build: PostCSS/Tailwind via spawned worker process is fragile on the Hostinger build box. build script -> "next build --webpack" (PostCSS/Tailwind run in-process). Local dev script unchanged (turbopack)
+  2) Version float: next pinned EXACT "16.1.3" (version proven across all local builds); committed package-lock.json (npm install --package-lock-only) so Hostinger npm resolves the exact tree, not latest-minors
+  3) ERESOLVE: .npmrc (legacy-peer-deps=true, fund=false, audit=false) + removed next-auth (peer-conflict source) AND next-intl — both verified ZERO imports anywhere in repo
+- Validation: full `next build --webpack` on Next 16.1.3: BUILD SUCCEEDS (25s compile, 31 static pages, complete route table incl. /api/testimonials/normalize-names, /icon.png + /apple-icon.png — the exact endpoints that panicked under Turbopack). First build attempt hit a transient Google-Fonts fetch error in next-font-loader; immediate rerun passed (connectivity to fonts.googleapis.com verified 200) — noting as known transient
+- bun.lock re-synced (removed next-auth, next-intl); lint PASS; tsc only 1 known pre-existing file (project-records/meta)
+- Commit 5918c67 pushed, fetch-verified origin/main = 5918c67
+
+Stage Summary:
+- Hostinger pipeline now gets: deterministic deps (package-lock + .npmrc, next 16.1.3 exact, Node 22 via .nvmrc/engines) and a webpack production build immune to the Turbopack worker-spawn panic
+- USER ACTION: re-trigger deploy in hPanel; npm install should pass WITHOUT the peer-deps fallback and build should complete; if a transient font-fetch error appears, just retry the deploy once
+- After deploy: verify /about serves 200 and /api/health {"ok":true}; clean URLs + all Task-76 corrections go live
+- Remote main: 5918c67
