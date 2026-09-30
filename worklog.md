@@ -3552,3 +3552,30 @@ Stage Summary:
 - Contact page office directory now matches the corrected official details: Trivandrum (TC V/1837 (1), TRRA-185-A, Ph 95513 66695) and Goa (H.No. 51/1-B, Birmottem, Mob 98809 94281 / 92847 76364); Hyderabad already correct (75400 88853)
 - Deploy auto-applies in ~3-5 min; no DB changes required (office contact data is code-side only)
 - Remote main: 7db13ce
+
+---
+Task ID: 76
+Agent: Z.ai Code (main)
+Task: Web corrections PDF (11 items) + clean URLs ("/about", not "/#about")
+
+Work Log:
+- Sandbox reset again; re-cloned (remote 02a9d54) + bun install
+- ROUTING OVERHAUL: hash router -> History API clean paths. Router.tsx: parsePath/buildPath (pathname+search), navigate() pushState, popstate listener, legacy "#/x" links auto-replaced via replaceState on mount (setTimeout to satisfy react-hooks/set-state-in-effect). page.tsx moved to src/components/AppRoot.tsx ('use client', initialPath prop); NEW src/app/[[...slug]]/page.tsx server catch-all resolves params+searchParams -> initialPath (SSR-correct first paint, no hydration mismatch). Old #links keep working
+- PDF 4: navbar Admin/Dashboard buttons (desktop+mobile) REMOVED, onAdminClick/isLoggedIn props dropped; admin now reachable only via /admin URL
+- PDF 1: hero-4.jpg (2nd hero slide) had Gemini four-point-star AI watermark bottom-right -> cropped off with PIL (1584x672 -> 1433x672), verified visually
+- PDF 2: Manufacturing gallery card 'CNC Laser Punching' -> 'CNC Laser Cutting & Punching'
+- PDF 3: NEW "Manufacturing Process" section on ManufacturingPage — numbered 12-step grid: CNC Laser Cutting, CNC Bending, Fabrication, 7-Tank, Powder Coating, Oven, Panel Assembly, Components Assembly, Busbar Punching Cutting & Bending, Wiring, Testing, Packing
+- PDF 5: About 'Our Story' inset (was clipped credential-badge.jpg photo) rebuilt as white HTML card: logo + ISO 9001:2015 pill + full address, always fully visible
+- PDF 6: Hyderabad (Shri Vaari Electrotech) office kind regional -> manufacturing (badge now MANUFACTURING UNIT)
+- PDF 7: Hyderabad phone 75400 88853 -> 75400 88953 (PDF shows 88853 crossed out; earlier message "75400 88853 instead 75400 88953" means correct is 88953)
+- PDF 8: Awards & Recognition — kept both award-wall photos (separate cards) + added "Our Certifications" grid of 7 clear scans (ISO 9001/14001/45001/50001, ZED Bronze, CE, RoHS) with labels
+- PDF 10: blog author avatar "S" initial circles (hero chip + Written-by box) replaced with company logo in white circles
+- PDF 11: footer logo put on white rounded card (clearly visible); SCHNEIDER ELECTRIC text #E8751A -> Schneider green #3DCD58
+- PDF 9 (testimonial name casing): DB normalization script /home/z/dbcheck/fix-names.mjs (title-case ALL-CAPS person names, preserve dotted initials) — BLOCKED this session: Hostinger Remote MySQL ACL rejects sandbox IP (ETIMEDOUT both DBs, multiple retries). WILL RETRY; interim: names editable in admin Testimonials
+- lint pass; tsc only 5 known pre-existing files; commit 41701e1 pushed, fetch-verified
+
+Stage Summary:
+- Site now serves clean URLs (/about, /products, /admin...) via optional catch-all; legacy # links redirect
+- Navbar is admin-free; /admin is the direct admin entry
+- All 11 PDF corrections implemented except PDF 9 DB rename (ACL-blocked, retrying)
+- Remote main: 41701e1
