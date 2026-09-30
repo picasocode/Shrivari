@@ -400,6 +400,15 @@ export default function HomePage() {
                       </p>
                       <h3 className="text-lg font-bold text-[#1A1A2E] mb-2 line-clamp-2">{b.title}</h3>
                       <p className="text-[#6B7280] text-sm leading-relaxed line-clamp-3">{b.excerpt}</p>
+                      <button
+                        type="button"
+                        onClick={() => navigate('blog-post', { slug: b.slug })}
+                        className="group mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#E8751A] hover:text-[#CC6A10] transition-colors"
+                        aria-label={`Read more: ${b.title}`}
+                      >
+                        Read More
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                      </button>
                     </CardContent>
                   </Card>
                 </FadeIn>
