@@ -3595,3 +3595,19 @@ Stage Summary:
 - User action: Admin -> Testimonials -> click "Fix Name Case" -> ALL-CAPS names become Title Case (e.g. M.N. RAJASEKARAN -> M.N. Rajasekaran)
 - Sandbox<->Hostinger connectivity currently blocked (web+mysql); monitor on next task — may need user to re-open Remote MySQL ACL for new IP if direct DB work is needed again
 - Remote main: fd36028
+
+---
+Task ID: 76-c
+Agent: Z.ai Code (main)
+Task: Verify why /about 404s on production — build ruled out; deploy pipeline stalled on Hostinger side
+
+Work Log:
+- External probes (check-host.net, sandbox IP is TCP-blocked by Hostinger edge): /about -> 404 from all nodes; GET /api/testimonials/normalize-names -> 404 -> production origin still runs the pre-41701e1 build; site itself healthy (200 worldwide, earlier probes)
+- Ruled out code: ran one-off `next build` in the clone (no dev server there; dummy DATABASE_URL, no DB contact) — BUILD SUCCEEDS, route table includes /api/testimonials/normalize-names and the catch-all
+- No GitHub Actions; GitHub Deployments API records stale since Task 34 era — actual deploys run via Hostinger (mechanism not visible from here)
+- Conclusion: auto-deploy has not run/finished for 41701e1..fa18f4b; old build keeps serving (site NOT broken for visitors, hash routing still active)
+
+Stage Summary:
+- User action needed: hPanel -> trigger manual redeploy of main (HEAD fa18f4b) and/or check the deploy/build log
+- Once deployed: clean URLs live, admin button gone (/admin direct), PDF items 1-8/10/11 live, "Fix Name Case" button in admin Testimonials for item 9
+- Remote main: fa18f4b (unchanged)
