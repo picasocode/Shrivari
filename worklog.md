@@ -3766,3 +3766,20 @@ Work Log:
 Stage Summary:
 - All Services-page CTA blocks now show the correct C-37 Thiru-Vi-Ka Industrial Estate address
 - Ships with the pending Hostinger deploy backlog (Tasks 77-84)
+
+---
+Task ID: 85
+Agent: Z.ai Code (main)
+Task: Hosur email typo fix; Hyderabad office relabel; CEIG page heading; add Puducherry EB (PED)
+
+Work Log:
+- Email typo: ContactPage Hosur office shrivaari.hosr@gmail.com -> shrivaari.hsr@gmail.com (only occurrence in src)
+- Footer address verified: C-37, Thiru-Vi-Ka Industrial Estate, Guindy - 600 032, Chennai, Tamil Nadu — exact match with the Task-84 services CTA fix; no change needed
+- Hyderabad office: ContactPage label 'Regional Office' -> 'Manufacturing Office' (kind was already 'manufacturing'); also updated seed route office type for consistency
+- Liaison with CEIG detail page: added optional `heading` field to StaticServiceData, set 'Co-Ordination with CEIG', h1 renders data.heading || data.name (nav/slug/cards keep 'Liaison with CEIG')
+- Liaison with Utilities: added 'Puducherry EB (PED)' to utilities chips (now 14); highlight badge '13 State Utilities' -> '14 State Utilities'
+- lint PASS (x2); tsc only 1 known pre-existing file; commit fd0b627 pushed, fetch-verified origin/main = fd0b627
+
+Stage Summary:
+- 4 user-visible changes live in code: Hosur email, Hyderabad = Manufacturing Office, CEIG page heading 'Co-Ordination with CEIG', PED utility chip
+- Ships with the pending Hostinger deploy backlog (Tasks 77-85)
