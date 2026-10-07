@@ -1061,7 +1061,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                     <div>
                       <p className="text-xs text-white/50 mb-0.5">Corporate office</p>
                       <p className="text-xs text-white/80 leading-relaxed">
-                        Plot No. 120, SIDCO Industrial Estate, Guindy, Chennai — 600032
+                        C-37, Thiru-Vi-Ka Industrial Estate, Guindy – 600 032, Chennai, Tamil Nadu
                       </p>
                     </div>
                   </div>
