@@ -3783,3 +3783,21 @@ Work Log:
 Stage Summary:
 - 4 user-visible changes live in code: Hosur email, Hyderabad = Manufacturing Office, CEIG page heading 'Co-Ordination with CEIG', PED utility chip
 - Ships with the pending Hostinger deploy backlog (Tasks 77-85)
+
+---
+Task ID: 86
+Agent: Z.ai Code (main)
+Task: Rename "Liaison with CEIG" -> "Co-Ordination with CEIG" in menu and dropdown too
+
+Work Log:
+- Navbar services dropdown label changed to 'Co-Ordination with CEIG' (mobile menu uses same array)
+- ServicesPage grid card name + iconMap key updated (icon lookup keyed by name)
+- ServiceDetailPage: name/shortName renamed; redundant heading override removed (name === heading now); iconMap + slugToName keys synced; slug stays 'liasion-ceig' so URLs/nav unaffected
+- seed route service name updated for DB consistency
+- Verified zero remaining 'Liaison with CEIG' display strings in src (descriptive sentence 'Liaison with Chief Electrical Inspector' kept)
+- lint PASS; tsc only 1 known pre-existing file; commit pushed, fetch-verified origin/main = HEAD
+
+Stage Summary:
+- Service now displays as 'Co-Ordination with CEIG' everywhere: menu, dropdown, services grid, detail page h1/breadcrumb/icon
+- Slug 'liasion-ceig' unchanged — no link breakage
+- Ships with the pending Hostinger deploy backlog (Tasks 77-86)
