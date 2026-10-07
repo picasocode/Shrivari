@@ -3751,3 +3751,18 @@ Work Log:
 Stage Summary:
 - "5 countries" live in code; default blog author avatar is now the circular Shrivari emblem (logo-round.png) in 3 places (post hero, author box, featured card)
 - Ships with the pending Hostinger deploy (Tasks 77-83 backlog)
+
+---
+Task ID: 84
+Agent: Z.ai Code (main)
+Task: Services pages — wrong corporate office address at bottom CTA of every service detail page (reported via "Liaison with CEIG" page)
+
+Work Log:
+- Wrong address "Plot No. 120, SIDCO Industrial Estate, Guindy, Chennai — 600032" found in bottom CTA contact cards of BOTH ServicesPage.tsx:1008 and ServiceDetailPage.tsx:1064 (renders on every service detail page, incl. Liaison with CEIG)
+- Replaced with the correct corporate office used by Footer/ContactPage: "C-37, Thiru-Vi-Ka Industrial Estate, Guindy – 600 032, Chennai, Tamil Nadu"
+- Verified no other SIDCO/Plot No. 120 occurrences remain in src
+- lint PASS; tsc only 1 known pre-existing file; commit pushed, fetch-verified origin/main = HEAD
+
+Stage Summary:
+- All Services-page CTA blocks now show the correct C-37 Thiru-Vi-Ka Industrial Estate address
+- Ships with the pending Hostinger deploy backlog (Tasks 77-84)
