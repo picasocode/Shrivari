@@ -121,7 +121,7 @@ const services: StaticService[] = [
   },
   {
     id: 's6',
-    name: 'Liaison with CEIG',
+    name: 'Co-Ordination with CEIG',
     slug: 'liasion-ceig',
     description: 'Complete liaison services with the Chief Electrical Inspector to Government — from preparation of drawings and specifications to getting safety certificates and statutory approvals.',
     capabilities: [
@@ -255,7 +255,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'Testing & Commissioning': FlaskConical,
   'Energy & Harmonic Audit': BarChart3,
   'AMC': ShieldCheck,
-  'Liaison with CEIG': FileCheck,
+  'Co-Ordination with CEIG': FileCheck,
   'Liaison with Utilities': Building2,
   'Solar Works': Sun,
   'Electrical EPC Solutions': Network,

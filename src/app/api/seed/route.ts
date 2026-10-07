@@ -176,7 +176,7 @@ export async function GET() {
         order: 6,
       },
       {
-        name: "Liaison with CEIG",
+        name: "Co-Ordination with CEIG",
         slug: "liasion-ceig",
         description:
           "We provide liaison services with the Chief Electrical Inspector to Government (CEIG) for obtaining statutory approvals, inspections, and certifications for electrical installations.",

@@ -13,7 +13,7 @@ const serviceDropdownItems = [
   { label: 'Testing & Commissioning', slug: 'testing', icon: FlaskConical, desc: 'Comprehensive testing and commissioning of electrical installations' },
   { label: 'Energy & Harmonic Audit', slug: 'energy-harmonic-audit', icon: BarChart3, desc: 'Energy audits and harmonic analysis for industrial facilities' },
   { label: 'AMC', slug: 'amc', icon: ShieldCheck, desc: 'Annual maintenance contracts for electrical installations' },
-  { label: 'Liaison with CEIG', slug: 'liasion-ceig', icon: FileCheck, desc: 'Liaison with Chief Electrical Inspector for statutory approvals' },
+  { label: 'Co-Ordination with CEIG', slug: 'liasion-ceig', icon: FileCheck, desc: 'Liaison with Chief Electrical Inspector for statutory approvals' },
   { label: 'Liaison with Utilities', slug: 'liasion-utilities', icon: Building2, desc: 'Liaison with state electricity utilities for approvals' },
   { label: 'Solar Works', slug: 'solar-works', icon: Sun, desc: 'Complete solar EPC solutions from design to commissioning' },
   { label: 'Electrical EPC Solutions', slug: 'electrical-epc-solutions', icon: Layers, desc: 'Single-window EPC from concept to commissioning' },
