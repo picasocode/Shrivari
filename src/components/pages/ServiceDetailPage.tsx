@@ -23,6 +23,7 @@ interface ServiceCapability {
 
 interface StaticServiceData {
   name: string
+  heading?: string
   slug: string
   shortName: string
   description: string
@@ -184,6 +185,7 @@ const serviceData: Record<string, StaticServiceData> = {
   },
   'liasion-ceig': {
     name: 'Liaison with CEIG',
+    heading: 'Co-Ordination with CEIG',
     slug: 'liasion-ceig',
     shortName: 'Liaison with CEIG',
     description: 'SVEPL facilitates all statutory approvals and CEIG certification for electrical installations. Our established relationships with the electrical inspectorate ensure faster approvals through proper documentation preparation, timely submission, inspection coordination, and safety certificate procurement.',
@@ -220,6 +222,7 @@ const serviceData: Record<string, StaticServiceData> = {
       'APSPDCL', 'APEPDCL', 'APTRANSCO',
       'TSSPDCL', 'TSTRANSCO', 'OPTCL',
       'OPDCL', 'KPTCL', 'BUSCOM',
+      'Puducherry EB (PED)',
       'GMR Aerocity Goa',
     ],
     capabilities: [
@@ -237,7 +240,7 @@ const serviceData: Record<string, StaticServiceData> = {
       { title: 'Agreement Finalization', desc: 'Negotiation and finalization of power supply agreements' },
       { title: 'Grid Connectivity', desc: 'Coordination for grid connectivity and metering installation' },
     ],
-    highlights: ['Multi-utility Expertise', '13 State Utilities', 'Solar/Wind Approvals', 'Grid Connectivity'],
+    highlights: ['Multi-utility Expertise', '14 State Utilities', 'Solar/Wind Approvals', 'Grid Connectivity'],
     relatedProjects: [
       { name: '33kV Bay Extension for 10MW Solar', client: 'Solon India', location: 'Mothagam' },
       { name: '110kV/11kV Switchyard', client: 'Ashok Leyland', location: 'Hosur' },
@@ -604,7 +607,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                 transition={{ duration: 0.6, delay: 0.15 }}
                 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#152D4F] leading-[1.05] tracking-tight mb-3"
               >
-                {data.name}
+                {data.heading || data.name}
               </motion.h1>
 
               <motion.p

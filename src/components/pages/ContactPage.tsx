@@ -83,7 +83,7 @@ const OFFICES: Office[] = [
   },
   {
     id: 'hyderabad',
-    label: 'Regional Office',
+    label: 'Manufacturing Office',
     company: 'Shri Vaari Electrotech Pvt Ltd.',
     address: 'Plot No. D9, Phase I, IDA Pashamailaram, Pattancheru, Sangareddy District, Telangana – 502 307',
     city: 'Hyderabad',
@@ -133,7 +133,7 @@ const OFFICES: Office[] = [
     city: 'Hosur',
     state: 'Tamil Nadu',
     phones: ['99943 72426'],
-    emails: ['shrivaari.hosr@gmail.com'],
+    emails: ['shrivaari.hsr@gmail.com'],
     kind: 'regional',
   },
   {

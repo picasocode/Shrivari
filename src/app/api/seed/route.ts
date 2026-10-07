@@ -946,7 +946,7 @@ export async function GET() {
       {
         city: "Hyderabad",
         state: "Telangana",
-        type: "Regional Office",
+        type: "Manufacturing Office",
         icon: "MapPin",
         isHQ: false,
         order: 2,
