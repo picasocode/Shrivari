@@ -3801,3 +3801,20 @@ Stage Summary:
 - Service now displays as 'Co-Ordination with CEIG' everywhere: menu, dropdown, services grid, detail page h1/breadcrumb/icon
 - Slug 'liasion-ceig' unchanged — no link breakage
 - Ships with the pending Hostinger deploy backlog (Tasks 77-86)
+
+---
+Task ID: 87
+Agent: Z.ai Code (main)
+Task: KT (Knowledge Transfer) document for the project — docx skill, light theme, client + agency logos
+
+Work Log:
+- Loaded docx skill (create route + report scene + design-system R2 recipe + toc/common rules)
+- Client logo fetched from repo assets (identical to www.shrivaarielectricals.com/images/logo.png; direct download blocked by sandbox network)
+- Agency logo (globantislabs.com) unfetchable: direct egress blocked, image-search does not index the site, search results returned wrong company (Globant); used clean "GLOBANTIS LABS" wordmark on cover instead — generator auto-swaps if assets/agency-logo.png is provided later
+- Built 14-page light-theme document with docx-js: R2 Double-Rule cover (CM-2 light palette), Document Control page, field-code TOC (31 entries, placeholders injected, duplicate entry removed, footer ROMAN/arabic patched), 12 chapters: executive summary, project overview + site map, architecture/stack, codebase, admin panel, DB schema (19 models), API reference, environments (env-var NAMES only — zero secrets in doc), Hostinger deployment guide (webpack-not-Turbopack), maintenance runbook, known issues (Tasks 77-86 backlog), handover checklist
+- postcheck.py 9/9 passed, 0 errors 0 warnings; PDF conversion visually verified (cover, TOC, tables, final page)
+- Deliverables: KT_Document_Shrivari_Electricals.docx (+ .pdf preview) in /home/z/my-project/ and /home/z/kt-doc/ — NOT committed to the public repo (contains infra topology; secrets referenced by env-var name only)
+
+Stage Summary:
+- KT document delivered as standalone docx/pdf outside the repo
+- No site code changes in this task; remote main unchanged
