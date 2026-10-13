@@ -3855,3 +3855,19 @@ Work Log:
 Stage Summary:
 - Cover fully restyled: serif display font, left-aligned editorial composition, warm-paper light theme
 - Document remains 22 pages, zero secrets, both real logos
+
+---
+Task ID: 87-d
+Agent: Z.ai Code (main)
+Task: Deliver KT document v1.2 to the client as downloadable files (no doc content changes)
+
+Work Log:
+- Verified repo state: local HEAD == origin/main == 07390ff (87-c cover redesign already pushed); working tree clean
+- Verified deliverables in /home/z/kt-doc/: docx 398,619 bytes + pdf 526,590 bytes, 22 pages, generated Oct 13 11:36 (v1.2 build)
+- Rendered PDF page 1 and visually confirmed the v1.2 cover (serif display title, warm-paper theme, coral accents, both real logos) before shipping
+- Copied deliverables into the sandbox web app's static folder as public/KT_Document_Shrivari_Electricals_v1.2.docx and .pdf (served by the dev server on port 3000); verified both URLs return HTTP 200 with exact byte sizes
+- Files intentionally kept OUT of all git commits (public repo); sandbox copy is download-only
+
+Stage Summary:
+- Client can download KT v1.2 (docx for editing, pdf for sharing) directly from the preview panel
+- No code or document content changes; remote main unchanged by this task's code (worklog commit only)
