@@ -3836,3 +3836,22 @@ Work Log:
 Stage Summary:
 - Premium light-theme KT document v1.1 delivered as standalone docx/pdf outside the repo; 22 pages, both logos, zero credentials
 - No site code changes; remote main unchanged (42a2132 -> this commit moves worklog only)
+
+---
+Task ID: 87-c
+Agent: Z.ai Code (main)
+Task: KT document v1.2 — cover page redesign per client request (new font, design, theme)
+
+Work Log:
+- Replaced R2 centered cover with R1 Pure Paragraph editorial recipe (left-aligned, per design-system routing for 27-char title; R3/R4 not suitable at this length)
+- Font: cover title switched from Arial sans to Times New Roman Bold serif display (~40pt, two lines)
+- Theme: cover background switched from stark white to warm ivory paper (#F6F4EF); interior pages unchanged (navy/coral)
+- Design: coral label with full-column accent underline; logo lockup left-aligned (client + agency with spaced caps tags); meta block with coral left accent bar (version/production/repository/classification); footer hairline with left/right split
+- Added calcCoverSpacing dynamic whitespace (SAFETY 1200, FOOTER_MIN 800) per skill mandate
+- Version bumped to 1.2 with revision-record row; tightened front matter (title spacing, revision summaries) so Document Control stays on one page (no orphan Confidentiality page)
+- postcheck.py 9/9 (0 errors 0 warnings); TOC duplicate fix reapplied; PDF re-verified (22 pages: cover + 3 roman + 18 body)
+- Deliverables refreshed in /home/z/kt-doc/ (docx + pdf), NOT committed to public repo
+
+Stage Summary:
+- Cover fully restyled: serif display font, left-aligned editorial composition, warm-paper light theme
+- Document remains 22 pages, zero secrets, both real logos
