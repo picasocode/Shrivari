@@ -20,7 +20,7 @@ async function metaFromJson() {
     ).sort(),
     voltages: Array.from(
       new Set(records.map((r: { voltage: string }) => r.voltage).filter(Boolean))
-    ).sort((a: string, b: string) => (parseFloat(a) || 0) - (parseFloat(b) || 0)),
+    ).sort((a, b) => (parseFloat(String(a)) || 0) - (parseFloat(String(b)) || 0)),
     source: "json" as const,
   };
 }

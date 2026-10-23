@@ -7,7 +7,7 @@ import { useRouter } from '@/components/Router'
 
 const slides = [
   {
-    image: '/images/hero-office.jpg',
+    image: '/images/hero-headquarters.jpg',
     title: 'Powering India\'s Electrical Power Infrastructure',
     subtitle: 'EPC Solutions upto 400kV',
     desc: 'From design to commissioning — comprehensive electrical systems & solutions for industries across India with close to three decades of excellence.',
