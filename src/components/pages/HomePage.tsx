@@ -344,7 +344,7 @@ export default function HomePage() {
                     loading="lazy"
                     decoding="async"
                     onError={e => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden' }}
-                    className="max-w-full max-h-full w-auto h-auto object-contain opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+                    className="max-w-full max-h-full w-auto h-auto object-contain"
                   />
                 </div>
               )
