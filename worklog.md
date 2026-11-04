@@ -3871,3 +3871,22 @@ Work Log:
 Stage Summary:
 - Client can download KT v1.2 (docx for editing, pdf for sharing) directly from the preview panel
 - No code or document content changes; remote main unchanged by this task's code (worklog commit only)
+
+---
+Task ID: 96
+Agent: Z.ai Code (main)
+Task: Client reported latest changes not visible on live (Hostinger) — verify repo is an error-free build version and push; UI-only scope, no db/backend changes
+
+Work Log:
+- Client report: Tasks 77-86 + HQ hero banner + client logo marquee (commits up to 8b57705) not visible on the live site; client suspects a build error and requested an error-free build version pushed to Git; explicit constraint: do NOT touch database or backend, UI-only corrections
+- Verified local == origin/main == 8b57705 (all recent work is already on GitHub)
+- Reproduced the EXACT Hostinger production build against the committed mysql schema (zero source modifications; sqlite dev-schema tweak kept stash-only/local):
+  - `prisma generate` (mysql provider): OK — postinstall path on Hostinger will succeed (prisma CLI is in dependencies, survives --omit=dev)
+  - `next build --webpack`: ✓ Compiled successfully in 24.4s, 31/31 pages generated, zero errors
+  - `eslint .`: zero errors; `tsc --noEmit`: zero errors
+- Conclusion: GitHub main IS an error-free build version — the code is not the blocker; the stale live site is deployment-side (redeploy not triggered, hPanel Node version <20.9 risk, and/or the known hCDN stale-HTML cache issue documented in next.config.ts — the cache-header fix only ships WITH the new deploy)
+- No code changes in this commit (worklog only) per client constraint — zero-risk deploy trigger
+
+Stage Summary:
+- Build fully verified error-free (build + lint + tsc all pass); no db/backend/UI changes needed or made
+- Client action items on hPanel: re-run Git deploy on main; Node version >= 20.9; purge CDN cache after deploy; confirm DATABASE_URL env var set
