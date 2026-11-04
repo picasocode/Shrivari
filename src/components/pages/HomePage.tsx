@@ -17,6 +17,7 @@ import {
   fetchSettings, fetchOngoingProjectRecords, fetchTestimonials, fetchBlogs,
   type SiteSettings, type ProjectRecordCard, type Testimonial, type Blog,
 } from '@/lib/api'
+import { CLIENT_GALLERY } from '@/lib/client-gallery'
 
 /* ─── fade-in wrapper ─── */
 function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -300,6 +301,54 @@ export default function HomePage() {
             >
               View All <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Client Logos — one-line auto-scrolling marquee ───
+          Official clients-page gallery only (CLIENT_GALLERY), logos only —
+          no client names, mirroring the Clients page design intent. */}
+      <section className="py-14 md:py-16 bg-white" aria-label="Our clients">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+          <FadeIn>
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8751A]/10 border border-[#E8751A]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8751A]" />
+                <span className="text-xs font-bold tracking-[0.2em] text-[#E8751A] uppercase">Our Clients</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A2E] mb-3">
+                Trusted by <span className="text-[#E8751A]">Industry Leaders</span>
+              </h2>
+              <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto">
+                {CLIENT_GALLERY.length}+ organizations across automotive, electronics, IT, forging and other industries rely on us to power their success.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+        <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+          <div
+            className="flex w-max animate-marquee motion-reduce:animate-none"
+            style={{ animationDuration: '320s' }}
+          >
+            {[...CLIENT_GALLERY, ...CLIENT_GALLERY].map((c, i) => {
+              const dup = i >= CLIENT_GALLERY.length
+              return (
+                <div
+                  key={`${c.id}-${i}`}
+                  aria-hidden={dup || undefined}
+                  className="shrink-0 mx-5 md:mx-6 w-36 md:w-44 h-16 md:h-[72px] flex items-center justify-center"
+                >
+                  <img
+                    src={c.src}
+                    alt={dup ? '' : `Client ${c.num} logo`}
+                    loading="lazy"
+                    decoding="async"
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden' }}
+                    className="max-w-full max-h-full w-auto h-auto object-contain opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
