@@ -3890,3 +3890,18 @@ Work Log:
 Stage Summary:
 - Build fully verified error-free (build + lint + tsc all pass); no db/backend/UI changes needed or made
 - Client action items on hPanel: re-run Git deploy on main; Node version >= 20.9; purge CDN cache after deploy; confirm DATABASE_URL env var set
+
+## Task 98 (2026-11-09) — Homepage logo marquee: two rows, opposite directions, bigger logos, no-gap loop
+Request (voice): "Make the logo scrolling from two rows, one scroll left to right and right to left, and make the logo size bigger — the size used in client page logo — and it gives gap while scrolling, I need continuous scroll no gap."
+Changes (src/components/pages/HomePage.tsx only — UI-only):
+- Replaced single-row marquee with new `LogoMarquee` component: CLIENT_GALLERY split into two halves; row 1 scrolls right→left (`animate-marquee`), row 2 scrolls left→right (`animate-marquee-reverse`, keyframes already in globals.css with hover-pause for both)
+- Logo cells enlarged to Clients-page grid height: `h-36 md:h-48` (was `h-16 md:h-[72px]`), width `w-44 md:w-52`
+- Continuous no-gap loop: each row duplicates its half exactly 2x with -50% translate keyframes (seamless seam), uniform small `mx-3 md:mx-4` spacing, full-width edge mask retained
+- Accessibility kept: dup half `aria-hidden`, empty alt on dup, `motion-reduce:animate-none`, hover-pause
+Verification:
+- `eslint .`: zero errors; `tsc --noEmit`: zero errors
+- Commit 7bce646 pushed; fetch confirms origin/main = 7bce646
+- Fresh clone this session (sandbox reset) — creds rebuilt, node_modules reinstalled
+Stage Summary:
+- Two-row opposite-direction marquee with clients-page-sized logos, continuous no-gap scroll, on GitHub main — ships to live site with next Hostinger deploy
+- Zero db/backend changes (UI-only)
