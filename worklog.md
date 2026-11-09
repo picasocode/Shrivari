@@ -3905,3 +3905,12 @@ Verification:
 Stage Summary:
 - Two-row opposite-direction marquee with clients-page-sized logos, continuous no-gap scroll, on GitHub main — ships to live site with next Hostinger deploy
 - Zero db/backend changes (UI-only)
+
+## Task 99 (2026-11-09) — Marquee logos loaded late → eager loading
+Request (voice): "The scrolling was load the image late so correct it."
+Cause: marquee <img loading="lazy"> — browser defers offscreen images; in a continuously moving strip, logos entering from the side fetch only on first entry → visible pop-in/blank gaps while scrolling.
+Fix (src/components/pages/HomePage.tsx, LogoMarquee only): loading="lazy" → loading="eager" (322 imgs, 161 unique, small logo files). Projects-grid imgs keep lazy (static grid, correct usage).
+Verification: eslint zero errors; tsc --noEmit exit 0; commit 277b24f pushed (fetch-verified).
+Stage Summary:
+- Eager marquee logos — no more late pops; on GitHub main awaiting next Hostinger deploy
+- Zero db/backend changes (UI-only)
