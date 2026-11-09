@@ -371,12 +371,21 @@ export default function HomePage() {
                 Trusted by <span className="text-[#E8751A]">Industry Leaders</span>
               </h2>
               <p className="text-[#6B7280] text-sm md:text-base max-w-2xl mx-auto">
-                {CLIENT_GALLERY.length}+ organizations across automotive, electronics, IT, forging and other industries rely on us to power their success.
+                Organizations across automotive, electronics, IT, forging and other industries rely on us to power their success.
               </p>
             </div>
           </FadeIn>
         </div>
         <LogoMarquee />
+        <div className="mt-10 flex justify-center px-5">
+          <Button
+            variant="outline"
+            onClick={() => navigate('clients')}
+            className="border-[#E5E7EB] text-[#1F2937] hover:bg-[#1F2937] hover:text-white hover:border-[#1F2937] rounded-md"
+          >
+            View All <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </div>
       </section>
 
       {/* ─── Testimonials Preview ─── */}
