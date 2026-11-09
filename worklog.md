@@ -3914,3 +3914,14 @@ Verification: eslint zero errors; tsc --noEmit exit 0; commit 277b24f pushed (fe
 Stage Summary:
 - Eager marquee logos — no more late pops; on GitHub main awaiting next Hostinger deploy
 - Zero db/backend changes (UI-only)
+
+## Task 100 (2026-11-09) — Clients section: remove 161+ count, add View All button
+Request (voice): "161+ organizations remove this no and add view all button to redirect to client page"
+Changes (src/components/pages/HomePage.tsx only — UI-only):
+- Subtitle now reads "Organizations across automotive, electronics, IT, forging and other industries rely on us to power their success." (dropped the {CLIENT_GALLERY.length}+ prefix)
+- Added centered outline "View All" button under the marquee (mt-10, matches testimonials-section button style) → navigate('clients')
+Verification: eslint zero errors; tsc --noEmit exit 0; commit 000e727 pushed (fetch-verified); browser click-through verified (button → clients page)
+- Fresh re-clone this session (sandbox reset again) — creds rebuilt, deps reinstalled
+Stage Summary:
+- Count-free subtitle + View All CTA live on GitHub main, awaiting next Hostinger deploy
+- Zero db/backend changes (UI-only)
