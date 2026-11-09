@@ -54,6 +54,54 @@ function InitialsAvatar({ name }: { name: string }) {
   )
 }
 
+/* ─── Two-row seamless client-logo marquee ───
+    Row 1 drifts right→left, row 2 drifts left→right. Each row duplicates its
+    half of CLIENT_GALLERY exactly 2x and the keyframes translate -50%, so the
+    loop point is invisible — continuous scroll with no gap. Logo cells are
+    the same height as the Clients-page grid (h-36 / md:h-48). */
+function LogoMarquee() {
+  const half = Math.ceil(CLIENT_GALLERY.length / 2)
+  const rows: { logos: typeof CLIENT_GALLERY; reverse: boolean }[] = [
+    { logos: CLIENT_GALLERY.slice(0, half), reverse: false },
+    { logos: CLIENT_GALLERY.slice(half), reverse: true },
+  ]
+  return (
+    <div className="space-y-4 md:space-y-5">
+      {rows.map((row, r) => (
+        <div
+          key={r}
+          className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+        >
+          <div
+            className={`flex w-max ${row.reverse ? 'animate-marquee-reverse' : 'animate-marquee'} motion-reduce:animate-none`}
+            style={{ animationDuration: '260s' }}
+          >
+            {[...row.logos, ...row.logos].map((c, i) => {
+              const dup = i >= row.logos.length
+              return (
+                <div
+                  key={`${c.id}-${i}`}
+                  aria-hidden={dup || undefined}
+                  className="shrink-0 mx-3 md:mx-4 w-44 md:w-52 h-36 md:h-48 flex items-center justify-center"
+                >
+                  <img
+                    src={c.src}
+                    alt={dup ? '' : `Client ${c.num} logo`}
+                    loading="lazy"
+                    decoding="async"
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden' }}
+                    className="max-w-full max-h-full w-auto h-auto object-contain"
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function HomePage() {
   const { navigate } = useRouter()
   const [settings, setSettings] = useState<SiteSettings | null>(null)
@@ -305,9 +353,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Client Logos — one-line auto-scrolling marquee ───
+      {/* ─── Client Logos — two-row auto-scrolling marquee ───
           Official clients-page gallery only (CLIENT_GALLERY), logos only —
-          no client names, mirroring the Clients page design intent. */}
+          no client names, mirroring the Clients page design intent.
+          Row 1 scrolls right→left, row 2 scrolls left→right (continuous,
+          seamless loop: content duplicated 2x + -50% keyframe = no gap).
+          Logo cells use the same height as the Clients-page grid (h-36/md:h-48). */}
       <section className="py-14 md:py-16 bg-white" aria-label="Our clients">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
           <FadeIn>
@@ -325,32 +376,7 @@ export default function HomePage() {
             </div>
           </FadeIn>
         </div>
-        <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
-          <div
-            className="flex w-max animate-marquee motion-reduce:animate-none"
-            style={{ animationDuration: '320s' }}
-          >
-            {[...CLIENT_GALLERY, ...CLIENT_GALLERY].map((c, i) => {
-              const dup = i >= CLIENT_GALLERY.length
-              return (
-                <div
-                  key={`${c.id}-${i}`}
-                  aria-hidden={dup || undefined}
-                  className="shrink-0 mx-5 md:mx-6 w-36 md:w-44 h-16 md:h-[72px] flex items-center justify-center"
-                >
-                  <img
-                    src={c.src}
-                    alt={dup ? '' : `Client ${c.num} logo`}
-                    loading="lazy"
-                    decoding="async"
-                    onError={e => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden' }}
-                    className="max-w-full max-h-full w-auto h-auto object-contain"
-                  />
-                </div>
-              )
-            })}
-          </div>
-        </div>
+        <LogoMarquee />
       </section>
 
       {/* ─── Testimonials Preview ─── */}
