@@ -87,7 +87,7 @@ function LogoMarquee() {
                   <img
                     src={c.src}
                     alt={dup ? '' : `Client ${c.num} logo`}
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     onError={e => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden' }}
                     className="max-w-full max-h-full w-auto h-auto object-contain"
